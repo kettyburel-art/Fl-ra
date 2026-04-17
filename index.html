@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <!-- ONBOARDING (first launch) -->
+  <!-- ONBOARDING -->
   <div id="onboarding" class="hidden">
     <div class="onboard-wrap">
 
@@ -124,10 +124,10 @@
     </div>
   </div>
 
+
   <!-- APP SHELL -->
   <div id="app" class="hidden">
 
-    <!-- HEADER -->
     <header id="app-header">
       <div class="header-left">
         <span class="app-logo">Flōra</span>
@@ -172,8 +172,9 @@
     <!-- PAGES -->
     <main id="main-content">
 
-      <!-- DASHBOARD -->
       <section id="page-accueil" class="page active">
+
+        <!-- Hero -->
         <div class="page-hero">
           <div class="hero-text">
             <h1 id="dash-greeting">Bonjour !</h1>
@@ -181,18 +182,18 @@
           </div>
           <div class="hero-badge" id="streak-badge">🔥 <span id="streak-count">0</span>j</div>
         </div>
-      </div>
 
-      <!-- Streak amélioré -->
-      <div class="streak-big" id="streak-big">
-        <div class="streak-flame">🔥</div>
-        <div class="streak-info">
-          <div class="streak-count-big">0 <span style="font-size:1rem;opacity:.7">jour</span></div>
-          <div class="streak-label">de suivi consécutif</div>
-          <div class="streak-message">Commencez votre suivi aujourd'hui 🌱</div>
-        </div>
+        <!-- Streak animé -->
+        <div class="streak-big" id="streak-big">
+          <div class="streak-flame">🔥</div>
+          <div class="streak-info">
+            <div class="streak-count-big">0 <span style="font-size:1rem;opacity:.7">jour</span></div>
+            <div class="streak-label">de suivi consécutif</div>
+            <div class="streak-message">Commencez votre suivi aujourd'hui 🌱</div>
+          </div>
         </div>
 
+        <!-- 4 cards -->
         <div class="card-grid">
           <div class="card card-journal" onclick="showPage('journal')">
             <div class="card-icon">🌙</div>
@@ -241,9 +242,9 @@
         <!-- Synthèse bien-être -->
         <div class="section-title">Ma semaine</div>
         <div class="wellbeing-chart" id="week-chart"></div>
+
       </section>
 
-      <!-- JOURNAL -->
       <section id="page-journal" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('accueil')">←</button>
@@ -415,7 +416,6 @@
         </div>
       </section>
 
-      <!-- RECETTES -->
       <section id="page-recettes" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('accueil')">←</button>
@@ -443,7 +443,6 @@
 
       </section>
 
-      <!-- AGENDA -->
       <section id="page-agenda" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('accueil')">←</button>
@@ -459,7 +458,6 @@
         <div id="agenda-grid" class="agenda-grid"></div>
       </section>
 
-      <!-- GÉNÉRATEUR -->
       <section id="page-generateur" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('accueil')">←</button>
@@ -498,7 +496,6 @@
         </div>
       </section>
 
-      <!-- PROFIL -->
       <section id="page-profil" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('accueil')">←</button>
@@ -577,7 +574,6 @@
         <div id="stats-container"></div>
       </section>
 
-      <!-- PAGE À PROPOS -->
       <section id="page-apropos" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('profil')">←</button>
@@ -640,9 +636,7 @@
         </div>
       </section>
 
-
-  <!-- PAGE PLACARD -->
-  <section id="page-placard" class="page hidden">
+      <section id="page-placard" class="page hidden">
     <div class="page-header-inner">
       <button class="back-btn" onclick="showPage('accueil')">←</button>
       <h2>Mon Placard 🗄️</h2>
@@ -691,8 +685,7 @@
     </div>
   </section>
 
-  <!-- PAGE BATCH COOKING -->
-  <section id="page-batch" class="page hidden">
+      <section id="page-batch" class="page hidden">
     <div class="page-header-inner">
       <button class="back-btn" onclick="showPage('accueil')">←</button>
       <h2>Batch Cooking 🍳</h2>
@@ -746,19 +739,18 @@
       </div>
     </div>
   </section>
-    
 
-        <!-- Modal recette -->
-        <div id="recette-modal" class="modal hidden">
+      <!-- Modal recette -->
+      <div id="recette-modal" class="modal hidden">
           <div class="modal-overlay" onclick="closeModal()"></div>
           <div class="modal-card">
             <button class="modal-close" onclick="closeModal()">✕</button>
             <div id="modal-content"></div>
           </div>
         </div>
+
     </main>
 
-    <!-- BOTTOM NAV -->
     <nav id="bottom-nav">
       <button class="nav-btn active" onclick="showPage('accueil')" data-page="accueil">
         <span class="nav-icon">🏠</span>
@@ -784,12 +776,6 @@
         <span class="nav-icon">👤</span>
         <span class="nav-label">Profil</span>
       </button>
-
-  <!-- ================================
-       PAGE PLACARD (Économat)
-       ================================ -->
-
-
     </nav>
 
   </div>
