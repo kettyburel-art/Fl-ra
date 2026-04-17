@@ -1552,6 +1552,693 @@ const RECETTES = [
       'Sucrez légèrement au miel si désiré.',
       'Buvez chaud 30 min avant le coucher — c\'est votre rituel sérénité 🌙'
     ]
+  },
+
+  // =============================================
+  // NOUVELLES RECETTES — Vague 3
+  // Mix toutes catégories · Printemps/Été · SJSR
+  // =============================================
+
+  // --- PETITS-DÉJEUNERS ---
+  {
+    id: 66, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥭', nom: 'Bol açaí mangue-coco',
+    temps: '10 min', calories: 340, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'açaí est l\'un des fruits les plus riches en antioxydants. La mangue apporte de la vitamine C qui booste l\'absorption du fer. Un petit-déjeuner anti-inflammatoire express.',
+    ingredients: [
+      '100g pulpe d\'açaï surgelée',
+      '1 banane congelée',
+      '100ml lait de coco',
+      '½ mangue fraîche',
+      '2 c.à.s noix de coco râpée',
+      '1 c.à.s graines de chanvre'
+    ],
+    etapes: [
+      'Mixez la pulpe d\'açaï, la banane congelée et le lait de coco.',
+      'Versez dans un bol — la texture doit être épaisse comme une glace.',
+      'Disposez les dés de mangue fraîche par-dessus.',
+      'Parsemez de noix de coco râpée et graines de chanvre.',
+      'Servez immédiatement.'
+    ]
+  },
+  {
+    id: 67, cat: 'petit-dejeuner', premium: false,
+    emoji: '🍓', nom: 'Pancakes sarrasin-fraises sans œuf',
+    temps: '20 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le sarrasin est riche en magnésium et rutine, essentiels pour le SJSR. Les fraises sont une des meilleures sources de vitamine C. Sans œufs grâce à la banane comme liant.',
+    ingredients: [
+      '150g farine de sarrasin',
+      '1 banane mûre écrasée',
+      '200ml lait de riz',
+      '1 c.à.c levure sans gluten',
+      '1 c.à.s huile de coco',
+      '150g fraises fraîches',
+      '1 c.à.s sirop d\'agave'
+    ],
+    etapes: [
+      'Mélangez farine, levure et lait de riz. Incorporez la banane écrasée.',
+      'Ajoutez l\'huile de coco fondue. La pâte doit être légèrement épaisse.',
+      'Faites cuire des petites crêpes épaisses 2-3 min chaque côté dans une poêle huilée.',
+      'Servez avec les fraises coupées en deux et un filet de sirop d\'agave.'
+    ]
+  },
+  {
+    id: 68, cat: 'petit-dejeuner', premium: true,
+    emoji: '🥜', nom: 'Toast patate douce-beurre d\'amande',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La patate douce rôtie remplace le pain — index glycémique bas, riche en bêta-carotène. Le beurre d\'amande apporte du magnésium et des graisses anti-inflammatoires.',
+    ingredients: [
+      '1 patate douce moyenne',
+      '2 c.à.s beurre d\'amande',
+      '1 banane',
+      '1 c.à.c graines de chia',
+      '1 c.à.c miel',
+      '1 pincée de cannelle'
+    ],
+    etapes: [
+      'Coupez la patate douce en tranches de 1 cm dans la longueur.',
+      'Passez au grille-pain 2 fois ou faites dorer à la poêle 4 min chaque côté.',
+      'Étalez le beurre d\'amande sur chaque tranche.',
+      'Disposez des rondelles de banane par-dessus.',
+      'Parsemez de chia, cannelle et un filet de miel.'
+    ]
+  },
+  {
+    id: 69, cat: 'petit-dejeuner', premium: true,
+    emoji: '🌺', nom: 'Granola maison noix-fruits rouges',
+    temps: '35 min + 30min four', calories: 410, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Batch cooking du dimanche — se conserve 3 semaines. Les fruits rouges séchés sont concentrés en anthocyanes anti-inflammatoires. Les noix apportent des oméga-3 végétaux.',
+    ingredients: [
+      '300g flocons de millet ou sarrasin',
+      '100g noix mélangées',
+      '50g amandes effilées',
+      '3 c.à.s huile de coco',
+      '3 c.à.s sirop d\'érable',
+      '1 c.à.c cannelle',
+      '80g fruits rouges séchés (cranberries, myrtilles)'
+    ],
+    etapes: [
+      'Préchauffez le four à 160°C.',
+      'Mélangez flocons, noix, amandes, huile de coco fondue, sirop d\'érable et cannelle.',
+      'Étalez sur une plaque et enfournez 25-30 min en remuant toutes les 10 min.',
+      'Laissez refroidir complètement — le granola durcit en refroidissant.',
+      'Ajoutez les fruits rouges séchés. Conservez en bocal hermétique.'
+    ]
+  },
+
+  // --- DÉJEUNERS ---
+  {
+    id: 70, cat: 'dejeuner', premium: false,
+    emoji: '🥙', nom: 'Bowl quinoa-pois chiches-légumes rôtis',
+    temps: '35 min', calories: 450, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le bowl parfait pour le bureau — se prépare en batch le dimanche. Quinoa + pois chiches = protéines complètes. Les légumes rôtis concentrent leurs vitamines et minéraux.',
+    ingredients: [
+      '200g quinoa',
+      '400g pois chiches cuits',
+      '1 courgette',
+      '1 poivron rouge',
+      '2 c.à.s huile d\'olive',
+      '1 c.à.c curcuma',
+      '1 citron',
+      'Persil frais, Sel Santé'
+    ],
+    etapes: [
+      'Cuisez le quinoa 15 min dans le double de son volume d\'eau.',
+      'Coupez courgette et poivron en cubes. Enrobez d\'huile, curcuma et Sel Santé.',
+      'Rôtissez à 200°C pendant 20 min ou à l\'air fryer 180°C 15 min.',
+      'Assemblez le bowl : quinoa, légumes rôtis, pois chiches.',
+      'Arrosez d\'huile d\'olive et de jus de citron. Parsemez de persil.'
+    ]
+  },
+  {
+    id: 71, cat: 'dejeuner', premium: false,
+    emoji: '🐠', nom: 'Sardines à l\'huile sur salade de roquette',
+    temps: '10 min', calories: 360, diff: 'Très facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les sardines sont la meilleure source de fer héminique et d\'oméga-3. Riches en calcium (arêtes). Repas ultra-rapide idéal au bureau. La roquette apporte du fer végétal.',
+    ingredients: [
+      '1 boîte de sardines à l\'huile d\'olive',
+      '80g roquette',
+      '1 tomate',
+      '½ concombre',
+      '1 citron',
+      '1 c.à.s câpres',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Disposez la roquette dans un grand bol.',
+      'Ajoutez la tomate et le concombre coupés en dés.',
+      'Égouttez les sardines et posez-les sur la salade.',
+      'Ajoutez les câpres.',
+      'Assaisonnez avec le jus de citron, Sel Santé et poivre.'
+    ]
+  },
+  {
+    id: 72, cat: 'dejeuner', premium: true,
+    emoji: '🍜', nom: 'Nouilles de riz saumon-épinards-sésame',
+    temps: '20 min', calories: 490, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les nouilles de riz sont une alternative légère aux pâtes. Saumon + épinards = combo fer + oméga-3 imbattable pour le SJSR. Le sésame apporte du calcium végétal.',
+    ingredients: [
+      '150g nouilles de riz',
+      '120g saumon fumé',
+      '100g épinards frais',
+      '2 c.à.s tamari (sg)',
+      '1 c.à.s huile de sésame',
+      '1 cm gingembre râpé',
+      'Graines de sésame, citron vert'
+    ],
+    etapes: [
+      'Cuisez les nouilles de riz selon le paquet. Égouttez et réservez.',
+      'Dans une poêle, faites tomber les épinards avec le gingembre.',
+      'Ajoutez le tamari et l\'huile de sésame.',
+      'Incorporez les nouilles et mélangez 1 min.',
+      'Dressez avec le saumon fumé, les graines de sésame et le citron vert.'
+    ]
+  },
+  {
+    id: 73, cat: 'dejeuner', premium: true,
+    emoji: '🥗', nom: 'Salade de lentilles beluga-betterave-noix',
+    temps: '25 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les lentilles beluga sont les plus riches en fer et protéines. La betterave améliore la circulation sanguine (idéal SJSR). Les noix apportent des oméga-3 végétaux.',
+    ingredients: [
+      '200g lentilles beluga (noires)',
+      '2 betteraves cuites',
+      '50g noix',
+      '1 bouquet de persil',
+      '2 c.à.s vinaigre balsamique',
+      '3 c.à.s huile d\'olive',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Cuisez les lentilles 20 min dans l\'eau bouillante. Égouttez et laissez refroidir.',
+      'Coupez les betteraves en cubes.',
+      'Mélangez lentilles, betteraves et noix grossièrement concassées.',
+      'Préparez la vinaigrette : huile d\'olive, vinaigre balsamique, Sel Santé.',
+      'Assaisonnez et parsemez de persil frais haché.'
+    ]
+  },
+  {
+    id: 74, cat: 'dejeuner', premium: true,
+    emoji: '🥘', nom: 'Tajine de légumes printaniers-pois chiches',
+    temps: '40 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le cumin, la coriandre et le curcuma forment un trio anti-inflammatoire puissant. Les pois chiches apportent du fer et des protéines végétales. Idéal batch cooking.',
+    ingredients: [
+      '400g pois chiches cuits',
+      '2 carottes',
+      '1 courgette',
+      '1 oignon',
+      '400g tomates concassées',
+      '1 c.à.c curcuma',
+      '1 c.à.c cumin',
+      '1 c.à.c coriandre moulue',
+      'Coriandre fraîche, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir l\'oignon émincé dans l\'huile d\'olive.',
+      'Ajoutez les épices et remuez 1 min pour les torréfier.',
+      'Ajoutez carottes et courgette en cubes, puis les tomates concassées.',
+      'Incorporez les pois chiches. Couvrez et laissez mijoter 25 min.',
+      'Servez avec de la coriandre fraîche. Se congèle très bien.'
+    ]
+  },
+
+  // --- DÎNERS ---
+  {
+    id: 75, cat: 'diner', premium: false,
+    emoji: '🐟', nom: 'Dos de cabillaud vapeur-purée patate douce',
+    temps: '25 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le cabillaud est une protéine légère idéale le soir — facile à digérer. La vapeur préserve tous les nutriments. La patate douce à IG bas évite les pics glycémiques nocturnes.',
+    ingredients: [
+      '150g dos de cabillaud',
+      '2 patates douces',
+      '10cl lait de coco',
+      '1 citron',
+      'Coriandre fraîche',
+      'Sel Santé, curcuma'
+    ],
+    etapes: [
+      'Faites cuire les patates douces à la vapeur 15 min. Mixez avec le lait de coco et le curcuma.',
+      'Assaisonnez le cabillaud avec le Sel Santé et le citron.',
+      'Cuisez à la vapeur 8-10 min — le poisson doit se détacher en feuillets.',
+      'Dressez la purée, posez le cabillaud par-dessus.',
+      'Parsemez de coriandre fraîche et d\'un filet de citron.'
+    ]
+  },
+  {
+    id: 76, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Curry de légumes verts-lait de coco léger',
+    temps: '25 min', calories: 280, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Dîner alcalinisant par excellence. Les brocolis et épinards apportent du fer et du calcium. Le lait de coco est anti-inflammatoire. Le curcuma + poivre = absorption maximisée.',
+    ingredients: [
+      '200g brocolis',
+      '100g épinards',
+      '100g petits pois',
+      '200ml lait de coco allégé',
+      '1 c.à.c pâte de curry vert (sg)',
+      '1 c.à.c curcuma',
+      'Citron vert, coriandre'
+    ],
+    etapes: [
+      'Faites revenir la pâte de curry dans un peu d\'huile de coco 1 min.',
+      'Ajoutez le lait de coco et le curcuma. Portez à frémissement.',
+      'Ajoutez les brocolis et laissez cuire 5 min.',
+      'Incorporez les épinards et les petits pois en fin de cuisson.',
+      'Servez avec du jus de citron vert et de la coriandre fraîche.'
+    ]
+  },
+  {
+    id: 77, cat: 'diner', premium: true,
+    emoji: '🍄', nom: 'Risotto de quinoa-champignons-herbes',
+    temps: '30 min', calories: 350, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le quinoa remplace le riz pour un risotto sans gluten naturellement riche en protéines. Les champignons sont riches en sélénium antioxydant et en vitamine D.',
+    ingredients: [
+      '200g quinoa',
+      '300g champignons mélangés',
+      '1 oignon',
+      '2 gousses d\'ail',
+      '600ml bouillon de légumes chaud',
+      '2 c.à.s levure nutritionnelle',
+      'Thym, persil, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir oignon et ail dans l\'huile d\'olive.',
+      'Ajoutez les champignons et faites dorer 5 min.',
+      'Incorporez le quinoa, mélangez 1 min.',
+      'Ajoutez le bouillon louche par louche comme un risotto, en remuant.',
+      'En fin de cuisson, ajoutez la levure nutritionnelle et les herbes.'
+    ]
+  },
+  {
+    id: 78, cat: 'diner', premium: true,
+    emoji: '🌮', nom: 'Galettes de pois chiche-épinards farcies',
+    temps: '30 min', calories: 360, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les pois chiches sont la base idéale SJSR — fer, magnésium, protéines végétales complètes. Ces galettes se préparent en batch et se réchauffent facilement.',
+    ingredients: [
+      '400g pois chiches cuits',
+      '100g épinards cuits',
+      '2 gousses d\'ail',
+      '1 c.à.c cumin',
+      '1 c.à.c curcuma',
+      '2 c.à.s farine de pois chiche',
+      'Huile d\'olive, Sel Santé'
+    ],
+    etapes: [
+      'Mixez les pois chiches avec l\'ail, le cumin et le curcuma.',
+      'Incorporez les épinards essorés et la farine de pois chiche.',
+      'Formez des galettes de 1 cm d\'épaisseur.',
+      'Faites cuire à la poêle huilée 4 min chaque côté.',
+      'Servez avec une sauce tahini-citron ou de la sauce vierge.'
+    ]
+  },
+  {
+    id: 79, cat: 'diner', premium: true,
+    emoji: '🐙', nom: 'Salade tiède de poulpe-pommes de terre-olives',
+    temps: '45 min', calories: 390, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le poulpe est une excellente source de fer héminique et de zinc. Les olives apportent des graisses mono-insaturées anti-inflammatoires. Un plat méditerranéen thérapeutique.',
+    ingredients: [
+      '300g poulpe cuit',
+      '300g pommes de terre',
+      '60g olives noires',
+      '1 citron',
+      '3 c.à.s huile d\'olive',
+      'Persil plat, origan',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Cuisez les pommes de terre à l\'eau 20 min. Laissez tiédir et coupez en rondelles.',
+      'Coupez le poulpe en morceaux.',
+      'Mélangez poulpe, pommes de terre et olives.',
+      'Préparez la vinaigrette : huile d\'olive, citron, origan, Sel Santé.',
+      'Assaisonnez généreusement. Parsemez de persil plat frais.'
+    ]
+  },
+
+  // --- SNACKS / DESSERTS ---
+  {
+    id: 80, cat: 'snack', premium: false,
+    emoji: '🍎', nom: 'Chips de pomme cannelle au four',
+    temps: '5 min + 2h four', calories: 90, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les pommes sont riches en quercétine, un antioxydant anti-inflammatoire puissant. La cannelle régule la glycémie. Un snack zéro sucre ajouté pour les envies de grignotage.',
+    ingredients: [
+      '3 pommes',
+      '1 c.à.c cannelle',
+      '1 pincée de cardamome'
+    ],
+    etapes: [
+      'Préchauffez le four à 100°C.',
+      'Coupez les pommes en tranches très fines (2mm) à la mandoline ou au couteau.',
+      'Disposez sur une plaque recouverte de papier cuisson.',
+      'Saupoudrez de cannelle et cardamome.',
+      'Enfournez 1h30 à 2h en retournant à mi-cuisson. Laissez sécher dans le four éteint.'
+    ]
+  },
+  {
+    id: 81, cat: 'snack', premium: false,
+    emoji: '🫐', nom: 'Nice cream myrtilles-banane-spiruline',
+    temps: '5 min + 24h congélo', calories: 150, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La spiruline est la source végétale la plus concentrée en fer biodisponible — parfaite SJSR. Les myrtilles sont champions en anthocyanes anti-inflammatoires. Zéro sucre ajouté.',
+    ingredients: [
+      '2 bananes congelées',
+      '150g myrtilles surgelées',
+      '1 c.à.c spiruline en poudre',
+      '2 c.à.s lait de coco'
+    ],
+    etapes: [
+      'Mixez les bananes congelées avec le lait de coco jusqu\'à texture crémeuse.',
+      'Ajoutez les myrtilles et la spiruline.',
+      'Mixez à nouveau — la couleur devient bleu-vert magnifique.',
+      'Servez immédiatement ou recongelez 30 min pour une texture plus ferme.'
+    ]
+  },
+  {
+    id: 82, cat: 'snack', premium: false,
+    emoji: '🌰', nom: 'Beurre de noisettes maison',
+    temps: '15 min', calories: 190, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les noisettes sont parmi les noix les plus riches en vitamine E. Fait maison = zéro huile de palme, zéro sucre ajouté. Une cuillère le matin booste le magnésium de la journée.',
+    ingredients: [
+      '300g noisettes entières',
+      '1 pincée de sel Santé',
+      '1 c.à.c miel (optionnel)'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C. Étalez les noisettes sur une plaque.',
+      'Torréfiez 10-12 min jusqu\'à ce que les peaux craquèlent.',
+      'Frottez dans un torchon pour enlever un maximum de peaux.',
+      'Mixez au robot puissant 8-10 min en raclant les bords régulièrement.',
+      'La pâte va passer de sèche à crémeuse. Ajoutez le sel et le miel. Conservez en bocal.'
+    ]
+  },
+  {
+    id: 83, cat: 'snack', premium: true,
+    emoji: '🍋', nom: 'Tarte au citron sans cuisson farine de coco',
+    temps: '20 min + 2h frigo', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Sans cuisson et sans lactose. La farine de coco est riche en fibres et protéines. Le citron apporte de la vitamine C. Le curcuma dans la garniture renforce l\'action anti-inflammatoire.',
+    ingredients: [
+      '150g noix de cajou trempées 2h',
+      '4 dattes Medjool',
+      '80g farine de coco',
+      '3 citrons (jus + zeste)',
+      '100ml lait de coco entier',
+      '3 c.à.s sirop d\'agave',
+      '1 pincée de curcuma'
+    ],
+    etapes: [
+      'Mixez les dattes avec la farine de coco pour former la base. Tassez dans un moule.',
+      'Mixez les cajous égouttés avec le jus de citron, le zeste, le lait de coco et l\'agave.',
+      'Ajoutez le curcuma pour la couleur jaune naturelle.',
+      'Versez sur la base. Réfrigérez 2h minimum.',
+      'Démoulez et décorez d\'un zeste de citron.'
+    ]
+  },
+  {
+    id: 84, cat: 'snack', premium: true,
+    emoji: '🍫', nom: 'Bark chocolat noir-pistaches-fleur de sel',
+    temps: '15 min + 1h frigo', calories: 210, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le chocolat 85% est la meilleure source alimentaire de magnésium. Les pistaches apportent du fer et du potassium. La fleur de sel exalte les saveurs et apporte des minéraux.',
+    ingredients: [
+      '200g chocolat noir 85%',
+      '50g pistaches décortiquées',
+      '30g cranberries séchées',
+      '1 pincée de fleur de sel',
+      '1 c.à.c zeste d\'orange'
+    ],
+    etapes: [
+      'Faites fondre le chocolat au bain-marie.',
+      'Étalez sur une plaque recouverte de papier cuisson (5mm d\'épaisseur).',
+      'Parsemez de pistaches, cranberries, fleur de sel et zeste d\'orange.',
+      'Réfrigérez 1h jusqu\'à solidification complète.',
+      'Cassez en morceaux irréguliers. Conservez au frais.'
+    ]
+  },
+  {
+    id: 85, cat: 'snack', premium: true,
+    emoji: '🧁', nom: 'Muffins courgette-citron-amande',
+    temps: '35 min', calories: 240, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La courgette apporte de l\'eau, des fibres et de la vitamine C sans alourdir. La poudre d\'amande est riche en vitamine E. Ces muffins se conservent 4 jours et sont parfaits pour le petit-déjeuner.',
+    ingredients: [
+      '200g courgette râpée',
+      '150g poudre d\'amande',
+      '80g farine de riz',
+      '2 citrons (jus + zeste)',
+      '3 c.à.s sirop d\'agave',
+      '60ml huile d\'olive',
+      '1 sachet levure sans gluten'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C.',
+      'Essorez bien la courgette râpée dans un torchon.',
+      'Mélangez poudre d\'amande, farine, levure.',
+      'Incorporez courgette, jus et zeste de citron, sirop d\'agave et huile.',
+      'Versez dans des moules à muffins. Enfournez 22-25 min.'
+    ]
+  },
+
+  // --- BATCH COOKING SPÉCIAL ---
+  {
+    id: 86, cat: 'dejeuner', premium: false,
+    emoji: '🍲', nom: 'Soupe minestrone détox printemps',
+    temps: '35 min', calories: 260, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Soupe complète riche en légumes de printemps. Les petits pois et épinards apportent du fer. Le bouillon de légumes maison est alcalinisant. Parfait pour 4 portions batch cooking.',
+    ingredients: [
+      '2 courgettes',
+      '2 carottes',
+      '100g petits pois',
+      '100g haricots verts',
+      '400g tomates concassées',
+      '100g haricots blancs cuits',
+      '1 oignon, 2 gousses d\'ail',
+      '1L bouillon de légumes',
+      'Basilic frais, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir oignon et ail dans l\'huile d\'olive.',
+      'Ajoutez carottes et courgettes en petits dés. Faites revenir 3 min.',
+      'Ajoutez les tomates, le bouillon et portez à ébullition.',
+      'Incorporez les haricots verts, petits pois et haricots blancs.',
+      'Laissez mijoter 15 min. Parsemez de basilic frais. Se congèle en portions.'
+    ]
+  },
+  {
+    id: 87, cat: 'dejeuner', premium: true,
+    emoji: '🫙', nom: 'Houmous maison pois chiche-tahini',
+    temps: '10 min', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le houmous est l\'en-cas idéal SJSR : fer des pois chiches + calcium du tahini + vitamine C du citron = absorption maximale. Batch cooking — dure 5 jours au frigo.',
+    ingredients: [
+      '400g pois chiches cuits',
+      '3 c.à.s tahini',
+      '2 citrons (jus)',
+      '2 gousses d\'ail',
+      '4 c.à.s huile d\'olive',
+      '4 c.à.s eau froide',
+      'Cumin, paprika, Sel Santé'
+    ],
+    etapes: [
+      'Rincez les pois chiches. Gardez quelques-uns pour la déco.',
+      'Mixez tahini et jus de citron 1 min pour blanchir.',
+      'Ajoutez ail, pois chiches, huile et eau froide. Mixez 3-4 min.',
+      'Assaisonnez avec le Sel Santé et le cumin.',
+      'Dressez avec un filet d\'huile, paprika et les pois chiches réservés.'
+    ]
+  },
+  {
+    id: 88, cat: 'diner', premium: false,
+    emoji: '🍆', nom: 'Gratin d\'aubergines-tomates-herbes',
+    temps: '50 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'aubergine est riche en nasunine, un antioxydant puissant dans la peau violette. Les tomates apportent du lycopène anti-inflammatoire. Plat méditerranéen alcalinisant.',
+    ingredients: [
+      '3 aubergines',
+      '4 tomates',
+      '3 gousses d\'ail',
+      '1 bouquet de basilic',
+      '4 c.à.s huile d\'olive',
+      '1 c.à.c origan',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Préchauffez le four à 190°C.',
+      'Coupez aubergines et tomates en rondelles.',
+      'Dans un plat huilé, disposez en alternance aubergines et tomates.',
+      'Parsemez d\'ail émincé, origan, Sel Santé et huile d\'olive.',
+      'Enfournez 35-40 min. Parsemez de basilic frais avant de servir.'
+    ]
+  },
+  {
+    id: 89, cat: 'petit-dejeuner', premium: false,
+    emoji: '🫐', nom: 'Muffins myrtilles-farine d\'avoine sg',
+    temps: '30 min', calories: 290, diff: 'Facile',
+    tags: ['sl', 'vg'],
+    benefices: 'Les myrtilles sont anti-inflammatoires et neuroprotectrices — particulièrement bénéfiques pour le TDAH. La farine d\'avoine certifiée sg est riche en bêta-glucane pour le microbiote.',
+    ingredients: [
+      '200g farine d\'avoine certifiée sg',
+      '150g myrtilles fraîches ou surgelées',
+      '2 œufs',
+      '100ml lait d\'amande',
+      '60g sucre de coco',
+      '60ml huile de coco',
+      '1 sachet levure sans gluten'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C.',
+      'Fouettez les œufs avec le sucre de coco jusqu\'à blanchiment.',
+      'Ajoutez lait d\'amande et huile de coco fondue.',
+      'Incorporez farine et levure. Ajoutez délicatement les myrtilles.',
+      'Versez dans des moules à muffins. Enfournez 20-22 min.'
+    ]
+  },
+  {
+    id: 90, cat: 'snack', premium: false,
+    emoji: '🌿', nom: 'Infusion nuit profonde valériane-passiflore',
+    temps: '5 min', calories: 5, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La valériane réduit le temps d\'endormissement et améliore la qualité du sommeil — études cliniques validées pour le SJSR. La passiflore est anxiolytique naturelle. À boire 30 min avant le coucher.',
+    ingredients: [
+      '1 sachet de valériane ou 1 c.à.c de racine séchée',
+      '1 sachet de passiflore',
+      '1 c.à.c de tilleul',
+      '250ml eau bouillante',
+      '1 c.à.c miel'
+    ],
+    etapes: [
+      'Faites bouillir l\'eau (90°C idéalement, pas 100°C pour préserver les principes actifs).',
+      'Versez sur les plantes dans une tasse.',
+      'Laissez infuser 8-10 min à couvert.',
+      'Filtrez, sucrez légèrement au miel.',
+      'Buvez calme, dans le noir ou avec une lumière douce — votre rituel SJSR 🌙'
+    ]
+  },
+  {
+    id: 91, cat: 'diner', premium: true,
+    emoji: '🐚', nom: 'Moules marinières lait de coco-citronnelle',
+    temps: '20 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les moules sont la source de fer héminique la plus concentrée — encore plus que la viande rouge. Riches en zinc et oméga-3. La citronnelle est anti-inflammatoire et digestive.',
+    ingredients: [
+      '1 kg de moules',
+      '200ml lait de coco',
+      '1 tige de citronnelle',
+      '2 cm gingembre frais',
+      '2 gousses d\'ail',
+      '1 citron vert',
+      'Coriandre fraîche'
+    ],
+    etapes: [
+      'Grattez et rincez les moules. Jetez celles qui sont ouvertes.',
+      'Faites revenir ail, gingembre et citronnelle dans l\'huile de coco.',
+      'Ajoutez les moules et le lait de coco. Couvrez à feu vif.',
+      'Cuisez 4-5 min en secouant la cocotte — les moules doivent s\'ouvrir.',
+      'Arrosez de jus de citron vert. Parsemez de coriandre fraîche.'
+    ]
+  },
+  {
+    id: 92, cat: 'snack', premium: true,
+    emoji: '🍯', nom: 'Caramels mous dattes-beurre de cajou',
+    temps: '15 min + 1h frigo', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Des caramels sains sans sucre raffiné ! Les dattes ont un IG modéré et sont riches en fer et potassium. Le cajou apporte du zinc et du magnésium. Parfait snack TV anti-SJSR.',
+    ingredients: [
+      '200g dattes Medjool dénoyautées',
+      '80g beurre de cajou',
+      '2 c.à.s lait de coco',
+      '1 c.à.c extrait de vanille',
+      '1 pincée de fleur de sel'
+    ],
+    etapes: [
+      'Faites tremper les dattes 10 min dans l\'eau chaude.',
+      'Égouttez et mixez avec le beurre de cajou, le lait de coco et la vanille.',
+      'Étalez dans un moule recouvert de papier cuisson (1 cm d\'épaisseur).',
+      'Parsemez de fleur de sel. Réfrigérez 1h.',
+      'Découpez en petits carrés. Conservez au frigo.'
+    ]
+  },
+  {
+    id: 93, cat: 'petit-dejeuner', premium: true,
+    emoji: '🫚', nom: 'Crêpes farine de teff-banane',
+    temps: '20 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le teff est la céréale la plus riche en fer — une crêpe apporte autant de fer que 100g de viande. Originaire d\'Éthiopie, sans gluten, il est aussi riche en calcium et magnésium.',
+    ingredients: [
+      '150g farine de teff',
+      '1 banane écrasée',
+      '200ml lait de riz',
+      '1 c.à.s huile de coco',
+      '1 c.à.c extrait de vanille',
+      '1 pincée de sel Santé'
+    ],
+    etapes: [
+      'Mixez tous les ingrédients jusqu\'à pâte lisse.',
+      'Laissez reposer 10 min — la farine de teff absorbe les liquides.',
+      'Huilez légèrement une poêle antiadhésive.',
+      'Cuisez des petites crêpes 2-3 min chaque côté.',
+      'Servez avec des fruits frais, du miel ou du beurre d\'amande.'
+    ]
+  },
+  {
+    id: 94, cat: 'diner', premium: true,
+    emoji: '🫑', nom: 'Poivrons farcis quinoa-légumes-herbes',
+    temps: '45 min', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les poivrons rouges sont les champions de la vitamine C — boostent l\'absorption du fer du quinoa. Plat complet batch cooking qui se récauffe parfaitement.',
+    ingredients: [
+      '4 poivrons rouges',
+      '200g quinoa cuit',
+      '100g pois chiches cuits',
+      '1 courgette en dés',
+      '1 tomate en dés',
+      '1 c.à.c cumin',
+      'Persil, Sel Santé'
+    ],
+    etapes: [
+      'Préchauffez le four à 190°C.',
+      'Coupez les poivrons en deux, retirez les graines.',
+      'Mélangez quinoa, pois chiches, courgette, tomate, cumin et persil.',
+      'Remplissez les poivrons de la farce. Arrosez d\'huile d\'olive.',
+      'Enfournez 30 min. Les poivrons doivent être tendres et légèrement caramélisés.'
+    ]
+  },
+  {
+    id: 95, cat: 'snack', premium: false,
+    emoji: '🥕', nom: 'Houmous de betterave-carotte express',
+    temps: '10 min', calories: 140, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La betterave améliore la circulation sanguine dans les jambes — action directe sur le SJSR. La carotte apporte du bêta-carotène. Un snack coloré, nutritif et anti-inflammatoire.',
+    ingredients: [
+      '200g betteraves cuites',
+      '200g pois chiches cuits',
+      '2 carottes cuites',
+      '2 c.à.s tahini',
+      '1 citron',
+      '1 gousse d\'ail',
+      'Sel Santé, cumin'
+    ],
+    etapes: [
+      'Mixez tous les ingrédients ensemble.',
+      'Ajoutez un peu d\'eau si la consistance est trop épaisse.',
+      'Assaisonnez avec le Sel Santé et le cumin.',
+      'Servez avec des bâtonnets de légumes crus ou des galettes de riz.',
+      'Se conserve 4 jours au réfrigérateur.'
+    ]
   }
 ];
 
