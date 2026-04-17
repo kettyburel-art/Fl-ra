@@ -2239,6 +2239,962 @@ const RECETTES = [
       'Servez avec des bâtonnets de légumes crus ou des galettes de riz.',
       'Se conserve 4 jours au réfrigérateur.'
     ]
+  },
+
+  // =============================================
+  // GUIDE 50 RECETTES ANTI-INFLAMMATOIRES
+  // Sans gluten · Sans lactose · Vague 4
+  // =============================================
+
+  // --- PETITS-DÉJEUNERS ---
+  {
+    id: 96, cat: 'petit-dejeuner', premium: false,
+    emoji: '🍳', nom: 'Omelette épinards-curcuma',
+    temps: '10 min', calories: 220, diff: 'Très facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les œufs sont riches en vitamine B12 et fer. Les épinards apportent du fer végétal. Le curcuma + œuf = absorption maximale des nutriments. Petit-déjeuner protéiné anti-SJSR.',
+    ingredients: [
+      '2 œufs bio',
+      '1 poignée d\'épinards frais',
+      '½ c.à.c curcuma',
+      '1 c.à.s huile d\'olive',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Battez les œufs avec le curcuma, le Sel Santé et le poivre.',
+      'Faites revenir les épinards dans l\'huile d\'olive 1 min.',
+      'Versez les œufs sur les épinards.',
+      'Cuisez à feu doux jusqu\'à prise complète.',
+      'Pliez et servez immédiatement.'
+    ]
+  },
+  {
+    id: 97, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥑', nom: 'Smoothie vert détox avocat-pomme-gingembre',
+    temps: '5 min', calories: 280, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'avocat apporte des graisses mono-insaturées anti-inflammatoires. Les épinards donnent du fer et du chlorophylle. Le gingembre est l\'anti-inflammatoire naturel le plus puissant.',
+    ingredients: [
+      '1 grosse poignée d\'épinards',
+      '½ avocat',
+      '1 pomme',
+      '1 cm gingembre frais',
+      '200ml eau de coco',
+      '½ citron (jus)'
+    ],
+    etapes: [
+      'Pelez la pomme et coupez en morceaux.',
+      'Placez tous les ingrédients dans le blender.',
+      'Mixez jusqu\'à obtenir une texture lisse.',
+      'Ajoutez de l\'eau si trop épais.',
+      'Buvez immédiatement pour profiter des nutriments.'
+    ]
+  },
+  {
+    id: 98, cat: 'petit-dejeuner', premium: false,
+    emoji: '🍌', nom: 'Pancakes banane-œuf (2 ingrédients)',
+    temps: '10 min', calories: 200, diff: 'Très facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La recette la plus simple du monde — sans farine ! La banane apporte du potassium et du tryptophane. Les œufs donnent des protéines complètes. Parfait pour les matins pressés.',
+    ingredients: [
+      '1 banane très mûre',
+      '2 œufs bio',
+      '1 c.à.c huile de coco'
+    ],
+    etapes: [
+      'Écrasez la banane à la fourchette jusqu\'à consistance lisse.',
+      'Battez les œufs et mélangez à la banane.',
+      'Huilez une poêle antiadhésive avec l\'huile de coco.',
+      'Versez de petites quantités de pâte et cuisez 2 min chaque côté.',
+      'Servez avec des fruits frais ou du miel.'
+    ]
+  },
+  {
+    id: 99, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥜', nom: 'Tartines de sarrasin purée d\'amande-banane',
+    temps: '5 min', calories: 310, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le pain de sarrasin est riche en magnésium et rutine. La purée d\'amande apporte des graisses saines et de la vitamine E. La banane fournit du tryptophane et du potassium.',
+    ingredients: [
+      '2 tartines de pain de sarrasin',
+      '2 c.à.s purée d\'amande complète',
+      '1 banane',
+      '1 c.à.c miel (optionnel)'
+    ],
+    etapes: [
+      'Étalez généreusement la purée d\'amande sur les tartines.',
+      'Coupez la banane en rondelles et disposez-les par-dessus.',
+      'Ajoutez un filet de miel si désiré.',
+      'Dégustez immédiatement.'
+    ]
+  },
+  {
+    id: 100, cat: 'petit-dejeuner', premium: true,
+    emoji: '🫐', nom: 'Yaourt de soja myrtilles-noix du Brésil',
+    temps: '3 min', calories: 240, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les noix du Brésil sont la source alimentaire la plus riche en sélénium — un antioxydant puissant. 2 noix du Brésil = apport journalier en sélénium recommandé. Les myrtilles sont anti-inflammatoires.',
+    ingredients: [
+      '1 yaourt de soja bio nature',
+      '1 poignée de myrtilles fraîches',
+      '2 noix du Brésil concassées',
+      '1 c.à.c miel',
+      '1 c.à.c graines de lin moulues'
+    ],
+    etapes: [
+      'Versez le yaourt dans un bol.',
+      'Disposez les myrtilles par-dessus.',
+      'Ajoutez les noix du Brésil concassées.',
+      'Arrosez d\'un filet de miel et saupoudrez de graines de lin.',
+      'Dégustez immédiatement.'
+    ]
+  },
+  {
+    id: 101, cat: 'petit-dejeuner', premium: true,
+    emoji: '🐟', nom: 'Assiette scandinave saumon-avocat-œuf poché',
+    temps: '10 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Triple puissance anti-SJSR : oméga-3 du saumon + graisses saines de l\'avocat + fer et B12 de l\'œuf. Un petit-déjeuner digne d\'un restaurant healthy, en 10 minutes.',
+    ingredients: [
+      '1 tranche de saumon fumé',
+      '½ avocat',
+      '1 œuf bio',
+      '1 citron',
+      'Aneth ou ciboulette',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Portez une casserole d\'eau à frémissement avec un filet de vinaigre.',
+      'Cassez l\'œuf dans un bol, créez un tourbillon dans l\'eau et glissez l\'œuf doucement.',
+      'Cuisez 3 min pour un jaune coulant.',
+      'Disposez le saumon et l\'avocat en tranches dans une assiette.',
+      'Posez l\'œuf poché, assaisonnez et parsemez d\'herbes fraîches.'
+    ]
+  },
+  {
+    id: 102, cat: 'petit-dejeuner', premium: true,
+    emoji: '🌰', nom: 'Pain paléo poudre d\'amande-graines de lin',
+    temps: '10 min + 40min four', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Zéro céréale, zéro gluten. La poudre d\'amande est riche en vitamine E et graisses saines. Les graines de lin apportent des oméga-3. Se conserve 5 jours au frigo.',
+    ingredients: [
+      '150g poudre d\'amande',
+      '50g graines de lin moulues',
+      '3 œufs bio',
+      '½ c.à.c bicarbonate',
+      '1 pincée de sel Santé',
+      '1 c.à.s huile d\'olive'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C.',
+      'Mélangez poudre d\'amande, graines de lin, bicarbonate et sel.',
+      'Incorporez les œufs battus et l\'huile d\'olive.',
+      'Versez dans un moule à cake huilé.',
+      'Enfournez 35-40 min. Vérifiez avec un couteau — doit ressortir sec.'
+    ]
+  },
+  {
+    id: 103, cat: 'petit-dejeuner', premium: true,
+    emoji: '💪', nom: 'Smoothie protéiné chanvre-cacao-datte',
+    temps: '5 min', calories: 350, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les protéines de chanvre sont complètes et riches en magnésium. Le cacao cru est anti-inflammatoire et stimulant naturel. Les dattes apportent du fer et de l\'énergie lente.',
+    ingredients: [
+      '2 c.à.s protéine de chanvre',
+      '300ml lait de noisette',
+      '1 c.à.s cacao cru en poudre',
+      '1 datte Medjool dénoyautée',
+      '1 banane congelée'
+    ],
+    etapes: [
+      'Placez tous les ingrédients dans le blender.',
+      'Mixez 1 min jusqu\'à consistance lisse et crémeuse.',
+      'Ajustez la consistance avec plus de lait si nécessaire.',
+      'Versez dans un grand verre et buvez immédiatement.'
+    ]
+  },
+
+  // --- DÉJEUNERS ---
+  {
+    id: 104, cat: 'dejeuner', premium: false,
+    emoji: '🌿', nom: 'Salade lentilles corail-carottes-cumin',
+    temps: '20 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les lentilles corail cuisent en 10 min et sont ultra-riches en fer facilement assimilable. Le cumin améliore la digestion des légumineuses. La carotte apporte du bêta-carotène.',
+    ingredients: [
+      '200g lentilles corail',
+      '2 carottes râpées',
+      '1 bouquet de coriandre',
+      '1 c.à.c cumin moulu',
+      '2 c.à.s huile d\'olive',
+      '1 citron',
+      'Sel Santé'
+    ],
+    etapes: [
+      'Rincez et cuisez les lentilles corail 10 min dans l\'eau bouillante. Égouttez.',
+      'Laissez tiédir. Mélangez avec les carottes râpées.',
+      'Assaisonnez avec le cumin, l\'huile d\'olive et le jus de citron.',
+      'Parsemez de coriandre fraîche.',
+      'Servez tiède ou froid.'
+    ]
+  },
+  {
+    id: 105, cat: 'dejeuner', premium: false,
+    emoji: '🌾', nom: 'Taboulé de quinoa frais menthe-persil',
+    temps: '20 min + 30min repos', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le quinoa remplace la semoule — naturellement sans gluten et protéiné. Le persil est l\'herbe la plus riche en fer et vitamine C. La menthe est digestive et anti-spasmodique.',
+    ingredients: [
+      '200g quinoa',
+      '1 bouquet de persil plat',
+      '10 feuilles de menthe fraîche',
+      '3 tomates',
+      '½ concombre',
+      '2 citrons (jus)',
+      '3 c.à.s huile d\'olive, Sel Santé'
+    ],
+    etapes: [
+      'Cuisez le quinoa 15 min. Égouttez et laissez refroidir complètement.',
+      'Hachez finement persil et menthe.',
+      'Coupez tomates et concombre en petits dés.',
+      'Mélangez quinoa, herbes et légumes.',
+      'Assaisonnez avec citron, huile et sel. Laissez reposer 30 min au frais.'
+    ]
+  },
+  {
+    id: 106, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Salade kale massé pomme-noix',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le kale est le légume le plus riche en calcium végétal. Le massage à l\'huile le rend plus digeste et libère ses nutriments. Les noix apportent des oméga-3. Anti-inflammatoire puissant.',
+    ingredients: [
+      '200g kale frais',
+      '2 c.à.s huile d\'olive',
+      '1 pomme',
+      '50g noix',
+      '1 citron',
+      '1 c.à.s vinaigre de cidre',
+      'Sel Santé'
+    ],
+    etapes: [
+      'Retirez les tiges du kale. Déchirez les feuilles en morceaux.',
+      'Massez les feuilles avec l\'huile d\'olive et le citron pendant 2-3 min — elles deviennent tendres.',
+      'Coupez la pomme en fines lamelles.',
+      'Mélangez kale, pomme et noix grossièrement concassées.',
+      'Assaisonnez avec le vinaigre et le Sel Santé.'
+    ]
+  },
+  {
+    id: 107, cat: 'dejeuner', premium: false,
+    emoji: '🐟', nom: 'Salade betteraves-harengs fumés-pomme',
+    temps: '10 min', calories: 380, diff: 'Très facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le hareng fumé est encore plus riche en oméga-3 que le saumon. La betterave améliore la circulation sanguine. La pomme apporte de la quercétine anti-inflammatoire.',
+    ingredients: [
+      '2 betteraves cuites',
+      '150g filets de hareng fumé',
+      '1 pomme',
+      '1 c.à.s câpres',
+      '2 c.à.s huile de colza',
+      '1 c.à.s vinaigre de cidre',
+      'Aneth, Sel Santé'
+    ],
+    etapes: [
+      'Coupez les betteraves et la pomme en cubes.',
+      'Coupez les harengs en morceaux.',
+      'Mélangez délicatement tous les ingrédients.',
+      'Assaisonnez avec l\'huile de colza, le vinaigre et le Sel Santé.',
+      'Parsemez d\'aneth frais.'
+    ]
+  },
+  {
+    id: 108, cat: 'dejeuner', premium: true,
+    emoji: '🍱', nom: 'Bowl riz noir-crevettes-edamames',
+    temps: '30 min', calories: 450, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le riz noir vénéré est riche en anthocyanes — plus que les myrtilles ! Les crevettes sont une excellente source de zinc et de fer. Les edamames apportent des protéines végétales complètes.',
+    ingredients: [
+      '150g riz noir vénéré',
+      '150g crevettes décortiquées',
+      '100g edamames',
+      '1 radis noir',
+      '2 c.à.s tamari (sg)',
+      '1 c.à.s huile de sésame',
+      'Graines de sésame, citron vert'
+    ],
+    etapes: [
+      'Cuisez le riz noir 30-35 min. Il doit rester légèrement al dente.',
+      'Faites sauter les crevettes dans l\'huile de sésame 3 min.',
+      'Ajoutez les edamames et le tamari. Mélangez 1 min.',
+      'Dressez : riz noir, crevettes, edamames, radis noir en lamelles.',
+      'Parsemez de sésame et arrosez de jus de citron vert.'
+    ]
+  },
+  {
+    id: 109, cat: 'dejeuner', premium: true,
+    emoji: '🌯', nom: 'Wraps de laitue au poulet-avocat',
+    temps: '15 min', calories: 320, diff: 'Très facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Zéro glucides transformés — la laitue remplace la tortilla. Le poulet est riche en tryptophane et protéines. L\'avocat apporte des graisses anti-inflammatoires. Idéal déjeuner bureau léger.',
+    ingredients: [
+      '4 grandes feuilles de laitue iceberg',
+      '150g poulet cuit émietté',
+      '1 avocat',
+      '1 tomate',
+      '1 citron vert',
+      'Coriandre fraîche',
+      'Sel Santé'
+    ],
+    etapes: [
+      'Lavez et séchez les feuilles de laitue.',
+      'Écrasez l\'avocat avec le jus de citron vert et le Sel Santé.',
+      'Coupez la tomate en petits dés.',
+      'Étalez la purée d\'avocat sur chaque feuille de laitue.',
+      'Garnissez de poulet émietté, tomate et coriandre. Roulez et dégustez.'
+    ]
+  },
+  {
+    id: 110, cat: 'dejeuner', premium: true,
+    emoji: '🥗', nom: 'Salade haricots blancs-thon-basilic',
+    temps: '10 min', calories: 390, diff: 'Très facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les haricots blancs sont riches en fer et fibres prébiotiques. Le thon apporte des oméga-3 et protéines. Le basilic est anti-inflammatoire et favorise la production de dopamine.',
+    ingredients: [
+      '400g haricots blancs cuits',
+      '1 boîte de thon au naturel',
+      '1 bouquet de basilic frais',
+      '4 oignons nouveaux',
+      '2 c.à.s huile d\'olive',
+      '1 citron',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Rincez et égouttez les haricots blancs.',
+      'Émiettez le thon.',
+      'Émincez les oignons nouveaux.',
+      'Mélangez haricots, thon et oignons.',
+      'Assaisonnez avec l\'huile d\'olive, le citron et le Sel Santé. Parsemez de basilic.'
+    ]
+  },
+  {
+    id: 111, cat: 'dejeuner', premium: true,
+    emoji: '🐠', nom: 'Poke bowl thon-wakamé-riz vinaigré',
+    temps: '25 min', calories: 480, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le wakamé est riche en iode, magnésium et calcium. Le thon cru sushi-grade est une source concentrée d\'oméga-3. Un plat complet anti-SJSR inspiré de la cuisine hawaïenne.',
+    ingredients: [
+      '150g riz à sushi',
+      '2 c.à.s vinaigre de riz',
+      '150g thon cru qualité sushi',
+      '20g algues wakamé réhydratées',
+      '½ concombre',
+      '1 c.à.s tamari',
+      '1 c.à.s huile de sésame, graines de sésame'
+    ],
+    etapes: [
+      'Cuisez le riz. Laissez tiédir et assaisonnez avec le vinaigre de riz.',
+      'Coupez le thon en cubes.',
+      'Réhydratez le wakamé 5 min dans l\'eau froide.',
+      'Coupez le concombre en fines rondelles.',
+      'Assemblez : riz, thon, wakamé, concombre. Assaisonnez avec tamari et huile de sésame.'
+    ]
+  },
+
+  // --- PLATS CHAUDS / DÎNERS ---
+  {
+    id: 112, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Wok poulet-brocolis-noix de cajou-tamari',
+    temps: '20 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le brocoli est une des meilleures sources de vitamine C (booste l\'absorption du fer). Les noix de cajou apportent du zinc et magnésium. Le tamari sans gluten remplace la sauce soja.',
+    ingredients: [
+      '2 blancs de poulet',
+      '200g brocolis',
+      '60g noix de cajou',
+      '3 c.à.s tamari sans gluten',
+      '1 cm gingembre râpé',
+      '2 gousses d\'ail',
+      '1 c.à.s huile de sésame'
+    ],
+    etapes: [
+      'Coupez le poulet en lanières.',
+      'Faites chauffer l\'huile de sésame à feu vif.',
+      'Faites sauter le poulet 4 min. Réservez.',
+      'Dans la même poêle, faites sauter ail, gingembre et brocolis 3 min.',
+      'Remettez le poulet, ajoutez tamari et cajou. Mélangez 1 min.'
+    ]
+  },
+  {
+    id: 113, cat: 'diner', premium: false,
+    emoji: '🫙', nom: 'Zoodles courgette au pesto basilic-pignons',
+    temps: '15 min', calories: 280, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Zéro glucides ! Les courgettes remplacent les pâtes. Le basilic est riche en antioxydants et favorise la dopamine. Les pignons apportent du zinc et du magnésium. Dîner ultra-léger.',
+    ingredients: [
+      '3 courgettes',
+      '1 bouquet de basilic frais',
+      '30g pignons de pin',
+      '1 gousse d\'ail',
+      '4 c.à.s huile d\'olive',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Faites des filaments de courgette avec un spiraliseur ou épluche-légumes.',
+      'Pour le pesto : mixez basilic, pignons, ail et huile d\'olive.',
+      'Assaisonnez le pesto avec le Sel Santé.',
+      'Mélangez les zoodles avec le pesto froid.',
+      'Servez immédiatement — les courgettes crues ou à peine chauffées.'
+    ]
+  },
+  {
+    id: 114, cat: 'diner', premium: false,
+    emoji: '🐟', nom: 'Daurade au four fenouil-orange',
+    temps: '35 min', calories: 350, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La daurade est riche en protéines légères et oméga-3. Le fenouil est anti-spasmodique et favorise le sommeil. L\'orange apporte de la vitamine C qui optimise l\'absorption du fer.',
+    ingredients: [
+      '1 daurade (ou 2 filets)',
+      '1 bulbe de fenouil',
+      '1 orange',
+      '3 c.à.s huile d\'olive',
+      'Thym, romarin',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Préchauffez le four à 190°C.',
+      'Émincez le fenouil et disposez dans un plat.',
+      'Ajoutez des rondelles d\'orange.',
+      'Posez la daurade par-dessus, arrosez d\'huile d\'olive.',
+      'Parsemez de thym et romarin. Enfournez 25-30 min.'
+    ]
+  },
+  {
+    id: 115, cat: 'diner', premium: false,
+    emoji: '🍅', nom: 'Shakshuka œufs-poivrons-tomates épicée',
+    temps: '25 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le lycopène des tomates cuites est plus biodisponible que cru. Les poivrons sont riches en vitamine C. Les épices (cumin, paprika) sont anti-inflammatoires. Un dîner complet économique.',
+    ingredients: [
+      '4 œufs bio',
+      '400g tomates concassées',
+      '2 poivrons rouges',
+      '1 oignon',
+      '2 gousses d\'ail',
+      '1 c.à.c cumin',
+      '1 c.à.c paprika',
+      'Coriandre fraîche, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir oignon et ail dans l\'huile d\'olive.',
+      'Ajoutez les poivrons émincés et cuisez 5 min.',
+      'Ajoutez les tomates, le cumin et le paprika. Laissez mijoter 10 min.',
+      'Creusez 4 puits dans la sauce. Cassez un œuf dans chaque puits.',
+      'Couvrez et cuisez 5-7 min. Parsemez de coriandre fraîche.'
+    ]
+  },
+  {
+    id: 116, cat: 'diner', premium: true,
+    emoji: '🌾', nom: 'Kasha sarrasin grillé-champignons-tofu',
+    temps: '25 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le kasha (sarrasin grillé) est plus riche en magnésium que le sarrasin cru. Les champignons apportent de la vitamine D et du sélénium. Le tofu au tamari est une protéine complète végétale.',
+    ingredients: [
+      '200g sarrasin grillé (kasha)',
+      '200g champignons mélangés',
+      '150g tofu ferme',
+      '2 carottes',
+      '2 c.à.s tamari',
+      '1 oignon',
+      'Huile d\'olive, Sel Santé'
+    ],
+    etapes: [
+      'Coupez le tofu en cubes et faites-le mariner dans le tamari 15 min.',
+      'Cuisez le kasha 10 min dans le double de son volume d\'eau.',
+      'Faites revenir oignon, carottes et champignons dans l\'huile d\'olive.',
+      'Ajoutez le tofu et faites dorer.',
+      'Incorporez le kasha cuit. Mélangez et assaisonnez avec le Sel Santé.'
+    ]
+  },
+  {
+    id: 117, cat: 'diner', premium: true,
+    emoji: '🦃', nom: 'Blanquette de dinde légère au coco',
+    temps: '40 min', calories: 390, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'La dinde est la viande la plus riche en tryptophane — précurseur de la sérotonine et mélatonine. Idéale le soir pour favoriser l\'endormissement. Le lait de coco remplace la crème fraîche.',
+    ingredients: [
+      '400g escalopes de dinde',
+      '200g champignons',
+      '2 carottes',
+      '200ml lait de coco',
+      '200ml bouillon de volaille',
+      '1 oignon, bouquet garni',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Coupez la dinde en cubes.',
+      'Faites revenir l\'oignon dans l\'huile d\'olive.',
+      'Ajoutez la dinde et faites dorer.',
+      'Ajoutez carottes, champignons, bouillon et lait de coco.',
+      'Laissez mijoter à feu doux 25 min avec le bouquet garni.'
+    ]
+  },
+  {
+    id: 118, cat: 'diner', premium: true,
+    emoji: '🐟', nom: 'Thon grillé sésame-purée de panais',
+    temps: '25 min', calories: 420, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le thon grillé est une source concentrée d\'oméga-3 et de protéines. Le panais est riche en potassium et vitamine C. Le sésame apporte du calcium et du zinc.',
+    ingredients: [
+      '2 pavés de thon',
+      '3 c.à.s graines de sésame',
+      '4 panais',
+      '100ml lait d\'amande',
+      '1 c.à.s huile d\'olive',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Cuisez les panais à la vapeur 15 min. Mixez avec le lait d\'amande.',
+      'Assaisonnez la purée avec le Sel Santé.',
+      'Panez les pavés de thon dans les graines de sésame des 2 côtés.',
+      'Faites saisir à feu vif 2 min chaque côté — le cœur doit rester rosé.',
+      'Servez le thon sur la purée de panais.'
+    ]
+  },
+  {
+    id: 119, cat: 'diner', premium: true,
+    emoji: '🐠', nom: 'Boulettes de sardines à la marocaine',
+    temps: '30 min', calories: 340, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Les sardines fraîches sont la source de fer héminique la plus économique. Cumin + coriandre + persil = trio anti-inflammatoire marocain. Riche en oméga-3 et calcium (arêtes).',
+    ingredients: [
+      '400g sardines fraîches vidées',
+      '1 bouquet de persil',
+      '2 gousses d\'ail',
+      '1 c.à.c cumin',
+      '400g tomates concassées',
+      '1 c.à.c paprika',
+      'Huile d\'olive, Sel Santé'
+    ],
+    etapes: [
+      'Levez les filets de sardines ou demandez à votre poissonnier.',
+      'Mixez les filets avec le persil, l\'ail et le cumin.',
+      'Formez des petites boulettes.',
+      'Préparez la sauce : faites mijoter les tomates avec le paprika 10 min.',
+      'Plongez les boulettes dans la sauce et cuisez 12 min à feu doux.'
+    ]
+  },
+  {
+    id: 120, cat: 'diner', premium: false,
+    emoji: '🎃', nom: 'Potimarron rôti au thym-huile d\'olive',
+    temps: '35 min', calories: 230, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le potimarron (avec sa peau si bio) est riche en bêta-carotène et potassium. Le thym est antibactérien et anti-inflammatoire. Un accompagnement ou plat léger idéal pour le soir.',
+    ingredients: [
+      '1 potimarron bio',
+      '3 c.à.s huile d\'olive',
+      '4 branches de thym frais',
+      '2 gousses d\'ail en chemise',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Préchauffez le four à 200°C.',
+      'Lavez le potimarron et coupez-le en quartiers (peau conservée si bio).',
+      'Disposez sur une plaque avec l\'ail en chemise.',
+      'Arrosez d\'huile d\'olive, parsemez de thym, assaisonnez.',
+      'Enfournez 30 min jusqu\'à fondant et légèrement caramélisé.'
+    ]
+  },
+  {
+    id: 121, cat: 'diner', premium: true,
+    emoji: '🍆', nom: 'Moussaka sans lactose crème de cajou',
+    temps: '60 min', calories: 430, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'La moussaka revisitée sans béchamel — la crème de cajou remplace parfaitement la sauce lactée. L\'aubergine est riche en antioxydants. La viande hachée apporte du fer héminique.',
+    ingredients: [
+      '3 aubergines',
+      '400g viande hachée de bœuf maigre',
+      '400g tomates concassées',
+      '150g noix de cajou trempées',
+      '200ml eau',
+      '1 c.à.c noix de muscade',
+      'Cannelle, Sel Santé'
+    ],
+    etapes: [
+      'Coupez les aubergines en rondelles et faites-les griller à l\'huile d\'olive.',
+      'Faites revenir la viande avec les tomates, cannelle et Sel Santé.',
+      'Mixez les cajou égouttés avec l\'eau et la muscade pour la béchamel de cajou.',
+      'Dans un plat : couche d\'aubergines, couche de viande, couche d\'aubergines.',
+      'Nappez de crème de cajou. Enfournez 30 min à 180°C.'
+    ]
+  },
+
+  // --- SOUPES, SNACKS & DESSERTS ---
+  {
+    id: 122, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Velouté de chou-fleur à la muscade',
+    temps: '25 min', calories: 200, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le chou-fleur est riche en vitamine C et sulforaphane, un puissant antioxydant anti-inflammatoire. La muscade a des propriétés sédatives légères — idéale pour un dîner favorisant le sommeil.',
+    ingredients: [
+      '1 chou-fleur',
+      '200ml lait d\'amande',
+      '1 pincée de muscade',
+      '1 oignon',
+      '1 c.à.s huile d\'olive',
+      'Graines de courge, Sel Santé'
+    ],
+    etapes: [
+      'Coupez le chou-fleur en fleurettes. Faites cuire à la vapeur 15 min.',
+      'Faites revenir l\'oignon dans l\'huile d\'olive.',
+      'Mixez chou-fleur, oignon et lait d\'amande jusqu\'à consistance veloutée.',
+      'Ajoutez la muscade et le Sel Santé.',
+      'Servez avec des graines de courge toastées.'
+    ]
+  },
+  {
+    id: 123, cat: 'diner', premium: true,
+    emoji: '🫙', nom: 'Soupe miso-tofu-algues',
+    temps: '10 min', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le miso est un aliment fermenté riche en probiotiques bénéfiques pour le microbiote. Le tofu apporte des protéines végétales complètes. Les algues sont riches en iode et minéraux.',
+    ingredients: [
+      '1L eau',
+      '3 c.à.s pâte miso sans gluten',
+      '150g tofu soyeux en dés',
+      '10g algues wakamé séchées',
+      '3 oignons nouveaux émincés',
+      '1 c.à.s tamari'
+    ],
+    etapes: [
+      'Portez l\'eau à frémissement — ne pas bouillir pour préserver les probiotiques du miso.',
+      'Réhydratez le wakamé 5 min dans l\'eau froide. Égouttez.',
+      'Délayez la pâte miso dans un peu d\'eau chaude.',
+      'Ajoutez le miso délayé, le tofu et le wakamé dans la casserole.',
+      'Chauffez 2 min. Parsemez d\'oignons nouveaux et servez immédiatement.'
+    ]
+  },
+  {
+    id: 124, cat: 'snack', premium: false,
+    emoji: '🥑', nom: 'Guacamole maison express',
+    temps: '5 min', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'avocat est la star des graisses anti-inflammatoires. Le citron vert apporte de la vitamine C. La coriandre est un chélateur naturel de métaux lourds. Un snack parfait et nutritif.',
+    ingredients: [
+      '2 avocats mûrs',
+      '½ oignon rouge',
+      '1 citron vert (jus)',
+      '½ piment jalapeño (optionnel)',
+      '1 bouquet de coriandre fraîche',
+      'Sel Santé'
+    ],
+    etapes: [
+      'Écrasez les avocats à la fourchette — gardez une texture rustique.',
+      'Émincez finement l\'oignon rouge.',
+      'Hachez la coriandre.',
+      'Mélangez tous les ingrédients.',
+      'Assaisonnez avec le jus de citron vert et le Sel Santé. Servez immédiatement.'
+    ]
+  },
+  {
+    id: 125, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Mousse chocolat à l\'aquafaba',
+    temps: '15 min + 1h frigo', calories: 195, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'aquafaba (jus de pois chiches) monte en neige comme des blancs d\'œufs — zéro œuf, vegan ! Le chocolat 85% est riche en magnésium et flavonoïdes anti-inflammatoires. Un dessert bluffant.',
+    ingredients: [
+      '150g chocolat noir 85%',
+      '150ml aquafaba (jus boîte pois chiches)',
+      '1 c.à.s sirop d\'agave',
+      '1 c.à.c extrait de vanille'
+    ],
+    etapes: [
+      'Faites fondre le chocolat au bain-marie. Laissez refroidir 10 min.',
+      'Montez l\'aquafaba en neige ferme au batteur électrique (5-7 min).',
+      'Incorporez délicatement le chocolat fondu à l\'aquafaba en neige.',
+      'Ajoutez le sirop d\'agave et la vanille. Mélangez délicatement.',
+      'Répartissez dans des verrines. Réfrigérez 1h minimum.'
+    ]
+  },
+  {
+    id: 126, cat: 'snack', premium: false,
+    emoji: '🍎', nom: 'Pommes au four cannelle-noix',
+    temps: '5 min + 25min four', calories: 160, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La pomme cuite libère plus de quercétine qu\'en version crue. La cannelle régule la glycémie et est anti-inflammatoire. Les noix apportent des oméga-3. Un dessert simple et réconfortant.',
+    ingredients: [
+      '4 pommes',
+      '1 c.à.c cannelle',
+      '40g noix concassées',
+      '1 c.à.s sirop d\'érable',
+      '1 c.à.s raisins secs'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C.',
+      'Évidez les pommes en gardant la base intacte.',
+      'Mélangez noix, raisins, cannelle et sirop d\'érable.',
+      'Garnissez les pommes de cette préparation.',
+      'Enfournez 25 min jusqu\'à ce que les pommes soient fondantes.'
+    ]
+  },
+  {
+    id: 127, cat: 'snack', premium: false,
+    emoji: '🍓', nom: 'Sorbet minute framboise-lait de coco',
+    temps: '3 min', calories: 120, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les framboises sont riches en ellagitanins, des antioxydants anti-inflammatoires puissants. Zéro sucre ajouté, zéro lactose. Un dessert express sain et délicieux.',
+    ingredients: [
+      '300g framboises surgelées',
+      '3 c.à.s lait de coco',
+      '1 c.à.s sirop d\'agave (optionnel)'
+    ],
+    etapes: [
+      'Placez les framboises surgelées dans le blender.',
+      'Ajoutez le lait de coco.',
+      'Mixez jusqu\'à obtenir une texture crémeuse et homogène.',
+      'Ajoutez du sirop d\'agave si trop acide.',
+      'Servez immédiatement dans des verrines.'
+    ]
+  },
+  {
+    id: 128, cat: 'snack', premium: false,
+    emoji: '🌿', nom: 'Infusion gingembre-citron anti-inflammatoire',
+    temps: '5 min', calories: 10, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le gingembre frais contient des gingérols et shogaols aux propriétés anti-inflammatoires prouvées cliniquement. Le citron alcalinise l\'organisme. La meilleure boisson après chaque repas pour le SJSR.',
+    ingredients: [
+      '3 cm gingembre frais',
+      '1 citron bio',
+      '300ml eau bouillante',
+      '1 c.à.c miel (optionnel)',
+      '1 pincée de curcuma'
+    ],
+    etapes: [
+      'Râpez ou tranchez finement le gingembre frais.',
+      'Versez l\'eau chaude (90°C) sur le gingembre.',
+      'Ajoutez le jus de citron et une rondelle pour la déco.',
+      'Laissez infuser 5 min.',
+      'Ajoutez le curcuma et le miel. Buvez chaud.'
+    ]
+  },
+  {
+    id: 129, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Chocolat noir 85% et amandes — snack SJSR',
+    temps: '1 min', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le snack anti-SJSR le plus simple : 2 carrés de chocolat 85% = 50mg de magnésium. 10 amandes = magnésium + vitamine E + calcium. À consommer en soirée devant la TV.',
+    ingredients: [
+      '2 carrés de chocolat noir 85% minimum',
+      '10 amandes entières',
+      '1 pincée de fleur de sel (optionnel)'
+    ],
+    etapes: [
+      'Sortez le chocolat du réfrigérateur 5 min avant pour libérer les arômes.',
+      'Disposez les amandes dans un petit bol.',
+      'Savourez lentement en laissant fondre le chocolat.',
+      'La fleur de sel exalte les flavonoïdes du chocolat.',
+      'Parfait devant un bon drama coréen 🌙'
+    ]
+  },
+  {
+    id: 130, cat: 'snack', premium: true,
+    emoji: '⚡', nom: 'Energy balls dattes-cacao-amandes',
+    temps: '15 min + 30min frigo', calories: 170, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les dattes + amandes + cacao = combinaison parfaite fer + magnésium + flavonoïdes. Sans sucre ajouté, sans cuisson. Le cacao cru préserve tous les antioxydants contrairement au cacao traité.',
+    ingredients: [
+      '200g dattes Medjool dénoyautées',
+      '100g amandes',
+      '2 c.à.s cacao cru en poudre',
+      '1 c.à.c extrait de vanille',
+      'Noix de coco râpée pour rouler'
+    ],
+    etapes: [
+      'Mixez les amandes jusqu\'à poudre grossière.',
+      'Ajoutez les dattes, le cacao et la vanille.',
+      'Mixez jusqu\'à formation d\'une boule homogène.',
+      'Formez des boules de la taille d\'une noix.',
+      'Roulez dans la noix de coco. Réfrigérez 30 min. Conservez 2 semaines au frigo.'
+    ]
+  },
+  {
+    id: 131, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌱', nom: 'Miam-ô-Fruit banane-colza-graines',
+    temps: '5 min', calories: 320, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La méthode Kousmine revisitée : la banane écrasée + huile de colza (oméga-3) + graines = petit-déjeuner complet anti-inflammatoire. L\'huile de colza est à consommer froide uniquement.',
+    ingredients: [
+      '½ banane bien mûre',
+      '2 c.à.s huile de colza bio (premier froid)',
+      '1 c.à.s graines de lin moulues',
+      '1 c.à.s graines de sésame',
+      'Fruits de saison au choix',
+      '1 c.à.c jus de citron'
+    ],
+    etapes: [
+      'Écrasez la banane à la fourchette dans un bol.',
+      'Incorporez immédiatement l\'huile de colza en mélangeant vigoureusement.',
+      'Ajoutez le jus de citron pour éviter l\'oxydation.',
+      'Parsemez des graines moulues.',
+      'Ajoutez les fruits de saison coupés en morceaux. Consommez immédiatement.'
+    ]
+  },
+  {
+    id: 132, cat: 'dejeuner', premium: true,
+    emoji: '🥗', nom: 'Carpaccio de courgettes crues-huile de cameline',
+    temps: '10 min', calories: 190, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'huile de cameline est la plus riche en oméga-3 végétaux (34%) après le lin. La courgette crue est plus riche en vitamines. La menthe est digestive et anti-spasmodique.',
+    ingredients: [
+      '3 courgettes fraîches',
+      '3 c.à.s huile de cameline (ou colza)',
+      '1 citron',
+      'Feuilles de menthe fraîche',
+      'Sel Santé, poivre',
+      'Zeste de citron'
+    ],
+    etapes: [
+      'Tranchez très finement les courgettes à la mandoline (2mm).',
+      'Disposez en rosace dans les assiettes.',
+      'Arrosez d\'huile de cameline et de jus de citron.',
+      'Assaisonnez avec le Sel Santé et le poivre.',
+      'Parsemez de feuilles de menthe et de zeste de citron.'
+    ]
+  },
+  {
+    id: 133, cat: 'dejeuner', premium: true,
+    emoji: '🥗', nom: 'Salade riz sauvage-potimarron-canneberges',
+    temps: '40 min', calories: 390, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le riz sauvage est techniquement une graminée sans gluten, riche en magnésium. Le potimarron est riche en bêta-carotène. Les canneberges sont anti-inflammatoires et riches en antioxydants.',
+    ingredients: [
+      '150g riz sauvage',
+      '300g potimarron',
+      '50g canneberges séchées',
+      '50g amandes effilées',
+      '3 c.à.s huile d\'olive',
+      '1 orange (jus)',
+      'Persil, Sel Santé'
+    ],
+    etapes: [
+      'Cuisez le riz sauvage 40 min. Égouttez.',
+      'Coupez le potimarron en cubes et rôtissez à 200°C 20 min.',
+      'Toastez les amandes à sec dans une poêle.',
+      'Mélangez riz, potimarron, canneberges et amandes.',
+      'Assaisonnez avec l\'huile d\'olive, le jus d\'orange et le Sel Santé.'
+    ]
+  },
+  {
+    id: 134, cat: 'diner', premium: true,
+    emoji: '🥩', nom: 'Chili con carne léger haricots rouges',
+    temps: '35 min', calories: 410, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le bœuf maigre est riche en fer héminique et zinc. Les haricots rouges apportent du fer végétal et des fibres. Le piment contient de la capsaïcine anti-inflammatoire. Idéal batch cooking.',
+    ingredients: [
+      '300g bœuf haché maigre',
+      '400g haricots rouges cuits',
+      '400g purée de tomates',
+      '1 oignon, 2 gousses d\'ail',
+      '1 c.à.c cumin',
+      '1 c.à.c piment en poudre',
+      'Coriandre fraîche, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir oignon et ail dans l\'huile d\'olive.',
+      'Ajoutez la viande et faites dorer en émiettant.',
+      'Ajoutez le cumin et le piment. Mélangez 1 min.',
+      'Incorporez la purée de tomates et les haricots.',
+      'Laissez mijoter 20 min. Parsemez de coriandre fraîche.'
+    ]
+  },
+  {
+    id: 135, cat: 'diner', premium: true,
+    emoji: '🍄', nom: 'Risotto de riz complet champignons-purée d\'amande',
+    temps: '45 min', calories: 420, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le riz complet conserve son magnésium et fibres. La purée d\'amande remplace le beurre — apport de vitamine E et graisses saines. Les champignons apportent du sélénium et vitamine D.',
+    ingredients: [
+      '200g riz complet',
+      '300g champignons mélangés',
+      '1 oignon',
+      '700ml bouillon de légumes chaud',
+      '2 c.à.s purée d\'amande',
+      '2 c.à.s levure nutritionnelle',
+      'Thym, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir l\'oignon dans l\'huile d\'olive.',
+      'Ajoutez le riz et faites-le nacrer 2 min.',
+      'Incorporez le bouillon louche par louche en remuant.',
+      'Ajoutez les champignons à mi-cuisson (30 min total).',
+      'En fin de cuisson, incorporez la purée d\'amande et la levure nutritionnelle.'
+    ]
+  },
+  {
+    id: 136, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Salade patate douce froide-roquette-pignons',
+    temps: '30 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La patate douce froide développe de l\'amidon résistant — un prébiotique excellent pour le microbiote. La roquette est riche en fer et glucosinolates anti-inflammatoires. Les pignons apportent du zinc.',
+    ingredients: [
+      '2 patates douces',
+      '80g roquette',
+      '30g pignons de pin',
+      '1 citron',
+      '3 c.à.s huile d\'olive',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Coupez les patates douces en cubes et rôtissez à 200°C 20 min.',
+      'Laissez refroidir complètement.',
+      'Toastez les pignons à sec dans une poêle.',
+      'Mélangez patates douces froides et roquette.',
+      'Préparez la vinaigrette au citron et assaisonnez. Parsemez de pignons.'
+    ]
+  },
+  {
+    id: 137, cat: 'dejeuner', premium: true,
+    emoji: '🥗', nom: 'Nems raw légumes-tofu fumé feuilles de riz',
+    temps: '20 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les nems raw sans friture conservent tous les nutriments. Le tofu fumé apporte des protéines végétales. Les légumes crus sont riches en enzymes digestives. Une entrée légère et colorée.',
+    ingredients: [
+      '8 feuilles de riz',
+      '2 carottes en julienne',
+      '½ concombre en bâtonnets',
+      '1 avocat',
+      '100g tofu fumé',
+      'Menthe fraîche',
+      'Sauce tamari-gingembre pour tremper'
+    ],
+    etapes: [
+      'Trempez les feuilles de riz 20 sec dans l\'eau tiède.',
+      'Disposez sur un torchon humide.',
+      'Garnissez de carottes, concombre, avocat et tofu fumé.',
+      'Ajoutez des feuilles de menthe fraîche.',
+      'Roulez en serrant bien. Servez avec la sauce tamari-gingembre.'
+    ]
+  },
+  {
+    id: 138, cat: 'snack', premium: true,
+    emoji: '🥜', nom: 'Granola sans céréales amandes-cajou-sésame',
+    temps: '20 min', calories: 290, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Granola paléo — zéro céréale, zéro gluten ! Les noix apportent des graisses saines, du magnésium et du zinc. Les graines de courge sont riches en tryptophane. Se conserve 1 mois en bocal.',
+    ingredients: [
+      '150g amandes',
+      '100g noix de cajou',
+      '50g graines de courge',
+      '2 c.à.s huile de coco fondue',
+      '2 c.à.s sirop d\'érable',
+      '1 c.à.c cannelle'
+    ],
+    etapes: [
+      'Préchauffez le four à 160°C.',
+      'Concassez grossièrement amandes et cajou.',
+      'Mélangez avec les graines de courge, l\'huile de coco, le sirop d\'érable et la cannelle.',
+      'Étalez sur une plaque recouverte de papier cuisson.',
+      'Enfournez 15 min en remuant à mi-cuisson. Laissez refroidir complètement avant de ranger.'
+    ]
   }
 ];
 
