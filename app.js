@@ -919,6 +919,639 @@ const RECETTES = [
       'Ajoutez l\'huile, le rhum vanillé et les morceaux de chocolat.',
       'Versez dans des moules. Cuisez 20 min jusqu\'à légère dorure. Bon tiède ou froid !'
     ]
+  },
+
+  // =============================================
+  // RECETTES SÉRÉNITÉ SJSR/TDAH — Issues de la
+  // bibliothèque Autour Du Naturel adaptée
+  // =============================================
+
+  // --- ENTRÉES / STARTERS ---
+  {
+    id: 38, cat: 'dejeuner', premium: false,
+    emoji: '🍆', nom: 'Caviar d\'aubergines au tahini',
+    temps: '30 min', calories: 190, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le tahini (crème de sésame) est riche en calcium et magnésium. L\'aubergine grillée est alcalinisante et riche en antioxydants. Le citron booste l\'absorption du fer.',
+    ingredients: [
+      '2 belles aubergines',
+      '2 c.à.s tahini (crème de sésame)',
+      '2 gousses d\'ail',
+      '1 citron (jus)',
+      '2 c.à.s huile d\'olive',
+      'Sel Santé, cumin, persil frais'
+    ],
+    etapes: [
+      'Percez les aubergines et faites-les griller entières au four à 220°C pendant 20-25 min.',
+      'Laissez refroidir, puis pelez et égouttez la chair.',
+      'Mixez la chair avec le tahini, l\'ail pressé, le jus de citron et l\'huile d\'olive.',
+      'Assaisonnez avec le Sel Santé et le cumin.',
+      'Servez frais avec du persil haché et un filet d\'huile d\'olive.'
+    ]
+  },
+  {
+    id: 39, cat: 'dejeuner', premium: false,
+    emoji: '🥕', nom: 'Verrines de carottes au cumin',
+    temps: '35 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Carottes riches en bêta-carotène antioxydant. Le cumin est anti-inflammatoire. La crème de riz apporte des glucides doux. Parfait en entrée légère ou en snack.',
+    ingredients: [
+      '1 kg de carottes',
+      '1 oignon',
+      '15cl crème de riz',
+      '2 c.à.s huile d\'olive',
+      '1 c.à.c cumin moulu',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Épluchez et coupez les carottes en rondelles.',
+      'Faites revenir l\'oignon émincé dans l\'huile d\'olive jusqu\'à dorure.',
+      'Ajoutez les carottes, le cumin, le Sel Santé et le poivre.',
+      'Cuisez à feu doux 15 min — les carottes doivent rester légèrement fermes.',
+      'Mixez et incorporez progressivement la crème de riz.',
+      'Versez dans des verrines. Servez bien frais.'
+    ]
+  },
+  {
+    id: 40, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Tartare de betteraves-graines de tournesol',
+    temps: '15 min', calories: 175, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La betterave est riche en nitrates qui améliorent la circulation sanguine — excellente pour le SJSR. Les graines de tournesol apportent du magnésium et de la vitamine E.',
+    ingredients: [
+      '3 betteraves cuites',
+      '2 c.à.s graines de tournesol toastées',
+      '1 échalote',
+      '2 c.à.s huile d\'olive',
+      '1 c.à.s vinaigre de cidre',
+      'Persil frais, sel Santé, poivre'
+    ],
+    etapes: [
+      'Coupez les betteraves en petits cubes.',
+      'Émincez finement l\'échalote.',
+      'Mélangez betteraves, échalote, huile, vinaigre.',
+      'Assaisonnez avec le Sel Santé et le poivre.',
+      'Parsemez de graines de tournesol toastées et de persil haché.'
+    ]
+  },
+  {
+    id: 41, cat: 'dejeuner', premium: true,
+    emoji: '🐟', nom: 'Tartare de saumon-avocat-gingembre',
+    temps: '15 min', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Triple action anti-SJSR : oméga-3 du saumon, graisses saines de l\'avocat, gingembre anti-inflammatoire puissant. Le citron optimise l\'absorption du fer.',
+    ingredients: [
+      '200g saumon très frais (sushi-grade)',
+      '1 avocat mûr',
+      '1 cm gingembre frais râpé',
+      '1 citron vert (jus + zeste)',
+      '1 c.à.s tamari (sg)',
+      'Ciboulette, graines de sésame'
+    ],
+    etapes: [
+      'Coupez le saumon en petits cubes réguliers.',
+      'Coupez l\'avocat en cubes de même taille.',
+      'Mélangez délicatement avec le gingembre, le jus de citron vert et le tamari.',
+      'Dressez dans des cercles. Parsemez de ciboulette et graines de sésame.',
+      'Servez immédiatement bien frais.'
+    ]
+  },
+  {
+    id: 42, cat: 'dejeuner', premium: true,
+    emoji: '🥬', nom: 'Soupe froide concombre-menthe-avocat',
+    temps: '10 min', calories: 200, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Soupe alcalinisante et hydratante. L\'avocat apporte des graisses anti-inflammatoires. La menthe fraîche est digestive et apaisante. Idéale en été contre les jambes lourdes.',
+    ingredients: [
+      '2 concombres',
+      '1 avocat',
+      '1 citron vert',
+      '1 bouquet de menthe fraîche',
+      '1 yaourt de soja nature',
+      'Sel Santé, glaçons'
+    ],
+    etapes: [
+      'Pelez et coupez les concombres en morceaux.',
+      'Mixez concombre, avocat, jus de citron, menthe et yaourt de soja.',
+      'Assaisonnez avec le Sel Santé.',
+      'Réfrigérez 30 min minimum avant de servir avec des glaçons.'
+    ]
+  },
+
+  // --- PLATS PRINCIPAUX ---
+  {
+    id: 43, cat: 'dejeuner', premium: false,
+    emoji: '🍗', nom: 'Poulet patate douce sauge',
+    temps: '40 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La patate douce à index glycémique bas fournit une énergie stable. La sauge est anti-inflammatoire. Le poulet apporte des protéines et du tryptophane précurseur de sérotonine.',
+    ingredients: [
+      '2 blancs de poulet',
+      '2 patates douces',
+      '6 feuilles de sauge fraîche',
+      '2 c.à.s huile d\'olive',
+      '1 citron',
+      'Sel Santé, poivre, ail'
+    ],
+    etapes: [
+      'Préchauffez le four à 200°C.',
+      'Coupez les patates douces en cubes, enrobez d\'huile d\'olive, sauge et Sel Santé.',
+      'Enfournez les patates 25 min.',
+      'Faites dorer les blancs de poulet à la poêle 4 min chaque côté avec ail et huile.',
+      'Servez le poulet sur les patates douces rôties avec un jus de citron.'
+    ]
+  },
+  {
+    id: 44, cat: 'dejeuner', premium: false,
+    emoji: '🐟', nom: 'Saumon mi-cuit gingembre-lin',
+    temps: '20 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Recette phare anti-SJSR : double dose d\'oméga-3 (saumon + lin). Le gingembre est le plus puissant anti-inflammatoire naturel. À manger 2-3x/semaine.',
+    ingredients: [
+      '150g pavé de saumon',
+      '1 c.à.c graines de lin moulues',
+      '1 cm gingembre frais râpé',
+      '1/2 citron',
+      '1 c.à.s huile d\'olive',
+      '100g épinards frais',
+      'Persil frais, Sel Santé'
+    ],
+    etapes: [
+      'Badigeonnez le saumon de gingembre râpé et d\'huile d\'olive.',
+      'Cuisez à la poêle 3-4 min côté peau, 2 min côté chair — le cœur doit rester nacré.',
+      'Faites tomber les épinards à la poêle 2 min à l\'huile d\'olive.',
+      'Dressez : épinards, saumon, graines de lin moulues, persil frais, jus de citron.'
+    ]
+  },
+  {
+    id: 45, cat: 'dejeuner', premium: true,
+    emoji: '🐑', nom: 'Agneau confit polenta-pistaches',
+    temps: '2h', calories: 520, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'L\'agneau est la viande la plus riche en fer héminique — combat directement la fatigue SJSR. Les pistaches apportent du magnésium. Un plat du dimanche thérapeutique.',
+    ingredients: [
+      '400g épaule d\'agneau',
+      '150g polenta de maïs',
+      '500ml bouillon de légumes',
+      '50g pistaches',
+      'Romarin, ail, huile d\'olive',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Préchauffez le four à 160°C. Faites dorer l\'agneau à la cocotte avec ail et romarin.',
+      'Couvrez et enfournez 1h30 à 1h45 — la viande doit se détacher à la fourchette.',
+      'Préparez la polenta en versant progressivement dans le bouillon chaud. Remuez 5 min.',
+      'Effilochez l\'agneau à la fourchette.',
+      'Dressez la polenta, posez l\'agneau, parsemez de pistaches concassées.'
+    ]
+  },
+  {
+    id: 46, cat: 'dejeuner', premium: true,
+    emoji: '🥘', nom: 'Quinoa-légumes rôtis-grenade',
+    temps: '35 min', calories: 390, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le quinoa est une protéine complète rare dans le végétal. La grenade est l\'un des fruits les plus antioxydants. Les légumes rôtis concentrent leurs nutriments.',
+    ingredients: [
+      '200g quinoa',
+      '1 courgette',
+      '1 poivron rouge',
+      '1 aubergine',
+      'Graines d\'une demi-grenade',
+      'Huile d\'olive, Sel Santé',
+      'Menthe fraîche, jus de citron'
+    ],
+    etapes: [
+      'Cuisez le quinoa dans le double de son volume d\'eau 15 min.',
+      'Coupez les légumes en cubes, enrobez d\'huile et de Sel Santé.',
+      'Rôtissez à l\'air fryer 200°C 18 min ou au four 220°C 25 min.',
+      'Mélangez quinoa, légumes rôtis, grenade, menthe et citron.',
+      'Servez tiède ou froid selon saison.'
+    ]
+  },
+  {
+    id: 47, cat: 'dejeuner', premium: true,
+    emoji: '🍝', nom: 'Penne coulis poivrons-féta végane',
+    temps: '30 min', calories: 430, diff: 'Facile',
+    tags: ['sg'],
+    benefices: 'Le poivron rouge est l\'un des légumes les plus riches en vitamine C — booste l\'absorption du fer des pâtes. La feta apporte du calcium. Choisissez des pâtes sans gluten.',
+    ingredients: [
+      '200g penne sans gluten',
+      '3 poivrons rouges',
+      '100g feta (ou tofu ferme)',
+      '2 gousses d\'ail',
+      '2 c.à.s huile d\'olive',
+      'Basilic frais, Sel Santé'
+    ],
+    etapes: [
+      'Grilllez les poivrons au four 25 min à 220°C, puis pelez et épépinez.',
+      'Mixez les poivrons avec l\'ail, l\'huile d\'olive et le Sel Santé.',
+      'Cuisez les pâtes al dente selon le paquet.',
+      'Mélangez pâtes et coulis de poivrons.',
+      'Émiettez la feta par-dessus avec du basilic frais.'
+    ]
+  },
+
+  // --- SOUPES ---
+  {
+    id: 48, cat: 'diner', premium: false,
+    emoji: '🥣', nom: 'Soupe de lentilles-épinards-curcuma',
+    temps: '30 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Binôme roi anti-SJSR : lentilles (fer) + épinards (fer + calcium) + citron (vitamine C) = absorption du fer maximisée. Le curcuma renforce l\'effet anti-inflammatoire.',
+    ingredients: [
+      '200g lentilles vertes',
+      '150g épinards frais ou surgelés',
+      '1 oignon',
+      '2 gousses d\'ail',
+      '1 c.à.c curcuma',
+      '½ c.à.c poivre noir',
+      '1 citron',
+      'Huile d\'olive, Sel Santé'
+    ],
+    etapes: [
+      'Rincez les lentilles. Faites revenir oignon et ail dans l\'huile d\'olive.',
+      'Ajoutez le curcuma et le poivre noir, remuez 1 min.',
+      'Ajoutez les lentilles et couvrez de 800ml d\'eau. Cuisez 20 min.',
+      'Ajoutez les épinards en fin de cuisson. Remuez 2 min.',
+      'Assaisonnez avec le Sel Santé et terminez avec un généreux jus de citron.'
+    ]
+  },
+  {
+    id: 49, cat: 'diner', premium: false,
+    emoji: '🥕', nom: 'Velouté panais-poire-gingembre',
+    temps: '35 min', calories: 240, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le panais est riche en potassium et vitamine C. La poire apporte de la douceur et des fibres prébiotiques pour le microbiote. Le gingembre est anti-nauséeux et anti-inflammatoire.',
+    ingredients: [
+      '3 panais',
+      '2 poires mûres',
+      '1 cm gingembre frais',
+      '1 oignon',
+      '600ml bouillon de légumes',
+      '10cl crème de coco',
+      'Sel Santé, graines de courge'
+    ],
+    etapes: [
+      'Épluchez et coupez panais et poires en morceaux.',
+      'Faites revenir l\'oignon dans l\'huile d\'olive.',
+      'Ajoutez panais, poires, gingembre et bouillon. Cuisez 20 min.',
+      'Mixez finement avec la crème de coco.',
+      'Assaisonnez avec le Sel Santé. Parsemez de graines de courge toastées.'
+    ]
+  },
+  {
+    id: 50, cat: 'diner', premium: false,
+    emoji: '🌿', nom: 'Soupe verte épinards-poireaux-petits pois',
+    temps: '25 min', calories: 210, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Soupe chlorophylle : triple source de fer végétal (épinards, petits pois, poireaux). Les poireaux sont prébiotiques pour le microbiote. Terminer avec du persil frais pour la dopamine.',
+    ingredients: [
+      '2 poireaux',
+      '150g épinards surgelés',
+      '150g petits pois surgelés',
+      '2 pommes de terre',
+      '700ml eau',
+      'Persil frais, Sel Santé'
+    ],
+    etapes: [
+      'Émincez les poireaux et faites-les revenir dans l\'huile d\'olive.',
+      'Ajoutez les pommes de terre en dés et couvrez d\'eau.',
+      'Ajoutez les petits pois et les épinards. Cuisez 15 min.',
+      'Mixez et assaisonnez avec le Sel Santé.',
+      'Parsemez de persil frais avant de servir.'
+    ]
+  },
+  {
+    id: 51, cat: 'diner', premium: true,
+    emoji: '🎃', nom: 'Velouté potimarron-châtaignes-noisettes',
+    temps: '45 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le potimarron est riche en bêta-carotène et potassium. Les châtaignes apportent du magnésium et des glucides complexes. Un dîner doux et alcalinisant parfait pour le soir.',
+    ingredients: [
+      '500g potimarron',
+      '150g châtaignes cuites',
+      '1 oignon',
+      '600ml bouillon de légumes',
+      '10cl lait d\'avoine',
+      'Noisettes toastées, Sel Santé'
+    ],
+    etapes: [
+      'Coupez le potimarron en cubes (avec la peau si bio).',
+      'Faites revenir l\'oignon, ajoutez le potimarron et les châtaignes.',
+      'Couvrez de bouillon et cuisez 25 min à feu doux.',
+      'Mixez avec le lait d\'avoine jusqu\'à consistance soyeuse.',
+      'Assaisonnez avec le Sel Santé. Parsemez de noisettes toastées concassées.'
+    ]
+  },
+  {
+    id: 52, cat: 'diner', premium: true,
+    emoji: '🐟', nom: 'Velouté poisson-fenouil-safran',
+    temps: '40 min', calories: 310, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le poisson blanc est une source de protéines légères faciles à digérer le soir. Le fenouil est antispasmodique et favorise le sommeil. Le safran a des propriétés antidépressives reconnues.',
+    ingredients: [
+      '300g dos de cabillaud ou lieu',
+      '1 bulbe de fenouil',
+      '1 oignon',
+      '1 dose de safran',
+      '600ml bouillon de poisson ou légumes',
+      '10cl crème de riz',
+      'Sel Santé, citron'
+    ],
+    etapes: [
+      'Émincez le fenouil et l\'oignon. Faites revenir à l\'huile d\'olive.',
+      'Ajoutez le safran et le bouillon. Cuisez 15 min.',
+      'Ajoutez le poisson en morceaux et cuisez 8 min à feu doux.',
+      'Mixez partiellement (garder quelques morceaux de poisson).',
+      'Incorporez la crème de riz. Assaisonnez et servez avec du citron.'
+    ]
+  },
+  {
+    id: 53, cat: 'diner', premium: true,
+    emoji: '🌽', nom: 'Soupe de maïs-poivrons doux-coriandre',
+    temps: '25 min', calories: 240, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le maïs apporte des glucides à index glycémique modéré. Les poivrons rouges sont parmi les légumes les plus riches en vitamine C. La coriandre est un détoxifiant naturel.',
+    ingredients: [
+      '400g maïs doux (surgelé)',
+      '2 poivrons rouges rôtis',
+      '1 oignon',
+      '500ml bouillon de légumes',
+      '10cl lait de coco',
+      'Coriandre fraîche, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir l\'oignon dans l\'huile d\'olive.',
+      'Ajoutez le maïs, les poivrons et le bouillon. Cuisez 10 min.',
+      'Mixez avec le lait de coco.',
+      'Assaisonnez avec le Sel Santé. Servez avec de la coriandre fraîche hachée.'
+    ]
+  },
+
+  // --- DESSERTS SJSR ---
+  {
+    id: 54, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Mousse chocolat noir-cerises au piment',
+    temps: '15 min + 2h frigo', calories: 230, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le chocolat 85% est riche en magnésium et flavonoïdes. Les cerises réduisent les marqueurs de l\'inflammation (études spécifiques SJSR). Le piment améliore la circulation sanguine dans les jambes.',
+    ingredients: [
+      '100g chocolat noir 85% min',
+      '3 blancs d\'œufs',
+      '100g cerises fraîches ou surgelées',
+      '1 pincée de piment de Cayenne',
+      '1 c.à.c extrait de vanille'
+    ],
+    etapes: [
+      'Faites fondre le chocolat au bain-marie. Laissez tiédir.',
+      'Montez les blancs en neige ferme.',
+      'Incorporez délicatement le chocolat fondu aux blancs en neige.',
+      'Ajoutez la vanille et le piment de Cayenne.',
+      'Répartissez dans des verrines avec les cerises. Réfrigérez 2h minimum.'
+    ]
+  },
+  {
+    id: 55, cat: 'snack', premium: false,
+    emoji: '🍑', nom: 'Moelleux pêches-noisettes farine de riz',
+    temps: '40 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les noisettes sont riches en vitamine E, puissant antioxydant protecteur. La farine de riz est naturellement sans gluten et légère. Les pêches apportent du bêta-carotène.',
+    ingredients: [
+      '3 pêches mûres',
+      '150g farine de riz',
+      '80g poudre de noisettes',
+      '2 œufs',
+      '80g sucre de canne',
+      '60ml huile d\'olive douce',
+      '1 sachet de levure sans gluten'
+    ],
+    etapes: [
+      'Préchauffez le four à 170°C.',
+      'Fouettez les œufs avec le sucre jusqu\'à blanchiment.',
+      'Ajoutez l\'huile, la farine, les noisettes et la levure.',
+      'Pelez et coupez les pêches en tranches. Incorporez-les à la pâte.',
+      'Versez dans un moule. Enfournez 30-35 min. Vérifiez avec la lame d\'un couteau.'
+    ]
+  },
+  {
+    id: 56, cat: 'snack', premium: true,
+    emoji: '🫐', nom: 'Sorbet Ninja Creami baies-gingembre',
+    temps: '5 min + 24h congélo', calories: 120, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les fruits rouges sont les plus riches en antioxydants (anthocyanes) qui réduisent l\'inflammation. Le gingembre amplifie l\'effet. Un snack TV sain et délicieux.',
+    ingredients: [
+      '300g fruits rouges mélangés (surgelés)',
+      '1 banane',
+      '1 c.à.c gingembre frais râpé',
+      '2 c.à.s sirop d\'agave',
+      '100ml lait de coco'
+    ],
+    etapes: [
+      'Mixez tous les ingrédients ensemble.',
+      'Versez dans le pot Ninja Creami. Congelez 24h.',
+      'Sortez du congélateur 5 min avant. Passez en mode "Sorbet".',
+      'Servez immédiatement dans des verrines.'
+    ]
+  },
+  {
+    id: 57, cat: 'snack', premium: true,
+    emoji: '🍐', nom: 'Poires rôties au four miel-cardamome',
+    temps: '25 min', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les poires sont riches en fibres prébiotiques bénéfiques pour le microbiote. La cardamome est digestive et anti-inflammatoire. Le miel est un sucre doux à IG modéré.',
+    ingredients: [
+      '4 poires mûres mais fermes',
+      '2 c.à.s miel',
+      '½ c.à.c cardamome moulue',
+      '½ c.à.c cannelle',
+      '2 c.à.s amandes effilées',
+      '1 citron (jus)'
+    ],
+    etapes: [
+      'Préchauffez le four à 190°C.',
+      'Coupez les poires en deux et retirez le cœur.',
+      'Mélangez le miel, la cardamome, la cannelle et le jus de citron.',
+      'Disposez les poires côté coupé vers le haut. Arrosez de la préparation.',
+      'Parsemez d\'amandes effilées. Enfournez 18-20 min jusqu\'à légère caramélisation.'
+    ]
+  },
+  {
+    id: 58, cat: 'snack', premium: true,
+    emoji: '🫘', nom: 'Crème de haricots blancs-tahini-herbes',
+    temps: '10 min', calories: 210, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les haricots blancs sont riches en fer et en magnésium. Le tahini apporte du calcium végétal. Parfait en tartinade sur galettes de riz ou en accompagnement de légumes crus.',
+    ingredients: [
+      '400g haricots blancs cuits (boîte)',
+      '2 c.à.s tahini',
+      '2 gousses d\'ail',
+      '1 citron (jus)',
+      '2 c.à.s huile d\'olive',
+      'Persil, ciboulette, Sel Santé'
+    ],
+    etapes: [
+      'Rincez et égouttez les haricots blancs.',
+      'Mixez avec le tahini, l\'ail pressé, le jus de citron et l\'huile d\'olive.',
+      'Ajoutez un peu d\'eau pour obtenir la consistance désirée.',
+      'Assaisonnez avec le Sel Santé. Incorporez les herbes fraîches.',
+      'Servez avec des galettes de riz ou des bâtonnets de légumes.'
+    ]
+  },
+
+  // --- SAUCES & CONDIMENTS ---
+  {
+    id: 59, cat: 'dejeuner', premium: false,
+    emoji: '🫒', nom: 'Sauce vierge tomates-basilic-olive',
+    temps: '10 min', calories: 110, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le lycopène des tomates est un antioxydant puissant. L\'huile d\'olive extra-vierge contient de l\'oléocanthal, un anti-inflammatoire naturel. La sauce vierge se prépare en 10 min.',
+    ingredients: [
+      '4 tomates mûres',
+      '1 bouquet de basilic frais',
+      '4 c.à.s huile d\'olive extra-vierge',
+      '1 échalote',
+      '1 citron (jus)',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Mondez les tomates (ébouillantez 30 sec puis pelez).',
+      'Coupez-les en petits dés et égouttez-les.',
+      'Mélangez avec l\'échalote émincée, l\'huile et le jus de citron.',
+      'Assaisonnez avec le Sel Santé et le poivre.',
+      'Ajoutez le basilic ciselé au dernier moment.'
+    ]
+  },
+  {
+    id: 60, cat: 'dejeuner', premium: true,
+    emoji: '🌿', nom: 'Sauce au pourpier-yaourt végétal-citron',
+    temps: '5 min', calories: 90, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le pourpier est l\'une des rares plantes riches en oméga-3 végétaux — exceptionnel pour le SJSR. Le yaourt de soja apporte des probiotiques bénéfiques pour le microbiote intestinal.',
+    ingredients: [
+      '1 bouquet de pourpier (ou épinards à défaut)',
+      '150g yaourt de soja nature',
+      '1 citron (jus)',
+      '1 gousse d\'ail',
+      '2 c.à.s huile d\'olive',
+      'Sel Santé'
+    ],
+    etapes: [
+      'Mixez le pourpier avec le yaourt de soja, le jus de citron et l\'ail.',
+      'Incorporez l\'huile d\'olive progressivement.',
+      'Assaisonnez avec le Sel Santé.',
+      'Servez frais sur poisson vapeur, quinoa ou légumes rôtis.'
+    ]
+  },
+  {
+    id: 61, cat: 'dejeuner', premium: true,
+    emoji: '🥜', nom: 'Sauce satay cacahuète-gingembre-tamari',
+    temps: '5 min', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La cacahuète est riche en protéines et magnésium. Le gingembre et le tamari ajoutent une action anti-inflammatoire. Cette sauce versatile accompagne riz, poulet ou légumes vapeur.',
+    ingredients: [
+      '4 c.à.s beurre de cacahuète',
+      '2 c.à.s tamari (sg)',
+      '1 cm gingembre frais râpé',
+      '1 citron vert (jus)',
+      '1 c.à.c sirop d\'agave',
+      '4 c.à.s eau chaude'
+    ],
+    etapes: [
+      'Mélangez le beurre de cacahuète avec le tamari, le gingembre et le jus de citron vert.',
+      'Ajoutez le sirop d\'agave.',
+      'Diluez progressivement avec l\'eau chaude jusqu\'à la consistance désirée.',
+      'Ajustez l\'assaisonnement. Conservez au frigo jusqu\'à 5 jours.'
+    ]
+  },
+
+  // --- PETIT-DÉJEUNERS SJSR SUPPLÉMENTAIRES ---
+  {
+    id: 62, cat: 'petit-dejeuner', premium: false,
+    emoji: '🫐', nom: 'Smoothie bowl fruits rouges-chia-granola',
+    temps: '10 min', calories: 350, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les fruits rouges sont les champions des antioxydants anti-inflammatoires. Les graines de chia apportent des oméga-3. Le granola donne des glucides lents pour une énergie stable toute la matinée.',
+    ingredients: [
+      '200g fruits rouges (surgelés ok)',
+      '1 banane congelée',
+      '100ml lait d\'amande',
+      '2 c.à.s graines de chia',
+      '3 c.à.s granola sans gluten',
+      '1 c.à.c gingembre frais râpé'
+    ],
+    etapes: [
+      'Mixez les fruits rouges, la banane congelée et le lait d\'amande.',
+      'Versez dans un bol épais.',
+      'Parsemez de graines de chia, granola et gingembre râpé.',
+      'Servez immédiatement avant que le mélange décongèle.'
+    ]
+  },
+  {
+    id: 63, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌰', nom: 'Bouillie de châtaigne-millet-noisettes',
+    temps: '15 min', calories: 330, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La châtaigne est riche en magnésium et en glucides complexes à IG bas. Le millet est l\'une des céréales les plus riches en magnésium. Parfait petit-déjeuner SJSR pour les jambes calmes.',
+    ingredients: [
+      '50g farine de châtaigne',
+      '30g flocons de millet',
+      '300ml lait de noisette',
+      '1 c.à.c miel',
+      '1 pincée de cannelle',
+      '1 c.à.s noisettes torréfiées concassées'
+    ],
+    etapes: [
+      'Portez le lait de noisette à frémissement dans une casserole.',
+      'Versez la farine de châtaigne et les flocons de millet en pluie en fouettant.',
+      'Cuisez à feu doux 8 min en remuant constamment.',
+      'Sucrez au miel, ajoutez la cannelle.',
+      'Versez dans un bol, parsemez de noisettes torréfiées concassées.'
+    ]
+  },
+  {
+    id: 64, cat: 'petit-dejeuner', premium: true,
+    emoji: '🥚', nom: 'Œufs cocotte épinards-curcuma',
+    temps: '20 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les œufs sont riches en vitamine B12 et en fer. Les épinards doublent l\'apport en fer. Le curcuma + poivre = absorption maximisée de tous les nutriments. Un brunch thérapeutique.',
+    ingredients: [
+      '2 œufs bio',
+      '100g épinards frais ou surgelés',
+      '1 c.à.c curcuma',
+      '½ c.à.c poivre noir',
+      '2 c.à.s huile d\'olive',
+      'Sel Santé, persil frais'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C.',
+      'Faites tomber les épinards dans l\'huile d\'olive avec le curcuma et le poivre.',
+      'Répartissez dans 2 ramequins huilés.',
+      'Cassez un œuf dans chaque ramequin. Assaisonnez avec le Sel Santé.',
+      'Enfournez 10-12 min — le blanc doit être pris et le jaune encore coulant.',
+      'Parsemez de persil frais avant de servir.'
+    ]
+  },
+  {
+    id: 65, cat: 'petit-dejeuner', premium: true,
+    emoji: '🫚', nom: 'Lait d\'or curcuma-cannelle-gingembre',
+    temps: '5 min', calories: 120, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La boisson anti-SJSR du soir par excellence. Le curcuma + poivre = biodisponibilité maximale. La cannelle régule la glycémie nocturne. Le gingembre apaise les jambes. À boire 30 min avant le coucher.',
+    ingredients: [
+      '250ml lait de millet ou d\'avoine',
+      '1 c.à.c curcuma moulu',
+      '½ c.à.c cannelle moulue',
+      '¼ c.à.c gingembre moulu (ou frais râpé)',
+      '1 pincée de poivre noir',
+      '1 c.à.c miel (optionnel)'
+    ],
+    etapes: [
+      'Chauffez le lait végétal à feu doux sans bouillir.',
+      'Ajoutez le curcuma, la cannelle, le gingembre et le poivre noir.',
+      'Fouettez bien pour dissoudre les épices.',
+      'Sucrez légèrement au miel si désiré.',
+      'Buvez chaud 30 min avant le coucher — c\'est votre rituel sérénité 🌙'
+    ]
   }
 ];
 
