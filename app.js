@@ -3309,6 +3309,13 @@ const ACCOUNTS = {
     name: 'Ketty',
     premium: true
   },
+  // Compte invité bêta — à partager avec tes proches testeurs
+  'invite@flora.app': {
+    password: 'FloraB3ta#2026',
+    role: 'beta',
+    name: 'Invité·e',
+    premium: true
+  },
   // Comptes premium (abonnés Stripe)
   // Format : email → { password, role:'premium', name, premium:true }
   // Ajouter manuellement après chaque paiement Stripe
@@ -3362,9 +3369,10 @@ function doLogin() {
 
   // Toast de bienvenue
   const msg = document.createElement('div');
-  const icon = account.role === 'admin' ? '👑' : '✨';
+  const icon = account.role === 'admin' ? '👑' : account.role === 'beta' ? '🌿' : '✨';
+  const roleLabel = account.role === 'admin' ? ' (Admin)' : account.role === 'beta' ? ' (Bêta testeur·se)' : ' Premium';
   msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:12px 24px;border-radius:99px;font-size:0.88rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);white-space:nowrap;';
-  msg.textContent = `${icon} Bienvenue ${account.name} !${account.role==='admin' ? ' (Admin)' : ' Premium'}`;
+  msg.textContent = `${icon} Bienvenue ${account.name} !${roleLabel}`;
   document.body.appendChild(msg);
   setTimeout(() => msg.remove(), 3000);
 }
