@@ -1389,6 +1389,315 @@ textarea.field { resize: vertical; min-height: 80px; }
 }
 
 /* ============================
+   PLACARD & BUDGET
+   ============================*/
+.budget-row { margin-bottom: 12px; }
+
+.budget-presets {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.budget-chip {
+  padding: 6px 16px;
+  border-radius: 99px;
+  border: 2px solid var(--cream-dark);
+  background: var(--cream);
+  color: var(--text-mid);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--font-body);
+  transition: all 0.15s;
+}
+
+.budget-chip.active {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: var(--white);
+}
+
+.budget-custom-row {
+  display: flex; align-items: center; gap: 8px;
+}
+
+.budget-euro {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  white-space: nowrap;
+}
+
+.budget-badge {
+  background: var(--green-deep);
+  color: var(--white);
+  border-radius: 99px;
+  padding: 4px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+/* Placard catégories */
+.placard-category {
+  margin-bottom: 16px;
+}
+
+.placard-cat-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+.placard-items {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+
+.placard-item {
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: var(--cream);
+  border: 1.5px solid var(--cream-dark);
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--text-mid);
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.placard-item.checked {
+  background: var(--green-light);
+  border-color: var(--green-mid);
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+/* Liste de courses */
+.shopping-category {
+  margin-bottom: 16px;
+}
+
+.shopping-cat-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-light);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.shopping-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cream);
+  cursor: pointer;
+}
+
+.shopping-item:last-child { border-bottom: none; }
+
+.shopping-check {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--cream-dark);
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-size: 0.75rem;
+}
+
+.shopping-item.done .shopping-check {
+  background: var(--green-mid);
+  border-color: var(--green-mid);
+  color: var(--white);
+}
+
+.shopping-item.done .shopping-text {
+  text-decoration: line-through;
+  color: var(--text-light);
+}
+
+.shopping-text { flex: 1; font-size: 0.88rem; color: var(--text-dark); }
+.shopping-price {
+  font-size: 0.8rem;
+  color: var(--green-mid);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ============================
+   BATCH COOKING
+   ============================*/
+.batch-intro {
+  background: linear-gradient(135deg, #e8f4ed, #d4eadd);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.batch-intro-icon { font-size: 2rem; flex-shrink: 0; }
+
+.batch-intro-text {
+  font-size: 0.85rem;
+  color: var(--green-deep);
+  line-height: 1.5;
+}
+
+/* Barre de progression */
+.batch-progress-wrap {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 10px var(--shadow);
+}
+
+.batch-progress-bar {
+  height: 8px;
+  background: var(--cream-dark);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.batch-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-mid), var(--green-deep));
+  border-radius: 99px;
+  transition: width 0.4s ease;
+}
+
+.batch-progress-label {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  text-align: center;
+}
+
+/* Étape batch */
+.batch-step {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 10px var(--shadow);
+  border-left: 4px solid var(--cream-dark);
+  transition: border-color 0.2s;
+}
+
+.batch-step.active { border-left-color: var(--green-mid); }
+.batch-step.done   { border-left-color: var(--green-light); opacity: 0.7; }
+
+.batch-step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.batch-step-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--text-mid);
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.batch-step.active .batch-step-num {
+  background: var(--green-mid);
+  color: var(--white);
+}
+
+.batch-step.done .batch-step-num {
+  background: var(--green-light);
+  color: var(--green-deep);
+}
+
+.batch-step-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  flex: 1;
+}
+
+.batch-step-time {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  flex-shrink: 0;
+}
+
+.batch-step-body {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+.batch-step-body ul {
+  padding-left: 16px;
+  margin: 8px 0;
+}
+
+.batch-step-body li { margin-bottom: 4px; }
+
+.batch-step-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.batch-btn-done {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--green-deep);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.batch-btn-done:hover { opacity: 0.88; }
+
+.batch-btn-skip {
+  padding: 10px 16px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  color: var(--text-mid);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+/* Timer batch */
+.batch-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  margin-top: 10px;
+  font-size: 0.82rem;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+/* ============================
    RESPONSIVE
    ============================*/
 @media (min-width: 480px) {

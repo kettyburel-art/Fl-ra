@@ -458,9 +458,13 @@
         <span class="nav-icon">🥗</span>
         <span class="nav-label">Recettes</span>
       </button>
-      <button class="nav-btn" onclick="showPage('agenda')" data-page="agenda">
-        <span class="nav-icon">📅</span>
-        <span class="nav-label">Agenda</span>
+      <button class="nav-btn" onclick="showPage('placard')" data-page="placard">
+        <span class="nav-icon">🗄️</span>
+        <span class="nav-label">Placard</span>
+      </button>
+      <button class="nav-btn" onclick="showPage('batch')" data-page="batch">
+        <span class="nav-icon">🍳</span>
+        <span class="nav-label">Batch</span>
       </button>
       <button class="nav-btn" onclick="showPage('profil')" data-page="profil">
         <span class="nav-icon">👤</span>
@@ -469,6 +473,135 @@
     </nav>
 
   </div>
+
+  <!-- ================================
+       PAGE PLACARD (Économat)
+       ================================ -->
+  <section id="page-placard" class="page hidden">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('accueil')">←</button>
+      <h2>Mon Placard 🗄️</h2>
+    </div>
+
+    <!-- Budget hebdomadaire -->
+    <div class="journal-block">
+      <div class="jblock-title">💰 Budget courses de la semaine</div>
+      <div class="budget-row">
+        <div class="budget-presets">
+          <button class="budget-chip" onclick="setBudget(30)">30€</button>
+          <button class="budget-chip" onclick="setBudget(50)">50€</button>
+          <button class="budget-chip active" onclick="setBudget(80)">80€</button>
+          <button class="budget-chip" onclick="setBudget(100)">100€</button>
+        </div>
+        <div class="budget-custom-row">
+          <input type="number" class="field inline" id="budget-input" value="80" min="10" max="300" placeholder="€" />
+          <span class="budget-euro">€ / semaine</span>
+        </div>
+      </div>
+      <button class="btn-primary full-width" style="margin-top:12px" onclick="generateShoppingList()">
+        🛒 Générer ma liste de courses
+      </button>
+    </div>
+
+    <!-- Ingrédients disponibles dans le placard -->
+    <div class="journal-block">
+      <div class="jblock-title">📦 Ce que j'ai déjà</div>
+      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
+        Cochez les ingrédients déjà présents dans votre cuisine — les recettes seront filtrées en conséquence.
+      </p>
+      <div id="placard-categories"></div>
+      <button class="btn-primary full-width" style="margin-top:16px" onclick="filterRecettesByPlacard()">
+        🌿 Voir les recettes avec mon placard
+      </button>
+    </div>
+
+    <!-- Liste de courses générée -->
+    <div id="shopping-result" class="hidden">
+      <div class="journal-block">
+        <div class="jblock-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span>🛒 Ma liste de courses</span>
+          <span class="budget-badge" id="budget-total-badge">0€</span>
+        </div>
+        <div id="shopping-list-content"></div>
+        <div id="shopping-menus" class="hidden">
+          <div class="jblock-title" style="margin-top:20px;">🍽️ Menus avec ce panier</div>
+          <div id="shopping-menus-content"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================================
+       PAGE BATCH COOKING (TDAH)
+       ================================ -->
+  <section id="page-batch" class="page hidden">
+    <div class="page-header">
+      <button class="back-btn" onclick="showPage('accueil')">←</button>
+      <h2>Batch Cooking 🍳</h2>
+    </div>
+
+    <!-- Intro TDAH -->
+    <div class="batch-intro">
+      <div class="batch-intro-icon">🧠</div>
+      <div class="batch-intro-text">
+        <strong>Mode TDAH activé</strong><br>
+        Une session de cuisine = toute la semaine préparée.<br>
+        Étapes simples, une à la fois.
+      </div>
+    </div>
+
+    <!-- Sélection du jour de batch -->
+    <div class="journal-block">
+      <div class="jblock-title">📅 Choisir mon jour de batch</div>
+      <div class="sleep-chips-row">
+        <span class="sleep-chip" onclick="selectSleepChip(this,'batch-day','samedi')">Samedi</span>
+        <span class="sleep-chip active" onclick="selectSleepChip(this,'batch-day','dimanche')">Dimanche</span>
+      </div>
+    </div>
+
+    <!-- Durée disponible -->
+    <div class="journal-block">
+      <div class="jblock-title">⏱ Temps disponible</div>
+      <div class="sleep-chips-row">
+        <span class="sleep-chip" onclick="selectSleepChip(this,'batch-time','1h')">1h</span>
+        <span class="sleep-chip active" onclick="selectSleepChip(this,'batch-time','2h')">2h</span>
+        <span class="sleep-chip" onclick="selectSleepChip(this,'batch-time','3h')">3h</span>
+      </div>
+    </div>
+
+    <!-- Générer le plan batch -->
+    <button class="btn-primary full-width" onclick="generateBatch()">
+      ✨ Générer mon plan batch
+    </button>
+
+    <!-- Plan batch généré -->
+    <div id="batch-plan" class="hidden" style="margin-top:20px;">
+
+      <!-- Indicateur de progression -->
+      <div class="batch-progress-wrap">
+        <div class="batch-progress-bar">
+          <div class="batch-progress-fill" id="batch-progress-fill" style="width:0%"></div>
+        </div>
+        <div class="batch-progress-label" id="batch-progress-label">Étape 0 / 0</div>
+      </div>
+
+      <!-- Étapes batch -->
+      <div id="batch-steps-container"></div>
+
+      <!-- Résumé semaine -->
+      <div id="batch-weekly-summary" class="hidden">
+        <div class="journal-block" style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));color:var(--white);text-align:center;">
+          <div style="font-size:2rem;margin-bottom:8px;">🎉</div>
+          <div style="font-family:var(--font-display);font-size:1.2rem;margin-bottom:4px;">Batch terminé !</div>
+          <div style="font-size:0.85rem;opacity:0.85;">Votre semaine est prête. Bravo !</div>
+          <button class="btn-primary" style="margin-top:16px;background:var(--white);color:var(--green-deep);" onclick="importBatchToAgenda()">
+            📅 Importer dans l'agenda
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </section>
 
   <!-- PREMIUM MODAL -->
   <div id="premium-modal" class="modal hidden">

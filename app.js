@@ -3283,18 +3283,398 @@ function saveOnboarding() {
 // ============================
 // APP INIT
 // ============================
+// ============================
+// PLACARD & BUDGET
+// ============================
+
+const PLACARD_CATEGORIES = {
+  '🥩 Protéines': ['Œufs bio','Sardines','Saumon fumé','Thon','Poulet','Dinde','Tofu','Lentilles','Pois chiches','Haricots'],
+  '🥦 Légumes': ['Épinards','Brocoli','Courgette','Poivron','Aubergine','Carotte','Betterave','Kale','Patate douce','Champignons'],
+  '🌾 Féculents sg': ['Quinoa','Riz complet','Sarrasin','Riz noir','Patate douce','Flocons de millet'],
+  '🥑 Bons gras': ['Avocat','Huile d\'olive','Huile de coco','Huile de colza','Noix','Amandes','Graines de courge'],
+  '🥫 Conserves': ['Tomates concassées','Lait de coco','Pois chiches en boîte','Haricots blancs','Thon au naturel'],
+  '🌿 Épices & herbes': ['Curcuma','Cumin','Gingembre','Cannelle','Persil','Coriandre','Basilic','Ail'],
+  '🍋 Fruits': ['Citron','Banane','Myrtilles','Pomme','Mangue','Framboises'],
+  '🥛 Laits végétaux': ['Lait d\'amande','Lait de coco','Lait de riz','Lait d\'avoine'],
+};
+
+// Prix estimés pour la liste de courses (€)
+const INGREDIENT_PRICES = {
+  'Œufs bio': 3.50, 'Sardines': 1.80, 'Saumon fumé': 4.50, 'Thon': 2.20,
+  'Poulet': 5.00, 'Dinde': 4.80, 'Tofu': 2.50, 'Lentilles': 1.20, 'Pois chiches': 1.10,
+  'Épinards': 2.20, 'Brocoli': 1.80, 'Courgette': 1.50, 'Poivron': 1.90,
+  'Aubergine': 1.60, 'Carotte': 1.00, 'Betterave': 1.20, 'Kale': 2.50,
+  'Patate douce': 1.80, 'Champignons': 2.50, 'Quinoa': 2.80, 'Riz complet': 1.50,
+  'Sarrasin': 1.80, 'Riz noir': 3.20, 'Avocat': 1.80, 'Huile d\'olive': 6.00,
+  'Huile de coco': 4.50, 'Noix': 3.80, 'Amandes': 4.00, 'Graines de courge': 2.50,
+  'Tomates concassées': 0.90, 'Lait de coco': 1.50, 'Citron': 0.80,
+  'Banane': 0.60, 'Myrtilles': 3.50, 'Pomme': 1.20,
+  'Lait d\'amande': 2.20, 'Lait de riz': 2.00, 'Gingembre': 1.20,
+  'Curcuma': 2.50, 'Cumin': 1.80, 'Cannelle': 1.50,
+};
+
+let placardItems = {};
+let currentBudget = 80;
+let batchPlan = [];
+let batchCurrentStep = 0;
+
+function renderPlacard() {
+  const container = document.getElementById('placard-categories');
+  if (!container) return;
+
+  container.innerHTML = Object.entries(PLACARD_CATEGORIES).map(([cat, items]) => `
+    <div class="placard-category">
+      <div class="placard-cat-title">${cat}</div>
+      <div class="placard-items">
+        ${items.map(item => `
+          <span class="placard-item ${placardItems[item] ? 'checked' : ''}"
+                onclick="togglePlacardItem('${item}', this)">
+            ${placardItems[item] ? '✓ ' : ''}${item}
+          </span>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function togglePlacardItem(item, el) {
+  placardItems[item] = !placardItems[item];
+  el.classList.toggle('checked', placardItems[item]);
+  el.textContent = (placardItems[item] ? '✓ ' : '') + item;
+  localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+}
+
+function setBudget(amount) {
+  currentBudget = amount;
+  document.getElementById('budget-input').value = amount;
+  document.querySelectorAll('.budget-chip').forEach(c => {
+    c.classList.toggle('active', parseInt(c.textContent) === amount);
+  });
+}
+
+function generateShoppingList() {
+  const budget = parseInt(document.getElementById('budget-input').value) || 80;
+  currentBudget = budget;
+
+  // Sélectionner des ingrédients essentiels dans le budget
+  const essentials = [
+    { cat: '🥩 Protéines', items: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles', 'Tofu'] },
+    { cat: '🥦 Légumes', items: ['Épinards', 'Brocoli', 'Courgette', 'Carotte', 'Poivron'] },
+    { cat: '🌾 Féculents', items: ['Quinoa', 'Riz complet', 'Patate douce'] },
+    { cat: '🥑 Bons gras', items: ['Avocat', 'Noix', 'Graines de courge'] },
+    { cat: '🥫 Conserves', items: ['Tomates concassées', 'Lait de coco'] },
+    { cat: '🍋 Fruits', items: ['Citron', 'Banane', 'Myrtilles'] },
+  ];
+
+  let total = 0;
+  const selected = [];
+
+  // Remplir jusqu'au budget en sautant ce qu'on a déjà
+  for (const cat of essentials) {
+    const catSelected = [];
+    for (const item of cat.items) {
+      if (placardItems[item]) continue; // déjà dans le placard
+      const price = INGREDIENT_PRICES[item] || 2.00;
+      if (total + price <= budget) {
+        catSelected.push({ item, price });
+        total += price;
+      }
+    }
+    if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
+  }
+
+  // Afficher
+  const result = document.getElementById('shopping-result');
+  const content = document.getElementById('shopping-list-content');
+  document.getElementById('budget-total-badge').textContent =
+    `${total.toFixed(2)}€ / ${budget}€`;
+
+  content.innerHTML = selected.map(cat => `
+    <div class="shopping-category">
+      <div class="shopping-cat-title">${cat.cat}</div>
+      ${cat.items.map(({item, price}) => `
+        <div class="shopping-item" onclick="this.classList.toggle('done')">
+          <div class="shopping-check">✓</div>
+          <div class="shopping-text">${item}</div>
+          <div class="shopping-price">~${price.toFixed(2)}€</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+
+  // Générer menus basés sur les ingrédients du panier
+  const allItems = selected.flatMap(c => c.items.map(i => i.item));
+  generateMenusFromBasket(allItems);
+
+  result.classList.remove('hidden');
+  result.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function generateMenusFromBasket(basketItems) {
+  // Trouver des recettes dont les ingrédients correspondent au panier
+  const scored = RECETTES.map(r => {
+    const matches = r.ingredients.filter(ing =>
+      basketItems.some(b => ing.toLowerCase().includes(b.toLowerCase()))
+    ).length;
+    return { r, matches };
+  }).filter(x => x.matches > 0)
+    .sort((a, b) => b.matches - a.matches);
+
+  const topRecettes = scored.slice(0, 9);
+  const menusDiv = document.getElementById('shopping-menus');
+  const menusContent = document.getElementById('shopping-menus-content');
+
+  if (!topRecettes.length) { menusDiv.classList.add('hidden'); return; }
+
+  const bycat = { 'petit-dejeuner': [], 'dejeuner': [], 'diner': [] };
+  topRecettes.forEach(({r}) => { if (bycat[r.cat]) bycat[r.cat].push(r); });
+
+  menusContent.innerHTML = `
+    <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
+      Basé sur votre panier de ${basketItems.length} ingrédients
+    </div>
+    ${Object.entries(bycat).map(([cat, recs]) => recs.length ? `
+      <div style="margin-bottom:14px;">
+        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:8px;">
+          ${cat === 'petit-dejeuner' ? '🌅 Petits-déjeuners' : cat === 'dejeuner' ? '☀️ Déjeuners' : '🌙 Dîners'}
+        </div>
+        ${recs.map(r => `
+          <div class="card" style="margin-bottom:8px;" onclick="openRecette(${r.id})">
+            <div class="card-icon">${r.emoji}</div>
+            <div class="card-body">
+              <div class="card-title">${r.nom}</div>
+              <div class="card-sub">⏱ ${r.temps}</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+        `).join('')}
+      </div>
+    ` : '').join('')}
+  `;
+
+  menusDiv.classList.remove('hidden');
+}
+
+function filterRecettesByPlacard() {
+  const checkedItems = Object.keys(placardItems).filter(k => placardItems[k]);
+  if (!checkedItems.length) {
+    showPage('recettes');
+    return;
+  }
+
+  // Filtrer les recettes par ingrédients du placard
+  const matching = RECETTES.filter(r =>
+    r.ingredients.some(ing =>
+      checkedItems.some(item => ing.toLowerCase().includes(item.toLowerCase()))
+    )
+  );
+
+  showPage('recettes');
+  // Stocker le filtre placard pour renderRecettes
+  window._placardFilter = checkedItems;
+  renderRecettes();
+
+  setTimeout(() => {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 18px;border-radius:99px;font-size:0.82rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;';
+    msg.textContent = `🗄️ ${matching.length} recettes avec votre placard`;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 3000);
+  }, 200);
+}
+
+// ============================
+// BATCH COOKING
+// ============================
+
+const BATCH_STEPS_LIBRARY = [
+  {
+    id: 'base-cereales',
+    title: 'Cuire les céréales de base',
+    emoji: '🌾',
+    time: '20 min',
+    body: 'Mettez en route simultanément : <ul><li>200g de quinoa dans 400ml d\'eau</li><li>200g de riz complet dans 400ml d\'eau</li></ul>Laissez cuire à feu doux, couverts.',
+    recettes: []
+  },
+  {
+    id: 'legumineuses',
+    title: 'Cuire les légumineuses',
+    emoji: '🫘',
+    time: '30 min',
+    body: 'Pendant que les céréales cuisent : <ul><li>400g de lentilles corail : 10 min à l\'eau bouillante</li><li>Ou réchauffez 2 boîtes de pois chiches avec cumin et curcuma</li></ul>Préparez pour 4 portions.',
+    recettes: []
+  },
+  {
+    id: 'legumes-four',
+    title: 'Légumes rôtis au four',
+    emoji: '🥦',
+    time: '25 min',
+    body: 'Préchauffez le four à 200°C. Coupez en cubes et disposez sur une plaque : <ul><li>2 courgettes</li><li>1 patate douce</li><li>2 poivrons</li><li>Huile d\'olive + sel Santé + curcuma</li></ul>Enfournez 20-25 min.',
+    recettes: []
+  },
+  {
+    id: 'proteines',
+    title: 'Préparer les protéines',
+    emoji: '🥚',
+    time: '15 min',
+    body: '<ul><li>Faites cuire 6 œufs durs (10 min)</li><li>Faites revenir 2 blancs de poulet avec ail et herbes</li><li>Émiettez 1 boîte de sardines avec citron et persil</li></ul>Conservez au frigo en boîtes séparées.',
+    recettes: []
+  },
+  {
+    id: 'sauces-bases',
+    title: 'Préparer les sauces de base',
+    emoji: '🥣',
+    time: '10 min',
+    body: '<ul><li><strong>Houmous rapide</strong> : mixez pois chiches + tahini + citron + ail</li><li><strong>Vinaigrette anti-inflam</strong> : huile de colza + citron + curcuma + moutarde</li><li><strong>Pesto express</strong> : basilic + amandes + huile d\'olive + ail</li></ul>',
+    recettes: []
+  },
+  {
+    id: 'snacks',
+    title: 'Préparer les snacks de la semaine',
+    emoji: '🍫',
+    time: '10 min',
+    body: '<ul><li>Formez 12 energy balls dattes-cacao-amandes</li><li>Portionnez les noix en 5 sachets (lundi→vendredi)</li><li>Lavez et préparez les fruits pour la semaine</li></ul>',
+    recettes: []
+  },
+  {
+    id: 'soupe-veloutee',
+    title: 'Préparer un velouté pour 3 jours',
+    emoji: '🍵',
+    time: '20 min',
+    body: 'Un grand velouté batch : <ul><li>1 chou-fleur ou 1 courge</li><li>1 oignon, 2 gousses d\'ail</li><li>400ml lait de coco ou d\'amande</li><li>Curcuma, Sel Santé</li></ul>Mixez et conservez au frigo 3 jours.',
+    recettes: []
+  },
+  {
+    id: 'rangement',
+    title: 'Ranger et étiqueter',
+    emoji: '🗄️',
+    time: '10 min',
+    body: '<ul><li>Portionnez chaque préparation en 3-4 boîtes</li><li>Étiquetez avec le contenu et la date</li><li>Rangez par catégorie au frigo</li><li>Mettez à congeler ce qui dépasse 3 jours</li></ul>Votre semaine est prête ! 🎉',
+    recettes: []
+  }
+];
+
+function generateBatch() {
+  const timeChip = document.querySelector('[data-selected][onclick*="batch-time"]');
+  const availableTime = timeChip ? timeChip.dataset.selected : '2h';
+  const maxSteps = availableTime === '1h' ? 3 : availableTime === '2h' ? 5 : 8;
+
+  batchPlan = BATCH_STEPS_LIBRARY.slice(0, maxSteps);
+  batchCurrentStep = 0;
+
+  renderBatchPlan();
+  document.getElementById('batch-plan').classList.remove('hidden');
+  document.getElementById('batch-plan').scrollIntoView({ behavior: 'smooth' });
+}
+
+function renderBatchPlan() {
+  const container = document.getElementById('batch-steps-container');
+  const total = batchPlan.length;
+
+  // Barre de progression
+  const pct = total > 0 ? Math.round((batchCurrentStep / total) * 100) : 0;
+  document.getElementById('batch-progress-fill').style.width = pct + '%';
+  document.getElementById('batch-progress-label').textContent =
+    `Étape ${batchCurrentStep} / ${total}`;
+
+  container.innerHTML = batchPlan.map((step, i) => {
+    const state = i < batchCurrentStep ? 'done' : i === batchCurrentStep ? 'active' : '';
+    return `
+      <div class="batch-step ${state}" id="batch-step-${i}">
+        <div class="batch-step-header">
+          <div class="batch-step-num">${i < batchCurrentStep ? '✓' : i + 1}</div>
+          <div class="batch-step-title">${step.emoji} ${step.title}</div>
+          <div class="batch-step-time">⏱ ${step.time}</div>
+        </div>
+        ${i === batchCurrentStep ? `
+          <div class="batch-step-body">${step.body}</div>
+          <div class="batch-timer">⏱ ${step.time} estimées pour cette étape</div>
+          <div class="batch-step-actions">
+            <button class="batch-btn-done" onclick="completeBatchStep(${i})">
+              ✅ Étape terminée
+            </button>
+            <button class="batch-btn-skip" onclick="skipBatchStep(${i})">Passer</button>
+          </div>
+        ` : i < batchCurrentStep ? `
+          <div class="batch-step-body" style="font-size:0.8rem;color:var(--green-mid);">✓ Terminé</div>
+        ` : `
+          <div class="batch-step-body" style="color:var(--text-light);font-size:0.82rem;">En attente…</div>
+        `}
+      </div>
+    `;
+  }).join('');
+
+  // Afficher le résumé final si tout est fait
+  if (batchCurrentStep >= total && total > 0) {
+    document.getElementById('batch-weekly-summary').classList.remove('hidden');
+  }
+}
+
+function completeBatchStep(idx) {
+  if (idx === batchCurrentStep) {
+    batchCurrentStep++;
+    renderBatchPlan();
+    // Scroll à l'étape suivante
+    setTimeout(() => {
+      const next = document.getElementById('batch-step-' + batchCurrentStep);
+      if (next) next.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+}
+
+function skipBatchStep(idx) {
+  completeBatchStep(idx);
+}
+
+function importBatchToAgenda() {
+  // Génère un menu depuis les recettes batch et l'importe dans l'agenda
+  const today = new Date();
+  const petits = RECETTES.filter(r => r.cat === 'petit-dejeuner' && !r.premium);
+  const dejs   = RECETTES.filter(r => r.cat === 'dejeuner' && !r.premium);
+  const dins   = RECETTES.filter(r => r.cat === 'diner' && !r.premium);
+  const pick   = arr => arr[Math.floor(Math.random() * arr.length)];
+
+  for (let i = 0; i < 5; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const dk = dateKey(d);
+    if (!agenda[dk]) agenda[dk] = {};
+    agenda[dk]['petitdej'] = pick(petits)?.id;
+    agenda[dk]['dejeuner'] = pick(dejs)?.id;
+    agenda[dk]['diner']    = pick(dins)?.id;
+  }
+
+  saveState();
+  showPage('agenda');
+
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);';
+  msg.textContent = '✅ Semaine batch importée dans l\'agenda !';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2500);
+}
+
+function initPlacard() {
+  placardItems = JSON.parse(localStorage.getItem('flora_placard') || '{}');
+  renderPlacard();
+}
+
 function initApp() {
   document.getElementById('app').classList.remove('hidden');
+  loadState();
+  initPlacard();
   updateDashboard();
   renderRecettes();
   renderAgenda();
   loadProfil();
   setJournalDate();
+  updateSleepCalc();
 
   // Recette du jour (aléatoire parmi gratuites)
   const free = RECETTES.filter(r => !r.premium);
   const rdj  = free[new Date().getDate() % free.length];
-  document.getElementById('recette-du-jour').textContent = rdj.nom;
+  const rdjEl = document.getElementById('recette-du-jour');
+  if (rdjEl) rdjEl.textContent = rdj.nom;
 }
 
 // ============================
@@ -3322,6 +3702,7 @@ function showPage(page) {
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     loadProfil();
   if (page === 'generateur') checkGenAccess();
+  if (page === 'placard')    initPlacard();
 }
 
 // ============================
@@ -3713,21 +4094,67 @@ function closeModal() {
 }
 
 function addToAgenda(recetteId) {
+  const r = RECETTES.find(x => x.id === recetteId);
+  if (!r) return;
+
   closeModal();
-  // Mémorise la recette à placer et navigue vers l'agenda
-  window._pendingRecetteId = recetteId;
-  showPage('agenda');
-  // Petit message d'aide
-  setTimeout(() => {
-    const r = RECETTES.find(x => x.id === recetteId);
-    if (r) {
-      const msg = document.createElement('div');
-      msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--cream);padding:10px 18px;border-radius:99px;font-size:0.85rem;z-index:999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,0.2)';
-      msg.textContent = `Tapez un repas pour placer "${r.nom}"`;
-      document.body.appendChild(msg);
-      setTimeout(() => msg.remove(), 3000);
-    }
-  }, 300);
+
+  // Ouvre un mini-modal de sélection jour + repas
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:flex;align-items:flex-end;';
+
+  const today = new Date();
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    dates.push(d);
+  }
+
+  // Définir les types de repas compatibles
+  const repasOptions = REPAS.filter(rep => rep.cat === r.cat);
+  const repasLabel = repasOptions.length ? repasOptions[0].label : 'Repas';
+  const repasSlug  = repasOptions.length ? repasOptions[0].slug  : 'dejeuner';
+
+  overlay.innerHTML = `
+    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 36px;max-height:80vh;overflow-y:auto;">
+      <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--green-deep);margin-bottom:4px;">
+        Ajouter à l'agenda
+      </div>
+      <div style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">
+        ${r.emoji} ${r.nom} → ${repasLabel}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${dates.map(d => {
+          const dk = dateKey(d);
+          const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+          return `<button onclick="quickAddToAgenda('${dk}','${repasSlug}',${recetteId},this.closest('[style*=fixed]'))"
+            style="background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:var(--radius-md);padding:12px 16px;text-align:left;font-family:var(--font-body);font-size:0.88rem;color:var(--text-dark);cursor:pointer;">
+            📅 ${label}
+          </button>`;
+        }).join('')}
+      </div>
+      <button onclick="this.closest('[style*=fixed]').remove()"
+        style="width:100%;margin-top:16px;padding:12px;border:none;border-radius:var(--radius-md);background:var(--cream-dark);color:var(--text-mid);font-family:var(--font-body);cursor:pointer;">
+        Annuler
+      </button>
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
+function quickAddToAgenda(dk, slug, recId, overlayEl) {
+  if (!agenda[dk]) agenda[dk] = {};
+  agenda[dk][slug] = recId;
+  saveState();
+  if (overlayEl) overlayEl.remove();
+  renderAgenda();
+
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
+  msg.textContent = '✅ Ajouté à l\'agenda !';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2000);
 }
 
 // ============================
@@ -3881,11 +4308,20 @@ function generateMenu() {
     const din  = pick(diners);
 
     html += `
-      <div class="gen-day-block">
+      <div class="gen-day-block" data-pdej="${pDej.id}" data-dej="${dej.id}" data-din="${din.id}">
         <div class="gen-day-title">📅 ${label}</div>
-        <div class="gen-meal"><div class="gen-meal-label">Petit-déj</div><div class="gen-meal-name">${pDej.emoji} ${pDej.nom}</div></div>
-        <div class="gen-meal"><div class="gen-meal-label">Déjeuner</div><div class="gen-meal-name">${dej.emoji} ${dej.nom}</div></div>
-        <div class="gen-meal"><div class="gen-meal-label">Dîner</div><div class="gen-meal-name">${din.emoji} ${din.nom}</div></div>
+        <div class="gen-meal" onclick="openRecette(${pDej.id})" style="cursor:pointer;">
+          <div class="gen-meal-label">Petit-déj</div>
+          <div class="gen-meal-name">${pDej.emoji} ${pDej.nom}</div>
+        </div>
+        <div class="gen-meal" onclick="openRecette(${dej.id})" style="cursor:pointer;">
+          <div class="gen-meal-label">Déjeuner</div>
+          <div class="gen-meal-name">${dej.emoji} ${dej.nom}</div>
+        </div>
+        <div class="gen-meal" onclick="openRecette(${din.id})" style="cursor:pointer;">
+          <div class="gen-meal-label">Dîner</div>
+          <div class="gen-meal-name">${din.emoji} ${din.nom}</div>
+        </div>
       </div>`;
   }
 
@@ -3904,8 +4340,41 @@ function generateMenu() {
 }
 
 function applyMenuToAgenda() {
-  // Basic: navigate to agenda
+  // Récupère les recettes du menu généré depuis les data-attributes
+  const generated = document.getElementById('generated-menu');
+  const blocks = generated.querySelectorAll('.gen-day-block');
+
+  if (!blocks.length) {
+    showPage('agenda');
+    return;
+  }
+
+  const today = new Date();
+  blocks.forEach((block, i) => {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    const dk = dateKey(d);
+
+    // Récupérer les IDs stockés en data-attributes
+    const pDejId = parseInt(block.dataset.pdej);
+    const dejId  = parseInt(block.dataset.dej);
+    const dinId  = parseInt(block.dataset.din);
+
+    if (!agenda[dk]) agenda[dk] = {};
+    if (pDejId) agenda[dk]['petitdej'] = pDejId;
+    if (dejId)  agenda[dk]['dejeuner'] = dejId;
+    if (dinId)  agenda[dk]['diner']    = dinId;
+  });
+
+  saveState();
   showPage('agenda');
+
+  // Toast confirmation
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
+  msg.textContent = '✅ Menu importé dans l\'agenda !';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2500);
 }
 
 // ============================
