@@ -3272,25 +3272,162 @@ function unlockDemo() {
 // ONBOARDING
 // ============================
 function nextStep(step) {
+  // Validation étape 2
+  if (step === 3) {
+    const name = document.getElementById('ob-name').value.trim();
+    if (!name) { document.getElementById('ob-name').focus(); return; }
+  }
+
+  // Générer le récap à l'étape 5
+  if (step === 5) buildOnboardRecap();
+
   document.querySelectorAll('.onboard-step').forEach(el => el.classList.remove('active'));
-  document.querySelector(`[data-step="${step}"]`).classList.add('active');
+  const target = document.querySelector(`[data-step="${step}"]`);
+  if (target) target.classList.add('active');
+}
+
+function selectChoice(el, hiddenId, value) {
+  // Radio-style dans les onboard-choices du même groupe
+  el.closest('.onboard-choices').querySelectorAll('.onboard-choice').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(hiddenId).value = value;
+}
+
+function buildOnboardRecap() {
+  const name     = document.getElementById('ob-name').value.trim();
+  const sjsrFreq = document.getElementById('ob-sjsr-freq').value;
+  const fer      = document.getElementById('ob-fer').checked;
+  const tdah     = document.getElementById('ob-tdah').checked;
+  const sg       = document.getElementById('ob-sg').checked;
+  const sl       = document.getElementById('ob-sl').checked;
+
+  // Construire les recommandations personnalisées
+  const recs = [];
+
+  if (sjsrFreq === '5+' || sjsrFreq === '3-4') {
+    recs.push({ icon: '🦵', text: 'Priorité fer + magnésium — recettes spéciales SJSR sélectionnées pour vous' });
+    recs.push({ icon: '🌙', text: 'Journal sommeil avancé avec suivi SJSR nuit par nuit' });
+  } else if (sjsrFreq === '1-2') {
+    recs.push({ icon: '🦵', text: 'Recettes riches en magnésium et oméga-3 pour les jambes' });
+  }
+
+  if (fer) {
+    recs.push({ icon: '🩸', text: 'Recettes boostées en fer héminique (sardines, lentilles beluga, teff)' });
+  }
+
+  if (tdah) {
+    recs.push({ icon: '🧠', text: 'Mode Batch Cooking TDAH — une session de cuisine, toute la semaine préparée' });
+    recs.push({ icon: '⚡', text: 'Petits-déjeuners protéinés pour la concentration matinale' });
+  }
+
+  if (sg || sl) {
+    recs.push({ icon: '🌾', text: 'Toutes vos recettes sont 100% sans gluten et sans lactose' });
+  }
+
+  // Toujours
+  recs.push({ icon: '📊', text: 'Suivi bien-être quotidien avec graphiques d\'évolution' });
+
+  const recap = document.getElementById('onboard-recap');
+  recap.innerHTML = `
+    <div class="onboard-greeting">Bonjour ${name} 👋</div>
+    <div class="onboard-recs">
+      ${recs.map(r => `
+        <div class="onboard-rec-item">
+          <span class="onboard-rec-icon">${r.icon}</span>
+          <span class="onboard-rec-text">${r.text}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
 }
 
 function saveOnboarding() {
   const name = document.getElementById('ob-name').value.trim();
-  if (!name) { document.getElementById('ob-name').focus(); return; }
+  if (!name) { nextStep(2); return; }
 
   profile = {
     name,
-    goal:      document.getElementById('ob-goal').value,
-    sansGluten: document.getElementById('ob-sg').checked,
+    goal:        document.getElementById('ob-goal').value,
+    sansGluten:  document.getElementById('ob-sg').checked,
     sansLactose: document.getElementById('ob-sl').checked,
     vegetarien:  document.getElementById('ob-sv').checked,
+    caferenceFer: document.getElementById('ob-fer').checked,
+    tdah:         document.getElementById('ob-tdah').checked,
+    sjsrFreq:     document.getElementById('ob-sjsr-freq').value,
+    traitement:   document.getElementById('ob-traitement').value,
   };
 
   saveState();
   document.getElementById('onboarding').classList.add('hidden');
+
+  // Demander la permission de notifications
+  setTimeout(() => askNotificationPermission(), 1500);
+
   initApp();
+}
+
+// ============================
+// NOTIFICATIONS PUSH
+// ============================
+function askNotificationPermission() {
+  if (!('Notification' in window)) return;
+  if (Notification.permission === 'granted') {
+    scheduleNotifications();
+    return;
+  }
+  if (Notification.permission !== 'denied') {
+    // Afficher d'abord un message doux avant la demande système
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;bottom:80px;left:16px;right:16px;background:var(--green-deep);color:var(--white);border-radius:var(--radius-lg);padding:16px 18px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.25);';
+    banner.innerHTML = `
+      <div style="font-weight:600;margin-bottom:6px;">🌙 Rappels bien-être</div>
+      <div style="font-size:0.82rem;opacity:.85;margin-bottom:12px;">Activez les notifications pour votre rappel journal du soir et vos conseils anti-SJSR.</div>
+      <div style="display:flex;gap:8px;">
+        <button onclick="Notification.requestPermission().then(p=>{if(p==='granted')scheduleNotifications();});this.closest('[style]').remove();"
+          style="flex:1;padding:9px;border:none;border-radius:var(--radius-md);background:var(--white);color:var(--green-deep);font-weight:600;font-family:var(--font-body);cursor:pointer;">
+          Activer ✓
+        </button>
+        <button onclick="this.closest('[style]').remove();"
+          style="padding:9px 14px;border:1.5px solid rgba(255,255,255,.3);border-radius:var(--radius-md);background:none;color:var(--white);font-family:var(--font-body);cursor:pointer;">
+          Plus tard
+        </button>
+      </div>
+    `;
+    document.body.appendChild(banner);
+    setTimeout(() => banner.remove(), 12000);
+  }
+}
+
+function scheduleNotifications() {
+  if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
+
+  // Notification journal du soir (21h)
+  const now = new Date();
+  const target = new Date();
+  target.setHours(21, 0, 0, 0);
+  if (target <= now) target.setDate(target.getDate() + 1);
+
+  const delay = target - now;
+  setTimeout(() => {
+    new Notification('Flōra 🌿', {
+      body: 'C\'est l\'heure de votre journal du soir. Comment se sont passées vos jambes cette nuit ?',
+      icon: '/Fl-ra/icon.svg',
+      badge: '/Fl-ra/icon.svg',
+      tag: 'flora-journal-soir'
+    });
+    // Relancer chaque 24h
+    setInterval(() => {
+      new Notification('Flōra 🌿', {
+        body: 'Votre journal du soir vous attend 🌙',
+        icon: '/Fl-ra/icon.svg',
+        tag: 'flora-journal-soir'
+      });
+    }, 24 * 60 * 60 * 1000);
+  }, delay);
+}
+
+function enableNotifications() {
+  askNotificationPermission();
 }
 
 // ============================

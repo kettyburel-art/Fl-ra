@@ -26,30 +26,101 @@
   <!-- ONBOARDING (first launch) -->
   <div id="onboarding" class="hidden">
     <div class="onboard-wrap">
+
+      <!-- Étape 1 — Bienvenue -->
       <div class="onboard-step active" data-step="1">
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:20%"></div></div>
         <div class="onboard-art">🌿</div>
         <h2>Bienvenue dans Flōra</h2>
-        <p>Une application pensée pour les personnes sensibles au SJSR, à la douleur chronique et aux inflammations. Sans gluten, sans lactose, avec douceur.</p>
+        <p>Une application pensée pour les personnes vivant avec le SJSR, la douleur chronique et les inflammations.</p>
+        <p style="font-size:0.82rem;color:var(--text-light);margin-top:8px;">Nous allons personnaliser votre expérience en 4 questions. Moins d'une minute.</p>
         <button class="btn-primary" onclick="nextStep(2)">Commencer →</button>
       </div>
+
+      <!-- Étape 2 — Prénom + objectif -->
       <div class="onboard-step" data-step="2">
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:40%"></div></div>
         <div class="onboard-art">✨</div>
-        <h2>Votre profil</h2>
-        <input class="field" type="text" id="ob-name" placeholder="Votre prénom" />
+        <h2>Parlez-nous de vous</h2>
+        <input class="field" type="text" id="ob-name" placeholder="Votre prénom" autocomplete="given-name" />
         <select class="field" id="ob-goal">
           <option value="">Mon objectif principal…</option>
           <option value="sommeil">Améliorer mon sommeil</option>
-          <option value="douleur">Réduire la douleur</option>
+          <option value="douleur">Réduire la douleur chronique</option>
+          <option value="sjsr">Calmer les jambes sans repos</option>
           <option value="energie">Retrouver de l'énergie</option>
           <option value="global">Bien-être global</option>
         </select>
-        <div class="checkbox-group">
-          <label><input type="checkbox" id="ob-sg" /> Sans gluten</label>
-          <label><input type="checkbox" id="ob-sl" /> Sans lactose</label>
-          <label><input type="checkbox" id="ob-sv" /> Végétarien</label>
-        </div>
-        <button class="btn-primary" onclick="saveOnboarding()">C'est parti 🌱</button>
+        <button class="btn-primary" onclick="nextStep(3)">Continuer →</button>
       </div>
+
+      <!-- Étape 3 — SJSR spécifique -->
+      <div class="onboard-step" data-step="3">
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:60%"></div></div>
+        <div class="onboard-art">🦵</div>
+        <h2>Votre SJSR</h2>
+        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">Combien de nuits difficiles par semaine en moyenne ?</p>
+        <div class="onboard-choices">
+          <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','0')">Aucune ou rarement</button>
+          <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','1-2')">1 à 2 nuits</button>
+          <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','3-4')">3 à 4 nuits</button>
+          <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','5+')">Presque toutes les nuits</button>
+        </div>
+        <input type="hidden" id="ob-sjsr-freq" value="" />
+        <p style="font-size:0.85rem;color:var(--text-mid);margin:16px 0 10px;">Prenez-vous un traitement pour le SJSR ?</p>
+        <div class="onboard-choices onboard-choices-2col">
+          <button class="onboard-choice" onclick="selectChoice(this,'ob-traitement','oui')">Oui</button>
+          <button class="onboard-choice" onclick="selectChoice(this,'ob-traitement','non')">Non</button>
+        </div>
+        <input type="hidden" id="ob-traitement" value="" />
+        <button class="btn-primary" style="margin-top:16px;" onclick="nextStep(4)">Continuer →</button>
+      </div>
+
+      <!-- Étape 4 — Alimentation -->
+      <div class="onboard-step" data-step="4">
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:80%"></div></div>
+        <div class="onboard-art">🥗</div>
+        <h2>Votre alimentation</h2>
+        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">Cochez ce qui vous correspond :</p>
+        <div class="onboard-checks">
+          <label class="onboard-check-item">
+            <input type="checkbox" id="ob-sg" />
+            <span class="onboard-check-box"></span>
+            <span>Sans gluten</span>
+          </label>
+          <label class="onboard-check-item">
+            <input type="checkbox" id="ob-sl" />
+            <span class="onboard-check-box"></span>
+            <span>Sans lactose</span>
+          </label>
+          <label class="onboard-check-item">
+            <input type="checkbox" id="ob-sv" />
+            <span class="onboard-check-box"></span>
+            <span>Végétarien·ne</span>
+          </label>
+          <label class="onboard-check-item">
+            <input type="checkbox" id="ob-fer" />
+            <span class="onboard-check-box"></span>
+            <span>Carence en fer connue</span>
+          </label>
+          <label class="onboard-check-item">
+            <input type="checkbox" id="ob-tdah" />
+            <span class="onboard-check-box"></span>
+            <span>TDAH / neuroatypique</span>
+          </label>
+        </div>
+        <button class="btn-primary" style="margin-top:20px;" onclick="nextStep(5)">Continuer →</button>
+      </div>
+
+      <!-- Étape 5 — Récapitulatif personnalisé -->
+      <div class="onboard-step" data-step="5">
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:100%"></div></div>
+        <div class="onboard-art">🎯</div>
+        <h2>Votre programme Flōra</h2>
+        <div id="onboard-recap" class="onboard-recap"></div>
+        <button class="btn-primary" onclick="saveOnboarding()">Commencer mon programme 🌱</button>
+      </div>
+
     </div>
   </div>
 
@@ -478,6 +549,9 @@
         </div>
 
         <button class="btn-primary full-width" onclick="saveProfil(this)">Enregistrer</button>
+        <button class="btn-primary full-width" onclick="enableNotifications()" style="margin-bottom:8px;">
+          🔔 Activer les rappels bien-être
+        </button>
         <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
 
         <!-- Statistiques bien-être -->
