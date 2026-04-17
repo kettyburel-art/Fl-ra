@@ -3568,16 +3568,26 @@ const BATCH_STEPS_LIBRARY = [
 ];
 
 function generateBatch() {
-  const timeChip = document.querySelector('[data-selected][onclick*="batch-time"]');
-  const availableTime = timeChip ? timeChip.dataset.selected : '2h';
+  // Récupérer le chip temps actif dans la page batch
+  const timeChips = document.querySelectorAll('#page-batch .sleep-chip');
+  let availableTime = '2h';
+  timeChips.forEach(chip => {
+    if (chip.classList.contains('active') && ['1h','2h','3h'].includes(chip.textContent.trim())) {
+      availableTime = chip.textContent.trim();
+    }
+  });
+
   const maxSteps = availableTime === '1h' ? 3 : availableTime === '2h' ? 5 : 8;
 
   batchPlan = BATCH_STEPS_LIBRARY.slice(0, maxSteps);
   batchCurrentStep = 0;
 
+  document.getElementById('batch-weekly-summary').classList.add('hidden');
   renderBatchPlan();
   document.getElementById('batch-plan').classList.remove('hidden');
-  document.getElementById('batch-plan').scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => {
+    document.getElementById('batch-plan').scrollIntoView({ behavior: 'smooth' });
+  }, 100);
 }
 
 function renderBatchPlan() {
