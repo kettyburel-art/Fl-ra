@@ -157,7 +157,7 @@
 
             <!-- Cycles de sommeil -->
             <div class="sleep-cycles-row">
-              <div class="sleep-cycles-label">Cycles cette nuit</div>
+              <div class="sleep-cycles-label">🔄 Cycles cette nuit <span style="font-size:0.7rem;color:var(--text-light)">(1 cycle ≈ 90 min)</span></div>
               <div class="sleep-cycles-btns" id="sleep-cycles-btns">
                 <button class="cycle-btn active" onclick="setCycles(1,this)">1</button>
                 <button class="cycle-btn active" onclick="setCycles(2,this)">2</button>
@@ -169,16 +169,80 @@
               <span class="sleep-cycles-info" id="cycles-info">~6h de sommeil réel</span>
             </div>
 
-            <div class="slider-row">
-              <label>Qualité</label>
-              <input type="range" min="1" max="5" step="1" value="3" id="sl-qualite" oninput="updateSliderVal('sl-qualite','val-qualite',true)" />
-              <span class="slider-val" id="val-qualite">★★★☆☆</span>
+            <!-- Interruptions nocturnes -->
+            <div class="sleep-detail-row">
+              <div class="sleep-detail-label">🚶 Levers nocturnes</div>
+              <div class="sleep-counter-row">
+                <button class="counter-btn" onclick="changeCounter('levers',-1)">−</button>
+                <span class="counter-val" id="levers-count">0</span>
+                <button class="counter-btn" onclick="changeCounter('levers',1)">+</button>
+                <span class="counter-info" id="levers-info">Aucun lever</span>
+              </div>
             </div>
-            <div class="slider-row">
-              <label>SJSR cette nuit</label>
-              <input type="range" min="0" max="5" step="1" value="0" id="sl-sjsr" oninput="updateSliderVal('sl-sjsr','val-sjsr',false,true)" />
-              <span class="slider-val" id="val-sjsr">Aucun</span>
+
+            <!-- Heure d'endormissement -->
+            <div class="sleep-detail-row">
+              <div class="sleep-detail-label">⏱ Temps pour s'endormir</div>
+              <div class="sleep-chips-row">
+                <span class="sleep-chip active" onclick="selectSleepChip(this,'endormissement','rapide')">Rapide &lt;15min</span>
+                <span class="sleep-chip" onclick="selectSleepChip(this,'endormissement','moyen')">15-30min</span>
+                <span class="sleep-chip" onclick="selectSleepChip(this,'endormissement','long')">30-60min</span>
+                <span class="sleep-chip" onclick="selectSleepChip(this,'endormissement','tres-long')">+1h</span>
+              </div>
             </div>
+
+            <!-- SJSR cette nuit -->
+            <div class="sleep-detail-row">
+              <div class="sleep-detail-label">🦵 SJSR cette nuit</div>
+              <div class="slider-row" style="margin:0">
+                <input type="range" min="0" max="5" step="1" value="0" id="sl-sjsr" oninput="updateSliderVal('sl-sjsr','val-sjsr',false,true)" />
+                <span class="slider-val" id="val-sjsr">Aucun</span>
+              </div>
+            </div>
+
+            <!-- Localisation SJSR -->
+            <div class="sleep-detail-row" id="sjsr-location-row" style="display:none">
+              <div class="sleep-detail-label">📍 Localisation</div>
+              <div class="sleep-chips-row">
+                <span class="sleep-chip" onclick="selectSleepChip(this,'location','jambes')">Jambes</span>
+                <span class="sleep-chip" onclick="selectSleepChip(this,'location','bras')">Bras</span>
+                <span class="sleep-chip" onclick="selectSleepChip(this,'location','tout-le-corps')">Corps entier</span>
+              </div>
+            </div>
+
+            <!-- Qualité globale -->
+            <div class="sleep-detail-row">
+              <div class="sleep-detail-label">⭐ Qualité globale</div>
+              <div class="slider-row" style="margin:0">
+                <input type="range" min="1" max="5" step="1" value="3" id="sl-qualite" oninput="updateSliderVal('sl-qualite','val-qualite',true)" />
+                <span class="slider-val" id="val-qualite">★★★☆☆</span>
+              </div>
+            </div>
+
+            <!-- Médication du soir -->
+            <div class="sleep-detail-row">
+              <div class="sleep-detail-label">💊 Médication prise ce soir</div>
+              <div class="sleep-chips-row">
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Tramadol</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Lyrica</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Fer</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Magnésium</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Autre</span>
+              </div>
+            </div>
+
+            <!-- Infusion du soir -->
+            <div class="sleep-detail-row">
+              <div class="sleep-detail-label">🍵 Rituel soir</div>
+              <div class="sleep-chips-row">
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Infusion</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Lait d'or</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Étirements</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Lecture</span>
+                <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Méditation</span>
+              </div>
+            </div>
+
           </div>
 
           <div class="journal-block">
@@ -425,11 +489,37 @@
         <div class="pf-item">✅ Rappels personnalisés</div>
       </div>
       <div class="premium-price">4,99€ <span>/mois</span></div>
-      <button class="btn-premium large" onclick="activatePremiumDemo()">Commencer l'essai gratuit 7 jours</button>
+
+      <!-- Bouton Stripe — paiement réel -->
+      <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00"
+         target="_blank"
+         class="btn-premium large"
+         style="display:block;text-align:center;text-decoration:none;margin-top:12px;"
+         onclick="closePremium()">
+        💳 S'abonner — 4,99€/mois
+      </a>
+
+      <div class="stripe-badge">
+        🔒 Paiement sécurisé par <strong>Stripe</strong> · Résiliation à tout moment
+      </div>
+
+      <!-- Séparateur -->
+      <div class="code-separator">
+        <span>— ou —</span>
+      </div>
+
+      <!-- Zone code d'activation (reçu par email après paiement) -->
+      <p style="font-size:0.8rem;color:var(--text-mid);text-align:center;margin-bottom:8px;">
+        Déjà abonné·e ? Entrez votre code reçu par email :
+      </p>
       <div class="code-unlock">
-        <input type="text" class="field" id="promo-code" placeholder="Code promo ou d'activation" />
+        <input type="text" class="field" id="promo-code"
+               placeholder="FLORA-XXXXXXXX"
+               oninput="this.value = this.value.toUpperCase()" />
         <button class="btn-link" onclick="checkCode()">Activer</button>
       </div>
+      <div id="code-error" class="code-error hidden">❌ Code invalide. Vérifiez votre email.</div>
+      <div id="code-success" class="code-success hidden">✅ Premium activé ! Bienvenue 🌿</div>
     </div>
   </div>
 

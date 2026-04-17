@@ -618,7 +618,81 @@ textarea.field { resize: vertical; min-height: 80px; }
   font-size: 0.9rem;
 }
 
-/* Sélecteur sommeil — heure coucher/lever */
+/* Détails sommeil avancés */
+.sleep-detail-row {
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--cream);
+}
+.sleep-detail-row:last-child { border-bottom: none; margin-bottom: 0; }
+
+.sleep-detail-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-mid);
+  margin-bottom: 8px;
+}
+
+.sleep-chips-row {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+
+.sleep-chip {
+  padding: 5px 12px;
+  border-radius: 99px;
+  background: var(--cream);
+  color: var(--text-mid);
+  font-size: 0.78rem;
+  cursor: pointer;
+  border: 1.5px solid var(--cream-dark);
+  transition: all 0.18s;
+  user-select: none;
+}
+
+.sleep-chip.active {
+  background: var(--green-deep);
+  color: var(--white);
+  border-color: var(--green-deep);
+}
+
+/* Compteur levers nocturnes */
+.sleep-counter-row {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.counter-btn {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--green-pale);
+  background: var(--white);
+  color: var(--green-deep);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  font-family: var(--font-body);
+  line-height: 1;
+}
+
+.counter-btn:hover { background: var(--green-pale); }
+.counter-btn:active { transform: scale(0.92); }
+
+.counter-val {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--green-deep);
+  min-width: 24px;
+  text-align: center;
+}
+
+.counter-info {
+  font-size: 0.78rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+
 .sleep-time-row {
   display: flex; align-items: center; gap: 8px;
   background: var(--cream);
@@ -1261,6 +1335,58 @@ textarea.field { resize: vertical; min-height: 80px; }
 }
 
 .code-unlock .field { flex: 1; margin: 0; }
+
+/* Badge Stripe sécurisé */
+.stripe-badge {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-light);
+  margin-top: 10px;
+  padding: 8px;
+  background: var(--cream);
+  border-radius: var(--radius-sm);
+}
+
+.stripe-badge strong { color: var(--text-mid); }
+
+/* Séparateur ou */
+.code-separator {
+  text-align: center;
+  margin: 18px 0 12px;
+  position: relative;
+  color: var(--text-light);
+  font-size: 0.82rem;
+}
+
+.code-separator::before,
+.code-separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: var(--cream-dark);
+}
+
+.code-separator::before { left: 0; }
+.code-separator::after  { right: 0; }
+
+/* Messages feedback code */
+.code-error {
+  text-align: center;
+  color: var(--red-soft);
+  font-size: 0.85rem;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.code-success {
+  text-align: center;
+  color: var(--green-mid);
+  font-size: 0.85rem;
+  margin-top: 8px;
+  font-weight: 500;
+}
 
 /* ============================
    RESPONSIVE

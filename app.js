@@ -1674,7 +1674,7 @@ function showPage(page) {
   const navBtn = document.querySelector(`[data-page="${page}"]`);
   if (navBtn) navBtn.classList.add('active');
 
-  if (page === 'journal')    { setJournalDate(); updateSleepCalc(); }
+  if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     loadProfil();
@@ -1823,6 +1823,64 @@ function getSleepDuration() {
   return Math.round(totalMin / 60 * 10) / 10; // en heures, 1 décimale
 }
 
+// Compteur levers nocturnes
+let leversCount = 0;
+const leversLabels = ['Aucun lever','1 lever','2 levers','3 levers','4 levers ou plus'];
+
+function changeCounter(type, delta) {
+  if (type === 'levers') {
+    leversCount = Math.max(0, Math.min(4, leversCount + delta));
+    document.getElementById('levers-count').textContent = leversCount;
+    document.getElementById('levers-info').textContent = leversLabels[leversCount] || leversCount + ' levers';
+  }
+}
+
+// Chips sommeil — sélection exclusive (radio)
+function selectSleepChip(el, group, value) {
+  el.closest('.sleep-chips-row').querySelectorAll('.sleep-chip').forEach(c => {
+    c.classList.remove('active');
+    delete c.dataset.selected;
+  });
+  el.classList.add('active');
+  el.dataset.selected = value;
+}
+
+// Chips sommeil — sélection multiple (toggle)
+function toggleSleepChip(el) {
+  el.classList.toggle('active');
+}
+
+// Afficher/masquer localisation SJSR selon intensité
+const origSjsrInput = document.getElementById ? null : null;
+function initSjsrToggle() {
+  const sjsrSlider = document.getElementById('sl-sjsr');
+  if (sjsrSlider) {
+    sjsrSlider.addEventListener('input', function() {
+      const locRow = document.getElementById('sjsr-location-row');
+      if (locRow) locRow.style.display = parseInt(this.value) > 0 ? 'block' : 'none';
+    });
+  }
+}
+
+// Collecter toutes les données sommeil avancées
+function getSleepData() {
+  // Endormissement
+  const endEl = document.querySelector('[data-selected][onclick*="endormissement"]');
+  const endormissement = endEl ? endEl.dataset.selected : 'rapide';
+
+  // Localisation SJSR
+  const locEl = document.querySelector('[data-selected][onclick*="location"]');
+  const sjsrLocation = locEl ? locEl.dataset.selected : '';
+
+  // Médications cochées
+  const meds = Array.from(document.querySelectorAll('[onclick*="med"].active')).map(c => c.textContent);
+
+  // Rituels cochés
+  const rituels = Array.from(document.querySelectorAll('[onclick*="rituel"].active')).map(c => c.textContent);
+
+  return { levers: leversCount, endormissement, sjsrLocation, meds, rituels };
+}
+
 function updateSliderVal(sliderId, valId, isStars = false, isSjsr = false) {
   const val = parseFloat(document.getElementById(sliderId).value);
   const el  = document.getElementById(valId);
@@ -1848,19 +1906,25 @@ function saveJournal() {
   const today = dateKey(new Date());
   const symptoms = Array.from(document.querySelectorAll('#symptom-chips .chip.active'))
     .map(c => c.textContent);
+  const sleepExtra = getSleepData();
 
   journal[today] = {
-    coucher:  document.getElementById('sl-coucher')?.value || '',
-    lever:    document.getElementById('sl-lever')?.value || '',
-    duree:    getSleepDuration(),
-    cycles:   currentCycles,
-    qualite:  parseInt(document.getElementById('sl-qualite').value),
-    sjsr:     parseInt(document.getElementById('sl-sjsr').value),
-    energie:  parseInt(document.getElementById('sl-energie').value),
-    douleur:  parseInt(document.getElementById('sl-douleur').value),
+    coucher:        document.getElementById('sl-coucher')?.value || '',
+    lever:          document.getElementById('sl-lever')?.value || '',
+    duree:          getSleepDuration(),
+    cycles:         currentCycles,
+    levers:         sleepExtra.levers,
+    endormissement: sleepExtra.endormissement,
+    sjsrLocation:   sleepExtra.sjsrLocation,
+    meds:           sleepExtra.meds,
+    rituels:        sleepExtra.rituels,
+    qualite:        parseInt(document.getElementById('sl-qualite').value),
+    sjsr:           parseInt(document.getElementById('sl-sjsr').value),
+    energie:        parseInt(document.getElementById('sl-energie').value),
+    douleur:        parseInt(document.getElementById('sl-douleur').value),
     symptoms,
-    notes:    document.getElementById('journal-notes').value,
-    ts:       Date.now()
+    notes:          document.getElementById('journal-notes').value,
+    ts:             Date.now()
   };
 
   saveState();
@@ -2262,29 +2326,44 @@ function closePremium() {
 }
 
 function activatePremiumDemo() {
-  isPremium = true;
-  localStorage.setItem('flora_premium', 'true');
+  activatePremium();
   closePremium();
-  loadProfil();
-  renderRecettes();
-  alert('✅ Essai Premium activé ! Profitez de toutes les fonctionnalités pendant 7 jours.');
 }
-
-const VALID_CODES = ['FLORA2025', 'SJSR2025', 'BIENETRE'];
 
 function checkCode() {
   const code = document.getElementById('promo-code').value.trim().toUpperCase();
-  if (VALID_CODES.includes(code)) {
-    activatePremiumDemo();
+  const errorEl   = document.getElementById('code-error');
+  const successEl = document.getElementById('code-success');
+
+  // Réinitialiser les messages
+  errorEl?.classList.add('hidden');
+  successEl?.classList.add('hidden');
+
+  // Codes fixes de démo/test
+  const FIXED_CODES = ['FLORA2025', 'SJSR2025', 'BIENETRE'];
+
+  // Format dynamique post-paiement Stripe : FLORA-XXXXXXXX (8+ chars après le tiret)
+  const isDynamicCode = /^FLORA-[A-Z0-9]{6,}$/.test(code);
+
+  if (FIXED_CODES.includes(code) || isDynamicCode) {
+    activatePremium();
+    successEl?.classList.remove('hidden');
+    setTimeout(() => closePremium(), 1800);
   } else {
     document.getElementById('promo-code').style.borderColor = 'var(--red-soft)';
-    setTimeout(() => document.getElementById('promo-code').style.borderColor = '', 2000);
+    errorEl?.classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('promo-code').style.borderColor = '';
+      errorEl?.classList.add('hidden');
+    }, 3000);
   }
 }
 
-function unlockDemo() {
-  document.getElementById('promo-code').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('promo-code').focus();
+function activatePremium() {
+  isPremium = true;
+  localStorage.setItem('flora_premium', 'true');
+  loadProfil();
+  renderRecettes();
 }
 
 // ============================
