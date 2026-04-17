@@ -1823,7 +1823,7 @@ function getSleepDuration() {
   return Math.round(totalMin / 60 * 10) / 10; // en heures, 1 décimale
 }
 
-
+function updateSliderVal(sliderId, valId, isStars = false, isSjsr = false) {
   const val = parseFloat(document.getElementById(sliderId).value);
   const el  = document.getElementById(valId);
 
