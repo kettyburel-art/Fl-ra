@@ -3439,29 +3439,163 @@ function initLogin() {
 
 
 const PLACARD_CATEGORIES = {
-  '🥩 Protéines': ['Œufs bio','Sardines','Saumon fumé','Thon','Poulet','Dinde','Tofu','Lentilles','Pois chiches','Haricots'],
-  '🥦 Légumes': ['Épinards','Brocoli','Courgette','Poivron','Aubergine','Carotte','Betterave','Kale','Patate douce','Champignons'],
-  '🌾 Féculents sg': ['Quinoa','Riz complet','Sarrasin','Riz noir','Patate douce','Flocons de millet'],
-  '🥑 Bons gras': ['Avocat','Huile d\'olive','Huile de coco','Huile de colza','Noix','Amandes','Graines de courge'],
-  '🥫 Conserves': ['Tomates concassées','Lait de coco','Pois chiches en boîte','Haricots blancs','Thon au naturel'],
-  '🌿 Épices & herbes': ['Curcuma','Cumin','Gingembre','Cannelle','Persil','Coriandre','Basilic','Ail'],
-  '🍋 Fruits': ['Citron','Banane','Myrtilles','Pomme','Mangue','Framboises'],
-  '🥛 Laits végétaux': ['Lait d\'amande','Lait de coco','Lait de riz','Lait d\'avoine'],
+  '🥚 Protéines animales': [
+    'Œufs bio','Saumon frais','Saumon fumé','Truite fumée',
+    'Sardines fraîches','Sardines en boîte','Maquereaux en boîte',
+    'Thon au naturel','Thon à l\'huile d\'olive','Anchois',
+    'Hareng fumé','Cabillaud','Dos de cabillaud','Daurade',
+    'Crevettes','Moules','Poulpe','Poulet','Blanc de poulet',
+    'Dinde','Bœuf haché maigre','Steak de bœuf'
+  ],
+  '🫘 Protéines végétales': [
+    'Pois chiches (boîte)','Pois chiches secs','Lentilles corail',
+    'Lentilles vertes','Lentilles beluga','Haricots rouges (boîte)',
+    'Haricots blancs (boîte)','Haricots noirs','Edamames surgelés',
+    'Tofu ferme','Tofu fumé','Tofu soyeux','Tempeh'
+  ],
+  '🥦 Légumes frais': [
+    'Épinards','Kale','Brocoli','Chou-fleur','Courgette',
+    'Aubergine','Poivron rouge','Poivron jaune','Carotte',
+    'Betterave cuite','Betterave crue','Fenouil','Poireau',
+    'Champignons','Champignons shiitaké','Radis noir',
+    'Patate douce','Pommes de terre','Oignon','Oignon rouge',
+    'Ail','Gingembre frais','Céleri'
+  ],
+  '🥬 Légumes surgelés': [
+    'Épinards surgelés','Brocolis surgelés','Petits pois surgelés',
+    'Haricots verts surgelés','Edamames surgelés','Mélange légumes wok'
+  ],
+  '🌾 Féculents sans gluten': [
+    'Quinoa','Riz complet','Riz basmati','Riz noir vénéré',
+    'Sarrasin (kasha)','Flocons de sarrasin','Flocons de millet',
+    'Farine de sarrasin','Farine de riz','Farine de pois chiche',
+    'Farine d\'amande','Farine de coco','Farine de teff',
+    'Galettes de riz','Pâtes de riz','Nouilles de riz',
+    'Vermicelles de riz','Polenta'
+  ],
+  '🥑 Bons gras & noix': [
+    'Avocat','Noix','Noix du Brésil','Noix de cajou',
+    'Amandes','Amandes effilées','Noisettes','Pistaches',
+    'Graines de courge','Graines de lin','Graines de chia',
+    'Graines de chanvre','Graines de sésame','Graines de tournesol',
+    'Pignons de pin','Purée d\'amande','Beurre de cajou',
+    'Tahini','Beurre de cacahuète'
+  ],
+  '🫙 Conserves & bocaux': [
+    'Tomates concassées','Coulis de tomates','Tomates séchées',
+    'Sardines à l\'huile d\'olive','Maquereaux au naturel',
+    'Thon au naturel','Anchois en bocal','Lait de coco entier',
+    'Lait de coco allégé','Crème de coco','Pois chiches en boîte',
+    'Haricots rouges en boîte','Haricots blancs en boîte',
+    'Lentilles en boîte','Artichauds en bocal','Olives noires',
+    'Olives vertes','Câpres','Cornichons','Bouillon de légumes',
+    'Pâte miso (sans gluten)'
+  ],
+  '🛢 Huiles & vinaigres': [
+    'Huile d\'olive vierge extra','Huile de coco',
+    'Huile de sésame','Huile de colza bio (premier froid)',
+    'Huile de cameline','Vinaigre de cidre',
+    'Vinaigre balsamique','Vinaigre de riz','Tamari sans gluten'
+  ],
+  '🥛 Laits & yaourts végétaux': [
+    'Lait d\'amande','Lait de coco (boisson)','Lait de riz',
+    'Lait d\'avoine (sg)','Lait de noisette','Yaourt de soja',
+    'Yaourt de coco','Crème d\'avoine (sg)'
+  ],
+  '🌿 Épices & herbes': [
+    'Curcuma','Cumin','Gingembre en poudre','Cannelle',
+    'Cardamome','Coriandre moulue','Paprika doux','Paprika fumé',
+    'Piment d\'Espelette','Muscade','Origan','Thym','Romarin',
+    'Herbes de Provence','Curry en poudre','Sel Santé',
+    'Poivre noir','Fleur de sel','Levure nutritionnelle',
+    'Bicarbonate alimentaire','Levure sans gluten'
+  ],
+  '🌿 Herbes fraîches': [
+    'Persil plat','Coriandre fraîche','Basilic frais',
+    'Menthe fraîche','Aneth','Ciboulette','Citronnelle'
+  ],
+  '🍋 Fruits frais': [
+    'Citron','Citron vert','Orange','Pomme','Poire',
+    'Banane','Avocat','Mangue','Ananas','Pêche','Abricot',
+    'Myrtilles','Framboises','Fraises','Grenade'
+  ],
+  '🫐 Fruits surgelés': [
+    'Myrtilles surgelées','Framboises surgelées',
+    'Fruits rouges surgelés','Mangue surgelée',
+    'Banane surgelée','Pulpe d\'açaï surgelée'
+  ],
+  '🍫 Sucrants & chocolat': [
+    'Chocolat noir 85%','Chocolat noir 70%','Cacao cru en poudre',
+    'Dattes Medjool','Sirop d\'érable','Sirop d\'agave',
+    'Miel','Sucre de coco','Raisins secs','Cranberries séchées',
+    'Abricots secs'
+  ],
+  '🧪 Compléments & superaliments': [
+    'Spiruline en poudre','Protéines de chanvre','Graines de lin moulues',
+    'Noix du Brésil','Flocons de levure nutritionnelle',
+    'Algues wakamé séchées','Nori en feuilles'
+  ],
+  '🌺 Infusions & boissons': [
+    'Valériane','Passiflore','Tilleul','Mélisse',
+    'Infusion gingembre-citron','Thé vert','Rooibos',
+    'Eau de coco','Kombucha'
+  ],
 };
 
-// Prix estimés pour la liste de courses (€)
 const INGREDIENT_PRICES = {
-  'Œufs bio': 3.50, 'Sardines': 1.80, 'Saumon fumé': 4.50, 'Thon': 2.20,
-  'Poulet': 5.00, 'Dinde': 4.80, 'Tofu': 2.50, 'Lentilles': 1.20, 'Pois chiches': 1.10,
-  'Épinards': 2.20, 'Brocoli': 1.80, 'Courgette': 1.50, 'Poivron': 1.90,
-  'Aubergine': 1.60, 'Carotte': 1.00, 'Betterave': 1.20, 'Kale': 2.50,
-  'Patate douce': 1.80, 'Champignons': 2.50, 'Quinoa': 2.80, 'Riz complet': 1.50,
-  'Sarrasin': 1.80, 'Riz noir': 3.20, 'Avocat': 1.80, 'Huile d\'olive': 6.00,
-  'Huile de coco': 4.50, 'Noix': 3.80, 'Amandes': 4.00, 'Graines de courge': 2.50,
-  'Tomates concassées': 0.90, 'Lait de coco': 1.50, 'Citron': 0.80,
-  'Banane': 0.60, 'Myrtilles': 3.50, 'Pomme': 1.20,
-  'Lait d\'amande': 2.20, 'Lait de riz': 2.00, 'Gingembre': 1.20,
+  // Protéines animales
+  'Œufs bio': 3.50, 'Saumon frais': 7.50, 'Saumon fumé': 4.50,
+  'Truite fumée': 3.80, 'Sardines fraîches': 4.00, 'Sardines en boîte': 1.80,
+  'Maquereaux en boîte': 1.90, 'Thon au naturel': 2.20, 'Thon à l\'huile d\'olive': 2.50,
+  'Anchois': 2.80, 'Hareng fumé': 3.20, 'Cabillaud': 6.00,
+  'Dos de cabillaud': 7.00, 'Daurade': 6.50, 'Crevettes': 5.50,
+  'Moules': 3.50, 'Poulpe': 5.00, 'Poulet': 5.00, 'Blanc de poulet': 5.50,
+  'Dinde': 4.80, 'Bœuf haché maigre': 6.50, 'Steak de bœuf': 7.00,
+  // Protéines végétales
+  'Pois chiches (boîte)': 1.10, 'Pois chiches secs': 1.80,
+  'Lentilles corail': 2.00, 'Lentilles vertes': 1.80, 'Lentilles beluga': 2.50,
+  'Haricots rouges (boîte)': 1.00, 'Haricots blancs (boîte)': 0.95,
+  'Tofu ferme': 2.50, 'Tofu fumé': 2.80, 'Tofu soyeux': 2.20, 'Tempeh': 3.50,
+  // Légumes
+  'Épinards': 2.20, 'Kale': 2.50, 'Brocoli': 1.80, 'Chou-fleur': 2.00,
+  'Courgette': 1.50, 'Aubergine': 1.60, 'Poivron rouge': 1.90,
+  'Carotte': 1.00, 'Betterave cuite': 1.20, 'Fenouil': 1.80,
+  'Champignons': 2.50, 'Patate douce': 1.80, 'Oignon': 0.80,
+  'Ail': 0.90, 'Gingembre frais': 1.20,
+  // Féculents
+  'Quinoa': 2.80, 'Riz complet': 1.50, 'Riz noir vénéré': 3.20,
+  'Sarrasin (kasha)': 1.80, 'Flocons de sarrasin': 2.00,
+  'Galettes de riz': 1.90, 'Pâtes de riz': 2.20, 'Nouilles de riz': 2.00,
+  // Bons gras
+  'Avocat': 1.80, 'Noix': 3.80, 'Noix du Brésil': 4.50,
+  'Noix de cajou': 4.00, 'Amandes': 4.00, 'Graines de courge': 2.50,
+  'Graines de chia': 3.50, 'Graines de lin': 2.20, 'Tahini': 4.00,
+  'Purée d\'amande': 5.00, 'Beurre de cajou': 5.50,
+  // Conserves
+  'Tomates concassées': 0.90, 'Sardines à l\'huile d\'olive': 2.20,
+  'Maquereaux au naturel': 1.90, 'Thon au naturel': 2.20,
+  'Lait de coco entier': 1.80, 'Lait de coco allégé': 1.50,
+  'Olives noires': 2.00, 'Câpres': 1.80, 'Pâte miso (sans gluten)': 4.50,
+  // Huiles
+  'Huile d\'olive vierge extra': 7.00, 'Huile de coco': 4.50,
+  'Huile de sésame': 3.80, 'Huile de colza bio (premier froid)': 4.00,
+  'Tamari sans gluten': 3.50, 'Vinaigre de cidre': 2.50,
+  // Laits végétaux
+  'Lait d\'amande': 2.20, 'Lait de coco (boisson)': 1.80,
+  'Lait de riz': 2.00, 'Lait d\'avoine (sg)': 2.20, 'Yaourt de soja': 1.80,
+  // Fruits
+  'Citron': 0.80, 'Banane': 0.60, 'Myrtilles': 3.50, 'Pomme': 1.20,
+  'Mangue': 2.50, 'Framboises': 3.20, 'Fraises': 3.00,
+  'Myrtilles surgelées': 3.20, 'Framboises surgelées': 2.80,
+  // Épices
   'Curcuma': 2.50, 'Cumin': 1.80, 'Cannelle': 1.50,
+  'Gingembre en poudre': 2.00, 'Paprika doux': 1.80, 'Sel Santé': 3.50,
+  // Sucrants
+  'Chocolat noir 85%': 2.80, 'Cacao cru en poudre': 4.50,
+  'Dattes Medjool': 5.00, 'Sirop d\'érable': 5.50, 'Miel': 4.00,
+  // Superaliments
+  'Spiruline en poudre': 8.00, 'Protéines de chanvre': 9.00,
+  'Algues wakamé séchées': 4.50,
 };
 
 let placardItems = {};
