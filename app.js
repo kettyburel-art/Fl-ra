@@ -3297,8 +3297,138 @@ function saveOnboarding() {
 // APP INIT
 // ============================
 // ============================
-// PLACARD & BUDGET
+// SYSTÈME DE CONNEXION
+// Comptes hardcodés (pas de serveur)
 // ============================
+
+const ACCOUNTS = {
+  // Compte administrateur (toi)
+  'ketty@flora.app': {
+    password: 'Fl0ra#Ketty@2026!',
+    role: 'admin',
+    name: 'Ketty',
+    premium: true
+  },
+  // Comptes premium (abonnés Stripe)
+  // Format : email → { password, role:'premium', name, premium:true }
+  // Ajouter manuellement après chaque paiement Stripe
+  // ex: 'client@email.com': { password: 'FLORA-xxxxxxxx', role:'premium', name:'Prénom', premium:true }
+};
+
+let currentUser = null;
+
+function showLogin() {
+  document.getElementById('login-modal').classList.remove('hidden');
+  setTimeout(() => document.getElementById('login-email').focus(), 100);
+}
+
+function closeLogin() {
+  document.getElementById('login-modal').classList.add('hidden');
+  document.getElementById('login-error').classList.add('hidden');
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-password').value = '';
+}
+
+function doLogin() {
+  const email    = document.getElementById('login-email').value.trim().toLowerCase();
+  const password = document.getElementById('login-password').value;
+  const errorEl  = document.getElementById('login-error');
+
+  const account = ACCOUNTS[email];
+
+  if (!account || account.password !== password) {
+    errorEl.textContent = '❌ Email ou mot de passe incorrect.';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+
+  // Connexion réussie
+  currentUser = { email, ...account };
+  isPremium = account.premium;
+  localStorage.setItem('flora_premium', 'true');
+  localStorage.setItem('flora_user_email', email);
+  localStorage.setItem('flora_user_name', account.name);
+
+  // Mettre à jour le profil
+  if (account.name) {
+    profile.name = account.name;
+    saveState();
+  }
+
+  closeLogin();
+  loadProfil();
+  renderRecettes();
+  updateLoginButton();
+
+  // Toast de bienvenue
+  const msg = document.createElement('div');
+  const icon = account.role === 'admin' ? '👑' : '✨';
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:12px 24px;border-radius:99px;font-size:0.88rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);white-space:nowrap;';
+  msg.textContent = `${icon} Bienvenue ${account.name} !${account.role==='admin' ? ' (Admin)' : ' Premium'}`;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 3000);
+}
+
+function doLogout() {
+  currentUser = null;
+  isPremium = false;
+  localStorage.removeItem('flora_premium');
+  localStorage.removeItem('flora_user_email');
+  localStorage.removeItem('flora_user_name');
+  renderRecettes();
+  loadProfil();
+  updateLoginButton();
+
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--text-mid);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;';
+  msg.textContent = '👋 Déconnecté·e';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2000);
+}
+
+function updateLoginButton() {
+  const btn = document.getElementById('header-login-btn');
+  if (!btn) return;
+  if (currentUser) {
+    btn.textContent = currentUser.role === 'admin' ? '👑' : '✨';
+    btn.title = `Connecté·e : ${currentUser.email}`;
+    btn.onclick = () => {
+      if (confirm(`Déconnexion de ${currentUser.email} ?`)) doLogout();
+    };
+  } else {
+    btn.textContent = '🔑';
+    btn.title = 'Se connecter';
+    btn.onclick = showLogin;
+  }
+}
+
+// Admin : ajouter un compte premium
+function adminAddPremium(email, name, code) {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  ACCOUNTS[email] = {
+    password: code,
+    role: 'premium',
+    name: name,
+    premium: true
+  };
+  alert(`✅ Compte ajouté : ${email}\nMot de passe : ${code}`);
+}
+
+function tryLoginOnEnter(e) {
+  if (e.key === 'Enter') doLogin();
+}
+
+function initLogin() {
+  // Restaurer session si email stocké
+  const savedEmail = localStorage.getItem('flora_user_email');
+  if (savedEmail && ACCOUNTS[savedEmail]) {
+    currentUser = { email: savedEmail, ...ACCOUNTS[savedEmail] };
+    isPremium = true;
+  }
+  updateLoginButton();
+}
+
+
 
 const PLACARD_CATEGORIES = {
   '🥩 Protéines': ['Œufs bio','Sardines','Saumon fumé','Thon','Poulet','Dinde','Tofu','Lentilles','Pois chiches','Haricots'],
@@ -3685,6 +3815,7 @@ function initPlacard() {
 function initApp() {
   document.getElementById('app').classList.remove('hidden');
   loadState();
+  initLogin();
   initPlacard();
   updateDashboard();
   renderRecettes();
@@ -3693,7 +3824,6 @@ function initApp() {
   setJournalDate();
   updateSleepCalc();
 
-  // Recette du jour (aléatoire parmi gratuites)
   const free = RECETTES.filter(r => !r.premium);
   const rdj  = free[new Date().getDate() % free.length];
   const rdjEl = document.getElementById('recette-du-jour');

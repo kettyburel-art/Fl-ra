@@ -63,9 +63,40 @@
       </div>
       <div class="header-right">
         <span id="header-greeting"></span>
+        <button class="icon-btn" id="header-login-btn" onclick="showLogin()" title="Se connecter">🔑</button>
         <button class="icon-btn" onclick="showPage('profil')" title="Profil">👤</button>
       </div>
     </header>
+
+    <!-- MODAL CONNEXION -->
+    <div id="login-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeLogin()"></div>
+      <div class="modal-card" style="padding:28px 24px 36px;">
+        <button class="modal-close" onclick="closeLogin()">✕</button>
+        <div style="font-family:var(--font-display);font-size:1.3rem;color:var(--green-deep);margin-bottom:6px;">
+          🔑 Connexion
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:20px;">
+          Abonné·e Premium ou Administratrice ? Connectez-vous ici.
+        </p>
+        <div class="settings-row" style="flex-direction:column;gap:8px;align-items:stretch;">
+          <input type="email" class="field" id="login-email"
+            placeholder="Votre email" autocomplete="email"
+            onkeydown="tryLoginOnEnter(event)" />
+          <input type="password" class="field" id="login-password"
+            placeholder="Votre mot de passe / code Flōra"
+            onkeydown="tryLoginOnEnter(event)" />
+        </div>
+        <div id="login-error" class="hidden" style="color:var(--red-soft);font-size:0.82rem;margin:8px 0;"></div>
+        <button class="btn-primary full-width" style="margin-top:14px;" onclick="doLogin()">
+          Se connecter
+        </button>
+        <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:14px;">
+          Votre code de connexion est celui reçu par email après abonnement Stripe.<br>
+          Pour s'abonner → <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank" style="color:var(--green-mid);">4,99€/mois</a>
+        </p>
+      </div>
+    </div>
 
     <!-- PAGES -->
     <main id="main-content">
@@ -313,14 +344,6 @@
 
         <div id="recettes-grid" class="recettes-grid"></div>
 
-        <!-- Modal recette -->
-        <div id="recette-modal" class="modal hidden">
-          <div class="modal-overlay" onclick="closeModal()"></div>
-          <div class="modal-card">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div id="modal-content"></div>
-          </div>
-        </div>
       </section>
 
       <!-- AGENDA -->
@@ -553,6 +576,16 @@
       </div>
     </div>
   </section>
+    
+
+        <!-- Modal recette -->
+        <div id="recette-modal" class="modal hidden">
+          <div class="modal-overlay" onclick="closeModal()"></div>
+          <div class="modal-card">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modal-content"></div>
+          </div>
+        </div>
     </main>
 
     <!-- BOTTOM NAV -->
