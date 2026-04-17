@@ -1,0 +1,49 @@
+{
+  "name": "Flōra — Bien-être anti-inflammatoire",
+  "short_name": "Flōra",
+  "description": "Journal de bien-être, recettes anti-inflammatoires et générateur de menus personnalisés",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#2d4a3e",
+  "background_color": "#f7f3ee",
+  "lang": "fr",
+  "categories": ["health", "food", "lifestyle"],
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "icons/screenshot-mobile.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Journal du jour",
+      "short_name": "Journal",
+      "url": "./index.html#journal",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Recettes",
+      "short_name": "Recettes",
+      "url": "./index.html#recettes",
+      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

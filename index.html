@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2d4a3e" />
+  <meta name="description" content="Flōra — Bien-être anti-inflammatoire, journal et nutrition personnalisés" />
+  <title>Flōra</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- SPLASH -->
+  <div id="splash">
+    <div class="splash-inner">
+      <div class="splash-logo">Flōra</div>
+      <p class="splash-sub">Votre allié bien-être au quotidien</p>
+      <div class="splash-loader"></div>
+    </div>
+  </div>
+
+  <!-- ONBOARDING (first launch) -->
+  <div id="onboarding" class="hidden">
+    <div class="onboard-wrap">
+      <div class="onboard-step active" data-step="1">
+        <div class="onboard-art">🌿</div>
+        <h2>Bienvenue dans Flōra</h2>
+        <p>Une application pensée pour les personnes sensibles au SJSR, à la douleur chronique et aux inflammations. Sans gluten, sans lactose, avec douceur.</p>
+        <button class="btn-primary" onclick="nextStep(2)">Commencer →</button>
+      </div>
+      <div class="onboard-step" data-step="2">
+        <div class="onboard-art">✨</div>
+        <h2>Votre profil</h2>
+        <input class="field" type="text" id="ob-name" placeholder="Votre prénom" />
+        <select class="field" id="ob-goal">
+          <option value="">Mon objectif principal…</option>
+          <option value="sommeil">Améliorer mon sommeil</option>
+          <option value="douleur">Réduire la douleur</option>
+          <option value="energie">Retrouver de l'énergie</option>
+          <option value="global">Bien-être global</option>
+        </select>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="ob-sg" /> Sans gluten</label>
+          <label><input type="checkbox" id="ob-sl" /> Sans lactose</label>
+          <label><input type="checkbox" id="ob-sv" /> Végétarien</label>
+        </div>
+        <button class="btn-primary" onclick="saveOnboarding()">C'est parti 🌱</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP SHELL -->
+  <div id="app" class="hidden">
+
+    <!-- HEADER -->
+    <header id="app-header">
+      <div class="header-left">
+        <span class="app-logo">Flōra</span>
+      </div>
+      <div class="header-right">
+        <span id="header-greeting"></span>
+        <button class="icon-btn" onclick="showPage('profil')" title="Profil">👤</button>
+      </div>
+    </header>
+
+    <!-- PAGES -->
+    <main id="main-content">
+
+      <!-- DASHBOARD -->
+      <section id="page-accueil" class="page active">
+        <div class="page-hero">
+          <div class="hero-text">
+            <h1 id="dash-greeting">Bonjour !</h1>
+            <p id="dash-date"></p>
+          </div>
+          <div class="hero-badge" id="streak-badge">🔥 <span id="streak-count">0</span>j</div>
+        </div>
+
+        <div class="card-grid">
+          <div class="card card-journal" onclick="showPage('journal')">
+            <div class="card-icon">🌙</div>
+            <div class="card-body">
+              <div class="card-title">Journal du jour</div>
+              <div class="card-sub" id="journal-today-status">Aucune entrée aujourd'hui</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+
+          <div class="card card-recette" onclick="showPage('recettes')">
+            <div class="card-icon">🥗</div>
+            <div class="card-body">
+              <div class="card-title">Recettes</div>
+              <div class="card-sub" id="recette-du-jour">Recette du jour…</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+
+          <div class="card card-agenda" onclick="showPage('agenda')">
+            <div class="card-icon">📅</div>
+            <div class="card-body">
+              <div class="card-title">Mon agenda</div>
+              <div class="card-sub" id="agenda-today">Voir le menu du jour</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+
+          <div class="card card-generateur" onclick="showPage('generateur')">
+            <div class="card-icon">✨</div>
+            <div class="card-body">
+              <div class="card-title">Générateur</div>
+              <div class="card-sub">Créer un menu semaine</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
+        </div>
+
+        <!-- Synthèse bien-être -->
+        <div class="section-title">Ma semaine</div>
+        <div class="wellbeing-chart" id="week-chart"></div>
+      </section>
+
+      <!-- JOURNAL -->
+      <section id="page-journal" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Journal</h2>
+        </div>
+
+        <div class="journal-tabs">
+          <button class="jtab active" onclick="switchJTab('today', this)">Aujourd'hui</button>
+          <button class="jtab" onclick="switchJTab('historique', this)">Historique</button>
+        </div>
+
+        <div id="jtab-today">
+          <div class="journal-date" id="journal-entry-date"></div>
+
+          <div class="journal-block">
+            <div class="jblock-title">🌙 Sommeil</div>
+            <div class="slider-row">
+              <label>Durée</label>
+              <input type="range" min="0" max="12" step="0.5" value="7" id="sl-duree" oninput="updateSliderVal('sl-duree','val-duree')" />
+              <span class="slider-val" id="val-duree">7h</span>
+            </div>
+            <div class="slider-row">
+              <label>Qualité</label>
+              <input type="range" min="1" max="5" step="1" value="3" id="sl-qualite" oninput="updateSliderVal('sl-qualite','val-qualite',true)" />
+              <span class="slider-val" id="val-qualite">★★★☆☆</span>
+            </div>
+            <div class="slider-row">
+              <label>SJSR cette nuit</label>
+              <input type="range" min="0" max="5" step="1" value="0" id="sl-sjsr" oninput="updateSliderVal('sl-sjsr','val-sjsr',false,true)" />
+              <span class="slider-val" id="val-sjsr">Aucun</span>
+            </div>
+          </div>
+
+          <div class="journal-block">
+            <div class="jblock-title">💪 Énergie & Douleur</div>
+            <div class="slider-row">
+              <label>Énergie</label>
+              <input type="range" min="1" max="10" step="1" value="5" id="sl-energie" oninput="updateSliderVal('sl-energie','val-energie')" />
+              <span class="slider-val" id="val-energie">5/10</span>
+            </div>
+            <div class="slider-row">
+              <label>Douleur</label>
+              <input type="range" min="0" max="10" step="1" value="0" id="sl-douleur" oninput="updateSliderVal('sl-douleur','val-douleur')" />
+              <span class="slider-val" id="val-douleur">0/10</span>
+            </div>
+          </div>
+
+          <div class="journal-block">
+            <div class="jblock-title">🌡️ Symptômes</div>
+            <div class="symptom-chips" id="symptom-chips">
+              <span class="chip" onclick="toggleChip(this)">Fatigue</span>
+              <span class="chip" onclick="toggleChip(this)">Anxiété</span>
+              <span class="chip" onclick="toggleChip(this)">Brouillard mental</span>
+              <span class="chip" onclick="toggleChip(this)">Maux de tête</span>
+              <span class="chip" onclick="toggleChip(this)">Douleurs articulaires</span>
+              <span class="chip" onclick="toggleChip(this)">Ballonnements</span>
+              <span class="chip" onclick="toggleChip(this)">Irritabilité</span>
+              <span class="chip" onclick="toggleChip(this)">Concentration ↓</span>
+            </div>
+          </div>
+
+          <div class="journal-block">
+            <div class="jblock-title">📝 Notes libres</div>
+            <textarea class="field" id="journal-notes" placeholder="Comment vous sentez-vous aujourd'hui ?" rows="3"></textarea>
+          </div>
+
+          <button class="btn-primary full-width" onclick="saveJournal()">Enregistrer l'entrée 💾</button>
+          <div class="save-confirm hidden" id="save-confirm">✅ Entrée sauvegardée !</div>
+        </div>
+
+        <div id="jtab-historique" class="hidden">
+          <div id="historique-list"></div>
+        </div>
+      </section>
+
+      <!-- RECETTES -->
+      <section id="page-recettes" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Recettes</h2>
+        </div>
+
+        <div class="search-bar">
+          <input type="text" id="recette-search" placeholder="🔍 Rechercher une recette…" oninput="filterRecettes()" />
+        </div>
+
+        <div class="filter-chips" id="cat-filters">
+          <span class="chip active" onclick="filterCat('', this)">Toutes</span>
+          <span class="chip" onclick="filterCat('petit-dejeuner', this)">🌅 Petits-déjeuners</span>
+          <span class="chip" onclick="filterCat('dejeuner', this)">☀️ Déjeuners</span>
+          <span class="chip" onclick="filterCat('diner', this)">🌙 Dîners</span>
+          <span class="chip" onclick="filterCat('snack', this)">🍎 Snacks</span>
+        </div>
+
+        <div id="recettes-grid" class="recettes-grid"></div>
+
+        <!-- Modal recette -->
+        <div id="recette-modal" class="modal hidden">
+          <div class="modal-overlay" onclick="closeModal()"></div>
+          <div class="modal-card">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div id="modal-content"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AGENDA -->
+      <section id="page-agenda" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Agenda alimentaire</h2>
+        </div>
+
+        <div class="week-nav">
+          <button onclick="changeWeek(-1)">‹</button>
+          <span id="week-label"></span>
+          <button onclick="changeWeek(1)">›</button>
+        </div>
+
+        <div id="agenda-grid" class="agenda-grid"></div>
+      </section>
+
+      <!-- GÉNÉRATEUR -->
+      <section id="page-generateur" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Générateur de menus</h2>
+        </div>
+
+        <div class="gen-options">
+          <div class="gen-option-row">
+            <label>Durée</label>
+            <select class="field" id="gen-duree">
+              <option value="3">3 jours</option>
+              <option value="7" selected>1 semaine</option>
+              <option value="14">2 semaines</option>
+            </select>
+          </div>
+          <div class="gen-option-row">
+            <label>Priorité</label>
+            <select class="field" id="gen-priorite">
+              <option value="anti-inflammatoire">Anti-inflammatoire</option>
+              <option value="energie">Boost énergie</option>
+              <option value="sommeil">Favoriser le sommeil</option>
+              <option value="digestion">Digestion douce</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn-primary full-width" onclick="generateMenu()">✨ Générer mon menu</button>
+
+        <div id="generated-menu" class="generated-menu hidden"></div>
+        <div id="gen-premium-wall" class="premium-wall hidden">
+          <div class="premium-icon">⭐</div>
+          <h3>Fonctionnalité Premium</h3>
+          <p>Générez des menus illimités, accédez à 100+ recettes exclusives et au suivi avancé.</p>
+          <button class="btn-premium" onclick="showPremium()">Essayer Premium — 4,99€/mois</button>
+          <button class="btn-link" onclick="unlockDemo()">Débloquer avec un code</button>
+        </div>
+      </section>
+
+      <!-- PROFIL -->
+      <section id="page-profil" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Mon profil</h2>
+        </div>
+
+        <div class="profil-avatar">
+          <div class="avatar-circle" id="avatar-initials"></div>
+          <div class="profil-name" id="profil-display-name"></div>
+          <div class="profil-badge" id="profil-plan-badge">Version gratuite</div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-title">Informations</div>
+          <div class="settings-row">
+            <label>Prénom</label>
+            <input class="field inline" type="text" id="p-name" />
+          </div>
+          <div class="settings-row">
+            <label>Objectif</label>
+            <select class="field inline" id="p-goal">
+              <option value="sommeil">Améliorer mon sommeil</option>
+              <option value="douleur">Réduire la douleur</option>
+              <option value="energie">Retrouver de l'énergie</option>
+              <option value="global">Bien-être global</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-title">Régime alimentaire</div>
+          <label class="toggle-row">
+            <span>Sans gluten</span>
+            <input type="checkbox" id="p-sg" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+          <label class="toggle-row">
+            <span>Sans lactose</span>
+            <input type="checkbox" id="p-sl" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+          <label class="toggle-row">
+            <span>Végétarien</span>
+            <input type="checkbox" id="p-sv" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-title">Abonnement</div>
+          <div class="plan-card" id="plan-card">
+            <div class="plan-name">Flōra Gratuit</div>
+            <div class="plan-features">
+              <div class="pf">✅ 20 recettes anti-inflammatoires</div>
+              <div class="pf">✅ Journal illimité</div>
+              <div class="pf">✅ Agenda 1 semaine</div>
+              <div class="pf pf-locked">🔒 Bibliothèque complète (120+ recettes)</div>
+              <div class="pf pf-locked">🔒 Générateur illimité</div>
+              <div class="pf pf-locked">🔒 Statistiques avancées</div>
+            </div>
+            <button class="btn-premium" onclick="showPremium()">Passer à Premium →</button>
+          </div>
+        </div>
+
+        <button class="btn-primary full-width" onclick="saveProfil()">Enregistrer</button>
+        <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
+      </section>
+
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav id="bottom-nav">
+      <button class="nav-btn active" onclick="showPage('accueil')" data-page="accueil">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Accueil</span>
+      </button>
+      <button class="nav-btn" onclick="showPage('journal')" data-page="journal">
+        <span class="nav-icon">🌙</span>
+        <span class="nav-label">Journal</span>
+      </button>
+      <button class="nav-btn" onclick="showPage('recettes')" data-page="recettes">
+        <span class="nav-icon">🥗</span>
+        <span class="nav-label">Recettes</span>
+      </button>
+      <button class="nav-btn" onclick="showPage('agenda')" data-page="agenda">
+        <span class="nav-icon">📅</span>
+        <span class="nav-label">Agenda</span>
+      </button>
+      <button class="nav-btn" onclick="showPage('profil')" data-page="profil">
+        <span class="nav-icon">👤</span>
+        <span class="nav-label">Profil</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <!-- PREMIUM MODAL -->
+  <div id="premium-modal" class="modal hidden">
+    <div class="modal-overlay" onclick="closePremium()"></div>
+    <div class="modal-card premium-modal-card">
+      <button class="modal-close" onclick="closePremium()">✕</button>
+      <div class="premium-header">
+        <div class="premium-logo">Flōra ⭐</div>
+        <h2>Passez à Premium</h2>
+        <p>Tout ce dont vous avez besoin pour votre bien-être</p>
+      </div>
+      <div class="premium-features">
+        <div class="pf-item">✅ 120+ recettes anti-inflammatoires</div>
+        <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
+        <div class="pf-item">✅ Générateur de menus illimité</div>
+        <div class="pf-item">✅ Statistiques & tendances avancées</div>
+        <div class="pf-item">✅ Export journal PDF</div>
+        <div class="pf-item">✅ Rappels personnalisés</div>
+      </div>
+      <div class="premium-price">4,99€ <span>/mois</span></div>
+      <button class="btn-premium large" onclick="activatePremiumDemo()">Commencer l'essai gratuit 7 jours</button>
+      <div class="code-unlock">
+        <input type="text" class="field" id="promo-code" placeholder="Code promo ou d'activation" />
+        <button class="btn-link" onclick="checkCode()">Activer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
