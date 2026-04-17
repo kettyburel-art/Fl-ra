@@ -3253,6 +3253,19 @@ function saveState() {
   localStorage.setItem('flora_profile', JSON.stringify(profile));
   localStorage.setItem('flora_journal',  JSON.stringify(journal));
   localStorage.setItem('flora_agenda',   JSON.stringify(agenda));
+  localStorage.setItem('flora_placard',  JSON.stringify(placardItems));
+}
+
+// unlockDemo — ouvre la modale premium sur la zone code
+function unlockDemo() {
+  showPremium();
+  setTimeout(() => {
+    const input = document.getElementById('promo-code');
+    if (input) {
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      input.focus();
+    }
+  }, 300);
 }
 
 // ============================
@@ -4011,8 +4024,26 @@ function renderRecettes() {
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
     if (search && !r.nom.toLowerCase().includes(search)) return false;
+    // Filtre placard si actif
+    if (window._placardFilter && window._placardFilter.length) {
+      const match = r.ingredients.some(ing =>
+        window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
+      );
+      if (!match) return false;
+    }
     return true;
   });
+
+  // Badge filtre placard actif
+  const placardBadge = document.getElementById('placard-filter-badge');
+  if (placardBadge) {
+    if (window._placardFilter && window._placardFilter.length) {
+      placardBadge.textContent = `🗄️ Filtre placard actif (${recettes.length} recettes)`;
+      placardBadge.style.display = 'block';
+    } else {
+      placardBadge.style.display = 'none';
+    }
+  }
 
   grid.innerHTML = recettes.map(r => {
     const locked = r.premium && !isPremium;
@@ -4030,7 +4061,16 @@ function renderRecettes() {
   }).join('');
 
   if (!recettes.length) {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--text-light);padding:32px;">Aucune recette trouvée.</p>';
+    grid.innerHTML = `
+      <div style="grid-column:1/-1;text-align:center;padding:32px;">
+        <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
+        <div style="color:var(--text-light);font-size:0.88rem;">Aucune recette trouvée.</div>
+        ${window._placardFilter?.length ? `
+          <button onclick="window._placardFilter=null;renderRecettes();"
+            style="margin-top:12px;padding:8px 16px;border:none;border-radius:99px;background:var(--green-pale);color:var(--green-deep);font-size:0.82rem;cursor:pointer;">
+            Effacer le filtre placard
+          </button>` : ''}
+      </div>`;
   }
 }
 
