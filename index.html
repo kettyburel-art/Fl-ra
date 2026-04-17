@@ -7,7 +7,7 @@
   <meta name="description" content="Flōra — Bien-être anti-inflammatoire, journal et nutrition personnalisés" />
   <title>Flōra</title>
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
@@ -279,7 +279,7 @@
         <div id="gen-premium-wall" class="premium-wall hidden">
           <div class="premium-icon">⭐</div>
           <h3>Fonctionnalité Premium</h3>
-          <p>Générez des menus illimités, accédez à 100+ recettes exclusives et au suivi avancé.</p>
+          <p>Générez des menus illimités, accédez à 37+ recettes exclusives et au suivi avancé.</p>
           <button class="btn-premium" onclick="showPremium()">Essayer Premium — 4,99€/mois</button>
           <button class="btn-link" onclick="unlockDemo()">Débloquer avec un code</button>
         </div>
@@ -350,7 +350,7 @@
           </div>
         </div>
 
-        <button class="btn-primary full-width" onclick="saveProfil()">Enregistrer</button>
+        <button class="btn-primary full-width" onclick="saveProfil(this)">Enregistrer</button>
         <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
       </section>
 
@@ -393,7 +393,7 @@
         <p>Tout ce dont vous avez besoin pour votre bien-être</p>
       </div>
       <div class="premium-features">
-        <div class="pf-item">✅ 120+ recettes anti-inflammatoires</div>
+        <div class="pf-item">✅ 37 recettes anti-inflammatoires (dont 23 exclusives)</div>
         <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
         <div class="pf-item">✅ Générateur de menus illimité</div>
         <div class="pf-item">✅ Statistiques & tendances avancées</div>
