@@ -3970,6 +3970,8 @@ function initApp() {
   const rdj  = free[new Date().getDate() % free.length];
   const rdjEl = document.getElementById('recette-du-jour');
   if (rdjEl) rdjEl.textContent = rdj.nom;
+
+  renderStreakOnDashboard();
 }
 
 // ============================
@@ -3995,7 +3997,7 @@ function showPage(page) {
   if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
-  if (page === 'profil')     loadProfil();
+  if (page === 'profil')     { loadProfil(); renderStats(); }
   if (page === 'generateur') checkGenAccess();
   if (page === 'placard')    initPlacard();
 }
@@ -4306,7 +4308,6 @@ function renderRecettes() {
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
     if (search && !r.nom.toLowerCase().includes(search)) return false;
-    // Filtre placard si actif
     if (window._placardFilter && window._placardFilter.length) {
       const match = r.ingredients.some(ing =>
         window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
@@ -4316,7 +4317,7 @@ function renderRecettes() {
     return true;
   });
 
-  // Badge filtre placard actif
+  // Badge filtre placard
   const placardBadge = document.getElementById('placard-filter-badge');
   if (placardBadge) {
     if (window._placardFilter && window._placardFilter.length) {
@@ -4329,14 +4330,34 @@ function renderRecettes() {
 
   grid.innerHTML = recettes.map(r => {
     const locked = r.premium && !isPremium;
+
+    // Carte premium verrouillée — avec aperçu alléchant
+    if (locked) {
+      return `
+        <div class="recette-card recette-card-locked" onclick="openRecettePreview(${r.id})">
+          <div class="recette-emoji recette-emoji-blurred">${r.emoji}</div>
+          <div class="recette-lock-overlay">
+            <div class="recette-lock-icon">⭐</div>
+            <div class="recette-lock-label">Premium</div>
+          </div>
+          <div class="recette-info">
+            <div class="recette-name">${r.nom}</div>
+            <div class="recette-meta">
+              <span class="recette-time">⏱ ${r.temps}</span>
+              <span class="recette-tag premium">⭐ Premium</span>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    // Carte normale déverrouillée
     return `
-      <div class="recette-card" onclick="${locked ? 'showPremium()' : `openRecette(${r.id})`}">
-        <div class="recette-emoji">${r.emoji}${locked ? '<span style="position:absolute;right:8px;top:8px;font-size:1rem;">🔒</span>' : ''}</div>
+      <div class="recette-card" onclick="openRecette(${r.id})">
+        <div class="recette-emoji">${r.emoji}</div>
         <div class="recette-info">
           <div class="recette-name">${r.nom}</div>
           <div class="recette-meta">
             <span class="recette-time">⏱ ${r.temps}</span>
-            ${r.premium ? '<span class="recette-tag premium">⭐ Premium</span>' : ''}
           </div>
         </div>
       </div>`;
@@ -4356,18 +4377,101 @@ function renderRecettes() {
   }
 }
 
-function filterRecettes() { renderRecettes(); }
+// Aperçu séduisant pour recettes Premium verrouillées
+function openRecettePreview(id) {
+  const r = RECETTES.find(x => x.id === id);
+  if (!r) return;
 
-function filterCat(cat, el) {
-  currentCatFilter = cat;
-  document.querySelectorAll('#cat-filters .chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderRecettes();
+  const modal   = document.getElementById('recette-modal');
+  const content = document.getElementById('modal-content');
+
+  // Masquer partiellement les ingrédients (2 visibles, reste flou)
+  const ingVisibles  = r.ingredients.slice(0, 2);
+  const ingCaches    = r.ingredients.slice(2);
+
+  content.innerHTML = `
+    <div class="modal-recipe-header">
+      <div class="modal-recipe-emoji">${r.emoji}</div>
+      <div class="modal-recipe-title">${r.nom}</div>
+      <div class="recipe-meta-row">
+        <span class="chip active">⏱ ${r.temps}</span>
+        <span class="chip">${r.calories} kcal</span>
+        <span class="chip">${r.diff}</span>
+        <span class="chip" style="background:var(--gold);color:var(--white);">⭐ Premium</span>
+      </div>
+    </div>
+
+    <!-- Bénéfices santé — 100% visible pour accrocher -->
+    <div class="recipe-benefits" style="border-left:3px solid var(--gold);">
+      🌿 ${r.benefices}
+    </div>
+
+    <!-- Ingrédients — aperçu partiel -->
+    <div class="recipe-section-title">Ingrédients (1 personne)</div>
+    <ul class="recipe-ingredient-list">
+      ${ingVisibles.map(i => `<li>${i}</li>`).join('')}
+      ${ingCaches.length ? `
+        <li class="ingredient-locked">
+          <span style="filter:blur(4px);user-select:none;">
+            ${ingCaches[0]}
+          </span>
+        </li>
+        ${ingCaches.length > 1 ? `
+          <li class="ingredient-locked" style="color:var(--text-light);font-style:italic;list-style:none;padding-left:0;">
+            + ${ingCaches.length - 1} autre${ingCaches.length > 2 ? 's' : ''} ingrédient${ingCaches.length > 2 ? 's' : ''}…
+          </li>` : ''}
+      ` : ''}
+    </ul>
+
+    <!-- Préparation — complètement masquée -->
+    <div class="recipe-section-title">Préparation</div>
+    <div class="preview-locked-steps">
+      <div class="preview-step-blur">
+        <div class="step-blur-line" style="width:90%"></div>
+        <div class="step-blur-line" style="width:75%"></div>
+        <div class="step-blur-line" style="width:82%"></div>
+      </div>
+      <div class="preview-lock-banner">
+        <div class="preview-lock-icon">🔒</div>
+        <div class="preview-lock-text">
+          <strong>Recette complète — Premium</strong><br>
+          <span>Accédez aux ${r.etapes.length} étapes de préparation</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Premium -->
+    <div class="preview-cta-block">
+      <div class="preview-cta-perks">
+        <span>✅ ${RECETTES.filter(x=>x.premium).length} recettes exclusives</span>
+        <span>✅ Générateur de menus illimité</span>
+        <span>✅ Statistiques bien-être avancées</span>
+      </div>
+      <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00"
+         target="_blank"
+         class="btn-premium large"
+         style="display:block;text-align:center;text-decoration:none;margin-top:12px;"
+         onclick="closeModal()">
+        💳 Passer à Premium — 4,99€/mois
+      </a>
+      <button class="btn-link" style="width:100%;margin-top:10px;text-align:center;" onclick="closeModal();showLogin();">
+        Déjà abonné·e ? Se connecter
+      </button>
+    </div>
+  `;
+
+  modal.classList.remove('hidden');
 }
 
 function openRecette(id) {
   const r = RECETTES.find(x => x.id === id);
   if (!r) return;
+
+  // Si Premium verrouillé → aperçu
+  if (r.premium && !isPremium) {
+    openRecettePreview(id);
+    return;
+  }
 
   const modal   = document.getElementById('recette-modal');
   const content = document.getElementById('modal-content');
@@ -4413,6 +4517,148 @@ function openRecette(id) {
 
 function closeModal() {
   document.getElementById('recette-modal').classList.add('hidden');
+}
+
+function filterRecettes() { renderRecettes(); }
+
+function filterCat(cat, el) {
+  currentCatFilter = cat;
+  document.querySelectorAll('#cat-filters .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderRecettes();
+}
+
+// ============================
+// STATISTIQUES BIEN-ÊTRE
+// ============================
+function renderStats() {
+  const statsEl = document.getElementById('stats-container');
+  if (!statsEl) return;
+
+  const days = 30;
+  const today = new Date();
+  const entries = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    entries.push({ date: dateKey(d), data: journal[dateKey(d)] || null, d });
+  }
+
+  const filled = entries.filter(e => e.data);
+  const avgEnergie = filled.length
+    ? Math.round(filled.reduce((s, e) => s + (e.data.energie || 0), 0) / filled.length * 10) / 10 : 0;
+  const avgDouleur = filled.length
+    ? Math.round(filled.reduce((s, e) => s + (e.data.douleur || 0), 0) / filled.length * 10) / 10 : 0;
+  const nuitsSjsr = filled.filter(e => e.data.sjsr > 0).length;
+
+  const visible = isPremium ? entries : entries.slice(-7);
+
+  statsEl.innerHTML = `
+    <div class="stats-summary-grid">
+      <div class="stats-summary-card">
+        <div class="stats-summary-val">${avgEnergie || '—'}</div>
+        <div class="stats-summary-label">Énergie moy.<br>/10</div>
+      </div>
+      <div class="stats-summary-card">
+        <div class="stats-summary-val">${avgDouleur || '—'}</div>
+        <div class="stats-summary-label">Douleur moy.<br>/10</div>
+      </div>
+      <div class="stats-summary-card">
+        <div class="stats-summary-val">${nuitsSjsr}</div>
+        <div class="stats-summary-label">Nuits SJSR<br>${isPremium ? '30j' : '7j'}</div>
+      </div>
+    </div>
+
+    <div class="stats-section" style="margin-top:16px;">
+      <div class="stats-section-title">⚡ Énergie & Douleur — ${isPremium ? '30 derniers jours' : '7 derniers jours'}</div>
+      <div class="stats-chart-wrap">
+        <div class="stats-chart-bars">
+          ${visible.map(e => {
+            const en  = e.data ? Math.round((e.data.energie || 0) / 10 * 70) : 0;
+            const do_ = e.data ? Math.round((e.data.douleur  || 0) / 10 * 70) : 0;
+            const day = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
+            return `<div class="stats-bar-wrap">
+              <div style="display:flex;gap:2px;align-items:flex-end;height:70px;justify-content:center;">
+                <div class="stats-bar energie" style="height:${en}px;width:45%;"></div>
+                <div class="stats-bar douleur" style="height:${do_}px;width:45%;"></div>
+              </div>
+              <div class="stats-day-label">${day}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="stats-legend">
+          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--green-mid)"></div> Énergie</div>
+          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--red-soft)"></div> Douleur</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-section">
+      <div class="stats-section-title">🦵 Nuits SJSR</div>
+      <div class="stats-chart-wrap">
+        <div class="stats-chart-bars">
+          ${visible.map(e => {
+            const sjsr = e.data ? Math.round((e.data.sjsr || 0) / 5 * 70) : 0;
+            const day  = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
+            return `<div class="stats-bar-wrap">
+              <div style="height:70px;display:flex;align-items:flex-end;justify-content:center;">
+                <div class="stats-bar sjsr" style="height:${sjsr}px;width:80%;"></div>
+              </div>
+              <div class="stats-day-label">${day}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-light);margin-top:6px;">0 = aucun · 5 = insupportable</div>
+      </div>
+    </div>
+
+    ${!isPremium ? `
+    <div class="stats-premium-wall">
+      <div style="font-size:1.8rem;">📊</div>
+      <p>Débloquez l'historique complet sur <strong>30 jours</strong>, les tendances et l'export PDF.</p>
+      <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank"
+         class="btn-premium" style="display:block;text-align:center;text-decoration:none;">
+        ⭐ Passer à Premium — 4,99€/mois
+      </a>
+    </div>` : ''}
+  `;
+}
+
+// ============================
+// STREAK
+// ============================
+function getStreak() {
+  const today = new Date();
+  let streak = 0;
+  let d = new Date(today);
+  while (true) {
+    if (journal[dateKey(d)]) { streak++; d.setDate(d.getDate() - 1); }
+    else break;
+  }
+  return streak;
+}
+
+function getStreakMessage(n) {
+  if (n === 0) return 'Commencez votre suivi aujourd\'hui 🌱';
+  if (n === 1) return 'Premier jour — continuez !';
+  if (n < 7)   return `${n} jours de suite — bel élan !`;
+  if (n < 14)  return 'Une semaine complète 🎉';
+  if (n < 30)  return 'Régulière et déterminée 💚';
+  return 'Un mois de suivi — extraordinaire 🏆';
+}
+
+function renderStreakOnDashboard() {
+  const streak = getStreak();
+  const el = document.getElementById('streak-big');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="streak-flame">🔥</div>
+    <div class="streak-info">
+      <div class="streak-count-big">${streak} <span style="font-size:1rem;opacity:.7">jour${streak > 1 ? 's' : ''}</span></div>
+      <div class="streak-label">de suivi consécutif</div>
+      <div class="streak-message">${getStreakMessage(streak)}</div>
+    </div>
+  `;
 }
 
 function addToAgenda(recetteId) {

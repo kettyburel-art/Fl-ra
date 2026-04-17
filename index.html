@@ -110,6 +110,17 @@
           </div>
           <div class="hero-badge" id="streak-badge">🔥 <span id="streak-count">0</span>j</div>
         </div>
+      </div>
+
+      <!-- Streak amélioré -->
+      <div class="streak-big" id="streak-big">
+        <div class="streak-flame">🔥</div>
+        <div class="streak-info">
+          <div class="streak-count-big">0 <span style="font-size:1rem;opacity:.7">jour</span></div>
+          <div class="streak-label">de suivi consécutif</div>
+          <div class="streak-message">Commencez votre suivi aujourd'hui 🌱</div>
+        </div>
+        </div>
 
         <div class="card-grid">
           <div class="card card-journal" onclick="showPage('journal')">
@@ -468,6 +479,10 @@
 
         <button class="btn-primary full-width" onclick="saveProfil(this)">Enregistrer</button>
         <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
+
+        <!-- Statistiques bien-être -->
+        <div class="section-title" style="margin-top:24px;">📊 Mes statistiques</div>
+        <div id="stats-container"></div>
       </section>
 
 
