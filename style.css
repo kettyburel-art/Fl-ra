@@ -2125,3 +2125,33 @@ textarea.field { resize: vertical; min-height: 80px; }
   body { background: var(--cream-dark); display: flex; align-items: center; justify-content: center; height: 100vh; }
   #app { height: 860px; border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
 }
+
+/* Conseil SJSR rotatif */
+.conseil-sjsr {
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid));
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  box-shadow: 0 4px 16px var(--shadow-strong);
+}
+.conseil-sjsr:active { opacity: 0.88; }
+.conseil-icon { font-size: 1.6rem; flex-shrink: 0; margin-top: 2px; }
+.conseil-text {
+  flex: 1;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.92);
+  line-height: 1.55;
+  transition: opacity 0.15s;
+}
+.conseil-next {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.5);
+  flex-shrink: 0;
+  align-self: flex-end;
+  white-space: nowrap;
+}

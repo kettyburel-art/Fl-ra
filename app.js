@@ -4103,12 +4103,18 @@ function initApp() {
   setJournalDate();
   updateSleepCalc();
 
+  // Recette du jour — change chaque jour, cliquable directement
   const free = RECETTES.filter(r => !r.premium);
   const rdj  = free[new Date().getDate() % free.length];
   const rdjEl = document.getElementById('recette-du-jour');
-  if (rdjEl) rdjEl.textContent = rdj.nom;
+  const rdjEmoji = document.getElementById('rdj-emoji');
+  if (rdjEl)    rdjEl.textContent = rdj.nom;
+  if (rdjEmoji) rdjEmoji.textContent = rdj.emoji;
+  // Stocker l'ID pour openRecetteDuJour
+  window._rdjId = rdj.id;
 
   renderStreakOnDashboard();
+  renderConseil();
 }
 
 // ============================
@@ -4135,6 +4141,7 @@ function showPage(page) {
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     { loadProfil(); renderStats(); }
+  if (page === 'apropos')    { /* static */ }
   if (page === 'generateur') checkGenAccess();
   if (page === 'placard')    initPlacard();
 }
@@ -4154,23 +4161,34 @@ function updateDashboard() {
 
   const now = new Date();
   const opts = { weekday: 'long', day: 'numeric', month: 'long' };
-  document.getElementById('dash-date').textContent =
-    now.toLocaleDateString('fr-FR', opts);
+  document.getElementById('dash-date').textContent = now.toLocaleDateString('fr-FR', opts);
 
-  // Streak
-  let streak = 0;
+  // Streak (via getStreak si disponible)
+  const streak = typeof getStreak === 'function' ? getStreak() : 0;
+  const streakEl = document.getElementById('streak-count');
+  if (streakEl) streakEl.textContent = streak;
+
+  // Statut journal aujourd'hui
   const today = dateKey(new Date());
-  let d = new Date();
-  while (true) {
-    const k = dateKey(d);
-    if (journal[k]) { streak++; d.setDate(d.getDate() - 1); }
-    else break;
+  const journalStatus = document.getElementById('journal-today-status');
+  if (journalStatus) {
+    journalStatus.textContent = journal[today]
+      ? `✅ Entrée du jour enregistrée`
+      : 'Aucune entrée aujourd\'hui';
   }
-  document.getElementById('streak-count').textContent = streak;
 
-  // Journal today status
-  if (journal[today]) {
-    document.getElementById('journal-today-status').textContent = '✅ Entrée enregistrée';
+  // Statut agenda aujourd'hui
+  const agendaStatus = document.getElementById('agenda-today');
+  if (agendaStatus && agenda[today]) {
+    const repas = [];
+    const repasMap = { petitdej:'Petit-déj', dejeuner:'Déjeuner', diner:'Dîner' };
+    Object.entries(agenda[today]).forEach(([slug, recId]) => {
+      const rec = RECETTES.find(r => r.id === recId);
+      if (rec) repas.push(rec.emoji + ' ' + rec.nom.split('-')[0].trim());
+    });
+    if (repas.length) {
+      agendaStatus.textContent = repas[0] + (repas.length > 1 ? ` +${repas.length-1}` : '');
+    }
   }
 
   // Week chart
@@ -4402,6 +4420,139 @@ function switchJTab(tab, el) {
   document.getElementById(`jtab-${tab}`).classList.remove('hidden');
 
   if (tab === 'historique') renderHistorique();
+}
+
+// ============================
+// EXPORT PDF JOURNAL
+// ============================
+function exportJournalPDF() {
+  const entries = Object.entries(journal).sort((a,b) => a[0].localeCompare(b[0]));
+
+  if (!entries.length) {
+    alert('Aucune entrée à exporter. Commencez par remplir votre journal !');
+    return;
+  }
+
+  const name = profile.name || 'Utilisateur·trice';
+  const today = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+
+  const rows = entries.map(([date, e]) => {
+    const d = new Date(date + 'T12:00:00');
+    const label = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
+    const sleep = e.coucher && e.lever
+      ? `${e.coucher} → ${e.lever} (${e.duree}h, ${e.cycles||'?'} cycles)`
+      : `${e.duree||'—'}h`;
+    const sjsrLabels = ['Aucun','Léger','Modéré','Fort','Très fort','Insupportable'];
+    const sjsrLabel = sjsrLabels[e.sjsr||0] || '—';
+    const symp = e.symptoms?.length ? e.symptoms.join(', ') : '—';
+    const meds = e.meds?.length ? e.meds.join(', ') : '—';
+
+    return `
+      <tr style="border-bottom:1px solid #e8e8e0;">
+        <td style="padding:10px 8px;font-weight:600;color:#2d4a3e;white-space:nowrap;">${label}</td>
+        <td style="padding:10px 8px;text-align:center;">${sleep}<br><small>${stars}</small></td>
+        <td style="padding:10px 8px;text-align:center;">${e.energie||'—'}/10</td>
+        <td style="padding:10px 8px;text-align:center;">${e.douleur||'—'}/10</td>
+        <td style="padding:10px 8px;text-align:center;color:${(e.sjsr||0)>2?'#c0614a':'#3d6b58'};">${sjsrLabel}</td>
+        <td style="padding:10px 8px;font-size:0.85em;color:#4a5e54;">${symp}</td>
+        <td style="padding:10px 8px;font-size:0.82em;font-style:italic;color:#8a9e96;">${e.notes||''}</td>
+      </tr>
+    `;
+  }).join('');
+
+  const avgEnergie = entries.length
+    ? (entries.reduce((s,[,e])=>s+(e.energie||0),0)/entries.length).toFixed(1) : '—';
+  const avgDouleur = entries.length
+    ? (entries.reduce((s,[,e])=>s+(e.douleur||0),0)/entries.length).toFixed(1) : '—';
+  const nuitsSjsr = entries.filter(([,e])=>(e.sjsr||0)>0).length;
+  const streak = getStreak();
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Journal Flōra — ${name}</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Georgia, serif; color: #1e2d26; background: #fff; padding: 40px; }
+    h1 { font-size: 2rem; color: #2d4a3e; margin-bottom: 4px; }
+    .subtitle { color: #8a9e96; font-size: 0.9rem; margin-bottom: 32px; }
+    .summary { display: flex; gap: 24px; margin-bottom: 32px; }
+    .sum-card { background: #f7f3ee; border-radius: 12px; padding: 16px 20px; flex: 1; text-align: center; }
+    .sum-val { font-size: 1.8rem; font-weight: 700; color: #2d4a3e; }
+    .sum-label { font-size: 0.78rem; color: #8a9e96; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    thead tr { background: #2d4a3e; color: #fff; }
+    thead th { padding: 10px 8px; text-align: left; font-weight: 600; font-size: 0.8rem; }
+    tbody tr:nth-child(even) { background: #f7f3ee; }
+    .footer { margin-top: 32px; text-align: center; font-size: 0.78rem; color: #8a9e96; border-top: 1px solid #ede8e0; padding-top: 16px; }
+    @media print {
+      body { padding: 20px; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Flōra 🌿 — Journal de bien-être</h1>
+  <div class="subtitle">
+    ${name} · Exporté le ${today} · ${entries.length} entrée${entries.length>1?'s':''}
+  </div>
+
+  <div class="summary">
+    <div class="sum-card">
+      <div class="sum-val">${avgEnergie}</div>
+      <div class="sum-label">Énergie moyenne /10</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-val">${avgDouleur}</div>
+      <div class="sum-label">Douleur moyenne /10</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-val">${nuitsSjsr}</div>
+      <div class="sum-label">Nuits SJSR</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-val">${streak}</div>
+      <div class="sum-label">Jours consécutifs</div>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Sommeil</th>
+        <th>Énergie</th>
+        <th>Douleur</th>
+        <th>SJSR</th>
+        <th>Symptômes</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>${rows}</tbody>
+  </table>
+
+  <div class="footer">
+    Flōra — Application bien-être SJSR/TDAH anti-inflammatoire · kettyburel-art.github.io/Fl-ra/<br>
+    Document généré automatiquement · À partager avec votre médecin si besoin
+  </div>
+
+  <script>window.onload = () => window.print();</script>
+</body>
+</html>`;
+
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url, '_blank');
+  if (!win) {
+    // Fallback si popup bloqué
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `flora-journal-${dateKey(new Date())}.html`;
+    a.click();
+  }
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 function renderHistorique() {
@@ -4642,9 +4793,12 @@ function openRecette(id) {
       ${r.etapes.map(e => `<li>${e}</li>`).join('')}
     </ol>
 
-    <div style="margin-top:20px;">
-      <button class="btn-primary full-width" onclick="addToAgenda(${r.id})">
+    <div style="margin-top:20px;display:flex;gap:8px;">
+      <button class="btn-primary" style="flex:1;" onclick="addToAgenda(${r.id})">
         📅 Ajouter à l'agenda
+      </button>
+      <button class="btn-primary" style="padding:14px 16px;background:var(--green-mid);" onclick="shareRecette(${r.id})" title="Partager">
+        📤
       </button>
     </div>
   `;
@@ -4655,6 +4809,24 @@ function openRecette(id) {
 function closeModal() {
   document.getElementById('recette-modal').classList.add('hidden');
 }
+
+function shareRecette(id) {
+  const r = RECETTES.find(x => x.id === id);
+  if (!r) return;
+  const text = `🌿 ${r.emoji} ${r.nom}\n⏱ ${r.temps} · ${r.calories} kcal\n\n${r.benefices}\n\nIngrédients :\n${r.ingredients.map(i=>'• '+i).join('\n')}\n\n👉 Flōra : https://kettyburel-art.github.io/Fl-ra/`;
+  if (navigator.share) {
+    navigator.share({ title: `Flōra — ${r.nom}`, text, url: 'https://kettyburel-art.github.io/Fl-ra/' }).catch(()=>{});
+  } else {
+    navigator.clipboard?.writeText(text).then(() => {
+      const msg = document.createElement('div');
+      msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;white-space:nowrap;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+      msg.textContent = '✅ Recette copiée !';
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 2000);
+    });
+  }
+}
+
 
 function filterRecettes() { renderRecettes(); }
 
@@ -4762,8 +4934,50 @@ function renderStats() {
 }
 
 // ============================
-// STREAK
+// CONSEILS SJSR ROTATIFS
 // ============================
+const CONSEILS_SJSR = [
+  { icon: '🩸', text: 'Associez toujours vos sources de fer à de la vitamine C (citron, poivron) pour multiplier par 3 leur absorption.' },
+  { icon: '🦵', text: 'Le magnésium bisglycinate pris le soir réduit significativement les impatiences nocturnes. Privilégiez les eaux riches en magnésium.' },
+  { icon: '🐟', text: 'Les oméga-3 (sardines, maquereaux, saumon) réduisent l\'inflammation des nerfs responsable du SJSR. Objectif : 3 fois par semaine.' },
+  { icon: '☕', text: 'La caféine amplifie les symptômes SJSR. Évitez-la après 14h — cela inclut le thé, le cola et le chocolat noir en excès.' },
+  { icon: '🌙', text: '1 cycle de sommeil = 90 min. Programmez votre réveil sur un multiple de 90 min pour vous réveiller en phase légère.' },
+  { icon: '🫘', text: 'Les lentilles beluga (noires) sont les plus riches en fer végétal. Cuisez-les avec du jus de citron pour maximiser l\'absorption.' },
+  { icon: '🧠', text: 'Le SJSR et le TDAH partagent souvent une carence en dopamine. Les protéines au petit-déjeuner (œufs, sardines) boostent sa production.' },
+  { icon: '🏃', text: 'L\'exercice modéré (marche, yoga) améliore le SJSR. Évitez les efforts intenses le soir — ils aggravent les symptômes nocturnes.' },
+  { icon: '🥬', text: 'Les épinards cuits libèrent plus de fer que crus. Faites-les tomber à la poêle avec de l\'ail et un filet de citron en fin de cuisson.' },
+  { icon: '💊', text: 'Si votre ferritine est < 75 µg/L, demandez à votre médecin une supplémentation en fer — c\'est le premier traitement du SJSR léger.' },
+  { icon: '🌿', text: 'La valériane et la passiflore ont des effets prouvés sur l\'endormissement. À infuser 8 min, 30 min avant le coucher.' },
+  { icon: '🫀', text: 'La betterave améliore la circulation sanguine dans les jambes grâce à ses nitrates naturels. Consommez-en 3 fois par semaine.' },
+];
+
+let conseilIdx = new Date().getDate() % CONSEILS_SJSR.length;
+
+function renderConseil() {
+  const c = CONSEILS_SJSR[conseilIdx];
+  const iconEl = document.getElementById('conseil-icon');
+  const textEl = document.getElementById('conseil-text');
+  if (iconEl) iconEl.textContent = c.icon;
+  if (textEl) {
+    textEl.style.opacity = '0';
+    setTimeout(() => {
+      textEl.textContent = c.text;
+      textEl.style.opacity = '1';
+    }, 150);
+  }
+}
+
+function nextConseil() {
+  conseilIdx = (conseilIdx + 1) % CONSEILS_SJSR.length;
+  renderConseil();
+}
+
+function openRecetteDuJour() {
+  if (window._rdjId) openRecette(window._rdjId);
+  else showPage('recettes');
+}
+
+
 function getStreak() {
   const today = new Date();
   let streak = 0;

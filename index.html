@@ -203,11 +203,11 @@
             <div class="card-arrow">→</div>
           </div>
 
-          <div class="card card-recette" onclick="showPage('recettes')">
-            <div class="card-icon">🥗</div>
+          <div class="card card-recette" id="card-recette-jour" onclick="openRecetteDuJour()">
+            <div class="card-icon" id="rdj-emoji">🥗</div>
             <div class="card-body">
-              <div class="card-title">Recettes</div>
-              <div class="card-sub" id="recette-du-jour">Recette du jour…</div>
+              <div class="card-title">Recette du jour</div>
+              <div class="card-sub" id="recette-du-jour">Chargement…</div>
             </div>
             <div class="card-arrow">→</div>
           </div>
@@ -229,6 +229,13 @@
             </div>
             <div class="card-arrow">→</div>
           </div>
+        </div>
+
+        <!-- Conseil SJSR rotatif -->
+        <div class="conseil-sjsr" id="conseil-sjsr" onclick="nextConseil()">
+          <div class="conseil-icon" id="conseil-icon">🦵</div>
+          <div class="conseil-text" id="conseil-text">Chargement…</div>
+          <div class="conseil-next">Suivant →</div>
         </div>
 
         <!-- Synthèse bien-être -->
@@ -396,6 +403,14 @@
         </div>
 
         <div id="jtab-historique" class="hidden">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+            <div style="font-size:0.8rem;color:var(--text-light);">
+              Votre historique complet
+            </div>
+            <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">
+              📄 Exporter PDF
+            </button>
+          </div>
           <div id="historique-list"></div>
         </div>
       </section>
@@ -552,11 +567,77 @@
         <button class="btn-primary full-width" onclick="enableNotifications()" style="margin-bottom:8px;">
           🔔 Activer les rappels bien-être
         </button>
+        <button class="btn-link full-width" style="text-align:center;padding:10px;" onclick="showPage('apropos')">
+          ℹ️ À propos · CGU · Mentions légales
+        </button>
         <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
 
         <!-- Statistiques bien-être -->
         <div class="section-title" style="margin-top:24px;">📊 Mes statistiques</div>
         <div id="stats-container"></div>
+      </section>
+
+      <!-- PAGE À PROPOS -->
+      <section id="page-apropos" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('profil')">←</button>
+          <h2>À propos</h2>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">🌿 Flōra</div>
+          <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:12px;">
+            Flōra est une application de bien-être nutritionnel conçue pour les personnes vivant avec le <strong>Syndrome des Jambes Sans Repos (SJSR)</strong>, la douleur chronique, les inflammations et les profils neuroatypiques (TDAH).
+          </p>
+          <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">
+            Toutes les recettes sont <strong>sans gluten · sans lactose · anti-inflammatoires</strong>, basées sur les dernières recherches en nutrition thérapeutique.
+          </p>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">👩‍💻 Créatrice</div>
+          <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">
+            Flōra a été créée par <strong>Ketty Burel</strong>, développeuse web autodidacte et elle-même concernée par le SJSR. Conçue avec ❤️ pour la communauté SJSR/TDAH francophone.
+          </p>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">📋 Conditions d'utilisation</div>
+          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+            <strong>1. Objet</strong><br>
+            Flōra est une application de bien-être et d'information nutritionnelle. Elle ne constitue pas un avis médical et ne remplace pas une consultation médicale.
+          </p>
+          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+            <strong>2. Données personnelles</strong><br>
+            Toutes vos données (journal, profil, agenda) sont stockées <strong>uniquement sur votre appareil</strong>. Aucune donnée n'est transmise à des serveurs tiers. Flōra respecte votre vie privée.
+          </p>
+          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+            <strong>3. Abonnement Premium</strong><br>
+            L'abonnement Premium à 4,99€/mois est sans engagement. Résiliation possible à tout moment depuis votre espace Stripe. Paiement sécurisé par Stripe.
+          </p>
+          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+            <strong>4. Responsabilité</strong><br>
+            Les informations nutritionnelles fournies sont à titre indicatif. En cas de pathologie, consultez toujours un professionnel de santé avant de modifier votre alimentation.
+          </p>
+          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
+            <strong>5. Contact</strong><br>
+            Pour toute question : kettyburel@gmail.com
+          </p>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">🔒 Mentions légales</div>
+          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
+            Éditrice : Ketty Burel · Maisons-Alfort (94700), France<br>
+            Hébergement : GitHub Pages (GitHub Inc., San Francisco, CA)<br>
+            Paiements : Stripe Inc.<br><br>
+            Application non soumise à déclaration CNIL (aucune collecte de données personnelles côté serveur).
+          </p>
+        </div>
+
+        <div style="text-align:center;padding:16px 0;color:var(--text-light);font-size:0.78rem;">
+          Flōra v1.1 · Conçu avec ❤️ pour la communauté SJSR/TDAH
+        </div>
       </section>
 
 
