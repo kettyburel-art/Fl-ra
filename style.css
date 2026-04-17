@@ -458,31 +458,38 @@ textarea.field { resize: vertical; min-height: 80px; }
 .card-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
+}
+
+/* Sur petits écrans (<360px) on passe en 1 colonne */
+@media (max-width: 359px) {
+  .card-grid { grid-template-columns: 1fr; }
 }
 
 .card {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 16px;
-  display: flex; align-items: center; gap: 12px;
+  padding: 14px 12px;
+  display: flex; align-items: center; gap: 10px;
   cursor: pointer;
   transition: transform 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 10px var(--shadow);
   border: 1.5px solid transparent;
+  min-width: 0; /* empêche le débordement */
+  overflow: hidden;
 }
 
 .card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow-strong); }
 .card:active { transform: scale(0.97); }
 
-.card-icon { font-size: 1.6rem; flex-shrink: 0; }
+.card-icon { font-size: 1.4rem; flex-shrink: 0; }
 
-.card-body { flex: 1; min-width: 0; }
-.card-title { font-weight: 600; font-size: 0.88rem; color: var(--text-dark); }
-.card-sub { font-size: 0.75rem; color: var(--text-light); margin-top: 2px;
+.card-body { flex: 1; min-width: 0; overflow: hidden; }
+.card-title { font-weight: 600; font-size: 0.82rem; color: var(--text-dark); }
+.card-sub { font-size: 0.72rem; color: var(--text-light); margin-top: 2px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-.card-arrow { color: var(--text-light); font-size: 1rem; flex-shrink: 0; }
+.card-arrow { color: var(--text-light); font-size: 0.9rem; flex-shrink: 0; }
 
 .card-journal  { border-color: var(--green-pale); }
 .card-recette  { border-color: #fde8cf; }
@@ -493,15 +500,16 @@ textarea.field { resize: vertical; min-height: 80px; }
 .wellbeing-chart {
   background: var(--white);
   border-radius: var(--radius-lg);
-  padding: 16px;
+  padding: 16px 16px 8px;
   display: flex; gap: 8px; align-items: flex-end;
-  min-height: 80px;
+  height: 96px;
   box-shadow: 0 2px 10px var(--shadow);
 }
 
 .chart-bar-wrap {
   flex: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  height: 100%;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px;
 }
 
 .chart-bar {
@@ -509,9 +517,8 @@ textarea.field { resize: vertical; min-height: 80px; }
   max-width: 28px;
   background: var(--green-pale);
   border-radius: 4px 4px 0 0;
-  min-height: 4px;
+  min-height: 3px;
   transition: height 0.4s ease;
-  position: relative;
 }
 
 .chart-bar.filled { background: var(--green-mid); }
@@ -609,6 +616,105 @@ textarea.field { resize: vertical; min-height: 80px; }
   font-weight: 500;
   margin-top: 12px;
   font-size: 0.9rem;
+}
+
+/* Sélecteur sommeil — heure coucher/lever */
+.sleep-time-row {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.sleep-time-block {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+
+.sleep-time-label {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.sleep-time-input {
+  width: 100%;
+  border: 2px solid var(--green-pale);
+  border-radius: var(--radius-sm);
+  padding: 8px 4px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--green-deep);
+  text-align: center;
+  background: var(--white);
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  font-family: var(--font-body);
+}
+
+.sleep-time-input:focus { border-color: var(--green-mid); }
+
+.sleep-time-arrow {
+  color: var(--text-light);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.sleep-duration-badge {
+  background: var(--green-deep);
+  color: var(--white);
+  border-radius: var(--radius-md);
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: center;
+}
+
+/* Cycles de sommeil */
+.sleep-cycles-row { margin-bottom: 14px; }
+
+.sleep-cycles-label {
+  font-size: 0.8rem;
+  color: var(--text-mid);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.sleep-cycles-btns {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.cycle-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 2px solid var(--cream-dark);
+  background: var(--cream);
+  color: var(--text-mid);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-body);
+}
+
+.cycle-btn.active {
+  background: var(--green-deep);
+  border-color: var(--green-deep);
+  color: var(--white);
+}
+
+.cycle-btn:hover { border-color: var(--green-mid); }
+
+.sleep-cycles-info {
+  font-size: 0.75rem;
+  color: var(--green-mid);
+  font-style: italic;
 }
 
 /* Historique */

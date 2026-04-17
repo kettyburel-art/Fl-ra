@@ -140,11 +140,35 @@
 
           <div class="journal-block">
             <div class="jblock-title">🌙 Sommeil</div>
-            <div class="slider-row">
-              <label>Durée</label>
-              <input type="range" min="0" max="12" step="0.5" value="7" id="sl-duree" oninput="updateSliderVal('sl-duree','val-duree')" />
-              <span class="slider-val" id="val-duree">7h</span>
+
+            <!-- Heure coucher / lever -->
+            <div class="sleep-time-row">
+              <div class="sleep-time-block">
+                <div class="sleep-time-label">🛏 Coucher</div>
+                <input type="time" class="sleep-time-input" id="sl-coucher" value="23:00" oninput="updateSleepCalc()" />
+              </div>
+              <div class="sleep-time-arrow">→</div>
+              <div class="sleep-time-block">
+                <div class="sleep-time-label">☀️ Lever</div>
+                <input type="time" class="sleep-time-input" id="sl-lever" value="07:00" oninput="updateSleepCalc()" />
+              </div>
+              <div class="sleep-duration-badge" id="sleep-duration-badge">8h00</div>
             </div>
+
+            <!-- Cycles de sommeil -->
+            <div class="sleep-cycles-row">
+              <div class="sleep-cycles-label">Cycles cette nuit</div>
+              <div class="sleep-cycles-btns" id="sleep-cycles-btns">
+                <button class="cycle-btn active" onclick="setCycles(1,this)">1</button>
+                <button class="cycle-btn active" onclick="setCycles(2,this)">2</button>
+                <button class="cycle-btn active" onclick="setCycles(3,this)">3</button>
+                <button class="cycle-btn active" onclick="setCycles(4,this)">4</button>
+                <button class="cycle-btn" onclick="setCycles(5,this)">5</button>
+                <button class="cycle-btn" onclick="setCycles(6,this)">6</button>
+              </div>
+              <span class="sleep-cycles-info" id="cycles-info">~6h de sommeil réel</span>
+            </div>
+
             <div class="slider-row">
               <label>Qualité</label>
               <input type="range" min="1" max="5" step="1" value="3" id="sl-qualite" oninput="updateSliderVal('sl-qualite','val-qualite',true)" />

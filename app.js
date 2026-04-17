@@ -1674,7 +1674,7 @@ function showPage(page) {
   const navBtn = document.querySelector(`[data-page="${page}"]`);
   if (navBtn) navBtn.classList.add('active');
 
-  if (page === 'journal')    setJournalDate();
+  if (page === 'journal')    { setJournalDate(); updateSleepCalc(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     loadProfil();
@@ -1760,7 +1760,70 @@ function setJournalDate() {
     now.toLocaleDateString('fr-FR', opts);
 }
 
-function updateSliderVal(sliderId, valId, isStars = false, isSjsr = false) {
+// ============================
+// JOURNAL — SOMMEIL AVANCÉ
+// ============================
+let currentCycles = 4; // défaut 4 cycles = ~6h
+
+function updateSleepCalc() {
+  const coucher = document.getElementById('sl-coucher').value;
+  const lever   = document.getElementById('sl-lever').value;
+  if (!coucher || !lever) return;
+
+  // Calcul durée
+  const [hC, mC] = coucher.split(':').map(Number);
+  const [hL, mL] = lever.split(':').map(Number);
+  let totalMin = (hL * 60 + mL) - (hC * 60 + mC);
+  if (totalMin < 0) totalMin += 24 * 60; // nuit qui passe minuit
+
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  const label = m > 0 ? `${h}h${String(m).padStart(2,'0')}` : `${h}h00`;
+  document.getElementById('sleep-duration-badge').textContent = label;
+
+  // Suggérer nb cycles (1 cycle ≈ 90 min)
+  const cyclesSuggeres = Math.round(totalMin / 90);
+  const clamped = Math.max(1, Math.min(6, cyclesSuggeres));
+  setCyclesByCount(clamped);
+}
+
+function setCycles(n, el) {
+  currentCycles = n;
+  document.querySelectorAll('.cycle-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i < n);
+  });
+  updateCyclesInfo();
+}
+
+function setCyclesByCount(n) {
+  currentCycles = n;
+  document.querySelectorAll('.cycle-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i < n);
+  });
+  updateCyclesInfo();
+}
+
+function updateCyclesInfo() {
+  const min = currentCycles * 90;
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  const label = m > 0 ? `${h}h${m}` : `${h}h`;
+  const info = document.getElementById('cycles-info');
+  if (info) info.textContent = `~${label} de sommeil réel (${currentCycles} cycle${currentCycles > 1 ? 's' : ''})`;
+}
+
+function getSleepDuration() {
+  const coucher = document.getElementById('sl-coucher')?.value;
+  const lever   = document.getElementById('sl-lever')?.value;
+  if (!coucher || !lever) return 0;
+  const [hC, mC] = coucher.split(':').map(Number);
+  const [hL, mL] = lever.split(':').map(Number);
+  let totalMin = (hL * 60 + mL) - (hC * 60 + mC);
+  if (totalMin < 0) totalMin += 24 * 60;
+  return Math.round(totalMin / 60 * 10) / 10; // en heures, 1 décimale
+}
+
+
   const val = parseFloat(document.getElementById(sliderId).value);
   const el  = document.getElementById(valId);
 
@@ -1787,7 +1850,10 @@ function saveJournal() {
     .map(c => c.textContent);
 
   journal[today] = {
-    duree:    parseFloat(document.getElementById('sl-duree').value),
+    coucher:  document.getElementById('sl-coucher')?.value || '',
+    lever:    document.getElementById('sl-lever')?.value || '',
+    duree:    getSleepDuration(),
+    cycles:   currentCycles,
     qualite:  parseInt(document.getElementById('sl-qualite').value),
     sjsr:     parseInt(document.getElementById('sl-sjsr').value),
     energie:  parseInt(document.getElementById('sl-energie').value),
@@ -1829,11 +1895,14 @@ function renderHistorique() {
     const d     = new Date(date + 'T12:00:00');
     const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
     const stars = '★'.repeat(e.qualite) + '☆'.repeat(5 - e.qualite);
+    const sleepLabel = e.coucher && e.lever
+      ? `${e.coucher}→${e.lever} (${e.duree}h, ${e.cycles || '?'} cycles)`
+      : `${e.duree}h`;
     return `
       <div class="hist-entry">
         <div class="hist-date">${label}</div>
         <div class="hist-stats">
-          <span class="hist-stat">🌙 ${e.duree}h ${stars}</span>
+          <span class="hist-stat">🌙 ${sleepLabel} ${stars}</span>
           <span class="hist-stat">⚡ ${e.energie}/10</span>
           <span class="hist-stat">💢 douleur ${e.douleur}/10</span>
           ${e.sjsr > 0 ? `<span class="hist-stat">🦵 SJSR ${e.sjsr}/5</span>` : ''}
