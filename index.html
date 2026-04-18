@@ -31,17 +31,17 @@
 
       <!-- Étape 1 — Bienvenue -->
       <div class="onboard-step active" data-step="1">
-        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:20%"></div></div>
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:14%"></div></div>
         <div class="onboard-art">🌿</div>
         <h2>Bienvenue dans Flōra</h2>
-        <p>Une application pensée pour les personnes vivant avec le SJSR, la douleur chronique et les inflammations.</p>
-        <p style="font-size:0.82rem;color:var(--text-light);margin-top:8px;">Nous allons personnaliser votre expérience en 4 questions. Moins d'une minute.</p>
+        <p>Une application pensée pour les personnes vivant avec le SJSR, la douleur chronique et le TDAH.</p>
+        <p style="font-size:0.82rem;color:var(--text-light);margin-top:8px;">6 questions rapides pour personnaliser votre expérience. Moins de 2 minutes.</p>
         <button class="btn-primary" onclick="nextStep(2)">Commencer →</button>
       </div>
 
       <!-- Étape 2 — Prénom + objectif -->
       <div class="onboard-step" data-step="2">
-        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:40%"></div></div>
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:28%"></div></div>
         <div class="onboard-art">✨</div>
         <h2>Parlez-nous de vous</h2>
         <input class="field" type="text" id="ob-name" placeholder="Votre prénom" autocomplete="given-name" />
@@ -56,12 +56,12 @@
         <button class="btn-primary" onclick="nextStep(3)">Continuer →</button>
       </div>
 
-      <!-- Étape 3 — SJSR spécifique -->
+      <!-- Étape 3 — SJSR -->
       <div class="onboard-step" data-step="3">
-        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:60%"></div></div>
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:42%"></div></div>
         <div class="onboard-art">🦵</div>
         <h2>Votre SJSR</h2>
-        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">Combien de nuits difficiles par semaine en moyenne ?</p>
+        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:14px;">Combien de nuits difficiles par semaine en moyenne ?</p>
         <div class="onboard-choices">
           <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','0')">Aucune ou rarement</button>
           <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','1-2')">1 à 2 nuits</button>
@@ -69,21 +69,37 @@
           <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','5+')">Presque toutes les nuits</button>
         </div>
         <input type="hidden" id="ob-sjsr-freq" value="" />
-        <p style="font-size:0.85rem;color:var(--text-mid);margin:16px 0 10px;">Prenez-vous un traitement pour le SJSR ?</p>
-        <div class="onboard-choices onboard-choices-2col">
-          <button class="onboard-choice" onclick="selectChoice(this,'ob-traitement','oui')">Oui</button>
-          <button class="onboard-choice" onclick="selectChoice(this,'ob-traitement','non')">Non</button>
-        </div>
-        <input type="hidden" id="ob-traitement" value="" />
         <button class="btn-primary" style="margin-top:16px;" onclick="nextStep(4)">Continuer →</button>
       </div>
 
-      <!-- Étape 4 — Alimentation -->
+      <!-- Étape 4 — Médicaments -->
       <div class="onboard-step" data-step="4">
-        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:80%"></div></div>
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:56%"></div></div>
+        <div class="onboard-art">💊</div>
+        <h2>Vos médicaments</h2>
+        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:6px;line-height:1.5;">
+          Notez vos traitements habituels (SJSR, douleur, fer, magnésium…).
+          Ils apparaîtront dans votre journal pour suivre votre observance.
+        </p>
+        <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:14px;">Laissez vide si aucun traitement.</p>
+        <div id="ob-med-list" style="margin-bottom:10px;min-height:20px;display:flex;flex-wrap:wrap;gap:6px;"></div>
+        <div style="display:flex;gap:8px;margin-bottom:8px;">
+          <input type="text" id="ob-med-input" class="field" style="flex:1;margin:0;"
+            placeholder="ex: Tramadol LP 50mg…"
+            onkeydown="if(event.key==='Enter'){event.preventDefault();addObMed();}" />
+          <button onclick="addObMed()"
+            style="background:var(--green-deep);color:white;border:none;border-radius:var(--radius-md);padding:0 14px;font-size:0.9rem;cursor:pointer;white-space:nowrap;">+</button>
+        </div>
+        <p style="font-size:0.75rem;color:var(--text-light);">Tapez le nom et appuyez sur + ou Entrée</p>
+        <button class="btn-primary" style="margin-top:16px;" onclick="nextStep(5)">Continuer →</button>
+      </div>
+
+      <!-- Étape 5 — Alimentation -->
+      <div class="onboard-step" data-step="5">
+        <div class="onboard-progress"><div class="onboard-progress-fill" style="width:72%"></div></div>
         <div class="onboard-art">🥗</div>
         <h2>Votre alimentation</h2>
-        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">Cochez ce qui vous correspond :</p>
+        <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:14px;">Cochez ce qui vous correspond :</p>
         <div class="onboard-checks">
           <label class="onboard-check-item">
             <input type="checkbox" id="ob-sg" />
@@ -111,11 +127,11 @@
             <span>TDAH / neuroatypique</span>
           </label>
         </div>
-        <button class="btn-primary" style="margin-top:20px;" onclick="nextStep(5)">Continuer →</button>
+        <button class="btn-primary" style="margin-top:18px;" onclick="nextStep(6)">Continuer →</button>
       </div>
 
-      <!-- Étape 5 — Récapitulatif personnalisé -->
-      <div class="onboard-step" data-step="5">
+      <!-- Étape 6 — Récapitulatif -->
+      <div class="onboard-step" data-step="6">
         <div class="onboard-progress"><div class="onboard-progress-fill" style="width:100%"></div></div>
         <div class="onboard-art">🎯</div>
         <h2>Votre programme Flōra</h2>

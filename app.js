@@ -3874,8 +3874,8 @@ function nextStep(step) {
     document.getElementById('ob-name').style.borderColor = '';
   }
 
-  // Générer le récap à l'étape 5
-  if (step === 5) {
+  // Générer le récap à l'étape 6
+  if (step === 6) {
     try { buildOnboardRecap(); } catch(e) { console.warn('recap error', e); }
   }
 
@@ -3908,66 +3908,93 @@ function selectChoice(el, hiddenId, value) {
 
 function buildOnboardRecap() {
   const name     = document.getElementById('ob-name').value.trim();
+  const goal     = document.getElementById('ob-goal').value;
   const sjsrFreq = document.getElementById('ob-sjsr-freq').value;
-  const fer      = document.getElementById('ob-fer').checked;
-  const tdah     = document.getElementById('ob-tdah').checked;
   const sg       = document.getElementById('ob-sg').checked;
   const sl       = document.getElementById('ob-sl').checked;
+  const sv       = document.getElementById('ob-sv').checked;
+  const fer      = document.getElementById('ob-fer').checked;
+  const tdah     = document.getElementById('ob-tdah').checked;
+  const meds     = Array.from(document.querySelectorAll('#ob-med-list .ob-med-chip'))
+    .map(el => el.dataset.med).filter(Boolean);
 
-  // Construire les recommandations personnalisées
-  const recs = [];
+  const goalLabels = {
+    sommeil:'Améliorer le sommeil', douleur:'Réduire la douleur',
+    sjsr:'Calmer le SJSR', energie:'Retrouver de l\'énergie', global:'Bien-être global'
+  };
+  const sjsrLabels = { '0':'Rarement', '1-2':'1-2 nuits/sem', '3-4':'3-4 nuits/sem', '5+':'Presque chaque nuit' };
 
-  if (sjsrFreq === '5+' || sjsrFreq === '3-4') {
-    recs.push({ icon: '🦵', text: 'Priorité fer + magnésium — recettes spéciales SJSR sélectionnées pour vous' });
-    recs.push({ icon: '🌙', text: 'Journal sommeil avancé avec suivi SJSR nuit par nuit' });
-  } else if (sjsrFreq === '1-2') {
-    recs.push({ icon: '🦵', text: 'Recettes riches en magnésium et oméga-3 pour les jambes' });
-  }
+  const tags = [];
+  if (sg)   tags.push('Sans gluten');
+  if (sl)   tags.push('Sans lactose');
+  if (sv)   tags.push('Végétarien·ne');
+  if (fer)  tags.push('Carence fer');
+  if (tdah) tags.push('TDAH');
 
-  if (fer) {
-    recs.push({ icon: '🩸', text: 'Recettes boostées en fer héminique (sardines, lentilles beluga, teff)' });
-  }
+  const recapEl = document.getElementById('onboard-recap');
+  if (!recapEl) return;
 
-  if (tdah) {
-    recs.push({ icon: '🧠', text: 'Mode Batch Cooking TDAH — une session de cuisine, toute la semaine préparée' });
-    recs.push({ icon: '⚡', text: 'Petits-déjeuners protéinés pour la concentration matinale' });
-  }
-
-  if (sg || sl) {
-    recs.push({ icon: '🌾', text: 'Toutes vos recettes sont 100% sans gluten et sans lactose' });
-  }
-
-  // Toujours
-  recs.push({ icon: '📊', text: 'Suivi bien-être quotidien avec graphiques d\'évolution' });
-
-  const recap = document.getElementById('onboard-recap');
-  recap.innerHTML = `
-    <div class="onboard-greeting">Bonjour ${name} 👋</div>
-    <div class="onboard-recs">
-      ${recs.map(r => `
-        <div class="onboard-rec-item">
-          <span class="onboard-rec-icon">${r.icon}</span>
-          <span class="onboard-rec-text">${r.text}</span>
+  recapEl.innerHTML = `
+    <div style="background:var(--cream);border-radius:14px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:10px;">Votre profil</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span>👤</span>
+          <span style="font-size:0.88rem;color:var(--text-dark);font-weight:600;">${name}</span>
         </div>
-      `).join('')}
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span>🎯</span>
+          <span style="font-size:0.85rem;color:var(--text-dark);">${goalLabels[goal] || 'Bien-être global'}</span>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <span>🦵</span>
+          <span style="font-size:0.85rem;color:var(--text-dark);">SJSR : ${sjsrLabels[sjsrFreq] || 'Non renseigné'}</span>
+        </div>
+        ${meds.length ? `<div style="display:flex;gap:10px;align-items:flex-start;">
+          <span>💊</span>
+          <span style="font-size:0.85rem;color:var(--text-dark);">${meds.join(', ')}</span>
+        </div>` : ''}
+        ${tags.length ? `<div style="display:flex;gap:10px;align-items:flex-start;">
+          <span>🥗</span>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;">
+            ${tags.map(t=>`<span style="background:var(--green-light,#e8f4e8);color:var(--green-deep);border-radius:99px;padding:2px 8px;font-size:0.75rem;">${t}</span>`).join('')}
+          </div>
+        </div>` : ''}
+      </div>
     </div>
-  `;
+    <div style="background:var(--green-deep);border-radius:14px;padding:14px;color:white;">
+      <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px;">🌿 Votre programme personnalisé inclut :</div>
+      <div style="font-size:0.78rem;opacity:0.9;line-height:1.8;">
+        ✅ Recettes anti-inflammatoires adaptées à votre régime<br>
+        ✅ Journal de suivi sommeil, énergie & SJSR<br>
+        ${meds.length ? '✅ Suivi d\'observance de vos médicaments<br>' : ''}
+        ✅ Agenda alimentaire personnalisé<br>
+        ✅ Statistiques et tendances sur 30 jours<br>
+        ✅ Rappels bien-être quotidiens
+      </div>
+    </div>`;
 }
+
 
 function saveOnboarding() {
   const name = document.getElementById('ob-name').value.trim();
   if (!name) { nextStep(2); return; }
 
+  // Récupérer les médicaments saisis à l'étape 4
+  const obMeds = Array.from(document.querySelectorAll('#ob-med-list .ob-med-chip'))
+    .map(el => el.dataset.med).filter(Boolean);
+
   profile = {
     name,
-    goal:        document.getElementById('ob-goal').value,
-    sansGluten:  document.getElementById('ob-sg').checked,
-    sansLactose: document.getElementById('ob-sl').checked,
-    vegetarien:  document.getElementById('ob-sv').checked,
+    goal:         document.getElementById('ob-goal').value,
+    sansGluten:   document.getElementById('ob-sg').checked,
+    sansLactose:  document.getElementById('ob-sl').checked,
+    vegetarien:   document.getElementById('ob-sv').checked,
     caferenceFer: document.getElementById('ob-fer').checked,
     tdah:         document.getElementById('ob-tdah').checked,
     sjsrFreq:     document.getElementById('ob-sjsr-freq').value,
-    traitement:   document.getElementById('ob-traitement').value,
+    traitement:   obMeds.length ? 'oui' : 'non',
+    medications:  obMeds,
   };
 
   saveState();
@@ -5460,6 +5487,26 @@ function toggleMedChip(el) {
   el.classList.toggle('active');
 }
 
+
+function addObMed() {
+  const input = document.getElementById('ob-med-input');
+  const val = (input?.value || '').trim();
+  if (!val || val.length < 2) return;
+  const list = document.getElementById('ob-med-list');
+  if (!list) return;
+  // Vérifier si déjà présent
+  const existing = Array.from(list.querySelectorAll('.ob-med-chip')).map(el => el.dataset.med);
+  if (existing.includes(val)) { input.value = ''; return; }
+  const chip = document.createElement('div');
+  chip.className = 'ob-med-chip';
+  chip.dataset.med = val;
+  chip.style.cssText = 'display:flex;align-items:center;gap:6px;background:var(--cream-dark);border-radius:99px;padding:5px 10px 5px 12px;font-size:0.82rem;color:var(--text-dark);';
+  chip.innerHTML = `<span>💊 ${val}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;line-height:1;">✕</button>`;
+  list.appendChild(chip);
+  input.value = '';
+  input.focus();
+}
+
 // ============================
 // NAVIGATION
 // ============================
@@ -5810,132 +5857,261 @@ function switchJTab(tab, el) {
 // ============================
 function exportJournalPDF() {
   const entries = Object.entries(journal).sort((a,b) => a[0].localeCompare(b[0]));
-
   if (!entries.length) {
     alert('Aucune entrée à exporter. Commencez par remplir votre journal !');
     return;
   }
 
-  const name = profile.name || 'Utilisateur·trice';
+  const name  = profile.name || 'Utilisateur·trice';
   const today = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  const meds  = profile.medications || [];
 
-  const rows = entries.map(([date, e]) => {
-    const d = new Date(date + 'T12:00:00');
-    const label = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-    const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
-    const sleep = e.coucher && e.lever
-      ? `${e.coucher} → ${e.lever} (${e.duree}h, ${e.cycles||'?'} cycles)`
-      : `${e.duree||'—'}h`;
-    const sjsrLabels = ['Aucun','Léger','Modéré','Fort','Très fort','Insupportable'];
-    const sjsrLabel = sjsrLabels[e.sjsr||0] || '—';
-    const symp = e.symptoms?.length ? e.symptoms.join(', ') : '—';
-    const meds = e.meds?.length ? e.meds.join(', ') : '—';
+  // ── Calculs statistiques ──
+  const filled = entries.filter(([,e]) => e);
+  const avg = key => filled.length
+    ? (filled.reduce((s,[,e])=>s+(e[key]||0),0)/filled.length).toFixed(1) : '—';
+  const avgEnergie = avg('energie');
+  const avgDouleur = avg('douleur');
+  const avgSommeil = filled.length
+    ? (filled.reduce((s,[,e])=>s+(e.duree||0),0)/filled.length).toFixed(1) : '—';
+  const nuitsSjsr  = filled.filter(([,e])=>(e.sjsr||0)>0).length;
+  const streak     = getStreak();
 
-    return `
-      <tr style="border-bottom:1px solid #e8e8e0;">
-        <td style="padding:10px 8px;font-weight:600;color:#2d4a3e;white-space:nowrap;">${label}</td>
-        <td style="padding:10px 8px;text-align:center;">${sleep}<br><small>${stars}</small></td>
-        <td style="padding:10px 8px;text-align:center;">${e.energie||'—'}/10</td>
-        <td style="padding:10px 8px;text-align:center;">${e.douleur||'—'}/10</td>
-        <td style="padding:10px 8px;text-align:center;color:${(e.sjsr||0)>2?'#c0614a':'#3d6b58'};">${sjsrLabel}</td>
-        <td style="padding:10px 8px;font-size:0.85em;color:#4a5e54;">${symp}</td>
-        <td style="padding:10px 8px;font-size:0.82em;font-style:italic;color:#8a9e96;">${e.notes||''}</td>
-      </tr>
-    `;
+  // Médics observance
+  const medCounts = {};
+  filled.forEach(([,e]) => (e.meds||[]).forEach(m => { medCounts[m]=(medCounts[m]||0)+1; }));
+
+  // Symptômes fréquents
+  const symCounts = {};
+  filled.forEach(([,e]) => (e.symptoms||[]).forEach(s => { symCounts[s]=(symCounts[s]||0)+1; }));
+  const topSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
+
+  // ── Graphique SVG courbes (énergie + douleur) ──
+  function makeSvgChart(data, colors, labels, maxVal=10) {
+    const n = data[0].length;
+    if (n < 2) return '';
+    const W = 520, H = 80;
+    const series = data.map((vals, si) => {
+      const pts = vals.map((v,i) => {
+        const x = (i/(n-1))*W;
+        const y = H - (v/maxVal)*H;
+        return `${x.toFixed(1)},${y.toFixed(1)}`;
+      }).join(' ');
+      const fillPts = `0,${H} ${pts} ${W},${H}`;
+      return `
+        <polygon points="${fillPts}" fill="${colors[si]}" fill-opacity="0.12"/>
+        <polyline points="${pts}" fill="none" stroke="${colors[si]}" stroke-width="2" stroke-linejoin="round"/>
+        ${vals.map((v,i)=>{
+          const x=(i/(n-1))*W, y=H-(v/maxVal)*H;
+          return v>0?`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${colors[si]}" stroke="white" stroke-width="1.5"/>`:'';
+        }).join('')}`;
+    }).join('');
+
+    // Labels X (dates)
+    const xLabels = entries.map(([date],i) => {
+      if (i % Math.ceil(n/10) !== 0 && i !== n-1) return '';
+      const d = new Date(date+'T12:00:00');
+      return `<text x="${((i/(n-1))*W).toFixed(1)}" y="${H+14}" text-anchor="middle" font-size="9" fill="#8a9e96">${d.getDate()}/${d.getMonth()+1}</text>`;
+    }).join('');
+
+    const legend = labels.map((l,i) =>
+      `<text x="${10+i*120}" y="${H+28}" font-size="9" fill="${colors[i]}">■ ${l}</text>`
+    ).join('');
+
+    return `<svg viewBox="0 0 ${W} ${H+35}" style="width:100%;height:auto;display:block;margin:8px 0;">
+      <line x1="0" y1="${H}" x2="${W}" y2="${H}" stroke="#e8e8e0" stroke-width="1"/>
+      ${[0,25,50,75,100].map(pct => {
+        const y = H - (pct/100)*H;
+        return `<line x1="0" y1="${y.toFixed(1)}" x2="${W}" y2="${y.toFixed(1)}" stroke="#f0ede8" stroke-width="0.5"/>
+                <text x="-4" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#c0bdb8">${Math.round(pct/100*maxVal)}</text>`;
+      }).join('')}
+      ${series}
+      ${xLabels}
+      ${legend}
+    </svg>`;
+  }
+
+  const energieVals = entries.map(([,e])=>e?.energie||0);
+  const douleurVals = entries.map(([,e])=>e?.douleur||0);
+  const sjsrVals    = entries.map(([,e])=>e?.sjsr||0);
+  const sommeilVals = entries.map(([,e])=>Math.min(10,(e?.duree||0)/9*10));
+
+  const chartEnergieDouleur = makeSvgChart([energieVals,douleurVals],['#4a7c5e','#c0614a'],['Énergie /10','Douleur /10']);
+  const chartSjsr = makeSvgChart([sjsrVals],['#8e44ad'],['SJSR /5'],5);
+  const chartSommeil = makeSvgChart([sommeilVals],['#2980b9'],['Qualité sommeil']);
+
+  // ── Menus agenda sur la période ──
+  const agendaRows = entries.map(([date]) => {
+    const ag = agenda[date];
+    if (!ag) return null;
+    const slugs = ['petitdej','dejeuner','gouter','diner'];
+    const labels = {'petitdej':'Petit-déj','dejeuner':'Déjeuner','gouter':'Goûter','diner':'Dîner'};
+    const repas = slugs.map(s => {
+      const r = ag[s] ? RECETTES.find(x=>x.id===ag[s]) : null;
+      return r ? `<span style="font-size:0.75em;color:#3d6b58;">${labels[s]}: ${r.emoji} ${r.nom}</span>` : null;
+    }).filter(Boolean);
+    if (!repas.length) return null;
+    const d = new Date(date+'T12:00:00');
+    return { date: d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}), repas };
+  }).filter(Boolean);
+
+  // ── Tableau journal ──
+  const rows = entries.map(([date,e]) => {
+    const d = new Date(date+'T12:00:00');
+    const label = d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
+    const stars = '★'.repeat(e.qualite||0)+'☆'.repeat(5-(e.qualite||0));
+    const sleep = e.coucher&&e.lever ? `${e.coucher}→${e.lever} (${e.duree}h)` : `${e.duree||'—'}h`;
+    const sjsrLabels=['—','Léger','Modéré','Fort','Très fort','Insup.'];
+    const medsStr = e.meds?.length ? e.meds.join(', ') : '—';
+    const symp = e.symptoms?.length ? e.symptoms.slice(0,3).join(', ') : '—';
+    const bgSjsr = (e.sjsr||0)>2 ? '#fde8e8' : 'transparent';
+    return `<tr style="border-bottom:1px solid #ede8e0;">
+      <td style="padding:7px 6px;font-weight:600;color:#2d4a3e;white-space:nowrap;font-size:0.82em;">${label}</td>
+      <td style="padding:7px 6px;font-size:0.8em;">${sleep}<br><span style="color:#c9b88a;">${stars}</span></td>
+      <td style="padding:7px 6px;text-align:center;font-weight:600;color:#4a7c5e;">${e.energie||'—'}</td>
+      <td style="padding:7px 6px;text-align:center;font-weight:600;color:#c0614a;">${e.douleur||'—'}</td>
+      <td style="padding:7px 6px;text-align:center;background:${bgSjsr};font-size:0.8em;">${sjsrLabels[e.sjsr||0]}</td>
+      <td style="padding:7px 6px;font-size:0.75em;color:#d35400;">${medsStr}</td>
+      <td style="padding:7px 6px;font-size:0.75em;color:#4a5e54;">${symp}</td>
+      <td style="padding:7px 6px;font-size:0.75em;font-style:italic;color:#8a9e96;max-width:150px;">${e.notes||''}</td>
+    </tr>`;
   }).join('');
-
-  const avgEnergie = entries.length
-    ? (entries.reduce((s,[,e])=>s+(e.energie||0),0)/entries.length).toFixed(1) : '—';
-  const avgDouleur = entries.length
-    ? (entries.reduce((s,[,e])=>s+(e.douleur||0),0)/entries.length).toFixed(1) : '—';
-  const nuitsSjsr = entries.filter(([,e])=>(e.sjsr||0)>0).length;
-  const streak = getStreak();
 
   const html = `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
-  <title>Journal Flōra — ${name}</title>
+  <title>Rapport Flōra — ${name}</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Georgia, serif; color: #1e2d26; background: #fff; padding: 40px; }
-    h1 { font-size: 2rem; color: #2d4a3e; margin-bottom: 4px; }
-    .subtitle { color: #8a9e96; font-size: 0.9rem; margin-bottom: 32px; }
-    .summary { display: flex; gap: 24px; margin-bottom: 32px; }
-    .sum-card { background: #f7f3ee; border-radius: 12px; padding: 16px 20px; flex: 1; text-align: center; }
-    .sum-val { font-size: 1.8rem; font-weight: 700; color: #2d4a3e; }
-    .sum-label { font-size: 0.78rem; color: #8a9e96; margin-top: 4px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    thead tr { background: #2d4a3e; color: #fff; }
-    thead th { padding: 10px 8px; text-align: left; font-weight: 600; font-size: 0.8rem; }
-    tbody tr:nth-child(even) { background: #f7f3ee; }
-    .footer { margin-top: 32px; text-align: center; font-size: 0.78rem; color: #8a9e96; border-top: 1px solid #ede8e0; padding-top: 16px; }
+    body { font-family: 'Georgia', serif; color: #1e2d26; background: #fff; padding: 32px 40px; font-size:14px; }
+    h1 { font-size:1.8rem; color:#2d4a3e; margin-bottom:2px; }
+    h2 { font-size:1.1rem; color:#2d4a3e; margin:24px 0 10px; padding-bottom:4px; border-bottom:2px solid #e8e3dc; }
+    h3 { font-size:0.85rem; color:#8a9e96; font-weight:normal; margin-bottom:16px; }
+    .summary { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:16px 0 24px; }
+    .sum-card { background:#f7f3ee; border-radius:10px; padding:12px; text-align:center; }
+    .sum-val { font-size:1.5rem; font-weight:700; color:#2d4a3e; }
+    .sum-label { font-size:0.7rem; color:#8a9e96; margin-top:3px; line-height:1.3; }
+    .chart-section { margin-bottom:20px; }
+    .chart-title { font-size:0.78rem; font-weight:700; color:#4a7c5e; margin-bottom:4px; text-transform:uppercase; letter-spacing:.05em; }
+    table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:8px; }
+    thead tr { background:#2d4a3e; color:#fff; }
+    thead th { padding:8px 6px; text-align:left; font-weight:600; font-size:0.75rem; }
+    tbody tr:nth-child(even) { background:#f9f7f4; }
+    .meds-grid { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; }
+    .med-item { background:#fef5e8; border-radius:8px; padding:8px 12px; font-size:0.82rem; }
+    .med-bar { background:#ede8e0; border-radius:99px; height:6px; margin-top:4px; overflow:hidden; }
+    .med-fill { background:#d35400; height:100%; border-radius:99px; }
+    .sym-chip { display:inline-block; background:#f0ede8; border-radius:99px; padding:3px 10px; font-size:0.75rem; color:#4a5e54; margin:3px; }
+    .agenda-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:8px 0; }
+    .agenda-day { background:#f7f3ee; border-radius:8px; padding:8px 10px; font-size:0.75rem; }
+    .agenda-day-title { font-weight:700; color:#2d4a3e; margin-bottom:4px; }
+    .footer { margin-top:28px; text-align:center; font-size:0.72rem; color:#8a9e96; border-top:1px solid #ede8e0; padding-top:14px; }
+    .disclaimer { background:#f7f3ee; border-radius:8px; padding:12px; font-size:0.75rem; color:#6a7e74; margin-top:16px; line-height:1.6; }
     @media print {
-      body { padding: 20px; }
-      .no-print { display: none; }
+      body { padding:16px 20px; }
+      .no-print { display:none; }
+      h2 { page-break-before: auto; }
+      table { page-break-inside: auto; }
+      tr { page-break-inside: avoid; }
     }
   </style>
 </head>
 <body>
-  <h1>Flōra 🌿 — Journal de bien-être</h1>
-  <div class="subtitle">
-    ${name} · Exporté le ${today} · ${entries.length} entrée${entries.length>1?'s':''}
-  </div>
 
+  <h1>Flōra 🌿 — Rapport de suivi bien-être</h1>
+  <h3>${name} · ${entries.length} entrée${entries.length>1?'s':''} · Exporté le ${today}</h3>
+
+  <!-- Résumé -->
   <div class="summary">
-    <div class="sum-card">
-      <div class="sum-val">${avgEnergie}</div>
-      <div class="sum-label">Énergie moyenne /10</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-val">${avgDouleur}</div>
-      <div class="sum-label">Douleur moyenne /10</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-val">${nuitsSjsr}</div>
-      <div class="sum-label">Nuits SJSR</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-val">${streak}</div>
-      <div class="sum-label">Jours consécutifs</div>
-    </div>
+    <div class="sum-card"><div class="sum-val">${avgEnergie}</div><div class="sum-label">Énergie moy. /10</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:#c0614a;">${avgDouleur}</div><div class="sum-label">Douleur moy. /10</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:#8e44ad;">${nuitsSjsr}</div><div class="sum-label">Nuits SJSR (total)</div></div>
+    <div class="sum-card"><div class="sum-val" style="color:#2980b9;">${avgSommeil}h</div><div class="sum-label">Sommeil moy./nuit</div></div>
+    <div class="sum-card"><div class="sum-val">${streak}j</div><div class="sum-label">Streak actuel</div></div>
   </div>
 
+  <!-- Graphiques -->
+  <h2>📊 Évolution sur la période</h2>
+  <div class="chart-section">
+    <div class="chart-title">⚡ Énergie & 🔥 Douleur</div>
+    ${chartEnergieDouleur}
+  </div>
+  <div class="chart-section">
+    <div class="chart-title">🦵 Intensité SJSR</div>
+    ${chartSjsr}
+  </div>
+  <div class="chart-section">
+    <div class="chart-title">🌙 Qualité de sommeil</div>
+    ${chartSommeil}
+  </div>
+
+  ${meds.length ? `
+  <!-- Médicaments & Observance -->
+  <h2>💊 Traitements & Observance</h2>
+  <div class="meds-grid">
+    ${meds.map(med => {
+      const count = medCounts[med] || 0;
+      const pct = filled.length ? Math.round(count/filled.length*100) : 0;
+      return `<div class="med-item">
+        <div style="font-weight:600;color:#2d4a3e;">${med}</div>
+        <div style="font-size:0.7rem;color:#8a9e96;margin:2px 0;">${count} / ${filled.length} jours (${pct}%)</div>
+        <div class="med-bar"><div class="med-fill" style="width:${pct}%;"></div></div>
+      </div>`;
+    }).join('')}
+  </div>` : ''}
+
+  ${topSyms.length ? `
+  <!-- Symptômes -->
+  <h2>🩺 Symptômes les plus fréquents</h2>
+  <div>${topSyms.map(([s,n])=>`<span class="sym-chip">${s} <strong>${n}x</strong></span>`).join('')}</div>` : ''}
+
+  ${agendaRows.length ? `
+  <!-- Repas planifiés -->
+  <h2>🍽️ Repas planifiés sur la période</h2>
+  <div class="agenda-grid">
+    ${agendaRows.slice(0,30).map(({date,repas})=>`
+      <div class="agenda-day">
+        <div class="agenda-day-title">${date}</div>
+        ${repas.join('<br>')}
+      </div>`).join('')}
+  </div>` : ''}
+
+  <!-- Tableau journal -->
+  <h2>📋 Journal détaillé</h2>
   <table>
     <thead>
       <tr>
-        <th>Date</th>
-        <th>Sommeil</th>
-        <th>Énergie</th>
-        <th>Douleur</th>
-        <th>SJSR</th>
-        <th>Symptômes</th>
-        <th>Notes</th>
+        <th>Date</th><th>Sommeil</th><th>Énergie</th><th>Douleur</th>
+        <th>SJSR</th><th>Médicaments</th><th>Symptômes</th><th>Notes</th>
       </tr>
     </thead>
     <tbody>${rows}</tbody>
   </table>
 
-  <div class="footer">
-    Flōra — Application bien-être SJSR/TDAH anti-inflammatoire · kettyburel-art.github.io/Fl-ra/<br>
-    Document généré automatiquement · À partager avec votre médecin si besoin
+  <div class="disclaimer">
+    ⚕️ <strong>Note médicale :</strong> Ce rapport est généré automatiquement par l'application Flōra à partir de vos données personnelles de suivi. Il ne constitue pas un avis médical. Partagez-le avec votre médecin ou neurologue pour un suivi personnalisé de votre SJSR.
   </div>
 
-  <script>window.onload = () => window.print();</script>
+  <div class="footer">
+    Flōra — Application bien-être SJSR/TDAH anti-inflammatoire · kettyburel-art.github.io/Fl-ra/<br>
+    Rapport généré le ${today} pour ${name}
+  </div>
+
+  <script>window.onload = () => { document.title = 'Rapport Flōra — ${name} — ${today}'; window.print(); }</script>
 </body>
 </html>`;
 
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  const blob = new Blob([html], { type:'text/html;charset=utf-8' });
   const url  = URL.createObjectURL(blob);
   const win  = window.open(url, '_blank');
   if (!win) {
-    // Fallback si popup bloqué
     const a = document.createElement('a');
     a.href = url;
-    a.download = `flora-journal-${dateKey(new Date())}.html`;
+    a.download = `flora-rapport-${dateKey(new Date())}.html`;
     a.click();
   }
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  setTimeout(() => URL.revokeObjectURL(url), 8000);
 }
 
 function renderHistorique() {
