@@ -3822,13 +3822,20 @@ let currentWeekOffset = 0;
 // ============================
 window.addEventListener('load', () => {
   loadState();
-  // Hide splash after animation
   setTimeout(() => {
     document.getElementById('splash').classList.add('hidden');
     if (!profile.name) {
       document.getElementById('onboarding').classList.remove('hidden');
     } else {
       initApp();
+      // Gérer les liens directs vers une recette (#recette-ID)
+      const hash = window.location.hash;
+      if (hash.startsWith('#recette-')) {
+        const recId = parseInt(hash.replace('#recette-', ''));
+        if (!isNaN(recId)) {
+          setTimeout(() => openRecette(recId), 500);
+        }
+      }
     }
   }, 2100);
 });
@@ -4049,23 +4056,37 @@ function scheduleNotifications() {
   const medStr = meds.length ? meds.slice(0,2).join(' + ') : 'votre traitement';
 
   // Rappels à programmer (heure, message, tag)
+  // Utiliser les horaires personnalisés du profil
+  const h = profile.horaires || {};
+  const parseTime = (str, defH, defM) => {
+    if (!str) return { h: defH, m: defM };
+    const [hh, mm] = str.split(':').map(Number);
+    return { h: hh || defH, m: mm || defM };
+  };
+  const tPDJ = parseTime(h.petitdej,    7,  0);
+  const tDEJ = parseTime(h.dejeuner,   13,  0);
+  const tGOU = parseTime(h.gouter,     16,  0);
+  const tDIN = parseTime(h.diner,      19,  0);
+  const tMED = parseTime(h.medicaments,20, 30);
+  const tJNL = parseTime(h.journal,    21,  0);
+
   const rappels = [
-    { h:7,  m:0,  tag:'petit-dej',
+    { h:tPDJ.h, m:tPDJ.m, tag:'petit-dej',
       title:'🌅 Petit-déjeuner Flōra',
       body: 'Bon matin ! Pensez à un petit-déj protéiné pour booster votre dopamine dès le matin.' },
-    { h:13, m:0,  tag:'dejeuner',
+    { h:tDEJ.h, m:tDEJ.m, tag:'dejeuner',
       title:'☀️ Déjeuner Flōra',
       body: 'L\'heure du déjeuner ! Fer + vitamine C aujourd\'hui pour limiter la fatigue de l\'après-midi.' },
-    { h:16, m:0,  tag:'gouter',
+    { h:tGOU.h, m:tGOU.m, tag:'gouter',
       title:'🍎 Goûter TDAH',
       body: 'Goûter obligatoire ! Maintenir la glycémie = moins de décisions impulsives. Quelques noix ou dattes.' },
-    { h:19, m:0,  tag:'diner',
+    { h:tDIN.h, m:tDIN.m, tag:'diner',
       title:'🌙 Dîner Flōra',
       body: 'Dîner léger avant 20h pour limiter le SJSR nocturne.' },
-    { h:20, m:30, tag:'medicaments',
+    { h:tMED.h, m:tMED.m, tag:'medicaments',
       title:'💊 Médicaments du soir',
       body: `N\'oubliez pas ${medStr} avant de dormir.` },
-    { h:21, m:0,  tag:'journal',
+    { h:tJNL.h, m:tJNL.m, tag:'journal',
       title:'🌿 Journal du soir Flōra',
       body: 'Comment s\'est passée votre journée ? 2 minutes pour noter énergie, douleur et SJSR.' },
   ];
@@ -4120,13 +4141,15 @@ function renderNotifPrefs() {
   const container = document.getElementById('notif-prefs');
   if (!container) return;
   const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
+  const h2 = profile.horaires || {};
+  const fmt = (str, def) => str ? str.replace(':', 'h') : def;
   const items = [
-    { tag:'petit-dej',    label:'🌅 Petit-déjeuner',    heure:'7h00'  },
-    { tag:'dejeuner',     label:'☀️ Déjeuner',           heure:'13h00' },
-    { tag:'gouter',       label:'🍎 Goûter',             heure:'16h00' },
-    { tag:'diner',        label:'🌙 Dîner',              heure:'19h00' },
-    { tag:'medicaments',  label:'💊 Médicaments du soir',heure:'20h30' },
-    { tag:'journal',      label:'🌿 Journal du soir',    heure:'21h00' },
+    { tag:'petit-dej',    label:'🌅 Petit-déjeuner',     heure: fmt(h2.petitdej,    '7h00')  },
+    { tag:'dejeuner',     label:'☀️ Déjeuner',            heure: fmt(h2.dejeuner,   '13h00') },
+    { tag:'gouter',       label:'🍎 Goûter',              heure: fmt(h2.gouter,     '16h00') },
+    { tag:'diner',        label:'🌙 Dîner',               heure: fmt(h2.diner,      '19h00') },
+    { tag:'medicaments',  label:'💊 Médicaments du soir', heure: fmt(h2.medicaments,'20h30') },
+    { tag:'journal',      label:'🌿 Journal du soir',     heure: fmt(h2.journal,    '21h00') },
   ];
   container.innerHTML = items.map(item => {
     const on = prefs[item.tag] !== false;
@@ -5181,14 +5204,13 @@ function initApp() {
   setJournalDate();
   updateSleepCalc();
 
-  // Recette du jour — choisie selon profil si possible
-  const free = RECETTES.filter(r => !r.premium);
-  const rdj  = free[new Date().getDate() % free.length];
+  // Recette du jour — personnalisée selon profil, objectif et symptômes récents
+  window._rdjId = getRecetteDuJour()?.id;
+  const rdj = window._rdjId ? RECETTES.find(r => r.id === window._rdjId) : null;
   const rdjEl    = document.getElementById('recette-du-jour');
   const rdjEmoji = document.getElementById('rdj-emoji');
   if (rdjEl && rdj)    rdjEl.textContent    = rdj.nom;
   if (rdjEmoji && rdj) rdjEmoji.textContent = rdj.emoji;
-  window._rdjId = rdj?.id;
 
   renderStreakOnDashboard();
   renderConseil();      // Remplace le "Chargement…" du conseil SJSR
@@ -5841,6 +5863,54 @@ Je suis votre assistante bien-être spécialisée SJSR/TDAH. Je peux vous aider 
 📊 Analyser votre journal de suivi
 
 ⚠️ Note : je fonctionne en mode hors-ligne pour l'instant. Pour des réponses plus personnalisées, une connexion est nécessaire.`;
+}
+
+
+function getRecetteDuJour() {
+  // Filtrer selon les contraintes alimentaires du profil
+  let pool = RECETTES.filter(r => !r.premium);
+
+  if (profile.sansGluten)  pool = pool.filter(r => r.tags?.includes('sg'));
+  if (profile.sansLactose) pool = pool.filter(r => r.tags?.includes('sl'));
+  if (pool.length === 0)   pool = RECETTES.filter(r => !r.premium); // fallback
+
+  // Scorer selon objectif
+  const goal = profile.goal || 'global';
+  const scored = pool.map(r => {
+    let score = 0;
+    const b = (r.benefices || '').toLowerCase();
+    const ing = (r.ingredients || []).join(' ').toLowerCase();
+
+    if (goal === 'sommeil'  && (b.includes('sommeil') || b.includes('tryptophane'))) score += 3;
+    if (goal === 'douleur'  && (b.includes('anti-inflam') || b.includes('douleur'))) score += 3;
+    if (goal === 'sjsr'     && (b.includes('sjsr') || b.includes('oméga') || b.includes('fer'))) score += 3;
+    if (goal === 'energie'  && (b.includes('énergie') || b.includes('fer') || b.includes('protéine'))) score += 3;
+
+    // Bonus si correspond aux symptômes récents
+    const yesterday = journal[dateKey(new Date(Date.now() - 86400000))];
+    if (yesterday) {
+      if ((yesterday.sjsr || 0) >= 3 && (b.includes('oméga') || b.includes('magnésium'))) score += 2;
+      if ((yesterday.douleur || 0) >= 6 && b.includes('anti-inflam')) score += 2;
+      if ((yesterday.energie || 0) <= 4 && (b.includes('fer') || b.includes('protéine'))) score += 2;
+    }
+
+    // Bonus catégorie : préférer petit-déj le matin, dîner le soir
+    const h = new Date().getHours();
+    if (h < 10 && r.cat === 'petit-dejeuner') score += 2;
+    if (h >= 18 && r.cat === 'diner') score += 2;
+    if (h >= 12 && h < 16 && r.cat === 'dejeuner') score += 2;
+
+    // Léger aléatoire pour varier chaque jour
+    score += (new Date().getDate() * (r.id % 7)) % 3;
+
+    return { r, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+
+  // Prendre dans le top 10 avec un peu d'aléatoire basé sur le jour
+  const top10 = scored.slice(0, 10);
+  return top10[new Date().getDate() % top10.length]?.r || pool[0];
 }
 
 // ============================
@@ -6746,9 +6816,11 @@ function closeModal() {
 function shareRecette(id) {
   const r = RECETTES.find(x => x.id === id);
   if (!r) return;
-  const text = `🌿 ${r.emoji} ${r.nom}\n⏱ ${r.temps} · ${r.calories} kcal\n\n${r.benefices}\n\nIngrédients :\n${r.ingredients.map(i=>'• '+i).join('\n')}\n\n👉 Flōra : https://kettyburel-art.github.io/Fl-ra/`;
+  // URL directe vers la recette (fragment #recette-ID)
+  const recetteUrl = `https://kettyburel-art.github.io/Fl-ra/#recette-${r.id}`;
+  const text = `🌿 ${r.emoji} ${r.nom}\n⏱ ${r.temps} · ${r.calories} kcal\n\n${r.benefices}\n\nIngrédients :\n${r.ingredients.map(i=>'• '+i).join('\n')}\n\n👉 Voir la recette dans Flōra : ${recetteUrl}`;
   if (navigator.share) {
-    navigator.share({ title: `Flōra — ${r.nom}`, text, url: 'https://kettyburel-art.github.io/Fl-ra/' }).catch(()=>{});
+    navigator.share({ title: `Flōra — ${r.nom}`, text, url: recetteUrl }).catch(()=>{});
   } else {
     navigator.clipboard?.writeText(text).then(() => {
       const msg = document.createElement('div');
@@ -7677,6 +7749,14 @@ function loadProfil() {
   document.getElementById('p-sl').checked    = !!profile.sansLactose;
   document.getElementById('p-sv').checked    = !!profile.vegetarien;
 
+  // Charger les horaires personnalisés
+  const horaires = profile.horaires || {};
+  const defaultH = { petitdej:'07:00', dejeuner:'13:00', gouter:'16:00', diner:'19:00', medicaments:'20:30', journal:'21:00' };
+  Object.entries(defaultH).forEach(([key, def]) => {
+    const el = document.getElementById('p-h-' + key);
+    if (el) el.value = horaires[key] || def;
+  });
+
   // Charger les médicaments personnalisés
   renderProfilMeds();
 
@@ -7698,6 +7778,17 @@ function saveProfil(btn) {
   profile.name        = document.getElementById('p-name').value.trim();
   profile.goal        = document.getElementById('p-goal').value;
   profile.sansGluten  = document.getElementById('p-sg').checked;
+
+  // Sauvegarder les horaires personnalisés
+  profile.horaires = {
+    petitdej:    document.getElementById('p-h-petitdej')?.value    || '07:00',
+    dejeuner:    document.getElementById('p-h-dejeuner')?.value    || '13:00',
+    gouter:      document.getElementById('p-h-gouter')?.value      || '16:00',
+    diner:       document.getElementById('p-h-diner')?.value       || '19:00',
+    medicaments: document.getElementById('p-h-medicaments')?.value || '20:30',
+    journal:     document.getElementById('p-h-journal')?.value     || '21:00',
+  };
+
   // Les médicaments sont sauvegardés directement par addProfilMed/removeProfilMed
   profile.sansLactose = document.getElementById('p-sl').checked;
   profile.vegetarien  = document.getElementById('p-sv').checked;
