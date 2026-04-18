@@ -11,12 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <!-- Privacy-friendly analytics by Plausible -->
-  <script async src="https://plausible.io/js/pa-uXJczXoCkRJ3fGtWreuPj.js"></script>
-  <script>
-    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
-    plausible.init()
-  </script>
+  <!-- Analytics — Plausible (RGPD, sans cookies, sans bandeau) -->
+  <script defer data-domain="kettyburel-art.github.io/Fl-ra" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
 
@@ -463,6 +459,15 @@
         </div>
 
         <div id="agenda-grid" class="agenda-grid"></div>
+
+        <div class="journal-block" style="margin-top:16px;">
+          <button class="btn-primary full-width" onclick="generateShoppingFromAgenda()">
+            🛒 Générer la liste de courses depuis l'agenda
+          </button>
+          <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:8px;">
+            Basé sur les recettes planifiées cette semaine
+          </p>
+        </div>
       </section>
 
       <section id="page-generateur" class="page hidden">
@@ -590,10 +595,10 @@
           <div class="plan-card" id="plan-card">
             <div class="plan-name">Flōra Gratuit</div>
             <div class="plan-features">
-              <div class="pf">✅ 77 recettes anti-inflammatoires</div>
+              <div class="pf">✅ 20 recettes anti-inflammatoires</div>
               <div class="pf">✅ Journal illimité</div>
               <div class="pf">✅ Agenda 1 semaine</div>
-              <div class="pf pf-locked">🔒 Bibliothèque complète (89 recettes exclusives)</div>
+              <div class="pf pf-locked">🔒 Bibliothèque complète (120+ recettes)</div>
               <div class="pf pf-locked">🔒 Générateur illimité</div>
               <div class="pf pf-locked">🔒 Statistiques avancées</div>
             </div>
@@ -832,7 +837,7 @@
         <p>Tout ce dont vous avez besoin pour votre bien-être</p>
       </div>
       <div class="premium-features">
-        <div class="pf-item">✅ 166 recettes anti-inflammatoires (dont 89 exclusives)</div>
+        <div class="pf-item">✅ 65 recettes anti-inflammatoires (dont 30+ exclusives)</div>
         <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
         <div class="pf-item">✅ Générateur de menus illimité</div>
         <div class="pf-item">✅ Statistiques & tendances avancées</div>

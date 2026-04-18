@@ -4716,6 +4716,127 @@ function confirmAddBasketToAgenda(dk, pdcId, dejId, dinId, snackId, overlayEl) {
   setTimeout(() => msg.remove(), 2500);
 }
 
+function generateShoppingFromAgenda() {
+  // Collecter toutes les recettes planifiées cette semaine
+  const dates = getWeekDates(currentWeekOffset);
+  const recetteIds = new Set();
+
+  dates.forEach(d => {
+    const dk = dateKey(d);
+    const dayData = agenda[dk] || {};
+    Object.values(dayData).forEach(recId => {
+      if (recId) recetteIds.add(recId);
+    });
+  });
+
+  if (!recetteIds.size) {
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#c0392b;color:#fff;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
+    msg.textContent = '⚠️ Aucune recette dans l\'agenda cette semaine';
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 2500);
+    return;
+  }
+
+  // Collecter tous les ingrédients de ces recettes (dédupliqués)
+  const ingredientSet = {};
+  recetteIds.forEach(id => {
+    const r = RECETTES.find(x => x.id === id);
+    if (!r) return;
+    r.ingredients.forEach(ing => {
+      // Nettoyer quantités
+      const clean = ing
+        .replace(/^\d[\d,./]* ?(g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée|portion)s? /i, '')
+        .replace(/^\d+ /, '')
+        .trim();
+      if (clean.length < 3) return;
+      // Grouper par mot-clé principal
+      const key = clean.toLowerCase().split(' ')[0];
+      if (!ingredientSet[key]) ingredientSet[key] = { label: clean, count: 0 };
+      ingredientSet[key].count++;
+    });
+  });
+
+  // Trier par fréquence, exclure ce qui est dans le placard
+  const sorted = Object.values(ingredientSet)
+    .sort((a, b) => b.count - a.count)
+    .filter(({ label }) => {
+      const l = label.toLowerCase();
+      return !Object.keys(placardItems).some(p =>
+        placardItems[p] && l.includes(p.toLowerCase().split(' ')[0])
+      );
+    });
+
+  // Catégoriser
+  const CATEGORIE_KEYWORDS = [
+    { cat: '🥩 Protéines',    kw: ['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','daurade','crevette','poulet','dinde','boeuf','bœuf','oeuf','œuf','tofu','tempeh','lentille','pois chiche','haricot'] },
+    { cat: '🥦 Légumes',      kw: ['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate','oignon','ail','gingembre','tomate','concombre','asperge','céleri','roquette'] },
+    { cat: '🌾 Féculents',    kw: ['quinoa','riz','sarrasin','pâte','nouille','galette','flocon','farine','polenta','boulgour'] },
+    { cat: '🥑 Bons gras',    kw: ['noix','amande','cajou','noisette','pistache','graine','tahini','avocat'] },
+    { cat: '🥫 Conserves',    kw: ['lait de coco','tomate concass','bouillon','miso','concentré'] },
+    { cat: '🍋 Fruits',       kw: ['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot','cerise','orange','pêche'] },
+    { cat: '🌿 Épices',       kw: ['curcuma','cumin','cannelle','paprika','basilic','persil','coriandre','menthe','thym','romarin','origan','safran','curry','vanille','poivre','sel'] },
+    { cat: '🫙 Huiles',       kw: ['huile','vinaigre','tamari','sauce soja'] },
+    { cat: '🥛 Laits végét.', kw: ['lait','yaourt','crème de coco'] },
+  ];
+
+  function getCat(label) {
+    const l = label.toLowerCase();
+    for (const { cat, kw } of CATEGORIE_KEYWORDS) {
+      if (kw.some(k => l.includes(k))) return cat;
+    }
+    return '🛒 Divers';
+  }
+
+  const byCategorie = {};
+  sorted.forEach(({ label }) => {
+    const cat = getCat(label);
+    if (!byCategorie[cat]) byCategorie[cat] = [];
+    // Éviter quasi-doublons
+    const key = label.toLowerCase().split(' ')[0];
+    if (!byCategorie[cat].some(i => i.toLowerCase().split(' ')[0] === key)) {
+      byCategorie[cat].push(label);
+    }
+  });
+
+  // Afficher dans un overlay
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9998;display:flex;align-items:flex-end;';
+
+  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves','🍋 Fruits','🌿 Épices','🫙 Huiles','🥛 Laits végét.','🛒 Divers'];
+
+  const listHTML = orderedCats
+    .filter(cat => byCategorie[cat]?.length)
+    .map(cat => `
+      <div style="margin-bottom:14px;">
+        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:6px;">${cat}</div>
+        ${byCategorie[cat].map(item => `
+          <div onclick="this.style.opacity=this.style.opacity==='0.4'?'1':'0.4';this.querySelector('span').textContent=this.style.opacity==='0.4'?'✓':' '"
+            style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
+            <span style="color:var(--green-mid);font-weight:700;width:16px;"> </span>
+            <span style="font-size:0.88rem;color:var(--text-dark);">${item}</span>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+  overlay.innerHTML = `
+    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 36px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--green-deep);">🛒 Liste de courses</div>
+        <button onclick="this.closest('[style*=fixed]').remove()"
+          style="background:var(--cream-dark);border:none;border-radius:50%;width:30px;height:30px;font-size:1rem;cursor:pointer;">✕</button>
+      </div>
+      <div style="font-size:0.78rem;color:var(--text-light);margin-bottom:16px;">
+        ${recetteIds.size} recette${recetteIds.size > 1 ? 's' : ''} · semaine du ${dates[0].toLocaleDateString('fr-FR', {day:'numeric',month:'long'})}
+        · Touchez un article pour le cocher
+      </div>
+      ${listHTML || '<p style="color:var(--text-light);text-align:center;">Aucun ingrédient trouvé.</p>'}
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
 function filterRecettesByPlacard() {
   const checkedItems = Object.keys(placardItems).filter(k => placardItems[k]);
   if (!checkedItems.length) {
