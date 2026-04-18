@@ -6064,11 +6064,101 @@ function dateKey(d) {
 }
 
 function setJournalDate() {
-  renderJournalMedChips(); // Chips médicaments depuis le profil
-  const now = new Date();
+  renderJournalMedChips();
+  const now  = new Date();
   const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   document.getElementById('journal-entry-date').textContent =
     now.toLocaleDateString('fr-FR', opts);
+
+  // Charger les données existantes du jour si elles existent
+  const today = dateKey(now);
+  const e = journal[today];
+  if (!e) return; // Pas d'entrée aujourd'hui — formulaire vide par défaut
+
+  // Heures coucher/lever
+  const coucherEl = document.getElementById('sl-coucher');
+  const leverEl   = document.getElementById('sl-lever');
+  if (coucherEl && e.coucher) coucherEl.value = e.coucher;
+  if (leverEl   && e.lever)   leverEl.value   = e.lever;
+  updateSleepCalc();
+
+  // Cycles
+  if (e.cycles) { currentCycles = e.cycles; setCyclesByCount(e.cycles); }
+
+  // Levers nocturnes
+  if (typeof e.levers === 'number') {
+    leversCount = e.levers;
+    const lc = document.getElementById('levers-count');
+    if (lc) lc.textContent = leversLabels[Math.min(e.levers, leversLabels.length-1)];
+  }
+
+  // Sliders
+  const sliders = [
+    { id:'sl-qualite', val:e.qualite, valId:'val-qualite', isStars:true },
+    { id:'sl-sjsr',    val:e.sjsr,    valId:'val-sjsr',    isSjsr:true  },
+    { id:'sl-energie', val:e.energie, valId:'val-energie'               },
+    { id:'sl-douleur', val:e.douleur, valId:'val-douleur'               },
+  ];
+  sliders.forEach(({ id, val, valId, isStars, isSjsr }) => {
+    if (val === undefined || val === null) return;
+    const el = document.getElementById(id);
+    if (el) { el.value = val; updateSliderVal(id, valId, !!isStars, !!isSjsr); }
+  });
+
+  // Endormissement — chip sélectionnée
+  if (e.endormissement) {
+    document.querySelectorAll('[onclick*="endormissement"]').forEach(chip => {
+      const val = chip.getAttribute('onclick')?.match(/'([^']+)'/g)?.[2]?.replace(/'/g,'');
+      if (val === e.endormissement) {
+        chip.classList.add('active');
+        chip.dataset.selected = val;
+      }
+    });
+  }
+
+  // Localisation SJSR
+  if (e.sjsrLocation) {
+    document.querySelectorAll('[onclick*="location"]').forEach(chip => {
+      const val = chip.getAttribute('onclick')?.match(/'([^']+)'/g)?.[2]?.replace(/'/g,'');
+      if (val === e.sjsrLocation) {
+        chip.classList.add('active');
+        chip.dataset.selected = val;
+      }
+    });
+    const locRow = document.getElementById('sjsr-location-row');
+    if (locRow && (e.sjsr || 0) > 0) locRow.style.display = 'block';
+  }
+
+  // Médicaments cochés
+  if (e.meds && e.meds.length) {
+    document.querySelectorAll('.journal-med-chip').forEach(chip => {
+      if (e.meds.includes(chip.dataset.med || chip.textContent.trim())) {
+        chip.classList.add('active');
+      }
+    });
+  }
+
+  // Symptômes cochés
+  if (e.symptoms && e.symptoms.length) {
+    document.querySelectorAll('#symptom-chips .chip').forEach(chip => {
+      if (e.symptoms.includes(chip.textContent.trim())) {
+        chip.classList.add('active');
+      }
+    });
+  }
+
+  // Rituels cochés
+  if (e.rituels && e.rituels.length) {
+    document.querySelectorAll('[onclick*="rituel"]').forEach(chip => {
+      if (e.rituels.includes(chip.textContent.trim())) {
+        chip.classList.add('active');
+      }
+    });
+  }
+
+  // Notes
+  const notesEl = document.getElementById('journal-notes');
+  if (notesEl && e.notes) notesEl.value = e.notes;
 }
 
 // ============================
