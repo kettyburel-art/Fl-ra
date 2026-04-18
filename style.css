@@ -2155,3 +2155,96 @@ textarea.field { resize: vertical; min-height: 80px; }
   align-self: flex-end;
   white-space: nowrap;
 }
+
+/* Plan mensuel */
+.plan-jour {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px var(--shadow);
+  border-left: 3px solid var(--green-light);
+}
+
+.plan-jour-locked {
+  border-left-color: var(--gold);
+  opacity: 0.85;
+}
+
+.plan-jour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.plan-jour-date strong {
+  font-size: 0.9rem;
+  color: var(--green-deep);
+}
+
+.plan-jour-theme {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-left: 8px;
+}
+
+.plan-lock {
+  font-size: 0.72rem;
+  background: var(--gold);
+  color: var(--white);
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+
+.plan-locked-msg {
+  font-size: 0.78rem;
+  color: var(--gold);
+  text-align: center;
+  padding: 8px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.plan-repas {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plan-meal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  padding: 4px 0;
+  cursor: pointer;
+  border-bottom: 1px solid var(--cream);
+}
+
+.plan-meal:last-child { border-bottom: none; }
+.plan-meal:hover { color: var(--green-mid); }
+
+.plan-meal-label {
+  font-size: 0.75rem;
+  width: 20px;
+  flex-shrink: 0;
+}
+
+/* Plan mensuel — états */
+.plan-jour-today {
+  border-left-color: var(--green-deep) !important;
+  background: linear-gradient(135deg, #f0f9f4, #e8f5ee);
+  box-shadow: 0 4px 16px var(--shadow-strong);
+}
+
+.plan-jour-past {
+  opacity: 0.55;
+}
+
+.plan-jour-past .plan-jour-date strong {
+  text-decoration: line-through;
+  color: var(--text-light);
+}

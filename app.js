@@ -3195,6 +3195,595 @@ const RECETTES = [
       'Étalez sur une plaque recouverte de papier cuisson.',
       'Enfournez 15 min en remuant à mi-cuisson. Laissez refroidir complètement avant de ranger.'
     ]
+  },
+
+  // =============================================
+  // BRUNCH — 15 recettes sg/sl anti-inflam
+  // Spéciales week-end, conviviales, généreuses
+  // =============================================
+  {
+    id: 139, cat: 'brunch', premium: false,
+    emoji: '🥞', nom: 'Pancakes sarrasin-myrtilles sauce érable',
+    temps: '25 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le sarrasin est la céréale reine du SJSR — magnésium, rutine, fer. Les myrtilles apportent des anthocyanes anti-inflammatoires. Un brunch convivial qui prend soin de tes jambes.',
+    ingredients: [
+      '200g farine de sarrasin',
+      '2 œufs bio',
+      '250ml lait de riz',
+      '1 c.à.s huile de coco',
+      '150g myrtilles fraîches ou surgelées',
+      '3 c.à.s sirop d\'érable',
+      '1 c.à.c levure sans gluten'
+    ],
+    etapes: [
+      'Mélangez farine, levure, lait de riz et œufs jusqu\'à pâte lisse.',
+      'Laissez reposer 10 min.',
+      'Faites chauffer une poêle huilée à feu moyen.',
+      'Versez des louches de pâte, posez quelques myrtilles dessus.',
+      'Cuisez 3 min chaque côté. Servez avec le sirop d\'érable.'
+    ]
+  },
+  {
+    id: 140, cat: 'brunch', premium: false,
+    emoji: '🥑', nom: 'Toast avocat-saumon fumé-œuf poché',
+    temps: '15 min', calories: 450, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le trio gagnant SJSR : oméga-3 du saumon + graisses anti-inflammatoires de l\'avocat + fer et B12 de l\'œuf. Un brunch protéiné qui tient toute la matinée.',
+    ingredients: [
+      '2 tranches pain de sarrasin grillé',
+      '1 avocat mûr',
+      '100g saumon fumé',
+      '2 œufs bio',
+      '1 citron',
+      'Aneth frais, câpres',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Portez l\'eau à frémissement avec un trait de vinaigre.',
+      'Écrasez l\'avocat avec le citron et le Sel Santé.',
+      'Faites pocher les œufs 3 min (jaune coulant).',
+      'Étalez l\'avocat sur le pain grillé, disposez le saumon.',
+      'Posez l\'œuf poché, parsemez d\'aneth et câpres.'
+    ]
+  },
+  {
+    id: 141, cat: 'brunch', premium: false,
+    emoji: '🍳', nom: 'Shakshuka végétarienne aux poivrons',
+    temps: '30 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Plat convivial du Moyen-Orient. Les poivrons rouges sont champions de la vitamine C — idéal pour absorber le fer végétal. Les tomates cuites libèrent leur lycopène anti-inflammatoire.',
+    ingredients: [
+      '4 œufs bio',
+      '400g tomates concassées',
+      '2 poivrons rouges',
+      '1 oignon rouge',
+      '3 gousses d\'ail',
+      '1 c.à.c cumin, 1 c.à.c paprika fumé',
+      'Coriandre fraîche, Sel Santé'
+    ],
+    etapes: [
+      'Faites revenir oignon et ail dans l\'huile d\'olive.',
+      'Ajoutez les poivrons émincés, cuisez 8 min.',
+      'Incorporez les tomates, cumin et paprika. Mijotez 10 min.',
+      'Creusez 4 nids, cassez un œuf dans chacun.',
+      'Couvrez et cuisez 5-6 min. Parsemez de coriandre fraîche.'
+    ]
+  },
+  {
+    id: 142, cat: 'brunch', premium: false,
+    emoji: '🫐', nom: 'Bowl açaï topping granola-fruits frais',
+    temps: '10 min', calories: 390, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'açaï est l\'un des aliments les plus riches en antioxydants au monde. Le granola maison apporte magnésium et fibres. Un brunch Instagram-friendly qui fait du bien à l\'intérieur.',
+    ingredients: [
+      '200g pulpe d\'açaï surgelée',
+      '1 banane congelée',
+      '100ml lait de coco',
+      '50g granola sg maison',
+      'Myrtilles, fraises, kiwi',
+      '2 c.à.s noix de coco râpée',
+      '1 c.à.s graines de chia'
+    ],
+    etapes: [
+      'Mixez la pulpe d\'açaï avec la banane congelée et le lait de coco.',
+      'Versez dans un grand bol — la texture doit être épaisse.',
+      'Disposez le granola d\'un côté, les fruits de l\'autre.',
+      'Parsemez de noix de coco et graines de chia.',
+      'Servez immédiatement avec une cuillère large.'
+    ]
+  },
+  {
+    id: 143, cat: 'brunch', premium: true,
+    emoji: '🧇', nom: 'Gaufres teff-banane sauce framboise',
+    temps: '30 min', calories: 440, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le teff est la céréale la plus riche en fer — une gaufre = autant de fer que 100g de bœuf. La sauce framboise apporte des antioxydants et de la vitamine C qui booste l\'absorption du fer.',
+    ingredients: [
+      '200g farine de teff',
+      '2 bananes mûres',
+      '200ml lait d\'amande',
+      '2 œufs bio',
+      '2 c.à.s huile de coco',
+      '200g framboises fraîches',
+      '2 c.à.s sirop d\'agave',
+      '1 c.à.c levure sg'
+    ],
+    etapes: [
+      'Écrasez les bananes, mélangez avec les œufs, le lait et l\'huile.',
+      'Incorporez la farine de teff et la levure.',
+      'Faites chauffer le gaufrier huilé.',
+      'Cuisez chaque gaufre 4-5 min.',
+      'Mixez les framboises avec le sirop d\'agave. Servez sur les gaufres chaudes.'
+    ]
+  },
+  {
+    id: 144, cat: 'brunch', premium: true,
+    emoji: '🥗', nom: 'Buddha bowl brunch saumon-avocat-quinoa',
+    temps: '25 min', calories: 510, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Un repas complet anti-SJSR dans un bol : oméga-3, fer, magnésium, vitamine C. Le quinoa chaud avec l\'avocat frais et le saumon mariné crée une harmonie chaud-froid parfaite.',
+    ingredients: [
+      '150g quinoa',
+      '120g saumon fumé ou frais',
+      '1 avocat',
+      '1 œuf mollet',
+      '50g épinards frais',
+      '1 citron vert',
+      '2 c.à.s tamari',
+      '1 c.à.s graines de sésame'
+    ],
+    etapes: [
+      'Cuisez le quinoa 15 min. Assaisonnez au tamari et sésame.',
+      'Faites l\'œuf mollet (7 min, eau bouillante).',
+      'Coupez l\'avocat en tranches, arrosez de citron vert.',
+      'Dressez le bol : quinoa chaud, épinards, saumon, avocat.',
+      'Posez l\'œuf coupé en deux. Décorez de graines de sésame.'
+    ]
+  },
+  {
+    id: 145, cat: 'brunch', premium: false,
+    emoji: '🍌', nom: 'Banana bread sans gluten chocolat-noix',
+    temps: '15 min + 50min four', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le banana bread à partager en famille. Les bananes mûres sont riches en potassium et tryptophane. Le chocolat 85% apporte du magnésium. Les noix donnent des oméga-3 végétaux.',
+    ingredients: [
+      '3 bananes très mûres',
+      '200g farine de riz',
+      '80g poudre d\'amande',
+      '3 œufs bio',
+      '80ml huile de coco',
+      '100g pépites de chocolat 85%',
+      '60g noix concassées',
+      '1 sachet levure sg'
+    ],
+    etapes: [
+      'Préchauffez le four à 175°C.',
+      'Écrasez les bananes. Mélangez avec les œufs et l\'huile de coco.',
+      'Incorporez farine, poudre d\'amande et levure.',
+      'Ajoutez les pépites de chocolat et les noix.',
+      'Versez dans un moule à cake. Enfournez 50 min. Vérifiez avec un couteau.'
+    ]
+  },
+  {
+    id: 146, cat: 'brunch', premium: false,
+    emoji: '🍄', nom: 'Œufs brouillés champignons-herbes truffées',
+    temps: '15 min', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les œufs brouillés à la perfection : texture crémeuse sans beurre. Les champignons apportent du sélénium et vitamine D. L\'huile de truffe élève ce plat simple au rang de brunch gastronomique.',
+    ingredients: [
+      '4 œufs bio',
+      '200g champignons mélangés',
+      '2 c.à.s huile d\'olive',
+      '1 c.à.c huile de truffe (optionnel)',
+      '1 bouquet ciboulette',
+      '2 tranches pain de sarrasin',
+      'Sel Santé, poivre'
+    ],
+    etapes: [
+      'Faites sauter les champignons dans l\'huile d\'olive 5 min. Réservez.',
+      'Battez les œufs avec le Sel Santé.',
+      'À feu très doux, cuisez les œufs en remuant constamment à la spatule.',
+      'Retirez du feu avant prise complète — ils finissent de cuire hors du feu.',
+      'Dressez sur le pain grillé avec les champignons, la ciboulette et l\'huile de truffe.'
+    ]
+  },
+  {
+    id: 147, cat: 'brunch', premium: true,
+    emoji: '🦪', nom: 'Gravlax de saumon maison aneth-betterave',
+    temps: '20 min + 24h marinade', calories: 280, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le gravlax est du saumon cru mariné — préserve tous les oméga-3 intacts. La betterave colore naturellement et apporte des nitrates pour la circulation. Préparez la veille pour le brunch du dimanche.',
+    ingredients: [
+      '400g filet de saumon très frais',
+      '3 c.à.s sel Santé',
+      '2 c.à.s sirop d\'érable',
+      '1 betterave crue râpée',
+      '1 bouquet d\'aneth',
+      '1 citron (zeste)',
+      'Poivre noir concassé'
+    ],
+    etapes: [
+      'Mélangez sel, sirop d\'érable, betterave râpée, aneth et zeste de citron.',
+      'Enrobez le filet de saumon de cette marinade.',
+      'Emballez dans du film alimentaire, placez au frigo 24-48h.',
+      'Rincez délicatement avant de servir.',
+      'Tranchez finement en biais. Servez avec du pain de seigle sg et de la crème de cajou.'
+    ]
+  },
+  {
+    id: 148, cat: 'brunch', premium: false,
+    emoji: '🥐', nom: 'Muffins salés courgette-feta végane',
+    temps: '35 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Des muffins à emporter — idéaux pour un brunch nomade. La courgette apporte de l\'eau et de la légèreté. La feta végane à base de cajou donne l\'onctuosité sans lactose.',
+    ingredients: [
+      '2 courgettes râpées',
+      '150g farine de pois chiche',
+      '80g farine de riz',
+      '100g tofu ferme émietté (feta végane)',
+      '3 œufs bio',
+      '80ml huile d\'olive',
+      '1 c.à.c origan, 1 c.à.c curcuma',
+      '1 sachet levure sg'
+    ],
+    etapes: [
+      'Préchauffez le four à 180°C.',
+      'Essorez bien les courgettes râpées dans un torchon.',
+      'Mélangez farines, levure et épices.',
+      'Incorporez œufs, huile, courgettes et tofu émietté.',
+      'Remplissez les moules à muffins. Enfournez 22-25 min.'
+    ]
+  },
+  {
+    id: 149, cat: 'brunch', premium: true,
+    emoji: '🌺', nom: 'Smoothie bowl dragon fruit-coco-grenade',
+    temps: '10 min', calories: 310, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le dragon fruit (pitaya) est riche en bétalaïnes, des antioxydants rares aux propriétés anti-inflammatoires remarquables. La grenade apporte des polyphénols qui réduisent la douleur chronique.',
+    ingredients: [
+      '150g pitaya rose surgelée',
+      '1 banane congelée',
+      '100ml lait de coco',
+      '½ grenade (graines)',
+      '2 c.à.s noix de coco râpée',
+      '1 c.à.s graines de grenade de lin',
+      '1 c.à.c miel'
+    ],
+    etapes: [
+      'Mixez la pitaya avec la banane congelée et le lait de coco.',
+      'La couleur rose fuchsia doit être intense et la texture épaisse.',
+      'Versez dans un bol froid.',
+      'Décorez avec les graines de grenade, la noix de coco et les graines de lin.',
+      'Servez immédiatement — la pitaya colore magnifiquement.'
+    ]
+  },
+  {
+    id: 150, cat: 'brunch', premium: false,
+    emoji: '🥚', nom: 'Frittata aux légumes de saison',
+    temps: '25 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La frittata italienne est une omelette cuite au four — riche en protéines et légumes. Elle se mange chaude ou froide, parfaite pour partager. Les légumes de saison maximisent les nutriments.',
+    ingredients: [
+      '6 œufs bio',
+      '1 courgette',
+      '1 poivron rouge',
+      '100g épinards frais',
+      '1 oignon rouge',
+      '2 c.à.s huile d\'olive',
+      'Basilic frais, Sel Santé, poivre'
+    ],
+    etapes: [
+      'Préchauffez le four à 190°C.',
+      'Faites revenir l\'oignon et les légumes dans l\'huile d\'olive 8 min.',
+      'Battez les œufs avec le Sel Santé et le basilic.',
+      'Versez les œufs sur les légumes dans une poêle allant au four.',
+      'Enfournez 12-15 min jusqu\'à prise complète. Démoulez et servez en parts.'
+    ]
+  },
+  {
+    id: 151, cat: 'brunch', premium: true,
+    emoji: '🍓', nom: 'Crépes de teff sauce fraise-basilic',
+    temps: '30 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Des crêpes ultra-fines à la farine de teff — la plus riche en fer de toutes les céréales. La sauce fraise-basilic est une association surprenante qui apporte vitamine C et dopamine (basilic).',
+    ingredients: [
+      '150g farine de teff',
+      '300ml lait de riz',
+      '2 œufs bio',
+      '1 c.à.s huile de coco',
+      '300g fraises fraîches',
+      '10 feuilles de basilic frais',
+      '2 c.à.s sirop d\'agave'
+    ],
+    etapes: [
+      'Mélangez farine de teff, lait de riz, œufs et huile de coco.',
+      'Laissez reposer 15 min — la pâte s\'épaissit légèrement.',
+      'Cuisez des crêpes fines dans une poêle bien chaude.',
+      'Mixez les fraises avec le basilic et le sirop d\'agave.',
+      'Servez les crêpes avec la sauce fraise-basilic tiède.'
+    ]
+  },
+  {
+    id: 152, cat: 'brunch', premium: false,
+    emoji: '🫙', nom: 'Overnight oats mangue-passion-chia',
+    temps: '5 min + 8h repos', calories: 340, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le brunch préparé la veille — zéro stress le matin. Les flocons de millet remplacent l\'avoine (sg). La mangue + fruit de la passion = vitamines C, A et enzymes digestives.',
+    ingredients: [
+      '80g flocons de millet',
+      '2 c.à.s graines de chia',
+      '250ml lait de coco',
+      '1 mangue fraîche',
+      '2 fruits de la passion',
+      '1 c.à.s sirop d\'érable',
+      '1 pincée de cardamome'
+    ],
+    etapes: [
+      'Mélangez les flocons de millet avec les graines de chia et le lait de coco.',
+      'Ajoutez le sirop d\'érable et la cardamome.',
+      'Réfrigérez toute la nuit — les graines gonflent et créent une texture crémeuse.',
+      'Le matin, coupez la mangue en cubes et récupérez la pulpe des fruits de la passion.',
+      'Dressez en verrines avec les fruits par-dessus.'
+    ]
+  },
+  {
+    id: 153, cat: 'brunch', premium: true,
+    emoji: '🧆', nom: 'Falafels dorés sauce tahini-citron',
+    temps: '45 min', calories: 430, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les falafels maison sont riches en fer, fibres et protéines végétales. Cuits au four plutôt que frits — 60% de calories en moins. Le tahini apporte du calcium et des graisses saines.',
+    ingredients: [
+      '400g pois chiches cuits',
+      '1 oignon',
+      '3 gousses d\'ail',
+      '1 bouquet coriandre + persil',
+      '1 c.à.c cumin, 1 c.à.c coriandre moulue',
+      '2 c.à.s farine de pois chiche',
+      '3 c.à.s tahini',
+      '2 citrons'
+    ],
+    etapes: [
+      'Préchauffez le four à 200°C.',
+      'Mixez pois chiches, oignon, ail, herbes et épices — texture granuleuse, pas lisse.',
+      'Incorporez la farine de pois chiche. Formez des boulettes.',
+      'Disposez sur plaque huilée. Enfournez 25 min en retournant à mi-cuisson.',
+      'Sauce tahini : mélangez tahini + jus de citron + eau + ail. Servez avec les falafels.'
+    ]
+  },
+
+  // =============================================
+  // PREMIUM "HORS DU COMMUN"
+  // Ingrédients originaux, techniques de chef
+  // Exclusives abonnés Premium
+  // =============================================
+  {
+    id: 154, cat: 'dejeuner', premium: true,
+    emoji: '🦑', nom: 'Encornets grillés sauce vierge yuzu-gingembre',
+    temps: '20 min', calories: 340, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Les encornets sont une source exceptionnelle de fer héminique et de zinc — souvent ignorée. Le yuzu japonais est 3x plus riche en vitamine C que le citron. Une association umami-agrume inédite.',
+    ingredients: [
+      '300g anneaux d\'encornet frais',
+      '1 yuzu (ou citron + zeste d\'orange)',
+      '2 cm gingembre frais',
+      '3 tomates cerises coupées',
+      '10 feuilles de basilic thaï',
+      '2 c.à.s huile d\'olive',
+      'Fleur de sel, poivre de Timut'
+    ],
+    etapes: [
+      'Séchez bien les encornets — l\'humidité empêche la coloration.',
+      'Faites chauffer une poêle en fonte à feu très vif.',
+      'Saisissez les encornets 1 min chaque côté — ils doivent colorer vite.',
+      'Préparez la sauce vierge : tomates, yuzu, gingembre râpé, basilic thaï et huile d\'olive.',
+      'Dressez les encornets avec la sauce vierge et la fleur de sel.'
+    ]
+  },
+  {
+    id: 155, cat: 'diner', premium: true,
+    emoji: '🌿', nom: 'Tartare de betterave-lentilles beluga-huile de lin',
+    temps: '25 min', calories: 290, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Un tartare entièrement végétal. Les lentilles beluga + betterave = combo fer record. L\'huile de lin apportée froide conserve ses oméga-3 intacts. Le poivre de Sichuan est un analgésique naturel.',
+    ingredients: [
+      '200g lentilles beluga cuites',
+      '2 betteraves crues râpées finement',
+      '3 c.à.s huile de lin (premier froid)',
+      '1 échalote',
+      '2 c.à.s câpres',
+      '1 c.à.s moutarde de Dijon sg',
+      'Poivre de Sichuan, sel fumé'
+    ],
+    etapes: [
+      'Émincez finement l\'échalote, hachez les câpres.',
+      'Mélangez lentilles, betterave râpée, échalote et câpres.',
+      'Assaisonnez avec la moutarde, le sel fumé et le poivre de Sichuan concassé.',
+      'Finissez avec l\'huile de lin froide — ne jamais la chauffer.',
+      'Façonnez en cercle avec un emporte-pièce. Servez immédiatement.'
+    ]
+  },
+  {
+    id: 156, cat: 'diner', premium: true,
+    emoji: '🐙', nom: 'Ceviche de maquereau-concombre-lait de coco',
+    temps: '15 min + 30min marinade', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le ceviche "cuit" le poisson par l\'acidité du citron — aucune chaleur, tous les oméga-3 préservés. Le maquereau est la source la plus concentrée en EPA/DHA. Le lait de coco adoucit l\'acidité.',
+    ingredients: [
+      '300g filets de maquereau très frais',
+      '3 citrons verts (jus)',
+      '1 citron jaune (jus)',
+      '100ml lait de coco',
+      '½ concombre',
+      '1 piment doux',
+      'Coriandre fraîche, oignon rouge'
+    ],
+    etapes: [
+      'Coupez le maquereau en cubes de 1 cm.',
+      'Couvrez de jus de citron vert — la chair doit blanchir (30 min).',
+      'Égouttez partiellement. Ajoutez le lait de coco et le jus de citron jaune.',
+      'Incorporez concombre en dés, oignon rouge émincé et piment.',
+      'Parsemez de coriandre fraîche. Servez dans des verres froids.'
+    ]
+  },
+  {
+    id: 157, cat: 'diner', premium: true,
+    emoji: '🌾', nom: 'Risotto de millet-safran-moules fumées',
+    temps: '35 min', calories: 420, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Le millet remplace le riz pour un risotto sans gluten riche en magnésium. Le safran a des propriétés anti-dépressives et anti-inflammatoires prouvées. Les moules fumées sont concentrées en fer.',
+    ingredients: [
+      '200g millet décortiqué',
+      '1 pot de moules fumées',
+      '1 pincée de safran',
+      '1 échalote, 2 gousses d\'ail',
+      '150ml vin blanc sg (ou bouillon)',
+      '600ml bouillon de légumes chaud',
+      '2 c.à.s huile d\'olive, persil plat'
+    ],
+    etapes: [
+      'Faites infuser le safran dans 2 c.à.s d\'eau chaude.',
+      'Faites revenir échalote et ail, ajoutez le millet.',
+      'Déglacez au vin blanc (ou bouillon). Ajoutez le safran infusé.',
+      'Incorporez le bouillon louche par louche en remuant.',
+      'En fin de cuisson, ajoutez les moules fumées. Parsemez de persil.'
+    ]
+  },
+  {
+    id: 158, cat: 'dejeuner', premium: true,
+    emoji: '🥬', nom: 'Nems crus feuille de riz-spiruline-crevettes',
+    temps: '20 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La spiruline dans la sauce dipping est la source végétale la plus concentrée en fer et protéines. Les crevettes apportent du zinc et sélénium. Le gingembre dans la sauce est puissamment anti-inflammatoire.',
+    ingredients: [
+      '8 feuilles de riz',
+      '150g crevettes cuites',
+      '1 avocat',
+      '1 mangue verte',
+      'Menthe, coriandre fraîche',
+      '2 c.à.s tamari, 1 c.à.c spiruline',
+      '1 cm gingembre, 1 citron vert'
+    ],
+    etapes: [
+      'Trempez les feuilles de riz 20 sec. Posez sur torchon humide.',
+      'Garnissez de crevettes, avocat, mangue verte et herbes.',
+      'Roulez en serrant bien.',
+      'Sauce spiruline : mélangez tamari + gingembre râpé + jus citron vert + spiruline.',
+      'Servez les nems avec la sauce verte légèrement piquante.'
+    ]
+  },
+  {
+    id: 159, cat: 'diner', premium: true,
+    emoji: '🫀', nom: 'Carpaccio de betterave-fraise-vinaigre balsamique vieilli',
+    temps: '20 min + 1h frigo', calories: 220, diff: 'Moyen',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La betterave tranchée fine améliore la circulation sanguine dans les jambes en 90 min. Les fraises apportent de l\'ellagique acid anti-inflammatoire. Le vinaigre balsamique vieilli est un prébiotique naturel.',
+    ingredients: [
+      '3 betteraves crues de couleurs variées',
+      '150g fraises fraîches',
+      '3 c.à.s vinaigre balsamique vieilli (12 ans)',
+      '2 c.à.s huile de cameline',
+      'Basilic frais, noix concassées',
+      'Fleur de sel, poivre'
+    ],
+    etapes: [
+      'Tranchez les betteraves crues très finement à la mandoline.',
+      'Disposez en rosace sur les assiettes, alternez les couleurs.',
+      'Coupez les fraises en deux, disposez entre les betteraves.',
+      'Arrosez d\'huile de cameline et vinaigre balsamique.',
+      'Réfrigérez 1h — les betteraves marinent légèrement. Parsemez de basilic et noix.'
+    ]
+  },
+  {
+    id: 160, cat: 'dejeuner', premium: true,
+    emoji: '🦈', nom: 'Tataki de thon rouge-sésame noir-sauce ponzu',
+    temps: '15 min', calories: 380, diff: 'Moyen',
+    tags: ['sg', 'sl'],
+    benefices: 'Technique japonaise : le thon est saisi 30 secondes par face, cru à cœur. Préserve tous les oméga-3. Le sésame noir est plus riche en antioxydants que le blanc. La sauce ponzu alcalinise l\'organisme.',
+    ingredients: [
+      '300g thon rouge qualité sushi',
+      '3 c.à.s graines de sésame noir',
+      '3 c.à.s tamari',
+      '2 c.à.s jus de yuzu ou citron',
+      '1 c.à.s mirin sg',
+      'Daikon râpé, gingembre mariné',
+      'Huile de sésame'
+    ],
+    etapes: [
+      'Mélangez tamari, jus de yuzu et mirin — c\'est la sauce ponzu.',
+      'Enrobez le thon de graines de sésame noir.',
+      'Faites chauffer une poêle à feu très vif avec l\'huile de sésame.',
+      'Saisissez le thon 30 secondes par face — cru à cœur.',
+      'Tranchez finement, servez avec la sauce ponzu et le daikon râpé.'
+    ]
+  },
+  {
+    id: 161, cat: 'snack', premium: true,
+    emoji: '🍵', nom: 'Matcha latte froid lait d\'avoine-miel de thym',
+    temps: '5 min', calories: 120, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le matcha grade cérémonie contient de la L-théanine qui améliore la concentration sans excitation — idéal TDAH. Ses catéchines sont les antioxydants les plus puissants du thé. Le miel de thym est antibactérien.',
+    ingredients: [
+      '1 c.à.c matcha grade cérémonie',
+      '300ml lait d\'avoine sg bien froid',
+      '1 c.à.s miel de thym',
+      '2 c.à.s eau chaude (70°C)',
+      'Glaçons',
+      '1 pincée de sel'
+    ],
+    etapes: [
+      'Tamisez le matcha dans un bol.',
+      'Ajoutez l\'eau chaude (pas bouillante — amèrerait le matcha).',
+      'Fouettez en zigzag jusqu\'à mousse verte brillante.',
+      'Ajoutez le miel de thym et la pincée de sel.',
+      'Versez sur les glaçons, complétez avec le lait d\'avoine froid. Ne pas mélanger — boire en strates.'
+    ]
+  },
+  {
+    id: 162, cat: 'diner', premium: true,
+    emoji: '🌸', nom: 'Velouté d\'asperges vertes-amande-huile de truffe',
+    temps: '30 min', calories: 260, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les asperges sont riches en glutathion, le "maître antioxydant" du corps. Elles contiennent de l\'asparagine qui détoxifie les reins. L\'huile de truffe est anti-inflammatoire et transforme ce velouté en expérience gastronomique.',
+    ingredients: [
+      '500g asperges vertes',
+      '100ml lait d\'amande',
+      '1 oignon, 2 gousses d\'ail',
+      '500ml bouillon de légumes',
+      '1 c.à.s huile de truffe blanche',
+      '30g amandes effilées grillées',
+      'Sel Santé, poivre blanc'
+    ],
+    etapes: [
+      'Cassez les asperges — elles se brisent naturellement à l\'endroit tendre.',
+      'Faites revenir oignon et ail, ajoutez les asperges.',
+      'Couvrez de bouillon chaud. Cuisez 12 min — les asperges doivent rester vertes.',
+      'Mixez avec le lait d\'amande jusqu\'à texture soyeuse.',
+      'Servez avec un filet d\'huile de truffe et les amandes grillées.'
+    ]
+  },
+  {
+    id: 163, cat: 'dejeuner', premium: true,
+    emoji: '🏔️', nom: 'Salade de sarrasin kasha-agrumes-herbes fraîches-zaatar',
+    temps: '20 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le zaatar (mélange thym-sésame-sumac) est un condiment du Moyen-Orient aux propriétés antimicrobiennes et antioxydantes. Le sumac contient de l\'acide gallique, puissant anti-inflammatoire. Le kasha est du sarrasin torréfié — digestif et riche en magnésium.',
+    ingredients: [
+      '200g sarrasin grillé (kasha)',
+      '1 orange sanguine',
+      '1 pamplemousse rose',
+      '1 bouquet de menthe fraîche',
+      '1 bouquet de persil plat',
+      '2 c.à.s zaatar',
+      '3 c.à.s huile d\'olive, 1 citron'
+    ],
+    etapes: [
+      'Cuisez le kasha 10 min dans le double de son volume d\'eau. Égouttez.',
+      'Pelez à vif l\'orange sanguine et le pamplemousse. Coupez en suprêmes.',
+      'Mélangez le kasha tiède avec les herbes hachées.',
+      'Ajoutez les suprêmes d\'agrumes et le zaatar.',
+      'Assaisonnez avec huile d\'olive et citron. La salade se mange tiède.'
+    ]
   }
 ];
 
@@ -3211,6 +3800,7 @@ const REPAS = [
 
 const RECETTES_PAR_CAT = {
   'petit-dejeuner': () => RECETTES.filter(r => r.cat === 'petit-dejeuner'),
+  'brunch':         () => RECETTES.filter(r => r.cat === 'brunch'),
   'dejeuner':       () => RECETTES.filter(r => r.cat === 'dejeuner'),
   'diner':          () => RECETTES.filter(r => r.cat === 'diner'),
   'snack':          () => RECETTES.filter(r => r.cat === 'snack'),
@@ -4142,7 +4732,11 @@ function showPage(page) {
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     { loadProfil(); renderStats(); }
   if (page === 'apropos')    { /* static */ }
-  if (page === 'generateur') checkGenAccess();
+  if (page === 'generateur') {
+    checkGenAccess();
+    // Réinitialiser sur l'onglet semaine à chaque ouverture
+    switchGenTab('semaine', document.querySelector('#page-generateur .jtab'));
+  }
   if (page === 'placard')    initPlacard();
 }
 
@@ -5192,13 +5786,241 @@ function clearAgendaMeal(dk, repas) {
 // ============================
 // GÉNÉRATEUR
 // ============================
+// ============================
+// GÉNÉRATEUR — ONGLETS
+// ============================
+function switchGenTab(tab, el) {
+  ['semaine','mensuel','brunch'].forEach(t => {
+    const el2 = document.getElementById('gen-tab-'+t);
+    if (el2) el2.classList.add('hidden');
+  });
+  const target = document.getElementById('gen-tab-'+tab);
+  if (target) target.classList.remove('hidden');
+
+  document.querySelectorAll('#page-generateur .jtab').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+
+  if (tab === 'mensuel') renderPlanMensuel();
+  if (tab === 'brunch')  renderBrunchList();
+}
+
+// Plan mensuel Avril 2026
+const PLAN_MENSUEL_AVRIL = [
+  // Semaine 1 — Focus Fer & SJSR
+  { j:1,  pdc:1,  dej:51, din:75, snack:129, theme:'🩸 Boost Fer' },
+  { j:2,  pdc:2,  dej:52, din:76, snack:80,  theme:'🌿 Anti-inflam' },
+  { j:3,  pdc:3,  dej:53, din:77, snack:81,  theme:'🧠 Focus TDAH' },
+  { j:4,  pdc:4,  dej:54, din:78, snack:82,  theme:'🦵 Jambes légères' },
+  { j:5,  pdc:5,  dej:55, din:79, snack:83,  theme:'⚡ Énergie' },
+  { j:6,  pdc:6,  dej:56, din:112,snack:84,  theme:'🥂 Week-end' },
+  { j:7,  pdc:7,  dej:57, din:113,snack:85,  theme:'🛌 Sommeil' },
+  // Semaine 2 — Focus Magnésium
+  { j:8,  pdc:8,  dej:58, din:114,snack:86,  theme:'💊 Magnésium' },
+  { j:9,  pdc:9,  dej:59, din:115,snack:87,  theme:'🌙 Nuit calme' },
+  { j:10, pdc:10, dej:60, din:116,snack:88,  theme:'🧠 Focus TDAH' },
+  { j:11, pdc:11, dej:61, din:117,snack:89,  theme:'🩸 Boost Fer' },
+  { j:12, pdc:12, dej:62, din:118,snack:90,  theme:'🌿 Anti-inflam' },
+  { j:13, pdc:13, dej:63, din:119,snack:91,  theme:'🥂 Week-end' },
+  { j:14, pdc:14, dej:64, din:120,snack:92,  theme:'🛌 Sommeil' },
+  // Semaine 3 — Focus Oméga-3
+  { j:15, pdc:15, dej:65, din:121,snack:93,  theme:'🐟 Oméga-3' },
+  { j:16, pdc:16, dej:66, din:122,snack:94,  theme:'🦵 Jambes légères' },
+  { j:17, pdc:17, dej:67, din:123,snack:95,  theme:'⚡ Énergie' },
+  { j:18, pdc:18, dej:68, din:75, snack:96,  theme:'🌿 Anti-inflam' },
+  { j:19, pdc:19, dej:69, din:76, snack:97,  theme:'🧠 Focus TDAH' },
+  { j:20, pdc:20, dej:70, din:77, snack:98,  theme:'🥂 Week-end' },
+  { j:21, pdc:21, dej:71, din:78, snack:99,  theme:'🛌 Sommeil' },
+  // Semaine 4 — Focus Intestin & Probiotiques
+  { j:22, pdc:22, dej:72, din:79, snack:100, theme:'🫘 Intestin' },
+  { j:23, pdc:23, dej:73, din:112,snack:101, theme:'🩸 Boost Fer' },
+  { j:24, pdc:24, dej:74, din:113,snack:102, theme:'🌿 Anti-inflam' },
+  { j:25, pdc:25, dej:104,din:114,snack:103, theme:'🦵 Jambes légères' },
+  { j:26, pdc:26, dej:105,din:115,snack:104, theme:'⚡ Énergie' },
+  { j:27, pdc:1,  dej:106,din:116,snack:105, theme:'🥂 Week-end' },
+  { j:28, pdc:2,  dej:107,din:117,snack:106, theme:'🛌 Sommeil' },
+  { j:29, pdc:3,  dej:108,din:118,snack:107, theme:'🧠 Focus TDAH' },
+  { j:30, pdc:4,  dej:109,din:119,snack:108, theme:'🌟 Bilan mensuel' },
+];
+
+// Plan mensuel Mai 2026
+const PLAN_MENSUEL_MAI = [
+  { j:1,  pdc:1,   dej:104, din:156, snack:161, theme:'🌸 1er mai · Détox' },
+  { j:2,  pdc:2,   dej:105, din:75,  snack:80,  theme:'🩸 Boost Fer' },
+  { j:3,  pdc:96,  dej:106, din:76,  snack:81,  theme:'🧠 Focus TDAH' },
+  { j:4,  pdc:97,  dej:107, din:157, snack:82,  theme:'🦵 Jambes légères' },
+  { j:5,  pdc:98,  dej:108, din:77,  snack:83,  theme:'⚡ Énergie' },
+  { j:6,  pdc:99,  dej:109, din:78,  snack:161, theme:'🥂 Week-end Brunch' },
+  { j:7,  pdc:100, dej:110, din:79,  snack:84,  theme:'🛌 Sommeil profond' },
+  { j:8,  pdc:101, dej:111, din:112, snack:85,  theme:'💊 Magnésium' },
+  { j:9,  pdc:102, dej:104, din:113, snack:128, theme:'🌙 Nuit calme' },
+  { j:10, pdc:103, dej:105, din:114, snack:88,  theme:'🧠 Focus TDAH' },
+  { j:11, pdc:131, dej:106, din:162, snack:89,  theme:'🌿 Anti-inflam' },
+  { j:12, pdc:1,   dej:107, din:115, snack:90,  theme:'🩸 Boost Fer' },
+  { j:13, pdc:66,  dej:108, din:116, snack:91,  theme:'🥂 Brunch printemps' },
+  { j:14, pdc:67,  dej:109, din:117, snack:92,  theme:'🛌 Récupération' },
+  { j:15, pdc:68,  dej:110, din:118, snack:93,  theme:'🫘 Microbiote' },
+  { j:16, pdc:69,  dej:111, din:119, snack:94,  theme:'🦵 Circulation' },
+  { j:17, pdc:96,  dej:60,  din:120, snack:95,  theme:'⚡ Vitalité' },
+  { j:18, pdc:97,  dej:61,  din:121, snack:124, theme:'🌿 Légèreté' },
+  { j:19, pdc:98,  dej:70,  din:122, snack:125, theme:'🧠 Concentration' },
+  { j:20, pdc:99,  dej:71,  din:123, snack:126, theme:'🥂 Brunch gourmand' },
+  { j:21, pdc:100, dej:72,  din:134, snack:127, theme:'🌸 Bien-être total' },
+  { j:22, pdc:101, dej:73,  din:135, snack:128, theme:'🩸 Fer héminique' },
+  { j:23, pdc:102, dej:74,  din:155, snack:129, theme:'🦵 SJSR nuit calme' },
+  { j:24, pdc:103, dej:154, din:75,  snack:130, theme:'🌿 Anti-inflam' },
+  { j:25, pdc:131, dej:158, din:76,  snack:80,  theme:'⚡ Énergie durable' },
+  { j:26, pdc:1,   dej:160, din:77,  snack:81,  theme:'🧠 TDAH focus' },
+  { j:27, pdc:66,  dej:163, din:78,  snack:82,  theme:'🥂 Brunch estival' },
+  { j:28, pdc:67,  dej:104, din:79,  snack:83,  theme:'🛌 Sommeil réparateur' },
+  { j:29, pdc:68,  dej:105, din:112, snack:84,  theme:'🌸 Bilan semaine 4' },
+  { j:30, pdc:69,  dej:106, din:113, snack:85,  theme:'💪 Récap mai' },
+  { j:31, pdc:96,  dej:107, din:114, snack:161, theme:'🎉 Dernier jour mai' },
+];
+
+const JOURS_SEMAINE = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+const MOIS = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];
+
+function renderPlanMensuel() {
+  const now = new Date();
+  const moisNum = now.getMonth(); // 3=avril, 4=mai
+  renderPlanMoisSpec(moisNum === 3 ? 3 : 4);
+}
+
+function renderPlanMoisSpec(moisIdx) {
+  const container = document.getElementById('plan-mensuel-content');
+  if (!container) return;
+
+  const plan    = moisIdx === 3 ? PLAN_MENSUEL_AVRIL : PLAN_MENSUEL_MAI;
+  const nomMois = moisIdx === 3 ? 'Avril 2026' : 'Mai 2026';
+  const annee   = 2026;
+  const getR    = id => RECETTES.find(r => r.id === id);
+  const now     = new Date();
+  const jourAuj = now.getDate();
+  const moisAuj = now.getMonth();
+
+  const selectorHTML = `
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
+      <button class="budget-chip ${moisIdx===3?'active':''}" onclick="renderPlanMoisSpec(3)">🌸 Avril 2026</button>
+      <button class="budget-chip ${moisIdx===4?'active':''}" onclick="renderPlanMoisSpec(4)">🌿 Mai 2026</button>
+    </div>
+    <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:12px;">
+      ${plan.length} jours · Cliquez sur une recette pour la voir · 📍 = aujourd\'hui
+    </p>
+  `;
+
+  const joursHTML = plan.map(jour => {
+    const date     = new Date(annee, moisIdx, jour.j);
+    const dayName  = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'][date.getDay()];
+    const isWE     = date.getDay() === 0 || date.getDay() === 6;
+    const isToday  = jour.j === jourAuj && moisIdx === moisAuj;
+    const isPast   = (moisIdx < moisAuj) || (moisIdx === moisAuj && jour.j < jourAuj);
+    const locked   = !isPremium && jour.j > 7;
+
+    const pdc   = getR(jour.pdc);
+    const dej   = getR(jour.dej);
+    const din   = getR(jour.din);
+    const snack = getR(jour.snack);
+
+    return `
+      <div class="plan-jour${locked?' plan-jour-locked':''}${isToday?' plan-jour-today':''}${isPast?' plan-jour-past':''}">
+        <div class="plan-jour-header">
+          <div class="plan-jour-date">
+            <strong>${dayName} ${jour.j}${isToday?' 📍':''}</strong>
+            <span class="plan-jour-theme">${jour.theme}</span>
+          </div>
+          ${locked?'<span class="plan-lock">⭐ Premium</span>':''}
+        </div>
+        ${locked?`
+          <div class="plan-locked-msg" onclick="showPremium()">
+            Débloquer ${nomMois} complet — Premium 4,99€/mois →
+          </div>
+        `:`
+          <div class="plan-repas">
+            ${pdc  ?`<div class="plan-meal" onclick="openRecette(${pdc.id})"><span class="plan-meal-label">${isWE?'🥂':'🌅'}</span><span>${pdc.emoji} ${pdc.nom}</span></div>`:''}
+            ${dej  ?`<div class="plan-meal" onclick="openRecette(${dej.id})"><span class="plan-meal-label">☀️</span><span>${dej.emoji} ${dej.nom}</span></div>`:''}
+            ${din  ?`<div class="plan-meal" onclick="openRecette(${din.id})"><span class="plan-meal-label">🌙</span><span>${din.emoji} ${din.nom}</span></div>`:''}
+            ${snack?`<div class="plan-meal" onclick="openRecette(${snack.id})" style="opacity:.75"><span class="plan-meal-label">🍎</span><span>${snack.emoji} ${snack.nom}</span></div>`:''}
+          </div>
+        `}
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = selectorHTML + joursHTML;
+
+  // Scroll vers aujourd'hui si on est dans le bon mois
+  if (moisIdx === moisAuj) {
+    setTimeout(() => {
+      const todayEl = container.querySelector('.plan-jour-today');
+      if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 200);
+  }
+}
+
+function renderBrunchList() {
+  const container = document.getElementById('brunch-content');
+  if (!container) return;
+
+  const brunchs = RECETTES.filter(r => r.cat === 'brunch');
+  container.innerHTML = brunchs.map(r => {
+    const locked = r.premium && !isPremium;
+    return `
+      <div class="card" style="margin-bottom:10px;" onclick="${locked ? 'openRecettePreview('+r.id+')' : 'openRecette('+r.id+')'}">
+        <div class="card-icon">${r.emoji}${locked ? '' : ''}</div>
+        <div class="card-body">
+          <div class="card-title">${r.nom}</div>
+          <div class="card-sub">⏱ ${r.temps} · ${r.calories} kcal${r.premium ? ' · ⭐ Premium' : ''}</div>
+        </div>
+        <div class="card-arrow">→</div>
+      </div>
+    `;
+  }).join('');
+}
+
+function generateBrunchMenu() {
+  const brunchs = RECETTES.filter(r => r.cat === 'brunch' && (!r.premium || isPremium));
+  if (!brunchs.length) { showPremium(); return; }
+
+  const picks = [];
+  const shuffled = [...brunchs].sort(() => Math.random() - 0.5);
+  // 1 sucré + 1 salé
+  const sucres = shuffled.filter(r => ['🥞','🫐','🧇','🍌','🌺','🍓','🫙'].includes(r.emoji));
+  const sales  = shuffled.filter(r => !['🥞','🫐','🧇','🍌','🌺','🍓','🫙'].includes(r.emoji));
+
+  const pick1 = sucres[0] || shuffled[0];
+  const pick2 = sales[0]  || shuffled[1];
+
+  const container = document.getElementById('brunch-content');
+  if (!container) return;
+
+  const suggestion = document.createElement('div');
+  suggestion.className = 'journal-block';
+  suggestion.style.cssText = 'background:linear-gradient(135deg,var(--green-pale),#fef3e2);border:1.5px solid var(--gold);margin-bottom:16px;';
+  suggestion.innerHTML = `
+    <div class="jblock-title">🎲 Suggestion brunch du jour</div>
+    <div class="card" style="margin:8px 0;" onclick="openRecette(${pick1?.id})">
+      <div class="card-icon">${pick1?.emoji}</div>
+      <div class="card-body"><div class="card-title">${pick1?.nom}</div><div class="card-sub">☕ Sucré</div></div>
+      <div class="card-arrow">→</div>
+    </div>
+    ${pick2 ? `<div class="card" onclick="openRecette(${pick2.id})">
+      <div class="card-icon">${pick2.emoji}</div>
+      <div class="card-body"><div class="card-title">${pick2.nom}</div><div class="card-sub">🍳 Salé</div></div>
+      <div class="card-arrow">→</div>
+    </div>` : ''}
+  `;
+
+  container.parentElement.insertBefore(suggestion, container);
+  setTimeout(() => suggestion.remove(), 10000);
+}
+
 function checkGenAccess() {
-  // Free users get 3-day generation; premium = unlimited
+  // Rien à faire — le mur premium est géré dans generateMenu
 }
 
 function generateMenu() {
-  const duree     = parseInt(document.getElementById('gen-duree').value);
-  const priorite  = document.getElementById('gen-priorite').value;
+  const duree    = parseInt(document.getElementById('gen-duree').value);
+  const priorite = document.getElementById('gen-priorite').value;
 
   if (!isPremium && duree > 3) {
     document.getElementById('generated-menu').classList.add('hidden');
@@ -5209,10 +6031,20 @@ function generateMenu() {
   document.getElementById('gen-premium-wall').classList.add('hidden');
 
   const petitsDej = RECETTES.filter(r => r.cat === 'petit-dejeuner' && (!r.premium || isPremium));
+  const brunchs   = RECETTES.filter(r => r.cat === 'brunch'         && (!r.premium || isPremium));
   const dejeuners = RECETTES.filter(r => r.cat === 'dejeuner'       && (!r.premium || isPremium));
   const diners    = RECETTES.filter(r => r.cat === 'diner'           && (!r.premium || isPremium));
+  const snacks    = RECETTES.filter(r => r.cat === 'snack'           && (!r.premium || isPremium));
 
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+
+  // Filtre par priorité
+  const filterPriority = (arr) => {
+    if (priorite === 'energie')   return arr.filter(r => r.tags?.includes('fer') || r.calories > 350) || arr;
+    if (priorite === 'sommeil')   return arr.filter(r => r.benefices?.toLowerCase().includes('sommeil')) || arr;
+    if (priorite === 'digestion') return arr.filter(r => r.tags?.includes('vg')) || arr;
+    return arr; // anti-inflammatoire = tout
+  };
 
   const today = new Date();
   let html = '';
@@ -5220,27 +6052,39 @@ function generateMenu() {
   for (let i = 0; i < duree; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
-    const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    const label    = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    const jourSem  = d.getDay(); // 0=dim, 6=sam
+    const isWeekend = jourSem === 0 || jourSem === 6;
 
-    const pDej = pick(petitsDej);
-    const dej  = pick(dejeuners);
-    const din  = pick(diners);
+    // Week-end : possibilité brunch à la place du petit-déj
+    const pDejArr = isWeekend && brunchs.length ? brunchs : petitsDej;
+    const pDej    = pick(filterPriority(pDejArr));
+    const dej     = pick(filterPriority(dejeuners));
+    const din     = pick(filterPriority(diners));
+    const snack   = pick(snacks);
+
+    const pDejLabel = isWeekend && pDejArr === brunchs ? '🥂 Brunch' : '🌅 Petit-déj';
 
     html += `
-      <div class="gen-day-block" data-pdej="${pDej.id}" data-dej="${dej.id}" data-din="${din.id}">
-        <div class="gen-day-title">📅 ${label}</div>
-        <div class="gen-meal" onclick="openRecette(${pDej.id})" style="cursor:pointer;">
-          <div class="gen-meal-label">Petit-déj</div>
-          <div class="gen-meal-name">${pDej.emoji} ${pDej.nom}</div>
+      <div class="gen-day-block" data-pdej="${pDej?.id}" data-dej="${dej?.id}" data-din="${din?.id}">
+        <div class="gen-day-title">📅 ${label}${isWeekend ? ' 🌿' : ''}</div>
+        <div class="gen-meal" onclick="openRecette(${pDej?.id})" style="cursor:pointer;">
+          <div class="gen-meal-label">${pDejLabel}</div>
+          <div class="gen-meal-name">${pDej?.emoji} ${pDej?.nom}</div>
         </div>
-        <div class="gen-meal" onclick="openRecette(${dej.id})" style="cursor:pointer;">
-          <div class="gen-meal-label">Déjeuner</div>
-          <div class="gen-meal-name">${dej.emoji} ${dej.nom}</div>
+        <div class="gen-meal" onclick="openRecette(${dej?.id})" style="cursor:pointer;">
+          <div class="gen-meal-label">☀️ Déjeuner</div>
+          <div class="gen-meal-name">${dej?.emoji} ${dej?.nom}</div>
         </div>
-        <div class="gen-meal" onclick="openRecette(${din.id})" style="cursor:pointer;">
-          <div class="gen-meal-label">Dîner</div>
-          <div class="gen-meal-name">${din.emoji} ${din.nom}</div>
+        <div class="gen-meal" onclick="openRecette(${din?.id})" style="cursor:pointer;">
+          <div class="gen-meal-label">🌙 Dîner</div>
+          <div class="gen-meal-name">${din?.emoji} ${din?.nom}</div>
         </div>
+        ${snack ? `
+        <div class="gen-meal" onclick="openRecette(${snack.id})" style="cursor:pointer;opacity:0.8;">
+          <div class="gen-meal-label">🍎 Snack</div>
+          <div class="gen-meal-name">${snack.emoji} ${snack.nom}</div>
+        </div>` : ''}
       </div>`;
   }
 
@@ -5251,10 +6095,9 @@ function generateMenu() {
       <button class="btn-primary" onclick="generateMenu()" style="padding:8px 16px;font-size:0.82rem;">🔄 Régénérer</button>
     </div>
     ${html}
-    <button class="btn-primary full-width" onclick="applyMenuToAgenda()">Importer dans l'agenda</button>`;
+    <button class="btn-primary full-width" onclick="applyMenuToAgenda()">📅 Importer dans l'agenda</button>`;
 
   generated.classList.remove('hidden');
-  // Store for import
   generated.dataset.duree = duree;
 }
 

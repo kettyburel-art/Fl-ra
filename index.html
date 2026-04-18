@@ -428,7 +428,8 @@
 
         <div class="filter-chips" id="cat-filters">
           <span class="chip active" onclick="filterCat('', this)">Toutes</span>
-          <span class="chip" onclick="filterCat('petit-dejeuner', this)">🌅 Petits-déjeuners</span>
+          <span class="chip" onclick="filterCat('petit-dejeuner', this)">🌅 Petits-déj</span>
+          <span class="chip" onclick="filterCat('brunch', this)">🥂 Brunch</span>
           <span class="chip" onclick="filterCat('dejeuner', this)">☀️ Déjeuners</span>
           <span class="chip" onclick="filterCat('diner', this)">🌙 Dîners</span>
           <span class="chip" onclick="filterCat('snack', this)">🍎 Snacks</span>
@@ -464,36 +465,70 @@
           <h2>Générateur de menus</h2>
         </div>
 
-        <div class="gen-options">
-          <div class="gen-option-row">
-            <label>Durée</label>
-            <select class="field" id="gen-duree">
-              <option value="3">3 jours</option>
-              <option value="7" selected>1 semaine</option>
-              <option value="14">2 semaines</option>
-            </select>
+        <!-- Onglets générateur -->
+        <div class="journal-tabs" style="margin-bottom:20px;">
+          <button class="jtab active" onclick="switchGenTab('semaine',this)">📅 Semaine</button>
+          <button class="jtab" onclick="switchGenTab('mensuel',this)">📆 Plan mensuel</button>
+          <button class="jtab" onclick="switchGenTab('brunch',this)">🥂 Brunch</button>
+        </div>
+
+        <!-- TAB SEMAINE -->
+        <div id="gen-tab-semaine">
+          <div class="gen-options">
+            <div class="gen-option-row">
+              <label>Durée</label>
+              <select class="field" id="gen-duree">
+                <option value="3">3 jours</option>
+                <option value="7" selected>1 semaine</option>
+                <option value="14">2 semaines</option>
+              </select>
+            </div>
+            <div class="gen-option-row">
+              <label>Priorité</label>
+              <select class="field" id="gen-priorite">
+                <option value="anti-inflammatoire">Anti-inflammatoire</option>
+                <option value="energie">Boost énergie</option>
+                <option value="sommeil">Favoriser le sommeil</option>
+                <option value="digestion">Digestion douce</option>
+              </select>
+            </div>
           </div>
-          <div class="gen-option-row">
-            <label>Priorité</label>
-            <select class="field" id="gen-priorite">
-              <option value="anti-inflammatoire">Anti-inflammatoire</option>
-              <option value="energie">Boost énergie</option>
-              <option value="sommeil">Favoriser le sommeil</option>
-              <option value="digestion">Digestion douce</option>
-            </select>
+          <button class="btn-primary full-width" onclick="generateMenu()">✨ Générer mon menu</button>
+          <div id="generated-menu" class="generated-menu hidden"></div>
+          <div id="gen-premium-wall" class="premium-wall hidden">
+            <div class="premium-icon">⭐</div>
+            <h3>Fonctionnalité Premium</h3>
+            <p>Générez des menus illimités et accédez à 163 recettes anti-inflammatoires.</p>
+            <button class="btn-premium" onclick="showPremium()">Essayer Premium — 4,99€/mois</button>
+            <button class="btn-link" onclick="unlockDemo()">Débloquer avec un code</button>
           </div>
         </div>
 
-        <button class="btn-primary full-width" onclick="generateMenu()">✨ Générer mon menu</button>
-
-        <div id="generated-menu" class="generated-menu hidden"></div>
-        <div id="gen-premium-wall" class="premium-wall hidden">
-          <div class="premium-icon">⭐</div>
-          <h3>Fonctionnalité Premium</h3>
-          <p>Générez des menus illimités, accédez à 65 recettes anti-inflammatoires et au suivi avancé.</p>
-          <button class="btn-premium" onclick="showPremium()">Essayer Premium — 4,99€/mois</button>
-          <button class="btn-link" onclick="unlockDemo()">Débloquer avec un code</button>
+        <!-- TAB PLAN MENSUEL -->
+        <div id="gen-tab-mensuel" class="hidden">
+          <div class="journal-block">
+            <div class="jblock-title">📆 Plan mensuel — Avril 2026</div>
+            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+              30 jours de menus complets anti-inflammatoires SJSR. Cliquez sur une recette pour la voir.
+            </p>
+            <div id="plan-mensuel-content"></div>
+          </div>
         </div>
+
+        <!-- TAB BRUNCH -->
+        <div id="gen-tab-brunch" class="hidden">
+          <div class="journal-block">
+            <div class="jblock-title">🥂 Idées Brunch du week-end</div>
+            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+              Recettes conviviales pour un brunch en famille ou entre amis. Sans gluten, sans lactose.
+            </p>
+            <div id="brunch-content"></div>
+            <button class="btn-primary full-width" style="margin-top:16px;" onclick="generateBrunchMenu()">
+              🎲 Suggérer un brunch aléatoire
+            </button>
+          </div>
+        </div>
+
       </section>
 
       <section id="page-profil" class="page hidden">
