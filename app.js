@@ -4394,12 +4394,12 @@ function generateShoppingList() {
     { cat: '🥩 Protéines',          kw: ['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','daurade','crevette','moule','poulpe','poulet','dinde','boeuf','bœuf','porc','oeuf','œuf','tofu','tempeh','pavé'] },
     { cat: '🥦 Légumes',            kw: ['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate douce','oignon','ail','gingembre','tomate','concombre','asperge','artichaut','céleri','radis','navet','laitue','roquette','endive'] },
     { cat: '🌾 Féculents',          kw: ['quinoa','riz','sarrasin','lentille','pois chiche','haricot','pâte','nouille','galette','flocon','farine','polenta','boulgour','épeautre','orge'] },
-    { cat: '🥑 Bons gras',          kw: ['noix','amande','cajou','noisette','pistache','graine','tahini','purée d'amande','beurre de','avocat'] },
-    { cat: '🥫 Conserves & Sauces', kw: ['lait de coco','tomate concassée','sardine à l'huile','maquereau au','thon au naturel','bouillon','miso','concentré','sauce soja','tamari'] },
+    { cat: '🥑 Bons gras',          kw: ['noix','amande','cajou','noisette','pistache','graine','tahini','purée d\'amande','beurre de','avocat'] },
+    { cat: '🥫 Conserves & Sauces', kw: ['lait de coco','tomate concassée','sardine à l\'huile','maquereau au','thon au naturel','bouillon','miso','concentré','sauce soja','tamari'] },
     { cat: '🍋 Fruits',             kw: ['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot','cerise','ananas','orange','pêche','raisin'] },
     { cat: '🌿 Épices & Herbes',    kw: ['curcuma','cumin','cannelle','paprika','sel','poivre','basilic','persil','coriandre','menthe','thym','romarin','origan','safran','curry','garam'] },
     { cat: '🫙 Huiles & Vinaigres', kw: ['huile','vinaigre','citron vert'] },
-    { cat: '🥛 Laits végétaux',     kw: ['lait d'amande','lait de riz','lait d'avoine','lait de coco (boisson)','yaourt de soja','crème de coco','yaourt coco'] },
+    { cat: '🥛 Laits végétaux',     kw: ['lait amande','lait de riz','lait avoine','lait coco boisson','yaourt soja','crème coco','yaourt coco'] },
   ];
 
   function getCategorie(ingredient) {
