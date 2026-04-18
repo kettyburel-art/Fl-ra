@@ -644,9 +644,16 @@
         </div>
 
         <button class="btn-primary full-width" onclick="saveProfil(this)">Enregistrer</button>
-        <button class="btn-primary full-width" onclick="enableNotifications()" style="margin-bottom:8px;">
-          🔔 Activer les rappels bien-être
-        </button>
+        <div class="settings-group">
+          <div class="settings-title">🔔 Rappels & Notifications</div>
+          <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:12px;line-height:1.5;">
+            Rappels personnalisés pour vos repas, médicaments et journal du soir.
+          </p>
+          <button class="btn-primary full-width" onclick="enableNotifications()" style="margin-bottom:12px;">
+            🔔 Activer les rappels
+          </button>
+          <div id="notif-prefs"></div>
+        </div>
         <button class="btn-link full-width" style="text-align:center;padding:10px;" onclick="showPage('apropos')">
           ℹ️ À propos · CGU · Mentions légales
         </button>
@@ -917,5 +924,34 @@
   </div>
 
   <script src="app.js"></script>
+  <script>
+    // Enregistrement Service Worker — mise à jour automatique
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/Fl-ra/sw.js')
+          .then(reg => {
+            console.log('[SW] Enregistré:', reg.scope);
+            // Vérifier les mises à jour à chaque chargement
+            reg.update();
+            reg.addEventListener('updatefound', () => {
+              const newSW = reg.installing;
+              newSW.addEventListener('statechange', () => {
+                if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+                  // Nouvelle version disponible — recharger silencieusement
+                  console.log('[SW] Nouvelle version détectée — rechargement');
+                  window.location.reload();
+                }
+              });
+            });
+          })
+          .catch(err => console.log('[SW] Erreur:', err));
+        
+        // Recharger quand le SW prend le contrôle
+        navigator.serviceWorker.addEventListener('controllerchange', () => {
+          window.location.reload();
+        });
+      });
+    }
+  </script>
 </body>
 </html>

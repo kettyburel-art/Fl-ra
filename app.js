@@ -4012,35 +4012,112 @@ function askNotificationPermission() {
 }
 
 function scheduleNotifications() {
-  if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
 
-  // Notification journal du soir (21h)
-  const now = new Date();
-  const target = new Date();
-  target.setHours(21, 0, 0, 0);
-  if (target <= now) target.setDate(target.getDate() + 1);
+  // Annuler les anciens timers
+  if (window._floraNotifTimers) window._floraNotifTimers.forEach(t => clearTimeout(t));
+  window._floraNotifTimers = [];
 
-  const delay = target - now;
-  setTimeout(() => {
-    new Notification('Flōra 🌿', {
-      body: 'C\'est l\'heure de votre journal du soir. Comment se sont passées vos jambes cette nuit ?',
-      icon: '/Fl-ra/icon.svg',
-      badge: '/Fl-ra/icon.svg',
-      tag: 'flora-journal-soir'
-    });
-    // Relancer chaque 24h
-    setInterval(() => {
-      new Notification('Flōra 🌿', {
-        body: 'Votre journal du soir vous attend 🌙',
-        icon: '/Fl-ra/icon.svg',
-        tag: 'flora-journal-soir'
-      });
-    }, 24 * 60 * 60 * 1000);
-  }, delay);
+  const meds = profile.medications || [];
+  const medStr = meds.length ? meds.slice(0,2).join(' + ') : 'votre traitement';
+
+  // Rappels à programmer (heure, message, tag)
+  const rappels = [
+    { h:7,  m:0,  tag:'petit-dej',
+      title:'🌅 Petit-déjeuner Flōra',
+      body: 'Bon matin ! Pensez à un petit-déj protéiné pour booster votre dopamine dès le matin.' },
+    { h:13, m:0,  tag:'dejeuner',
+      title:'☀️ Déjeuner Flōra',
+      body: 'L\'heure du déjeuner ! Fer + vitamine C aujourd\'hui pour limiter la fatigue de l\'après-midi.' },
+    { h:16, m:0,  tag:'gouter',
+      title:'🍎 Goûter TDAH',
+      body: 'Goûter obligatoire ! Maintenir la glycémie = moins de décisions impulsives. Quelques noix ou dattes.' },
+    { h:19, m:0,  tag:'diner',
+      title:'🌙 Dîner Flōra',
+      body: 'Dîner léger avant 20h pour limiter le SJSR nocturne.' },
+    { h:20, m:30, tag:'medicaments',
+      title:'💊 Médicaments du soir',
+      body: `N\'oubliez pas ${medStr} avant de dormir.` },
+    { h:21, m:0,  tag:'journal',
+      title:'🌿 Journal du soir Flōra',
+      body: 'Comment s\'est passée votre journée ? 2 minutes pour noter énergie, douleur et SJSR.' },
+  ];
+
+  function scheduleOne(rappel) {
+    const now = new Date();
+    const target = new Date();
+    target.setHours(rappel.h, rappel.m, 0, 0);
+    if (target <= now) target.setDate(target.getDate() + 1);
+    const delay = target - now;
+
+    const t = setTimeout(() => {
+      // Ne pas notifier si l'app est au premier plan (l'utilisateur est là)
+      if (document.visibilityState !== 'hidden') {
+        scheduleOne(rappel); // reprogrammer pour demain
+        return;
+      }
+      try {
+        new Notification(rappel.title, {
+          body: rappel.body,
+          icon: '/Fl-ra/icon.svg',
+          badge: '/Fl-ra/icon.svg',
+          tag: 'flora-' + rappel.tag,
+          renotify: false,
+          silent: false,
+        });
+      } catch(e) { console.log('Notif error:', e); }
+      // Reprogrammer pour demain
+      scheduleOne(rappel);
+    }, delay);
+
+    window._floraNotifTimers.push(t);
+  }
+
+  // Ne programmer que les rappels activés dans les préférences
+  const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
+  rappels.forEach(r => {
+    if (prefs[r.tag] !== false) scheduleOne(r); // activé par défaut
+  });
+
+  console.log('Flōra: ' + rappels.length + ' rappels programmés');
+}
+
+function toggleNotifPref(tag, enabled) {
+  const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
+  prefs[tag] = enabled;
+  localStorage.setItem('flora_notif_prefs', JSON.stringify(prefs));
+  if (Notification.permission === 'granted') scheduleNotifications();
+}
+
+function renderNotifPrefs() {
+  const container = document.getElementById('notif-prefs');
+  if (!container) return;
+  const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
+  const items = [
+    { tag:'petit-dej',    label:'🌅 Petit-déjeuner',    heure:'7h00'  },
+    { tag:'dejeuner',     label:'☀️ Déjeuner',           heure:'13h00' },
+    { tag:'gouter',       label:'🍎 Goûter',             heure:'16h00' },
+    { tag:'diner',        label:'🌙 Dîner',              heure:'19h00' },
+    { tag:'medicaments',  label:'💊 Médicaments du soir',heure:'20h30' },
+    { tag:'journal',      label:'🌿 Journal du soir',    heure:'21h00' },
+  ];
+  container.innerHTML = items.map(item => {
+    const on = prefs[item.tag] !== false;
+    return `
+      <label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cream-dark);">
+        <div>
+          <div style="font-size:0.85rem;color:var(--text-dark);">${item.label}</div>
+          <div style="font-size:0.7rem;color:var(--text-light);">${item.heure}</div>
+        </div>
+        <input type="checkbox" ${on?'checked':''} onchange="toggleNotifPref('${item.tag}',this.checked)"
+          style="width:18px;height:18px;accent-color:var(--green-deep);cursor:pointer;" />
+      </label>`;
+  }).join('');
 }
 
 function enableNotifications() {
   askNotificationPermission();
+  setTimeout(renderNotifPrefs, 300);
 }
 
 // ============================
@@ -5408,7 +5485,7 @@ function showPage(page) {
   if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
-  if (page === 'profil')     { loadProfil(); renderStats(); }
+  if (page === 'profil')     { loadProfil(); renderStats(); renderNotifPrefs(); }
   if (page === 'apropos')    { /* static */ }
   if (page === 'generateur') {
     checkGenAccess();
@@ -5873,21 +5950,55 @@ function renderHistorique() {
   container.innerHTML = entries.map(([date, e]) => {
     const d     = new Date(date + 'T12:00:00');
     const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-    const stars = '★'.repeat(e.qualite) + '☆'.repeat(5 - e.qualite);
+    const capLabel = label.charAt(0).toUpperCase() + label.slice(1);
+    const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
     const sleepLabel = e.coucher && e.lever
-      ? `${e.coucher}→${e.lever} (${e.duree}h, ${e.cycles || '?'} cycles)`
-      : `${e.duree}h`;
+      ? `${e.coucher}→${e.lever} · ${e.duree}h · ${e.cycles||'?'} cycles`
+      : e.duree ? `${e.duree}h de sommeil` : '—';
+    const medsHTML = e.meds && e.meds.length
+      ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
+          ${e.meds.map(m => `<span style="background:#fef5e8;color:#d35400;border-radius:99px;padding:2px 8px;font-size:0.68rem;font-weight:600;">💊 ${m}</span>`).join('')}
+         </div>` : '';
+    const symptomsHTML = e.symptoms && e.symptoms.length
+      ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
+          ${e.symptoms.slice(0,4).map(s => `<span style="background:var(--cream);color:var(--text-mid);border-radius:99px;padding:2px 8px;font-size:0.68rem;">${s}</span>`).join('')}
+         </div>` : '';
+    const rituelsHTML = e.rituels && e.rituels.length
+      ? `<div style="font-size:0.7rem;color:var(--text-light);margin-top:4px;">🌿 ${e.rituels.join(' · ')}</div>` : '';
+    // Barre énergie/douleur visuelle
+    const barEn = Math.round((e.energie||0)/10*100);
+    const barDo = Math.round((e.douleur||0)/10*100);
     return `
-      <div class="hist-entry">
-        <div class="hist-date">${label}</div>
-        <div class="hist-stats">
-          <span class="hist-stat">🌙 ${sleepLabel} ${stars}</span>
-          <span class="hist-stat">⚡ ${e.energie}/10</span>
-          <span class="hist-stat">💢 douleur ${e.douleur}/10</span>
-          ${e.sjsr > 0 ? `<span class="hist-stat">🦵 SJSR ${e.sjsr}/5</span>` : ''}
-          ${e.symptoms && e.symptoms.length ? `<span class="hist-stat">🔹 ${e.symptoms.slice(0,2).join(', ')}</span>` : ''}
+      <div class="hist-entry" onclick="openDayView('${date}')" style="cursor:pointer;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <div class="hist-date" style="margin:0;">${capLabel}</div>
+          <div style="font-size:0.8rem;">${stars}</div>
         </div>
-        ${e.notes ? `<div style="font-size:0.8rem;color:var(--text-mid);margin-top:8px;font-style:italic;">"${e.notes}"</div>` : ''}
+        <div style="font-size:0.78rem;color:var(--text-mid);margin-bottom:8px;">🌙 ${sleepLabel}
+          ${e.sjsr > 0 ? `· 🦵 SJSR ${e.sjsr}/5` : ''}
+        </div>
+        <div style="display:flex;gap:10px;margin-bottom:6px;">
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-light);margin-bottom:2px;">
+              <span>⚡ Énergie</span><span>${e.energie||0}/10</span>
+            </div>
+            <div style="background:var(--cream);border-radius:99px;height:5px;">
+              <div style="background:var(--green-mid);height:100%;border-radius:99px;width:${barEn}%;"></div>
+            </div>
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-light);margin-bottom:2px;">
+              <span>💢 Douleur</span><span>${e.douleur||0}/10</span>
+            </div>
+            <div style="background:var(--cream);border-radius:99px;height:5px;">
+              <div style="background:#e88080;height:100%;border-radius:99px;width:${barDo}%;"></div>
+            </div>
+          </div>
+        </div>
+        ${medsHTML}
+        ${symptomsHTML}
+        ${rituelsHTML}
+        ${e.notes ? `<div style="font-size:0.78rem;color:var(--text-mid);margin-top:6px;font-style:italic;border-left:2px solid var(--cream-dark);padding-left:8px;">${e.notes}</div>` : ''}
       </div>`;
   }).join('');
 }
