@@ -5020,21 +5020,35 @@ function skipBatchStep(idx) {
 }
 
 function importBatchToAgenda() {
-  // Génère un menu depuis les recettes batch et l'importe dans l'agenda
   const today = new Date();
-  const petits = RECETTES.filter(r => r.cat === 'petit-dejeuner' && !r.premium);
-  const dejs   = RECETTES.filter(r => r.cat === 'dejeuner' && !r.premium);
-  const dins   = RECETTES.filter(r => r.cat === 'diner' && !r.premium);
-  const pick   = arr => arr[Math.floor(Math.random() * arr.length)];
+  const petits  = RECETTES.filter(r => r.cat === 'petit-dejeuner' && !r.premium);
+  const dejs    = RECETTES.filter(r => r.cat === 'dejeuner'       && !r.premium);
+  const gouters = RECETTES.filter(r => r.cat === 'snack'          && !r.premium);
+  const dins    = RECETTES.filter(r => r.cat === 'diner'          && !r.premium);
+  const pick    = arr => arr[Math.floor(Math.random() * arr.length)];
 
-  for (let i = 0; i < 5; i++) {
+  // Éviter les répétitions sur la semaine
+  const used = { pdc:new Set(), dej:new Set(), gou:new Set(), din:new Set() };
+  function pickUniq(arr, usedSet) {
+    const available = arr.filter(r => !usedSet.has(r.id));
+    const chosen = available.length ? available[Math.floor(Math.random()*available.length)] : pick(arr);
+    if (chosen) usedSet.add(chosen.id);
+    return chosen;
+  }
+
+  for (let i = 0; i < 7; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
     const dk = dateKey(d);
     if (!agenda[dk]) agenda[dk] = {};
-    agenda[dk]['petitdej'] = pick(petits)?.id;
-    agenda[dk]['dejeuner'] = pick(dejs)?.id;
-    agenda[dk]['diner']    = pick(dins)?.id;
+    const pdc = pickUniq(petits, used.pdc);
+    const dej = pickUniq(dejs, used.dej);
+    const gou = pickUniq(gouters, used.gou);
+    const din = pickUniq(dins, used.din);
+    if (pdc) agenda[dk]['petitdej'] = pdc.id;
+    if (dej) agenda[dk]['dejeuner'] = dej.id;
+    if (gou) agenda[dk]['gouter']   = gou.id;
+    if (din) agenda[dk]['diner']    = din.id;
   }
 
   saveState();
@@ -5042,7 +5056,7 @@ function importBatchToAgenda() {
 
   const msg = document.createElement('div');
   msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);';
-  msg.textContent = '✅ Semaine batch importée dans l\'agenda !';
+  msg.textContent = '✅ Semaine complète importée (7 jours, 4 repas/jour) !';
   document.body.appendChild(msg);
   setTimeout(() => msg.remove(), 2500);
 }
@@ -5305,6 +5319,70 @@ function generateShoppingFromDay(dk) {
   document.body.appendChild(shopOverlay);
 }
 
+
+// ============================
+// MÉDICAMENTS PERSONNALISÉS
+// ============================
+
+function renderProfilMeds() {
+  const container = document.getElementById('profil-meds-list');
+  if (!container) return;
+  const meds = profile.medications || [];
+  container.innerHTML = meds.length
+    ? meds.map((med, i) => `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cream-dark);">
+          <span style="font-size:0.88rem;color:var(--text-dark);">💊 ${med}</span>
+          <button onclick="removeProfilMed(${i})"
+            style="background:#fde8e8;border:none;border-radius:6px;padding:3px 8px;font-size:0.75rem;color:#c0392b;cursor:pointer;">✕</button>
+        </div>`).join('')
+    : '<p style="font-size:0.82rem;color:var(--text-light);font-style:italic;margin:8px 0;">Aucun médicament enregistré</p>';
+
+  // Mettre à jour les chips dans le journal
+  renderJournalMedChips();
+}
+
+function addProfilMed() {
+  const input = document.getElementById('profil-med-input');
+  const val = (input?.value || '').trim();
+  if (!val) return;
+  if (!profile.medications) profile.medications = [];
+  if (!profile.medications.includes(val)) {
+    profile.medications.push(val);
+    saveState();
+  }
+  input.value = '';
+  renderProfilMeds();
+}
+
+function removeProfilMed(idx) {
+  if (!profile.medications) return;
+  profile.medications.splice(idx, 1);
+  saveState();
+  renderProfilMeds();
+}
+
+function renderJournalMedChips() {
+  const container = document.getElementById('journal-med-chips');
+  if (!container) return;
+  const meds = profile.medications || [];
+
+  if (!meds.length) {
+    container.innerHTML = `<p style="font-size:0.78rem;color:var(--text-light);font-style:italic;">
+      Ajoutez vos médicaments dans <a onclick="showPage('profil')" style="color:var(--green-mid);cursor:pointer;text-decoration:underline;">votre profil</a>
+    </p>`;
+    return;
+  }
+
+  container.innerHTML = meds.map(med =>
+    `<span class="sleep-chip journal-med-chip" data-med="${med}"
+      onclick="toggleMedChip(this)">${med}</span>`
+  ).join('');
+}
+
+function toggleMedChip(el) {
+  el.classList.toggle('active');
+}
+
 // ============================
 // NAVIGATION
 // ============================
@@ -5424,6 +5502,7 @@ function dateKey(d) {
 }
 
 function setJournalDate() {
+  renderJournalMedChips(); // Chips médicaments depuis le profil
   const now = new Date();
   const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   document.getElementById('journal-entry-date').textContent =
@@ -5542,8 +5621,8 @@ function getSleepData() {
   const locEl = document.querySelector('[data-selected][onclick*="location"]');
   const sjsrLocation = locEl ? locEl.dataset.selected : '';
 
-  // Médications cochées
-  const meds = Array.from(document.querySelectorAll('[onclick*="med"].active')).map(c => c.textContent);
+  // Médications cochées (chips dynamiques générées depuis le profil)
+  const meds = Array.from(document.querySelectorAll('.journal-med-chip.active')).map(c => c.dataset.med || c.textContent.trim());
 
   // Rituels cochés
   const rituels = Array.from(document.querySelectorAll('[onclick*="rituel"].active')).map(c => c.textContent);
@@ -5792,7 +5871,10 @@ function renderRecettes() {
 
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
-    if (search && !r.nom.toLowerCase().includes(search)) return false;
+    if (search) {
+      const haystack = (r.nom + ' ' + (r.ingredients || []).join(' ') + ' ' + (r.benefices || '')).toLowerCase();
+      if (!haystack.includes(search)) return false;
+    }
     if (window._placardFilter && window._placardFilter.length) {
       const match = r.ingredients.some(ing =>
         window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
@@ -6859,6 +6941,9 @@ function loadProfil() {
   document.getElementById('p-sl').checked    = !!profile.sansLactose;
   document.getElementById('p-sv').checked    = !!profile.vegetarien;
 
+  // Charger les médicaments personnalisés
+  renderProfilMeds();
+
   const initials = (profile.name || '?').charAt(0).toUpperCase();
   document.getElementById('avatar-initials').textContent   = initials;
   document.getElementById('profil-display-name').textContent = profile.name || 'Mon profil';
@@ -6877,6 +6962,7 @@ function saveProfil(btn) {
   profile.name        = document.getElementById('p-name').value.trim();
   profile.goal        = document.getElementById('p-goal').value;
   profile.sansGluten  = document.getElementById('p-sg').checked;
+  // Les médicaments sont sauvegardés directement par addProfilMed/removeProfilMed
   profile.sansLactose = document.getElementById('p-sl').checked;
   profile.vegetarien  = document.getElementById('p-sv').checked;
 

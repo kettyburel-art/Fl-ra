@@ -345,14 +345,9 @@
             <!-- Médication du soir -->
             <div class="sleep-detail-row">
               <div class="sleep-detail-label">💊 Médication prise ce soir</div>
-              <div class="sleep-chips-row">
-                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Tramadol</span>
-                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Lyrica</span>
-                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Fer</span>
-                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Magnésium</span>
-                <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Autre</span>
+              <div class="sleep-chips-row" id="journal-med-chips">
+                <!-- Chips générées dynamiquement depuis le profil -->
               </div>
-            </div>
 
             <!-- Infusion du soir -->
             <div class="sleep-detail-row">
@@ -606,6 +601,21 @@
             <input type="checkbox" id="p-sv" class="toggle-input" />
             <span class="toggle-slider"></span>
           </label>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-title">💊 Mes médicaments</div>
+          <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:12px;line-height:1.5;">
+            Ajoutez vos traitements habituels. Ils apparaîtront dans votre journal quotidien pour suivre votre observance.
+          </p>
+          <div id="profil-meds-list" style="margin-bottom:12px;"></div>
+          <div style="display:flex;gap:8px;">
+            <input type="text" id="profil-med-input" placeholder="ex: Tramadol, Lyrica, Fer…"
+              class="field" style="flex:1;font-size:0.85rem;"
+              onkeydown="if(event.key==='Enter') addProfilMed()" />
+            <button onclick="addProfilMed()"
+              style="background:var(--green-deep);color:white;border:none;border-radius:var(--radius-md);padding:0 16px;font-size:0.85rem;cursor:pointer;white-space:nowrap;">+ Ajouter</button>
+          </div>
         </div>
 
         <div class="settings-group">
