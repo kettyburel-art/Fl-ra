@@ -4390,54 +4390,106 @@ function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
-  // Sélectionner des ingrédients essentiels dans le budget
-  const essentials = [
-    { cat: '🥩 Protéines', items: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles', 'Tofu'] },
-    { cat: '🥦 Légumes', items: ['Épinards', 'Brocoli', 'Courgette', 'Carotte', 'Poivron'] },
-    { cat: '🌾 Féculents', items: ['Quinoa', 'Riz complet', 'Patate douce'] },
-    { cat: '🥑 Bons gras', items: ['Avocat', 'Noix', 'Graines de courge'] },
-    { cat: '🥫 Conserves', items: ['Tomates concassées', 'Lait de coco'] },
-    { cat: '🍋 Fruits', items: ['Citron', 'Banane', 'Myrtilles'] },
+  const CATEGORIE_MAP = [
+    { cat: '🥩 Protéines',          kw: ['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','daurade','crevette','moule','poulpe','poulet','dinde','boeuf','bœuf','porc','oeuf','œuf','tofu','tempeh','pavé'] },
+    { cat: '🥦 Légumes',            kw: ['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate douce','oignon','ail','gingembre','tomate','concombre','asperge','artichaut','céleri','radis','navet','laitue','roquette','endive'] },
+    { cat: '🌾 Féculents',          kw: ['quinoa','riz','sarrasin','lentille','pois chiche','haricot','pâte','nouille','galette','flocon','farine','polenta','boulgour','épeautre','orge'] },
+    { cat: '🥑 Bons gras',          kw: ['noix','amande','cajou','noisette','pistache','graine','tahini','purée d'amande','beurre de','avocat'] },
+    { cat: '🥫 Conserves & Sauces', kw: ['lait de coco','tomate concassée','sardine à l'huile','maquereau au','thon au naturel','bouillon','miso','concentré','sauce soja','tamari'] },
+    { cat: '🍋 Fruits',             kw: ['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot','cerise','ananas','orange','pêche','raisin'] },
+    { cat: '🌿 Épices & Herbes',    kw: ['curcuma','cumin','cannelle','paprika','sel','poivre','basilic','persil','coriandre','menthe','thym','romarin','origan','safran','curry','garam'] },
+    { cat: '🫙 Huiles & Vinaigres', kw: ['huile','vinaigre','citron vert'] },
+    { cat: '🥛 Laits végétaux',     kw: ['lait d'amande','lait de riz','lait d'avoine','lait de coco (boisson)','yaourt de soja','crème de coco','yaourt coco'] },
   ];
 
-  let total = 0;
-  const selected = [];
-
-  // Remplir jusqu'au budget en sautant ce qu'on a déjà
-  for (const cat of essentials) {
-    const catSelected = [];
-    for (const item of cat.items) {
-      if (placardItems[item]) continue; // déjà dans le placard
-      const price = INGREDIENT_PRICES[item] || 2.00;
-      if (total + price <= budget) {
-        catSelected.push({ item, price });
-        total += price;
-      }
+  function getCategorie(ingredient) {
+    const ing = ingredient.toLowerCase();
+    for (const { cat, kw } of CATEGORIE_MAP) {
+      if (kw.some(k => ing.includes(k))) return cat;
     }
-    if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
+    return '🛒 Divers';
+  }
+
+  function findPrice(ingredient) {
+    const ing = ingredient.toLowerCase();
+    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
+      if (key.toLowerCase() === ing) return price;
+    }
+    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
+      const keyLow = key.toLowerCase();
+      const ingWord = ing.split(' ')[0];
+      if (ingWord.length > 3 && (ing.includes(keyLow) || keyLow.includes(ingWord))) return price;
+    }
+    return 2.00;
+  }
+
+  function isInPlacard(ingredient) {
+    const ing = ingredient.toLowerCase();
+    return Object.keys(placardItems).some(p =>
+      placardItems[p] && ing.split(' ')[0].length > 3 &&
+      (ing.includes(p.toLowerCase()) || p.toLowerCase().includes(ing.split(' ')[0]))
+    );
+  }
+
+  // Extraire tous les ingrédients des recettes, dédupliqués et triés par fréquence
+  const ingredientCounts = {};
+  for (const recette of RECETTES) {
+    for (const ing of recette.ingredients) {
+      const clean = ing
+        .replace(/^\d+[\w,.]* ?(g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée)s? /i, '')
+        .replace(/^[\d,.]+ /, '')
+        .trim();
+      if (clean.length < 3) continue;
+      ingredientCounts[clean] = (ingredientCounts[clean] || 0) + 1;
+    }
+  }
+
+  const sorted = Object.entries(ingredientCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([ing]) => ing);
+
+  // Construire la liste en remplissant le budget au maximum
+  const byCategorie = {};
+  const addedKeys = new Set();
+  let total = 0;
+
+  for (const ing of sorted) {
+    if (isInPlacard(ing)) continue;
+    const price = findPrice(ing);
+    if (total + price > budget) continue; // trop cher, on continue quand même
+    const cat = getCategorie(ing);
+    // Déduplication : éviter les quasi-doublons dans la même catégorie
+    const ingKey = ing.toLowerCase().split(' ')[0];
+    if (addedKeys.has(ingKey)) continue;
+    addedKeys.add(ingKey);
+    if (!byCategorie[cat]) byCategorie[cat] = [];
+    byCategorie[cat].push({ item: ing, price });
+    total += price;
   }
 
   // Afficher
   const result = document.getElementById('shopping-result');
-  const content = document.getElementById('shopping-list-content');
-  document.getElementById('budget-total-badge').textContent =
-    `${total.toFixed(2)}€ / ${budget}€`;
+  const listContent = document.getElementById('shopping-list-content');
+  document.getElementById('budget-total-badge').textContent = `${total.toFixed(2)}€ / ${budget}€`;
 
-  content.innerHTML = selected.map(cat => `
-    <div class="shopping-category">
-      <div class="shopping-cat-title">${cat.cat}</div>
-      ${cat.items.map(({item, price}) => `
-        <div class="shopping-item" onclick="this.classList.toggle('done')">
-          <div class="shopping-check">✓</div>
-          <div class="shopping-text">${item}</div>
-          <div class="shopping-price">~${price.toFixed(2)}€</div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves & Sauces','🍋 Fruits','🌿 Épices & Herbes','🫙 Huiles & Vinaigres','🥛 Laits végétaux','🛒 Divers'];
 
-  // Générer menus basés sur les ingrédients du panier
-  const allItems = selected.flatMap(c => c.items.map(i => i.item));
+  listContent.innerHTML = orderedCats
+    .filter(cat => byCategorie[cat]?.length)
+    .map(cat => `
+      <div class="shopping-category">
+        <div class="shopping-cat-title">${cat}</div>
+        ${byCategorie[cat].map(({item, price}) => `
+          <div class="shopping-item" onclick="this.classList.toggle('done')">
+            <div class="shopping-check">✓</div>
+            <div class="shopping-text">${item}</div>
+            <div class="shopping-price">~${price.toFixed(2)}€</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
+
+  const allItems = Object.values(byCategorie).flat().map(i => i.item);
   generateMenusFromBasket(allItems);
 
   result.classList.remove('hidden');
@@ -5834,11 +5886,11 @@ function switchGenTab(tab, el) {
 // Plan mensuel Avril 2026
 const PLAN_MENSUEL_AVRIL = [
   // Semaine 1 — Focus Fer & SJSR
-  { j:1,  pdc:1,  dej:4, din:75, snack:129, theme:'🩸 Boost Fer' },
-  { j:2,  pdc:2,  dej:5, din:76, snack:80,  theme:'🌿 Anti-inflam' },
-  { j:3,  pdc:3,  dej:29, din:8, snack:81,  theme:'🧠 Focus TDAH' },
-  { j:4,  pdc:4,  dej:54, din:9, snack:82,  theme:'🦵 Jambes légères' },
-  { j:5,  pdc:5,  dej:55, din:33, snack:18,  theme:'⚡ Énergie' },
+  { j:1,  pdc:1,  dej:4,  din:75, snack:129, theme:'🩸 Boost Fer' },
+  { j:2,  pdc:2,  dej:5,  din:76, snack:80,  theme:'🌿 Anti-inflam' },
+  { j:3,  pdc:3,  dej:29, din:9,  snack:81,  theme:'🧠 Focus TDAH' },
+  { j:4,  pdc:4,  dej:54, din:33, snack:82,  theme:'🦵 Jambes légères' },
+  { j:5,  pdc:5,  dej:55, din:34, snack:18,  theme:'⚡ Énergie' },
   { j:6,  pdc:25, dej:39, din:112,snack:16,  theme:'🥂 Week-end' },
   { j:7,  pdc:26, dej:40, din:113,snack:17,  theme:'🛌 Sommeil' },
   // Semaine 2 — Focus Magnésium
@@ -5909,10 +5961,8 @@ const MOIS = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','
 
 function renderPlanMensuel() {
   const now = new Date();
-  const moisNum = now.getMonth(); // 0=jan, 3=avril, 4=mai...
-  // Afficher le mois courant si disponible, sinon le plus récent
-  if (moisNum === 3) renderPlanMoisSpec(3);
-  else renderPlanMoisSpec(4);
+  const moisNum = now.getMonth(); // 3=avril, 4=mai
+  renderPlanMoisSpec(moisNum === 3 ? 3 : 4);
 }
 
 function renderPlanMoisSpec(moisIdx) {
