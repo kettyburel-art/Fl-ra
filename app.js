@@ -4390,81 +4390,105 @@ function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
-  const CATEGORIE_MAP = [
-    { cat: '🥩 Protéines',          kw: ['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','daurade','crevette','moule','poulpe','poulet','dinde','boeuf','bœuf','porc','oeuf','œuf','tofu','tempeh','pavé'] },
-    { cat: '🥦 Légumes',            kw: ['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate douce','oignon','ail','gingembre','tomate','concombre','asperge','artichaut','céleri','radis','navet','laitue','roquette','endive'] },
-    { cat: '🌾 Féculents',          kw: ['quinoa','riz','sarrasin','lentille','pois chiche','haricot','pâte','nouille','galette','flocon','farine','polenta','boulgour','épeautre','orge'] },
-    { cat: '🥑 Bons gras',          kw: ['noix','amande','cajou','noisette','pistache','graine','tahini','purée d\'amande','beurre de','avocat'] },
-    { cat: '🥫 Conserves & Sauces', kw: ['lait de coco','tomate concassée','sardine à l\'huile','maquereau au','thon au naturel','bouillon','miso','concentré','sauce soja','tamari'] },
-    { cat: '🍋 Fruits',             kw: ['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot','cerise','ananas','orange','pêche','raisin'] },
-    { cat: '🌿 Épices & Herbes',    kw: ['curcuma','cumin','cannelle','paprika','sel','poivre','basilic','persil','coriandre','menthe','thym','romarin','origan','safran','curry','garam'] },
-    { cat: '🫙 Huiles & Vinaigres', kw: ['huile','vinaigre','citron vert'] },
-    { cat: '🥛 Laits végétaux',     kw: ['lait amande','lait de riz','lait avoine','lait coco boisson','yaourt soja','crème coco','yaourt coco'] },
+  // Liste curatée et équilibrée par catégorie, triée par priorité nutritionnelle SJSR
+  const BASKET_TEMPLATE = [
+    { cat: '🥩 Protéines', items: [
+      { n: 'Pavé de saumon (x2)',        p: 7.50 },
+      { n: 'Œufs bio (x6)',              p: 3.50 },
+      { n: 'Sardines en boîte (x2)',     p: 3.60 },
+      { n: 'Maquereaux en boîte (x2)',   p: 3.80 },
+      { n: 'Thon au naturel (x2)',       p: 4.40 },
+      { n: 'Blanc de poulet (400g)',     p: 5.50 },
+      { n: 'Tofu ferme (400g)',          p: 2.50 },
+      { n: 'Lentilles vertes (500g)',    p: 1.80 },
+      { n: 'Pois chiches (boîte)',       p: 1.10 },
+      { n: 'Haricots rouges (boîte)',    p: 1.00 },
+    ]},
+    { cat: '🥦 Légumes', items: [
+      { n: 'Épinards frais (250g)',      p: 2.20 },
+      { n: 'Brocoli',                    p: 1.80 },
+      { n: 'Poivron rouge (x2)',         p: 3.80 },
+      { n: 'Courgette (x2)',             p: 2.00 },
+      { n: 'Carotte (500g)',             p: 1.00 },
+      { n: 'Patate douce (x2)',          p: 2.00 },
+      { n: 'Aubergine',                  p: 1.60 },
+      { n: 'Champignons (250g)',         p: 2.50 },
+      { n: 'Betterave cuite',            p: 1.20 },
+      { n: 'Fenouil',                    p: 1.80 },
+      { n: 'Ail (tête)',                 p: 0.90 },
+      { n: 'Gingembre frais',            p: 1.20 },
+    ]},
+    { cat: '🌾 Féculents', items: [
+      { n: 'Quinoa (500g)',              p: 2.80 },
+      { n: 'Riz complet (1kg)',          p: 1.50 },
+      { n: 'Lentilles corail (500g)',    p: 2.00 },
+      { n: 'Flocons de sarrasin',        p: 2.00 },
+      { n: 'Pâtes de riz (500g)',        p: 2.20 },
+    ]},
+    { cat: '🥑 Bons gras', items: [
+      { n: 'Avocat (x2)',                p: 3.60 },
+      { n: 'Noix (200g)',                p: 3.80 },
+      { n: 'Graines de chia (250g)',     p: 3.50 },
+      { n: 'Graines de lin (250g)',      p: 2.20 },
+      { n: 'Graines de courge (100g)',   p: 2.50 },
+      { n: 'Amandes (200g)',             p: 4.00 },
+      { n: 'Tahini (250g)',              p: 4.00 },
+    ]},
+    { cat: '🥫 Conserves', items: [
+      { n: 'Tomates concassées (x2)',    p: 1.80 },
+      { n: 'Lait de coco entier (x2)',   p: 3.60 },
+      { n: 'Bouillon de légumes (x4)',   p: 2.00 },
+    ]},
+    { cat: '🍋 Fruits', items: [
+      { n: 'Citron (x4)',                p: 2.00 },
+      { n: 'Banane (x4)',                p: 1.60 },
+      { n: 'Myrtilles (250g)',           p: 3.50 },
+      { n: 'Pomme (x4)',                 p: 2.00 },
+    ]},
+    { cat: '🌿 Épices & Huiles', items: [
+      { n: 'Huile olive vierge extra',   p: 7.00 },
+      { n: 'Curcuma (pot)',              p: 2.50 },
+      { n: 'Cannelle (pot)',             p: 1.50 },
+      { n: 'Tamari sans gluten',         p: 3.50 },
+    ]},
+    { cat: '🥛 Laits végétaux', items: [
+      { n: 'Lait de riz (1L)',           p: 2.00 },
+      { n: 'Lait amande (1L)',           p: 2.20 },
+      { n: 'Yaourt coco (x4)',           p: 3.60 },
+    ]},
   ];
 
-  function getCategorie(ingredient) {
-    const ing = ingredient.toLowerCase();
-    for (const { cat, kw } of CATEGORIE_MAP) {
-      if (kw.some(k => ing.includes(k))) return cat;
-    }
-    return '🛒 Divers';
+  // Quotas par catégorie selon le budget (nombre max d'articles)
+  function getQuotas(budget) {
+    if (budget <= 30) return { '🥩 Protéines':3, '🥦 Légumes':3, '🌾 Féculents':2, '🥑 Bons gras':1, '🥫 Conserves':1, '🍋 Fruits':1, '🌿 Épices & Huiles':1, '🥛 Laits végétaux':0 };
+    if (budget <= 50) return { '🥩 Protéines':4, '🥦 Légumes':4, '🌾 Féculents':2, '🥑 Bons gras':2, '🥫 Conserves':2, '🍋 Fruits':2, '🌿 Épices & Huiles':1, '🥛 Laits végétaux':1 };
+    if (budget <= 80) return { '🥩 Protéines':5, '🥦 Légumes':6, '🌾 Féculents':3, '🥑 Bons gras':3, '🥫 Conserves':2, '🍋 Fruits':3, '🌿 Épices & Huiles':2, '🥛 Laits végétaux':1 };
+    return              { '🥩 Protéines':7, '🥦 Légumes':8, '🌾 Féculents':4, '🥑 Bons gras':4, '🥫 Conserves':3, '🍋 Fruits':4, '🌿 Épices & Huiles':3, '🥛 Laits végétaux':2 };
   }
 
-  function findPrice(ingredient) {
-    const ing = ingredient.toLowerCase();
-    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
-      if (key.toLowerCase() === ing) return price;
-    }
-    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
-      const keyLow = key.toLowerCase();
-      const ingWord = ing.split(' ')[0];
-      if (ingWord.length > 3 && (ing.includes(keyLow) || keyLow.includes(ingWord))) return price;
-    }
-    return 2.00;
-  }
-
-  function isInPlacard(ingredient) {
-    const ing = ingredient.toLowerCase();
+  function isInPlacard(nom) {
+    const n = nom.toLowerCase();
     return Object.keys(placardItems).some(p =>
-      placardItems[p] && ing.split(' ')[0].length > 3 &&
-      (ing.includes(p.toLowerCase()) || p.toLowerCase().includes(ing.split(' ')[0]))
+      placardItems[p] && n.includes(p.toLowerCase().split(' ')[0])
     );
   }
 
-  // Extraire tous les ingrédients des recettes, dédupliqués et triés par fréquence
-  const ingredientCounts = {};
-  for (const recette of RECETTES) {
-    for (const ing of recette.ingredients) {
-      const clean = ing
-        .replace(/^\d+[\w,.]* ?(g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée)s? /i, '')
-        .replace(/^[\d,.]+ /, '')
-        .trim();
-      if (clean.length < 3) continue;
-      ingredientCounts[clean] = (ingredientCounts[clean] || 0) + 1;
-    }
-  }
-
-  const sorted = Object.entries(ingredientCounts)
-    .sort((a, b) => b[1] - a[1])
-    .map(([ing]) => ing);
-
-  // Construire la liste en remplissant le budget au maximum
+  const quotas = getQuotas(budget);
   const byCategorie = {};
-  const addedKeys = new Set();
   let total = 0;
 
-  for (const ing of sorted) {
-    if (isInPlacard(ing)) continue;
-    const price = findPrice(ing);
-    if (total + price > budget) continue; // trop cher, on continue quand même
-    const cat = getCategorie(ing);
-    // Déduplication : éviter les quasi-doublons dans la même catégorie
-    const ingKey = ing.toLowerCase().split(' ')[0];
-    if (addedKeys.has(ingKey)) continue;
-    addedKeys.add(ingKey);
-    if (!byCategorie[cat]) byCategorie[cat] = [];
-    byCategorie[cat].push({ item: ing, price });
-    total += price;
+  for (const { cat, items } of BASKET_TEMPLATE) {
+    const max = quotas[cat] || 0;
+    if (!max) continue;
+    byCategorie[cat] = [];
+    for (const { n, p } of items) {
+      if (byCategorie[cat].length >= max) break;
+      if (isInPlacard(n)) continue;
+      if (total + p > budget) continue;
+      byCategorie[cat].push({ item: n, price: p });
+      total += p;
+    }
+    if (!byCategorie[cat].length) delete byCategorie[cat];
   }
 
   // Afficher
@@ -4472,7 +4496,7 @@ function generateShoppingList() {
   const listContent = document.getElementById('shopping-list-content');
   document.getElementById('budget-total-badge').textContent = `${total.toFixed(2)}€ / ${budget}€`;
 
-  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves & Sauces','🍋 Fruits','🌿 Épices & Herbes','🫙 Huiles & Vinaigres','🥛 Laits végétaux','🛒 Divers'];
+  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves','🍋 Fruits','🌿 Épices & Huiles','🥛 Laits végétaux'];
 
   listContent.innerHTML = orderedCats
     .filter(cat => byCategorie[cat]?.length)
