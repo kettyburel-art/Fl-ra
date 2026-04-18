@@ -5507,6 +5507,207 @@ function addObMed() {
   input.focus();
 }
 
+
+// ============================
+// ASSISTANT IA FLŌRA
+// ============================
+
+let assistantHistory = []; // Historique de conversation
+
+function buildUserContext() {
+  // Construire le contexte complet de l'utilisateur
+  const name  = profile.name || 'l\'utilisateur';
+  const meds  = (profile.medications || []).join(', ') || 'aucun traitement renseigné';
+  const goal  = { sommeil:'améliorer le sommeil', douleur:'réduire la douleur chronique',
+                  sjsr:'calmer le SJSR', energie:'retrouver de l\'énergie', global:'bien-être global' }[profile.goal] || 'bien-être global';
+  const regime = [
+    profile.sansGluten  && 'sans gluten',
+    profile.sansLactose && 'sans lactose',
+    profile.vegetarien  && 'végétarien·ne',
+    profile.caferenceFer && 'carence en fer',
+    profile.tdah        && 'TDAH/neuroatypique',
+  ].filter(Boolean).join(', ') || 'aucune restriction alimentaire';
+
+  // Données journal 7 derniers jours
+  const recentEntries = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    const dk = dateKey(d);
+    const e  = journal[dk];
+    if (e) {
+      const dayName = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+      recentEntries.push(
+        `${dayName}: sommeil ${e.duree||'?'}h (qualité ${e.qualite||'?'}/5), ` +
+        `énergie ${e.energie||'?'}/10, douleur ${e.douleur||'?'}/10, ` +
+        `SJSR ${e.sjsr||0}/5${e.sjsr>0?' ('+['','léger','modéré','fort','très fort','insupportable'][e.sjsr]+')':''}` +
+        `${e.meds?.length?' | méds: '+e.meds.join(', '):''}` +
+        `${e.symptoms?.length?' | symptômes: '+e.symptoms.join(', '):''}` +
+        `${e.notes?' | note: '+e.notes:''}`
+      );
+    }
+  }
+
+  // Agenda aujourd'hui
+  const todayAgenda = agenda[dateKey(new Date())] || {};
+  const todayRepas  = Object.entries(todayAgenda)
+    .map(([slug, recId]) => {
+      const r = RECETTES.find(x => x.id === recId);
+      return r ? r.nom : null;
+    }).filter(Boolean);
+
+  // Stats 30j
+  const allEntries = Object.values(journal);
+  const avgEnergie = allEntries.length
+    ? (allEntries.reduce((s,e)=>s+(e.energie||0),0)/allEntries.length).toFixed(1) : null;
+  const avgDouleur = allEntries.length
+    ? (allEntries.reduce((s,e)=>s+(e.douleur||0),0)/allEntries.length).toFixed(1) : null;
+  const nuitsSjsr  = allEntries.filter(e=>(e.sjsr||0)>0).length;
+
+  return `Tu es Flōra, une assistante bien-être spécialisée dans le Syndrome des Jambes Sans Repos (SJSR), la douleur chronique et le TDAH. Tu es chaleureuse, bienveillante, précise et pratique.
+
+PROFIL DE L'UTILISATEUR :
+- Prénom : ${name}
+- Objectif principal : ${goal}
+- Régime alimentaire : ${regime}
+- Médicaments : ${meds}
+- Streak journal : ${getStreak()} jours consécutifs
+
+DONNÉES JOURNAL — 7 DERNIERS JOURS :
+${recentEntries.length ? recentEntries.join('\n') : 'Aucune entrée récente'}
+
+STATISTIQUES (toutes entrées) :
+- Énergie moyenne : ${avgEnergie||'—'}/10
+- Douleur moyenne : ${avgDouleur||'—'}/10
+- Nuits avec SJSR : ${nuitsSjsr} au total
+
+MENU DU JOUR (si planifié) :
+${todayRepas.length ? todayRepas.join(', ') : 'Aucun menu planifié aujourd\'hui'}
+
+RÈGLES DE RÉPONSE :
+- Réponds toujours en français, de façon chaleureuse et personnalisée
+- Utilise le prénom de l\'utilisateur quand c\'est naturel
+- Adapte tes conseils à son régime alimentaire et ses médicaments
+- Pour les questions nutritionnelles, propose des recettes concrètes adaptées à ses contraintes
+- Pour les questions médicales, donne des informations utiles mais rappelle de consulter un médecin
+- Quand tu analyses le journal, cite les données réelles
+- Tes réponses : concises (max 200 mots), structurées avec des sauts de ligne, jamais de listes à puces avec tirets (utilise des emojis à la place)
+- Ne parle jamais de toi comme d\'une IA, mais comme d\'une assistante bien-être`;
+}
+
+async function sendAssistantMessage() {
+  const input = document.getElementById('assistant-input');
+  const msg   = (input?.value || '').trim();
+  if (!msg) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+
+  // Masquer les suggestions dès le premier message
+  const suggestions = document.getElementById('assistant-suggestions');
+  if (suggestions) suggestions.closest('div')?.parentElement && (document.getElementById('assistant-intro').style.display = 'none');
+  document.getElementById('assistant-intro').style.display = 'none';
+
+  appendAssistantMsg(msg, 'user');
+
+  // Ajouter à l'historique
+  assistantHistory.push({ role: 'user', content: msg });
+
+  // Afficher l'indicateur de frappe
+  const typingEl = showTypingIndicator();
+
+  // Désactiver le bouton pendant la requête
+  const btn = document.getElementById('assistant-send-btn');
+  if (btn) btn.disabled = true;
+
+  try {
+    const systemPrompt = buildUserContext();
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: assistantHistory.slice(-10), // Max 10 échanges en contexte
+      })
+    });
+
+    typingEl.remove();
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({}));
+      throw new Error(err.error?.message || 'Erreur réseau');
+    }
+
+    const data = await response.json();
+    const reply = data.content?.[0]?.text || 'Désolée, je n\'ai pas pu répondre.';
+
+    assistantHistory.push({ role: 'assistant', content: reply });
+    appendAssistantMsg(reply, 'ai');
+
+    // Garder l'historique raisonnable
+    if (assistantHistory.length > 20) assistantHistory = assistantHistory.slice(-16);
+
+  } catch (err) {
+    typingEl?.remove();
+    appendAssistantMsg(
+      '😔 Je rencontre un problème de connexion. Vérifiez votre connexion internet et réessayez.',
+      'ai'
+    );
+    console.error('Assistant error:', err);
+    // Retirer le dernier message user de l\'historique si erreur
+    assistantHistory.pop();
+  } finally {
+    if (btn) btn.disabled = false;
+    input.focus();
+  }
+}
+
+function askAssistant(text) {
+  const input = document.getElementById('assistant-input');
+  if (input) { input.value = text; sendAssistantMessage(); }
+}
+
+function appendAssistantMsg(text, role) {
+  const container = document.getElementById('assistant-messages');
+  if (!container) return;
+
+  const el = document.createElement('div');
+  el.className = role === 'user' ? 'assist-msg-user' : 'assist-msg-ai';
+
+  if (role === 'ai') {
+    // Formater le texte : sauts de ligne → <br>, **bold**
+    el.innerHTML = text
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\n/g,'<br>');
+  } else {
+    el.textContent = text;
+  }
+
+  container.appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+}
+
+function showTypingIndicator() {
+  const container = document.getElementById('assistant-messages');
+  const el = document.createElement('div');
+  el.className = 'assist-msg-ai assist-typing';
+  el.innerHTML = '<div class="assist-dot"></div><div class="assist-dot"></div><div class="assist-dot"></div>';
+  container.appendChild(el);
+  el.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return el;
+}
+
+function clearAssistantHistory() {
+  assistantHistory = [];
+  const container = document.getElementById('assistant-messages');
+  if (container) container.innerHTML = '';
+  document.getElementById('assistant-intro').style.display = 'block';
+}
+
 // ============================
 // NAVIGATION
 // ============================
@@ -5540,6 +5741,7 @@ function showPage(page) {
     switchGenTab('semaine', document.querySelector('#page-generateur .jtab'));
   }
   if (page === 'placard')    initPlacard();
+  if (page === 'assistant')  { /* L'assistant se charge dynamiquement */ }
 }
 
 // ============================
