@@ -4390,31 +4390,79 @@ function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
-  // Sélectionner des ingrédients essentiels dans le budget
-  const essentials = [
-    { cat: '🥩 Protéines', items: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles', 'Tofu'] },
-    { cat: '🥦 Légumes', items: ['Épinards', 'Brocoli', 'Courgette', 'Carotte', 'Poivron'] },
-    { cat: '🌾 Féculents', items: ['Quinoa', 'Riz complet', 'Patate douce'] },
-    { cat: '🥑 Bons gras', items: ['Avocat', 'Noix', 'Graines de courge'] },
-    { cat: '🥫 Conserves', items: ['Tomates concassées', 'Lait de coco'] },
-    { cat: '🍋 Fruits', items: ['Citron', 'Banane', 'Myrtilles'] },
-  ];
+  // Catégories pour classer les ingrédients
+  const CATEGORIE_MAP = {
+    '🥩 Protéines': ['saumon', 'truite', 'sardine', 'maquereau', 'thon', 'anchois', 'hareng', 'cabillaud', 'daurade', 'crevette', 'moule', 'poulpe', 'poulet', 'dinde', 'bœuf', 'porc', 'œuf', 'tofu', 'tempeh'],
+    '🥦 Légumes': ['épinard', 'kale', 'brocoli', 'chou', 'courgette', 'aubergine', 'poivron', 'carotte', 'betterave', 'fenouil', 'champignon', 'patate douce', 'oignon', 'ail', 'gingembre', 'tomate', 'concombre', 'avocat', 'asperge', 'artichaut', 'céleri', 'radis', 'navet'],
+    '🌾 Féculents': ['quinoa', 'riz', 'sarrasin', 'lentille', 'pois chiche', 'haricot', 'patate', 'pâte', 'nouille', 'galette', 'flocon', 'farine'],
+    '🥑 Bons gras': ['noix', 'amande', 'cajou', 'noisette', 'pistache', 'graine', 'tahini', 'purée d\'amande', 'beurre de'],
+    '🥫 Conserves & Liquides': ['lait de coco', 'tomate concassée', 'sardine à l\'huile', 'maquereau au', 'thon au naturel', 'bouillon', 'miso'],
+    '🍋 Fruits': ['citron', 'banane', 'myrtille', 'fraise', 'framboise', 'mangue', 'pomme', 'poire', 'datte', 'abricot', 'cerise', 'ananas'],
+    '🌿 Épices & Condiments': ['curcuma', 'cumin', 'cannelle', 'paprika', 'sel', 'poivre', 'herbe', 'basilic', 'persil', 'coriandre', 'menthe', 'thym', 'romarin', 'huile', 'vinaigre', 'tamari', 'sauce soja', 'citron vert'],
+    '🥛 Laits végétaux': ['lait d\'amande', 'lait de riz', 'lait d\'avoine', 'lait de coco (boisson)', 'yaourt de soja', 'crème de coco'],
+  };
 
-  let total = 0;
-  const selected = [];
-
-  // Remplir jusqu'au budget en sautant ce qu'on a déjà
-  for (const cat of essentials) {
-    const catSelected = [];
-    for (const item of cat.items) {
-      if (placardItems[item]) continue; // déjà dans le placard
-      const price = INGREDIENT_PRICES[item] || 2.00;
-      if (total + price <= budget) {
-        catSelected.push({ item, price });
-        total += price;
-      }
+  function getCategorie(ingredient) {
+    const ing = ingredient.toLowerCase();
+    for (const [cat, keywords] of Object.entries(CATEGORIE_MAP)) {
+      if (keywords.some(kw => ing.includes(kw))) return cat;
     }
-    if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
+    return '🛒 Divers';
+  }
+
+  // Trouver la clé INGREDIENT_PRICES qui correspond le mieux
+  function findPrice(ingredient) {
+    const ing = ingredient.toLowerCase();
+    // Cherche une correspondance exacte ou partielle dans INGREDIENT_PRICES
+    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
+      if (key.toLowerCase() === ing) return price;
+    }
+    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
+      if (ing.includes(key.toLowerCase()) || key.toLowerCase().includes(ing.split(' ')[0])) return price;
+    }
+    return 2.00;
+  }
+
+  // Vérifier si un ingrédient est déjà dans le placard
+  function isInPlacard(ingredient) {
+    const ing = ingredient.toLowerCase();
+    return Object.keys(placardItems).some(p =>
+      placardItems[p] && (ing.includes(p.toLowerCase()) || p.toLowerCase().includes(ing.split(' ')[0]))
+    );
+  }
+
+  // Extraire tous les ingrédients des recettes (avec déduplication)
+  const ingredientCounts = {};
+  for (const recette of RECETTES) {
+    for (const ing of recette.ingredients) {
+      // Nettoyer : enlever quantités (ex: "150g", "2 càs")
+      const clean = ing.replace(/^\d+[\w]*\s+/, '').replace(/^[\d,.]+ ?(g|kg|ml|l|cl|càs|càc|cs|cc)\s+/i, '').trim();
+      if (clean.length < 3) continue;
+      ingredientCounts[clean] = (ingredientCounts[clean] || 0) + 1;
+    }
+  }
+
+  // Trier par fréquence (ingrédients les plus utilisés en premier)
+  const sortedIngredients = Object.entries(ingredientCounts)
+    .sort((a, b) => b[1] - a[1])
+    .map(([ing]) => ing);
+
+  // Construire la liste dans le budget en excluant le placard
+  const byCategorie = {};
+  let total = 0;
+
+  for (const ing of sortedIngredients) {
+    if (isInPlacard(ing)) continue; // déjà à la maison
+    const price = findPrice(ing);
+    if (total + price > budget) continue;
+    const cat = getCategorie(ing);
+    if (!byCategorie[cat]) byCategorie[cat] = [];
+    // Éviter les doublons proches
+    const alreadyHave = byCategorie[cat].some(i => i.item.toLowerCase().includes(ing.split(' ')[0].toLowerCase()));
+    if (alreadyHave) continue;
+    byCategorie[cat].push({ item: ing, price });
+    total += price;
+    if (total >= budget * 0.95) break;
   }
 
   // Afficher
@@ -4423,21 +4471,25 @@ function generateShoppingList() {
   document.getElementById('budget-total-badge').textContent =
     `${total.toFixed(2)}€ / ${budget}€`;
 
-  content.innerHTML = selected.map(cat => `
-    <div class="shopping-category">
-      <div class="shopping-cat-title">${cat.cat}</div>
-      ${cat.items.map(({item, price}) => `
-        <div class="shopping-item" onclick="this.classList.toggle('done')">
-          <div class="shopping-check">✓</div>
-          <div class="shopping-text">${item}</div>
-          <div class="shopping-price">~${price.toFixed(2)}€</div>
-        </div>
-      `).join('')}
-    </div>
-  `).join('');
+  const orderedCats = ['🥩 Protéines', '🥦 Légumes', '🌾 Féculents', '🥑 Bons gras', '🥫 Conserves & Liquides', '🍋 Fruits', '🌿 Épices & Condiments', '🥛 Laits végétaux', '🛒 Divers'];
+
+  content.innerHTML = orderedCats
+    .filter(cat => byCategorie[cat] && byCategorie[cat].length)
+    .map(cat => `
+      <div class="shopping-category">
+        <div class="shopping-cat-title">${cat}</div>
+        ${byCategorie[cat].map(({item, price}) => `
+          <div class="shopping-item" onclick="this.classList.toggle('done')">
+            <div class="shopping-check">✓</div>
+            <div class="shopping-text">${item}</div>
+            <div class="shopping-price">~${price.toFixed(2)}€</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('');
 
   // Générer menus basés sur les ingrédients du panier
-  const allItems = selected.flatMap(c => c.items.map(i => i.item));
+  const allItems = Object.values(byCategorie).flat().map(i => i.item);
   generateMenusFromBasket(allItems);
 
   result.classList.remove('hidden');
