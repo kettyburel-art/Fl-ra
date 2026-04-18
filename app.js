@@ -5077,6 +5077,283 @@ function initApp() {
   renderConseil();
 }
 
+
+// ============================
+// VUE DÉTAIL JOURNÉE
+// ============================
+
+const TAG_LABELS = {
+  'sg': { label:'Sans gluten', color:'#6b8f6b', bg:'#e8f4e8' },
+  'sl': { label:'Sans lactose', color:'#7a6b9a', bg:'#ede8f5' },
+  'vg': { label:'Végétarien', color:'#5a8a5a', bg:'#e0f0e0' },
+};
+
+const TAG_NUTRI_DETECT = [
+  { key:'FER',   words:['fer','lentille','épinard','légumineuse','sardine','viande'],   color:'#c0392b', bg:'#fde8e8' },
+  { key:'MAG',   words:['magnésium','sarrasin','noix','graine','banane','cacao'],       color:'#2980b9', bg:'#e8f4fd' },
+  { key:'DOPA',  words:['tryptophane','dopamine','protéine','sardine','œuf','poulet'],  color:'#8e44ad', bg:'#f5e8fd' },
+  { key:'OMG3',  words:['oméga-3','omega','saumon','sardine','maquereau','lin','chia'], color:'#16a085', bg:'#e8f8f5' },
+  { key:'VIT-C', words:['vitamine c','poivron','citron','kiwi','fraise','brocoli'],     color:'#d35400', bg:'#fdf0e8' },
+  { key:'ALK',   words:['alcalin','camomille','lavande','infusion','tisane'],           color:'#27ae60', bg:'#e8f8ec' },
+  { key:'ANTI-I',words:['anti-inflam','curcuma','gingembre','omega','polyphénol'],      color:'#e67e22', bg:'#fef5e8' },
+];
+
+const REPAS_HORAIRES = {
+  'petitdej': { heure:'7h – 9h',   lieu:'Maison',         icon:'☀️' },
+  'dejeuner': { heure:'13h – 14h30', lieu:'Maison',        icon:'🥗' },
+  'gouter':   { heure:'16h – 17h', lieu:'Snack rapide',    icon:'🍎' },
+  'diner':    { heure:'19h – 20h30', lieu:'Maison',        icon:'🌙' },
+};
+
+function getNutriTags(recette) {
+  const text = ((recette.benefices || '') + ' ' + (recette.ingredients || []).join(' ')).toLowerCase();
+  return TAG_NUTRI_DETECT.filter(t => t.words.some(w => text.includes(w)));
+}
+
+function getTDHANote(recette, slug) {
+  const text = (recette.benefices || '').toLowerCase();
+  const nom  = recette.nom.toLowerCase();
+
+  if (slug === 'petitdej') {
+    if (text.includes('dopamine') || text.includes('tryptophane') || text.includes('protéine'))
+      return '🧠 Protéines au petit-déj = boost dopamine pour toute la matinée.';
+    if (text.includes('oméga') || text.includes('omega'))
+      return '🧠 Oméga-3 le matin = concentration et mémoire améliorées.';
+    if (text.includes('magnésium') || text.includes('sarrasin'))
+      return '🧠 Magnésium = calme le système nerveux, réduit l\'agitation TDAH.';
+  }
+  if (slug === 'dejeuner') {
+    if (text.includes('fer') || text.includes('lentille') || text.includes('légumineuse'))
+      return '🧠 Fer végétal + vitamine C = absorption optimale. Évite le coup de barre de 15h.';
+    if (text.includes('anti-inflam') || text.includes('curcuma'))
+      return '🧠 Repas anti-inflammatoire = moins de brouillard mental l\'après-midi.';
+  }
+  if (slug === 'gouter') {
+    return '🧠 Goûter TDAH — ne jamais sauter : maintient la glycémie et évite les décisions impulsives.';
+  }
+  if (slug === 'diner') {
+    if (text.includes('sommeil') || text.includes('tryptophane'))
+      return '🧠 Tryptophane au dîner → sérotonine → mélatonine. Idéal 2h avant le coucher.';
+    if (text.includes('léger') || text.includes('soupe') || text.includes('velouté'))
+      return '🧠 Dîner léger = meilleur sommeil, moins de SJSR nocturne.';
+    return '🧠 Dîner avant 20h pour limiter le SJSR nocturne.';
+  }
+  return null;
+}
+
+function openDayView(dk) {
+  const dateParts = dk.split('-');
+  const d = new Date(parseInt(dateParts[0]), parseInt(dateParts[1])-1, parseInt(dateParts[2]));
+  const dayLabel = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+  const dayData  = agenda[dk] || {};
+  const today    = dateKey(new Date());
+  const isToday  = dk === today;
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;overflow-y:auto;';
+
+  // Construire le HTML des repas
+  const repasBlocks = REPAS.map(r => {
+    const recId = dayData[r.slug];
+    const rec   = recId ? RECETTES.find(x => x.id === recId) : null;
+    const horaire = REPAS_HORAIRES[r.slug] || {};
+    const nutriTags = rec ? getNutriTags(rec) : [];
+    const tdahNote  = rec ? getTDHANote(rec, r.slug) : null;
+
+    if (!rec) {
+      return `
+        <div style="background:var(--white);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;opacity:0.6;"
+             onclick="editAgendaMealFromDay('${dk}','${r.slug}',this.closest('[style*=fixed]'))">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span style="font-size:1.1rem;">${r.emoji}</span>
+            <span style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);">${r.label} · ${horaire.heure || ''}</span>
+          </div>
+          <div style="font-size:0.88rem;color:var(--text-light);font-style:italic;">+ Ajouter une recette</div>
+        </div>`;
+    }
+
+    const ingredientsHTML = rec.ingredients.map(ing =>
+      `<span style="display:inline-flex;align-items:center;gap:4px;background:var(--cream);border-radius:8px;padding:4px 10px;font-size:0.78rem;color:var(--text-dark);margin:3px;">
+        <span style="color:var(--green-mid);font-weight:700;">◆</span> ${ing}
+      </span>`
+    ).join('');
+
+    const etapesHTML = rec.etapes ? rec.etapes.map((e, i) =>
+      `<div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;">
+        <span style="background:var(--green-deep);color:white;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0;margin-top:1px;">${i+1}</span>
+        <span style="font-size:0.83rem;color:var(--text-dark);line-height:1.5;">${e}</span>
+      </div>`
+    ).join('') : '';
+
+    const tagsBases = (rec.tags || []).map(t => {
+      const tl = TAG_LABELS[t];
+      return tl ? `<span style="background:${tl.bg};color:${tl.color};border-radius:99px;padding:2px 10px;font-size:0.7rem;font-weight:700;">${tl.label}</span>` : '';
+    }).join('');
+
+    const tagsNutri = nutriTags.map(t =>
+      `<span style="background:${t.bg};color:${t.color};border-radius:99px;padding:2px 10px;font-size:0.7rem;font-weight:700;">${t.key}</span>`
+    ).join('');
+
+    return `
+      <div style="background:var(--white);border-radius:var(--radius-lg);padding:16px;margin-bottom:12px;">
+        <!-- Header repas -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span style="font-size:1rem;">${r.emoji}</span>
+              <span style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-light);">${r.label} · ${horaire.heure || ''}</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:6px;">
+            <button onclick="editAgendaMealFromDay('${dk}','${r.slug}',this.closest('[style*=fixed]'))"
+              style="background:var(--cream);border:none;border-radius:8px;padding:4px 10px;font-size:0.75rem;color:var(--green-deep);cursor:pointer;">✏️ Changer</button>
+            <button onclick="clearAgendaMealFromDay('${dk}','${r.slug}',this.closest('[style*=fixed]'))"
+              style="background:#fde8e8;border:none;border-radius:8px;padding:4px 10px;font-size:0.75rem;color:#c0392b;cursor:pointer;">✕</button>
+          </div>
+        </div>
+
+        <!-- Nom recette -->
+        <div style="font-family:var(--font-display);font-size:1.15rem;color:var(--green-deep);margin-bottom:8px;cursor:pointer;"
+             onclick="openRecette(${rec.id})">
+          ${rec.emoji} ${rec.nom}
+        </div>
+
+        <!-- Ingrédients -->
+        <div style="margin-bottom:10px;display:flex;flex-wrap:wrap;gap:2px;">
+          ${ingredientsHTML}
+        </div>
+
+        <!-- Tags -->
+        <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:${tdahNote ? '10px' : '0'};">
+          ${tagsBases}${tagsNutri}
+          <span style="background:var(--cream);color:var(--text-mid);border-radius:99px;padding:2px 10px;font-size:0.7rem;">⏱ ${rec.temps}</span>
+          <span style="background:var(--cream);color:var(--text-mid);border-radius:99px;padding:2px 10px;font-size:0.7rem;">🔥 ${rec.calories} kcal</span>
+        </div>
+
+        <!-- Note TDAH -->
+        ${tdahNote ? `
+        <div style="background:#f0f4ff;border-left:3px solid #6c8ebf;border-radius:0 8px 8px 0;padding:8px 12px;font-size:0.78rem;color:#4a5568;line-height:1.5;">
+          ${tdahNote}
+        </div>` : ''}
+
+        <!-- Bénéfices (accordéon) -->
+        ${rec.benefices ? `
+        <div style="margin-top:8px;">
+          <details>
+            <summary style="font-size:0.75rem;color:var(--green-mid);cursor:pointer;list-style:none;">🌿 Bénéfices SJSR →</summary>
+            <div style="font-size:0.78rem;color:var(--text-mid);margin-top:6px;line-height:1.6;padding:8px;background:var(--cream);border-radius:8px;">
+              ${rec.benefices}
+            </div>
+          </details>
+        </div>` : ''}
+
+        <!-- Étapes (accordéon) -->
+        ${etapesHTML ? `
+        <div style="margin-top:8px;">
+          <details>
+            <summary style="font-size:0.75rem;color:var(--green-mid);cursor:pointer;list-style:none;">👩‍🍳 Préparation →</summary>
+            <div style="margin-top:8px;">${etapesHTML}</div>
+          </details>
+        </div>` : ''}
+      </div>`;
+  }).join('');
+
+  overlay.innerHTML = `
+    <div style="min-height:100%;background:var(--cream-bg,#f5f0eb);padding:0 0 40px 0;">
+
+      <!-- Header -->
+      <div style="background:var(--green-deep);padding:20px 16px 16px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:0.72rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.7);margin-bottom:2px;">
+            ${isToday ? '📍 Aujourd\'hui' : '📅 Menu du jour'}
+          </div>
+          <div style="font-family:var(--font-display);font-size:1.2rem;color:white;text-transform:capitalize;">
+            🌿 ${dayLabel}
+          </div>
+        </div>
+        <button onclick="this.closest('[style*=fixed]').remove()"
+          style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:36px;height:36px;color:white;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
+      </div>
+
+      <!-- Contenu -->
+      <div style="padding:16px;">
+        ${repasBlocks}
+
+        <!-- Bouton liste de courses pour ce jour -->
+        <button onclick="generateShoppingFromDay('${dk}', this.closest('[style*=fixed]'))"
+          style="width:100%;margin-top:8px;padding:14px;background:var(--green-deep);color:white;border:none;border-radius:var(--radius-md);font-family:var(--font-body);font-size:0.9rem;cursor:pointer;">
+          🛒 Liste de courses pour ce jour
+        </button>
+      </div>
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
+function editAgendaMealFromDay(dk, slug, overlayEl) {
+  if (overlayEl) overlayEl.remove();
+  editAgendaMeal(dk, slug);
+  // Réouvrir la vue jour après sélection
+  const origSetAgendaMeal = window._origSetAgendaMeal || setAgendaMeal;
+  window._pendingDayView = dk;
+}
+
+function clearAgendaMealFromDay(dk, slug, overlayEl) {
+  clearAgendaMeal(dk, slug);
+  if (overlayEl) overlayEl.remove();
+  setTimeout(() => openDayView(dk), 100);
+}
+
+function generateShoppingFromDay(dk, overlayEl) {
+  const dayData = agenda[dk] || {};
+  const recetteIds = Object.values(dayData).filter(Boolean);
+  if (!recetteIds.length) {
+    alert('Aucune recette planifiée pour ce jour.');
+    return;
+  }
+
+  const ingredientSet = {};
+  recetteIds.forEach(id => {
+    const r = RECETTES.find(x => x.id === id);
+    if (!r) return;
+    r.ingredients.forEach(ing => {
+      const clean = ing.replace(/^\d[\d,./]* ?(g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée|portion)s? /i, '').replace(/^\d+ /, '').trim();
+      if (clean.length < 3) return;
+      const key = clean.toLowerCase().split(' ')[0];
+      if (!ingredientSet[key]) ingredientSet[key] = clean;
+    });
+  });
+
+  const items = Object.values(ingredientSet).filter(label => {
+    const l = label.toLowerCase();
+    return !Object.keys(placardItems).some(p => placardItems[p] && l.includes(p.toLowerCase().split(' ')[0]));
+  });
+
+  const listHTML = items.map(item =>
+    `<div onclick="this.style.opacity=this.style.opacity==='0.4'?'1':'0.4';this.querySelector('span').textContent=this.style.opacity==='0.4'?'✓':' '"
+      style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
+      <span style="color:var(--green-mid);font-weight:700;width:16px;"> </span>
+      <span style="font-size:0.88rem;color:var(--text-dark);">${item}</span>
+    </div>`
+  ).join('');
+
+  const d = new Date(dk.slice(0,4), dk.slice(4,6)-1, dk.slice(6,8));
+  const dateLabel = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+
+  const shopOverlay = document.createElement('div');
+  shopOverlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;';
+  shopOverlay.innerHTML = `
+    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 36px;max-height:80vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--green-deep);">🛒 Courses du jour</div>
+        <button onclick="this.closest('[style*=fixed]').remove()" style="background:var(--cream-dark);border:none;border-radius:50%;width:30px;height:30px;font-size:1rem;cursor:pointer;">✕</button>
+      </div>
+      <div style="font-size:0.78rem;color:var(--text-light);margin-bottom:14px;text-transform:capitalize;">${dateLabel} · ${recetteIds.length} recette${recetteIds.length>1?'s':''}</div>
+      ${listHTML || '<p style="color:var(--text-light);">Aucun ingrédient à acheter (tout est dans le placard).</p>'}
+    </div>`;
+  document.body.appendChild(shopOverlay);
+}
+
 // ============================
 // NAVIGATION
 // ============================
@@ -6091,9 +6368,9 @@ function renderAgenda() {
 
     return `
       <div class="agenda-day">
-        <div class="agenda-day-header ${isToday ? 'today-header' : ''}">
+        <div class="agenda-day-header ${isToday ? 'today-header' : ''}" onclick="openDayView('${k}')" style="cursor:pointer;">
           <span>${dayName} ${d.getDate()}</span>
-          ${isToday ? '<span style="font-size:0.7rem;opacity:0.8;">Aujourd\'hui</span>' : ''}
+          <span style="font-size:0.7rem;opacity:0.8;">${isToday ? 'Aujourd\'hui 📍' : '→ Détail'}</span>
         </div>
         <div class="agenda-meals">${repasHTML}</div>
       </div>`;
@@ -6160,7 +6437,7 @@ function renderAgendaMensuel() {
 
     html += `
       <div id="month-day-${dk}"
-        onclick="jumpToWeekDay('${dk}')"
+        onclick="openDayView('${dk}')"
         style="background:${isToday ? 'var(--green-deep)' : isWE ? 'var(--cream)' : 'var(--white)'};
                border:1.5px solid ${isToday ? 'var(--green-deep)' : 'var(--cream-dark)'};
                border-radius:var(--radius-md);padding:10px 12px;cursor:pointer;transition:opacity .2s;"
