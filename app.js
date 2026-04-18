@@ -3862,18 +3862,40 @@ function unlockDemo() {
 // ONBOARDING
 // ============================
 function nextStep(step) {
-  // Validation étape 2
+  // Validation étape 2 — prénom obligatoire
   if (step === 3) {
     const name = document.getElementById('ob-name').value.trim();
-    if (!name) { document.getElementById('ob-name').focus(); return; }
+    if (!name) {
+      document.getElementById('ob-name').focus();
+      document.getElementById('ob-name').style.borderColor = 'var(--red-soft)';
+      return;
+    }
+    document.getElementById('ob-name').style.borderColor = '';
   }
 
   // Générer le récap à l'étape 5
-  if (step === 5) buildOnboardRecap();
+  if (step === 5) {
+    try { buildOnboardRecap(); } catch(e) { console.warn('recap error', e); }
+  }
 
-  document.querySelectorAll('.onboard-step').forEach(el => el.classList.remove('active'));
-  const target = document.querySelector(`[data-step="${step}"]`);
-  if (target) target.classList.add('active');
+  // Masquer toutes les étapes — méthode robuste sans template literal
+  const allSteps = document.querySelectorAll('.onboard-step');
+  allSteps.forEach(function(el) { el.classList.remove('active'); });
+
+  // Activer la bonne étape — chercher par attribut sans template literal
+  let target = null;
+  allSteps.forEach(function(el) {
+    if (el.getAttribute('data-step') === String(step)) {
+      target = el;
+    }
+  });
+
+  if (target) {
+    target.classList.add('active');
+    // Scroll en haut
+    const wrap = document.querySelector('.onboard-wrap');
+    if (wrap) wrap.scrollTop = 0;
+  }
 }
 
 function selectChoice(el, hiddenId, value) {
@@ -4718,14 +4740,16 @@ function showPage(page) {
 
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
 
-  const target = document.getElementById(`page-${page}`);
+  const target = document.getElementById('page-' + page);
   if (target) {
     target.classList.remove('hidden');
     target.classList.add('active');
   }
 
-  const navBtn = document.querySelector(`[data-page="${page}"]`);
-  if (navBtn) navBtn.classList.add('active');
+  // Activer le bouton nav correspondant — sans template literal
+  document.querySelectorAll('.nav-btn').forEach(function(btn) {
+    if (btn.getAttribute('data-page') === page) btn.classList.add('active');
+  });
 
   if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
@@ -5006,12 +5030,15 @@ function saveJournal() {
 }
 
 function switchJTab(tab, el) {
-  document.querySelectorAll('.jtab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll('.jtab').forEach(function(t) { t.classList.remove('active'); });
+  if (el) el.classList.add('active');
 
   document.getElementById('jtab-today').classList.add('hidden');
   document.getElementById('jtab-historique').classList.add('hidden');
-  document.getElementById(`jtab-${tab}`).classList.remove('hidden');
+
+  // Sans template literal — robuste WebView
+  const targetId = tab === 'today' ? 'jtab-today' : 'jtab-historique';
+  document.getElementById(targetId).classList.remove('hidden');
 
   if (tab === 'historique') renderHistorique();
 }
