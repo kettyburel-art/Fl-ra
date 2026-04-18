@@ -4390,79 +4390,31 @@ function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
-  // Catégories pour classer les ingrédients
-  const CATEGORIE_MAP = {
-    '🥩 Protéines': ['saumon', 'truite', 'sardine', 'maquereau', 'thon', 'anchois', 'hareng', 'cabillaud', 'daurade', 'crevette', 'moule', 'poulpe', 'poulet', 'dinde', 'bœuf', 'porc', 'œuf', 'tofu', 'tempeh'],
-    '🥦 Légumes': ['épinard', 'kale', 'brocoli', 'chou', 'courgette', 'aubergine', 'poivron', 'carotte', 'betterave', 'fenouil', 'champignon', 'patate douce', 'oignon', 'ail', 'gingembre', 'tomate', 'concombre', 'avocat', 'asperge', 'artichaut', 'céleri', 'radis', 'navet'],
-    '🌾 Féculents': ['quinoa', 'riz', 'sarrasin', 'lentille', 'pois chiche', 'haricot', 'patate', 'pâte', 'nouille', 'galette', 'flocon', 'farine'],
-    '🥑 Bons gras': ['noix', 'amande', 'cajou', 'noisette', 'pistache', 'graine', 'tahini', 'purée d\'amande', 'beurre de'],
-    '🥫 Conserves & Liquides': ['lait de coco', 'tomate concassée', 'sardine à l\'huile', 'maquereau au', 'thon au naturel', 'bouillon', 'miso'],
-    '🍋 Fruits': ['citron', 'banane', 'myrtille', 'fraise', 'framboise', 'mangue', 'pomme', 'poire', 'datte', 'abricot', 'cerise', 'ananas'],
-    '🌿 Épices & Condiments': ['curcuma', 'cumin', 'cannelle', 'paprika', 'sel', 'poivre', 'herbe', 'basilic', 'persil', 'coriandre', 'menthe', 'thym', 'romarin', 'huile', 'vinaigre', 'tamari', 'sauce soja', 'citron vert'],
-    '🥛 Laits végétaux': ['lait d\'amande', 'lait de riz', 'lait d\'avoine', 'lait de coco (boisson)', 'yaourt de soja', 'crème de coco'],
-  };
+  // Sélectionner des ingrédients essentiels dans le budget
+  const essentials = [
+    { cat: '🥩 Protéines', items: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles', 'Tofu'] },
+    { cat: '🥦 Légumes', items: ['Épinards', 'Brocoli', 'Courgette', 'Carotte', 'Poivron'] },
+    { cat: '🌾 Féculents', items: ['Quinoa', 'Riz complet', 'Patate douce'] },
+    { cat: '🥑 Bons gras', items: ['Avocat', 'Noix', 'Graines de courge'] },
+    { cat: '🥫 Conserves', items: ['Tomates concassées', 'Lait de coco'] },
+    { cat: '🍋 Fruits', items: ['Citron', 'Banane', 'Myrtilles'] },
+  ];
 
-  function getCategorie(ingredient) {
-    const ing = ingredient.toLowerCase();
-    for (const [cat, keywords] of Object.entries(CATEGORIE_MAP)) {
-      if (keywords.some(kw => ing.includes(kw))) return cat;
-    }
-    return '🛒 Divers';
-  }
-
-  // Trouver la clé INGREDIENT_PRICES qui correspond le mieux
-  function findPrice(ingredient) {
-    const ing = ingredient.toLowerCase();
-    // Cherche une correspondance exacte ou partielle dans INGREDIENT_PRICES
-    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
-      if (key.toLowerCase() === ing) return price;
-    }
-    for (const [key, price] of Object.entries(INGREDIENT_PRICES)) {
-      if (ing.includes(key.toLowerCase()) || key.toLowerCase().includes(ing.split(' ')[0])) return price;
-    }
-    return 2.00;
-  }
-
-  // Vérifier si un ingrédient est déjà dans le placard
-  function isInPlacard(ingredient) {
-    const ing = ingredient.toLowerCase();
-    return Object.keys(placardItems).some(p =>
-      placardItems[p] && (ing.includes(p.toLowerCase()) || p.toLowerCase().includes(ing.split(' ')[0]))
-    );
-  }
-
-  // Extraire tous les ingrédients des recettes (avec déduplication)
-  const ingredientCounts = {};
-  for (const recette of RECETTES) {
-    for (const ing of recette.ingredients) {
-      // Nettoyer : enlever quantités (ex: "150g", "2 càs")
-      const clean = ing.replace(/^\d+[\w]*\s+/, '').replace(/^[\d,.]+ ?(g|kg|ml|l|cl|càs|càc|cs|cc)\s+/i, '').trim();
-      if (clean.length < 3) continue;
-      ingredientCounts[clean] = (ingredientCounts[clean] || 0) + 1;
-    }
-  }
-
-  // Trier par fréquence (ingrédients les plus utilisés en premier)
-  const sortedIngredients = Object.entries(ingredientCounts)
-    .sort((a, b) => b[1] - a[1])
-    .map(([ing]) => ing);
-
-  // Construire la liste dans le budget en excluant le placard
-  const byCategorie = {};
   let total = 0;
+  const selected = [];
 
-  for (const ing of sortedIngredients) {
-    if (isInPlacard(ing)) continue; // déjà à la maison
-    const price = findPrice(ing);
-    if (total + price > budget) continue;
-    const cat = getCategorie(ing);
-    if (!byCategorie[cat]) byCategorie[cat] = [];
-    // Éviter les doublons proches
-    const alreadyHave = byCategorie[cat].some(i => i.item.toLowerCase().includes(ing.split(' ')[0].toLowerCase()));
-    if (alreadyHave) continue;
-    byCategorie[cat].push({ item: ing, price });
-    total += price;
-    if (total >= budget * 0.95) break;
+  // Remplir jusqu'au budget en sautant ce qu'on a déjà
+  for (const cat of essentials) {
+    const catSelected = [];
+    for (const item of cat.items) {
+      if (placardItems[item]) continue; // déjà dans le placard
+      const price = INGREDIENT_PRICES[item] || 2.00;
+      if (total + price <= budget) {
+        catSelected.push({ item, price });
+        total += price;
+      }
+    }
+    if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
   }
 
   // Afficher
@@ -4471,25 +4423,21 @@ function generateShoppingList() {
   document.getElementById('budget-total-badge').textContent =
     `${total.toFixed(2)}€ / ${budget}€`;
 
-  const orderedCats = ['🥩 Protéines', '🥦 Légumes', '🌾 Féculents', '🥑 Bons gras', '🥫 Conserves & Liquides', '🍋 Fruits', '🌿 Épices & Condiments', '🥛 Laits végétaux', '🛒 Divers'];
-
-  content.innerHTML = orderedCats
-    .filter(cat => byCategorie[cat] && byCategorie[cat].length)
-    .map(cat => `
-      <div class="shopping-category">
-        <div class="shopping-cat-title">${cat}</div>
-        ${byCategorie[cat].map(({item, price}) => `
-          <div class="shopping-item" onclick="this.classList.toggle('done')">
-            <div class="shopping-check">✓</div>
-            <div class="shopping-text">${item}</div>
-            <div class="shopping-price">~${price.toFixed(2)}€</div>
-          </div>
-        `).join('')}
-      </div>
-    `).join('');
+  content.innerHTML = selected.map(cat => `
+    <div class="shopping-category">
+      <div class="shopping-cat-title">${cat.cat}</div>
+      ${cat.items.map(({item, price}) => `
+        <div class="shopping-item" onclick="this.classList.toggle('done')">
+          <div class="shopping-check">✓</div>
+          <div class="shopping-text">${item}</div>
+          <div class="shopping-price">~${price.toFixed(2)}€</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
 
   // Générer menus basés sur les ingrédients du panier
-  const allItems = Object.values(byCategorie).flat().map(i => i.item);
+  const allItems = selected.flatMap(c => c.items.map(i => i.item));
   generateMenusFromBasket(allItems);
 
   result.classList.remove('hidden');
@@ -5886,13 +5834,13 @@ function switchGenTab(tab, el) {
 // Plan mensuel Avril 2026
 const PLAN_MENSUEL_AVRIL = [
   // Semaine 1 — Focus Fer & SJSR
-  { j:1,  pdc:1,  dej:51, din:75, snack:129, theme:'🩸 Boost Fer' },
-  { j:2,  pdc:2,  dej:52, din:76, snack:80,  theme:'🌿 Anti-inflam' },
-  { j:3,  pdc:3,  dej:53, din:77, snack:81,  theme:'🧠 Focus TDAH' },
-  { j:4,  pdc:4,  dej:54, din:78, snack:82,  theme:'🦵 Jambes légères' },
-  { j:5,  pdc:5,  dej:55, din:79, snack:83,  theme:'⚡ Énergie' },
-  { j:6,  pdc:6,  dej:56, din:112,snack:84,  theme:'🥂 Week-end' },
-  { j:7,  pdc:7,  dej:57, din:113,snack:85,  theme:'🛌 Sommeil' },
+  { j:1,  pdc:1,  dej:4, din:75, snack:129, theme:'🩸 Boost Fer' },
+  { j:2,  pdc:2,  dej:5, din:76, snack:80,  theme:'🌿 Anti-inflam' },
+  { j:3,  pdc:3,  dej:29, din:8, snack:81,  theme:'🧠 Focus TDAH' },
+  { j:4,  pdc:4,  dej:54, din:9, snack:82,  theme:'🦵 Jambes légères' },
+  { j:5,  pdc:5,  dej:55, din:33, snack:18,  theme:'⚡ Énergie' },
+  { j:6,  pdc:25, dej:39, din:112,snack:16,  theme:'🥂 Week-end' },
+  { j:7,  pdc:26, dej:40, din:113,snack:17,  theme:'🛌 Sommeil' },
   // Semaine 2 — Focus Magnésium
   { j:8,  pdc:8,  dej:58, din:114,snack:86,  theme:'💊 Magnésium' },
   { j:9,  pdc:9,  dej:59, din:115,snack:87,  theme:'🌙 Nuit calme' },
@@ -5961,8 +5909,10 @@ const MOIS = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','
 
 function renderPlanMensuel() {
   const now = new Date();
-  const moisNum = now.getMonth(); // 3=avril, 4=mai
-  renderPlanMoisSpec(moisNum === 3 ? 3 : 4);
+  const moisNum = now.getMonth(); // 0=jan, 3=avril, 4=mai...
+  // Afficher le mois courant si disponible, sinon le plus récent
+  if (moisNum === 3) renderPlanMoisSpec(3);
+  else renderPlanMoisSpec(4);
 }
 
 function renderPlanMoisSpec(moisIdx) {
@@ -6119,7 +6069,7 @@ function generateMenu() {
 
   // Filtre par priorité
   const filterPriority = (arr) => {
-    if (priorite === 'energie')   return arr.filter(r => r.tags?.includes('fer') || r.calories > 350) || arr;
+    if (priorite === 'energie')   return arr.filter(r => r.calories > 300).length > 2 ? arr.filter(r => r.calories > 300) : arr;
     if (priorite === 'sommeil')   return arr.filter(r => r.benefices?.toLowerCase().includes('sommeil')) || arr;
     if (priorite === 'digestion') return arr.filter(r => r.tags?.includes('vg')) || arr;
     return arr; // anti-inflammatoire = tout
