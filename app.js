@@ -5449,18 +5449,46 @@ function updateDashboard() {
       : 'Aucune entrée aujourd\'hui';
   }
 
-  // Statut agenda aujourd'hui
+  // Statut agenda aujourd'hui — menu complet du jour
   const agendaStatus = document.getElementById('agenda-today');
-  if (agendaStatus && agenda[today]) {
-    const repas = [];
-    const repasMap = { petitdej:'Petit-déj', dejeuner:'Déjeuner', gouter:'Goûter', diner:'Dîner' };
-    Object.entries(agenda[today]).forEach(([slug, recId]) => {
-      const rec = RECETTES.find(r => r.id === recId);
-      if (rec) repas.push(rec.emoji + ' ' + rec.nom.split('-')[0].trim());
-    });
-    if (repas.length) {
-      agendaStatus.textContent = repas[0] + (repas.length > 1 ? ` +${repas.length-1}` : '');
+  const menuDuJourEl = document.getElementById('menu-du-jour-block');
+  const todayAgenda  = agenda[today];
+
+  if (todayAgenda) {
+    const slugOrder = ['petitdej','dejeuner','gouter','diner'];
+    const repasLabels = { petitdej:'🌅 Petit-déj', dejeuner:'☀️ Déjeuner', gouter:'🍎 Goûter', diner:'🌙 Dîner' };
+    const repasRecs = slugOrder
+      .map(slug => ({ slug, rec: RECETTES.find(r => r.id === todayAgenda[slug]) }))
+      .filter(x => x.rec);
+
+    if (repasRecs.length) {
+      // Card agenda accueil : résumé
+      if (agendaStatus) {
+        agendaStatus.textContent = repasRecs[0].rec.emoji + ' ' + repasRecs[0].rec.nom.split('-')[0].trim()
+          + (repasRecs.length > 1 ? ` +${repasRecs.length-1} repas` : '');
+      }
+      // Bloc menu du jour détaillé sous les 4 cards
+      if (menuDuJourEl) {
+        menuDuJourEl.classList.remove('hidden');
+        document.getElementById('menu-du-jour-content').innerHTML = repasRecs.map(({slug, rec}) => `
+          <div onclick="openDayView('${today}')"
+            style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
+            <div style="width:52px;text-align:center;font-size:0.62rem;font-weight:700;text-transform:uppercase;color:var(--text-light);">${repasLabels[slug]}</div>
+            <div style="font-size:1.3rem;">${rec.emoji}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:0.82rem;font-weight:600;color:var(--green-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${rec.nom}</div>
+              <div style="font-size:0.7rem;color:var(--text-light);">⏱ ${rec.temps} · 🔥 ${rec.calories} kcal</div>
+            </div>
+            <div style="color:var(--text-light);font-size:0.8rem;">→</div>
+          </div>`).join('');
+      }
+    } else {
+      if (agendaStatus) agendaStatus.textContent = 'Voir le menu du jour';
+      if (menuDuJourEl) menuDuJourEl.classList.add('hidden');
     }
+  } else {
+    if (agendaStatus) agendaStatus.textContent = 'Planifier mes repas →';
+    if (menuDuJourEl) menuDuJourEl.classList.add('hidden');
   }
 
   // Week chart
@@ -5469,29 +5497,31 @@ function updateDashboard() {
 
 function renderWeekChart() {
   const container = document.getElementById('week-chart');
-  container.innerHTML = '';
-  const maxH = 56; // hauteur max en px (conteneur 96px - padding - label)
-
+  if (!container) return;
+  const maxH = 56;
+  const days = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
+    days.push(d);
+  }
+  container.innerHTML = days.map(d => {
     const k = dateKey(d);
     const entry = journal[k];
-    const dayLabel = JOURS[(d.getDay() + 6) % 7];
-
-    const energie = entry ? entry.energie : 0;
-    const heightPx = entry ? Math.max(3, Math.round((energie / 10) * maxH)) : 3;
-
-    const wrap = document.createElement('div');
-    wrap.className = 'chart-bar-wrap';
-    wrap.innerHTML = `
-      <div class="chart-bar ${entry ? 'filled' : ''}"
-           style="height:${heightPx}px"
-           title="${entry ? `Énergie: ${energie}/10` : 'Pas de données'}"></div>
-      <div class="chart-day">${dayLabel}</div>
-    `;
-    container.appendChild(wrap);
-  }
+    const dayLabel = JOURS[(d.getDay()+6)%7];
+    const en = entry ? Math.max(3, Math.round((entry.energie||0)/10*maxH)) : 2;
+    const do_ = entry ? Math.max(3, Math.round((entry.douleur||0)/10*maxH)) : 2;
+    const isToday = k === dateKey(new Date());
+    return `<div class="chart-bar-wrap" onclick="showPage('journal')" style="cursor:pointer;">
+      <div style="display:flex;gap:2px;align-items:flex-end;height:${maxH}px;justify-content:center;">
+        <div class="chart-bar ${entry?'filled':''}" style="height:${en}px;width:45%;background:var(--green-mid);border-radius:3px 3px 0 0;"
+          title="Énergie ${entry?.energie||0}/10"></div>
+        <div class="chart-bar ${entry?'filled':''}" style="height:${do_}px;width:45%;background:#e88080;border-radius:3px 3px 0 0;"
+          title="Douleur ${entry?.douleur||0}/10"></div>
+      </div>
+      <div class="chart-day" style="${isToday?'font-weight:700;color:var(--green-deep);':''}">${dayLabel}</div>
+    </div>`;
+  }).join('');
 }
 
 // ============================
@@ -6123,114 +6153,196 @@ function renderStats() {
   const statsEl = document.getElementById('stats-container');
   if (!statsEl) return;
 
-  const days = 30;
+  const days = isPremium ? 30 : 7;
   const today = new Date();
   const entries = [];
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    entries.push({ date: dateKey(d), data: journal[dateKey(d)] || null, d });
+    const dk = dateKey(d);
+    entries.push({ dk, data: journal[dk] || null, d });
   }
 
   const filled = entries.filter(e => e.data);
-  const avgEnergie = filled.length
-    ? Math.round(filled.reduce((s, e) => s + (e.data.energie || 0), 0) / filled.length * 10) / 10 : 0;
-  const avgDouleur = filled.length
-    ? Math.round(filled.reduce((s, e) => s + (e.data.douleur || 0), 0) / filled.length * 10) / 10 : 0;
-  const nuitsSjsr = filled.filter(e => e.data.sjsr > 0).length;
+  const avg = (key) => filled.length
+    ? Math.round(filled.reduce((s,e) => s+(e.data[key]||0),0)/filled.length*10)/10 : 0;
+  const avgEnergie = avg('energie');
+  const avgDouleur = avg('douleur');
+  const nuitsSjsr  = filled.filter(e => (e.data.sjsr||0) > 0).length;
+  const bestNuit   = filled.reduce((best,e) => (e.data.qualite||0)>(best?.data?.qualite||0)?e:best, null);
+  const streak     = getStreak();
 
-  const visible = isPremium ? entries : entries.slice(-7);
+  // Médicaments les plus pris
+  const medCounts = {};
+  filled.forEach(e => (e.data.meds||[]).forEach(m => { medCounts[m]=(medCounts[m]||0)+1; }));
+  const topMeds = Object.entries(medCounts).sort((a,b)=>b[1]-a[1]).slice(0,4);
+
+  // Symptômes les plus fréquents
+  const symCounts = {};
+  filled.forEach(e => (e.data.symptoms||[]).forEach(s => { symCounts[s]=(symCounts[s]||0)+1; }));
+  const topSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]).slice(0,4);
+
+  // ── Graphique SVG courbes ──
+  function svgCurve(values, color, maxVal=10, h=60, w=null) {
+    const n = values.length;
+    if (n < 2) return '';
+    const svgW = w || Math.min(320, n * 14);
+    const pts = values.map((v,i) => {
+      const x = (i/(n-1)) * svgW;
+      const y = h - (v/maxVal)*h;
+      return `${x.toFixed(1)},${y.toFixed(1)}`;
+    }).join(' ');
+    // Spline approximée via polyline + aire remplie
+    const fillPts = `0,${h} ${pts} ${svgW},${h}`;
+    return `<svg viewBox="0 0 ${svgW} ${h}" style="width:100%;height:${h}px;overflow:visible;">
+      <defs>
+        <linearGradient id="grad-${color.replace('#','')}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${color}" stop-opacity="0.25"/>
+          <stop offset="100%" stop-color="${color}" stop-opacity="0.02"/>
+        </linearGradient>
+      </defs>
+      <polygon points="${fillPts}" fill="url(#grad-${color.replace('#','')})" />
+      <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${values.map((v,i) => {
+        const x = (i/(n-1))*svgW;
+        const y = h-(v/maxVal)*h;
+        return v > 0 ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${color}" stroke="white" stroke-width="1.5"/>` : '';
+      }).join('')}
+    </svg>`;
+  }
+
+  const energieVals = entries.map(e => e.data?.energie || 0);
+  const douleurVals = entries.map(e => e.data?.douleur  || 0);
+  const sjsrVals    = entries.map(e => e.data?.sjsr     || 0);
+  const sommeilVals = entries.map(e => Math.min(10, (e.data?.duree || 0) / 9 * 10));
+
+  // Labels X (jours)
+  const dayLabels = entries.map((e,i) => {
+    if (days <= 7) return e.d.toLocaleDateString('fr-FR',{weekday:'short'}).slice(0,3);
+    if (i % 5 === 0 || i === days-1) return e.d.getDate().toString();
+    return '';
+  });
+
+  const xAxis = `<div style="display:flex;justify-content:space-between;margin-top:2px;">
+    ${dayLabels.map(l=>`<span style="font-size:0.6rem;color:var(--text-light);min-width:14px;text-align:center;">${l}</span>`).join('')}
+  </div>`;
 
   statsEl.innerHTML = `
-    <div class="stats-summary-grid">
-      <div class="stats-summary-card">
-        <div class="stats-summary-val">${avgEnergie || '—'}</div>
-        <div class="stats-summary-label">Énergie moy.<br>/10</div>
+    <!-- Résumé cartes -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
+      <div style="background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;">
+        <div style="font-size:1.6rem;font-weight:700;color:var(--green-mid);">${avgEnergie||'—'}</div>
+        <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">Énergie moy.<br>/10</div>
       </div>
-      <div class="stats-summary-card">
-        <div class="stats-summary-val">${avgDouleur || '—'}</div>
-        <div class="stats-summary-label">Douleur moy.<br>/10</div>
+      <div style="background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;">
+        <div style="font-size:1.6rem;font-weight:700;color:#c0392b;">${avgDouleur||'—'}</div>
+        <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">Douleur moy.<br>/10</div>
       </div>
-      <div class="stats-summary-card">
-        <div class="stats-summary-val">${nuitsSjsr}</div>
-        <div class="stats-summary-label">Nuits SJSR<br>${isPremium ? '30j' : '7j'}</div>
-      </div>
-    </div>
-
-    <div class="stats-section" style="margin-top:16px;">
-      <div class="stats-section-title">⚡ Énergie & Douleur — ${isPremium ? '30 derniers jours' : '7 derniers jours'}</div>
-      <div class="stats-chart-wrap">
-        <div class="stats-chart-bars">
-          ${visible.map(e => {
-            const en  = e.data ? Math.round((e.data.energie || 0) / 10 * 70) : 0;
-            const do_ = e.data ? Math.round((e.data.douleur  || 0) / 10 * 70) : 0;
-            const day = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
-            return `<div class="stats-bar-wrap">
-              <div style="display:flex;gap:2px;align-items:flex-end;height:70px;justify-content:center;">
-                <div class="stats-bar energie" style="height:${en}px;width:45%;"></div>
-                <div class="stats-bar douleur" style="height:${do_}px;width:45%;"></div>
-              </div>
-              <div class="stats-day-label">${day}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div class="stats-legend">
-          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--green-mid)"></div> Énergie</div>
-          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--red-soft)"></div> Douleur</div>
-        </div>
+      <div style="background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;">
+        <div style="font-size:1.6rem;font-weight:700;color:#8e44ad;">${nuitsSjsr}</div>
+        <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">Nuits SJSR<br>${days}j</div>
       </div>
     </div>
 
-    <div class="stats-section">
-      <div class="stats-section-title">🦵 Nuits SJSR</div>
-      <div class="stats-chart-wrap">
-        <div class="stats-chart-bars">
-          ${visible.map(e => {
-            const sjsr = e.data ? Math.round((e.data.sjsr || 0) / 5 * 70) : 0;
-            const day  = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
-            return `<div class="stats-bar-wrap">
-              <div style="height:70px;display:flex;align-items:flex-end;justify-content:center;">
-                <div class="stats-bar sjsr" style="height:${sjsr}px;width:80%;"></div>
-              </div>
-              <div class="stats-day-label">${day}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div style="font-size:0.75rem;color:var(--text-light);margin-top:6px;">0 = aucun · 5 = insupportable</div>
+    <!-- Courbe Énergie -->
+    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">⚡ Énergie — ${days}j</div>
+        <div style="font-size:0.72rem;color:var(--green-mid);font-weight:600;">moy. ${avgEnergie}/10</div>
       </div>
+      ${svgCurve(energieVals, '#4a7c5e')}
+      ${xAxis}
     </div>
+
+    <!-- Courbe Douleur -->
+    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">🔥 Douleur — ${days}j</div>
+        <div style="font-size:0.72rem;color:#c0392b;font-weight:600;">moy. ${avgDouleur}/10</div>
+      </div>
+      ${svgCurve(douleurVals, '#c0392b')}
+      ${xAxis}
+    </div>
+
+    <!-- Courbe SJSR -->
+    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">🦵 SJSR — ${days}j</div>
+        <div style="font-size:0.72rem;color:#8e44ad;font-weight:600;">${nuitsSjsr} nuit${nuitsSjsr>1?'s':''} concernée${nuitsSjsr>1?'s':''}</div>
+      </div>
+      ${svgCurve(sjsrVals, '#8e44ad', 5)}
+      ${xAxis}
+      <div style="font-size:0.65rem;color:var(--text-light);margin-top:4px;">0 = aucun · 5 = insupportable</div>
+    </div>
+
+    <!-- Courbe Sommeil -->
+    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">🌙 Sommeil — ${days}j</div>
+        <div style="font-size:0.72rem;color:#2980b9;font-weight:600;">${filled.length ? Math.round(filled.reduce((s,e)=>s+(e.data.duree||0),0)/filled.length*10)/10 : '—'}h/nuit</div>
+      </div>
+      ${svgCurve(sommeilVals, '#2980b9')}
+      ${xAxis}
+      <div style="font-size:0.65rem;color:var(--text-light);margin-top:4px;">Basé sur les heures de coucher/lever</div>
+    </div>
+
+    <!-- Médicaments pris -->
+    ${topMeds.length ? `
+    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);margin-bottom:10px;">💊 Médicaments — observance ${days}j</div>
+      ${topMeds.map(([med,count]) => `
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
+          <span style="font-size:0.8rem;color:var(--text-dark);min-width:90px;">${med}</span>
+          <div style="flex:1;background:var(--cream);border-radius:99px;height:8px;overflow:hidden;">
+            <div style="background:var(--green-mid);height:100%;border-radius:99px;width:${Math.round(count/filled.length*100)}%;transition:width .5s;"></div>
+          </div>
+          <span style="font-size:0.72rem;color:var(--text-light);min-width:40px;text-align:right;">${count}/${filled.length}j</span>
+        </div>`).join('')}
+    </div>` : ''}
+
+    <!-- Symptômes fréquents -->
+    ${topSyms.length ? `
+    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);margin-bottom:10px;">🩺 Symptômes fréquents — ${days}j</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;">
+        ${topSyms.map(([sym,count]) =>
+          `<div style="background:var(--cream);border-radius:99px;padding:4px 12px;font-size:0.75rem;color:var(--text-dark);">
+            ${sym} <span style="color:var(--text-light);">${count}x</span>
+          </div>`).join('')}
+      </div>
+    </div>` : ''}
+
+    <!-- Meilleure nuit -->
+    ${bestNuit ? `
+    <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:14px;padding:14px;margin-bottom:10px;">
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.7);margin-bottom:4px;">⭐ Meilleure nuit — ${days}j</div>
+      <div style="font-size:0.9rem;font-weight:700;color:white;text-transform:capitalize;">
+        ${bestNuit.d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
+      </div>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.85);margin-top:4px;">
+        ${bestNuit.data.qualite}/5 étoiles · ${bestNuit.data.duree||'?'}h · Énergie ${bestNuit.data.energie||'?'}/10
+      </div>
+    </div>` : ''}
+
+    <!-- Message si pas de données -->
+    ${filled.length === 0 ? `
+    <div style="text-align:center;padding:32px 16px;color:var(--text-light);">
+      <div style="font-size:2rem;margin-bottom:8px;">📊</div>
+      <p style="font-size:0.85rem;">Commencez à remplir votre journal pour voir vos statistiques.</p>
+    </div>` : ''}
 
     ${!isPremium ? `
-    <div class="stats-premium-wall">
-      <div style="font-size:1.8rem;">📊</div>
-      <p>Débloquez l'historique complet sur <strong>30 jours</strong>, les tendances et l'export PDF.</p>
+    <div style="background:var(--cream);border-radius:14px;padding:16px;text-align:center;margin-top:8px;">
+      <div style="font-size:1.4rem;margin-bottom:6px;">📈</div>
+      <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:12px;">Débloquez l'historique <strong>30 jours</strong> et les corrélations avancées.</p>
       <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank"
-         class="btn-premium" style="display:block;text-align:center;text-decoration:none;">
+         style="display:block;background:var(--green-deep);color:white;border-radius:99px;padding:10px;text-decoration:none;font-size:0.85rem;">
         ⭐ Passer à Premium — 4,99€/mois
       </a>
     </div>` : ''}
   `;
 }
 
-// ============================
-// CONSEILS SJSR ROTATIFS
-// ============================
-const CONSEILS_SJSR = [
-  { icon: '🩸', text: 'Associez toujours vos sources de fer à de la vitamine C (citron, poivron) pour multiplier par 3 leur absorption.' },
-  { icon: '🦵', text: 'Le magnésium bisglycinate pris le soir réduit significativement les impatiences nocturnes. Privilégiez les eaux riches en magnésium.' },
-  { icon: '🐟', text: 'Les oméga-3 (sardines, maquereaux, saumon) réduisent l\'inflammation des nerfs responsable du SJSR. Objectif : 3 fois par semaine.' },
-  { icon: '☕', text: 'La caféine amplifie les symptômes SJSR. Évitez-la après 14h — cela inclut le thé, le cola et le chocolat noir en excès.' },
-  { icon: '🌙', text: '1 cycle de sommeil = 90 min. Programmez votre réveil sur un multiple de 90 min pour vous réveiller en phase légère.' },
-  { icon: '🫘', text: 'Les lentilles beluga (noires) sont les plus riches en fer végétal. Cuisez-les avec du jus de citron pour maximiser l\'absorption.' },
-  { icon: '🧠', text: 'Le SJSR et le TDAH partagent souvent une carence en dopamine. Les protéines au petit-déjeuner (œufs, sardines) boostent sa production.' },
-  { icon: '🏃', text: 'L\'exercice modéré (marche, yoga) améliore le SJSR. Évitez les efforts intenses le soir — ils aggravent les symptômes nocturnes.' },
-  { icon: '🥬', text: 'Les épinards cuits libèrent plus de fer que crus. Faites-les tomber à la poêle avec de l\'ail et un filet de citron en fin de cuisson.' },
-  { icon: '💊', text: 'Si votre ferritine est < 75 µg/L, demandez à votre médecin une supplémentation en fer — c\'est le premier traitement du SJSR léger.' },
-  { icon: '🌿', text: 'La valériane et la passiflore ont des effets prouvés sur l\'endormissement. À infuser 8 min, 30 min avant le coucher.' },
-  { icon: '🫀', text: 'La betterave améliore la circulation sanguine dans les jambes grâce à ses nitrates naturels. Consommez-en 3 fois par semaine.' },
-];
-
-let conseilIdx = new Date().getDate() % CONSEILS_SJSR.length;
 
 function renderConseil() {
   const c = CONSEILS_SJSR[conseilIdx];
@@ -7000,32 +7112,64 @@ function activatePremiumDemo() {
   closePremium();
 }
 
+// Codes premium valides — format FLORA-XXXXXX
+// Générés automatiquement à l'activation Stripe ou ajoutés manuellement
+const PREMIUM_CODES_VALID = [
+  // Codes de démonstration / beta
+  'FLORA-BETA26',
+  'FLORA-SJSR26',
+  'FLORA-BIENETRE',
+  'FLORA-KETTY26',
+  // Codes Stripe post-paiement — ajouter ici après chaque abonnement confirmé
+  // Format recommandé : FLORA-XXXXXX (6 caractères alphanumériques)
+];
+
+function generatePremiumCode() {
+  // Génère un code unique au format FLORA-XXXXXX
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sans I,O,0,1 pour éviter confusions
+  let code = 'FLORA-';
+  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
 function checkCode() {
-  const code = document.getElementById('promo-code').value.trim().toUpperCase();
+  const input   = document.getElementById('promo-code');
+  const code    = (input?.value || '').trim().toUpperCase();
   const errorEl   = document.getElementById('code-error');
   const successEl = document.getElementById('code-success');
 
-  // Réinitialiser les messages
   errorEl?.classList.add('hidden');
   successEl?.classList.add('hidden');
 
-  // Codes fixes de démo/test
-  const FIXED_CODES = ['FLORA2025', 'SJSR2025', 'BIENETRE'];
+  if (!code) {
+    if (errorEl) { errorEl.textContent = 'Entrez votre code.'; errorEl.classList.remove('hidden'); }
+    return;
+  }
 
-  // Format dynamique post-paiement Stripe : FLORA-XXXXXXXX (8+ chars après le tiret)
-  const isDynamicCode = /^FLORA-[A-Z0-9]{6,}$/.test(code);
+  // Vérifier dans la liste des codes valides
+  const isValid = PREMIUM_CODES_VALID.includes(code) || /^FLORA-[A-Z0-9]{6,8}$/.test(code);
 
-  if (FIXED_CODES.includes(code) || isDynamicCode) {
+  // Vérifier les codes déjà utilisés (stockés localement)
+  const usedCodes = JSON.parse(localStorage.getItem('flora_used_codes') || '[]');
+  const alreadyUsed = usedCodes.includes(code);
+
+  if (isValid && !alreadyUsed) {
+    // Marquer le code comme utilisé sur cet appareil
+    usedCodes.push(code);
+    localStorage.setItem('flora_used_codes', JSON.stringify(usedCodes));
+    // Activer premium
     activatePremium();
-    successEl?.classList.remove('hidden');
-    setTimeout(() => closePremium(), 1800);
+    if (input) input.value = '';
+    if (successEl) { successEl.textContent = '✅ Premium activé ! Bienvenue 🌿'; successEl.classList.remove('hidden'); }
+    setTimeout(() => closePremium(), 2000);
+  } else if (alreadyUsed) {
+    if (errorEl) { errorEl.textContent = '❌ Ce code a déjà été utilisé.'; errorEl.classList.remove('hidden'); }
+    if (input) input.style.borderColor = 'var(--red-soft)';
+    setTimeout(() => { if (input) input.style.borderColor = ''; errorEl?.classList.add('hidden'); }, 3000);
   } else {
-    document.getElementById('promo-code').style.borderColor = 'var(--red-soft)';
-    errorEl?.classList.remove('hidden');
-    setTimeout(() => {
-      document.getElementById('promo-code').style.borderColor = '';
-      errorEl?.classList.add('hidden');
-    }, 3000);
+    if (errorEl) { errorEl.textContent = '❌ Code invalide. Vérifiez votre email.'; errorEl.classList.remove('hidden'); }
+    if (input) input.style.borderColor = 'var(--red-soft)';
+    setTimeout(() => { if (input) input.style.borderColor = ''; errorEl?.classList.add('hidden'); }, 3000);
   }
 }
 

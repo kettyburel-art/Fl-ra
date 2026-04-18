@@ -234,6 +234,15 @@
           </div>
         </div>
 
+        <!-- Menu du jour depuis agenda -->
+        <div id="menu-du-jour-block" class="hidden" style="margin:0 0 16px 0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <div class="section-title" style="margin:0;">🍽️ Menu du jour</div>
+            <button onclick="openDayView(dateKey(new Date()))" style="background:none;border:none;font-size:0.75rem;color:var(--green-mid);cursor:pointer;padding:0;">Détail →</button>
+          </div>
+          <div style="background:var(--white);border-radius:14px;padding:4px 14px;" id="menu-du-jour-content"></div>
+        </div>
+
         <!-- Conseil SJSR rotatif -->
         <div class="conseil-sjsr" id="conseil-sjsr" onclick="nextConseil()">
           <div class="conseil-icon" id="conseil-icon">🦵</div>
