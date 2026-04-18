@@ -5174,25 +5174,25 @@ function initApp() {
   document.getElementById('app').classList.remove('hidden');
   loadState();
   initLogin();
+  loadProfil();        // Charger profil AVANT updateDashboard
   initPlacard();
   updateDashboard();
   renderRecettes();
-  loadProfil();
   setJournalDate();
   updateSleepCalc();
 
-  // Recette du jour — change chaque jour, cliquable directement
+  // Recette du jour — choisie selon profil si possible
   const free = RECETTES.filter(r => !r.premium);
   const rdj  = free[new Date().getDate() % free.length];
-  const rdjEl = document.getElementById('recette-du-jour');
+  const rdjEl    = document.getElementById('recette-du-jour');
   const rdjEmoji = document.getElementById('rdj-emoji');
-  if (rdjEl)    rdjEl.textContent = rdj.nom;
-  if (rdjEmoji) rdjEmoji.textContent = rdj.emoji;
-  // Stocker l'ID pour openRecetteDuJour
-  window._rdjId = rdj.id;
+  if (rdjEl && rdj)    rdjEl.textContent    = rdj.nom;
+  if (rdjEmoji && rdj) rdjEmoji.textContent = rdj.emoji;
+  window._rdjId = rdj?.id;
 
   renderStreakOnDashboard();
-  renderConseil();
+  renderConseil();      // Remplace le "Chargement…" du conseil SJSR
+  renderJournalMedChips();
 }
 
 
@@ -5623,16 +5623,31 @@ async function sendAssistantMessage() {
   try {
     const systemPrompt = buildUserContext();
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: assistantHistory.slice(-10), // Max 10 échanges en contexte
-      })
-    });
+    // Proxy CORS nécessaire pour appels API depuis navigateur
+    // Options : 1) Worker Cloudflare, 2) GitHub Actions, 3) Service tiers
+    const PROXY_URL = 'https://flora-api-proxy.kettyburel-art.workers.dev';
+
+    let response;
+    try {
+      response = await fetch(PROXY_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: systemPrompt,
+          messages: assistantHistory.slice(-10),
+        })
+      });
+    } catch (proxyErr) {
+      // Proxy non disponible → fallback réponses locales
+      typingEl?.remove();
+      const fallback = getOfflineAssistantResponse(msg);
+      assistantHistory.push({ role: 'assistant', content: fallback });
+      appendAssistantMsg(fallback, 'ai');
+      if (btn) btn.disabled = false;
+      return;
+    }
 
     typingEl.remove();
 
@@ -5706,6 +5721,126 @@ function clearAssistantHistory() {
   const container = document.getElementById('assistant-messages');
   if (container) container.innerHTML = '';
   document.getElementById('assistant-intro').style.display = 'block';
+}
+
+
+function getOfflineAssistantResponse(question) {
+  const q = question.toLowerCase();
+  const name = profile.name ? `, ${profile.name}` : '';
+  const meds = (profile.medications || []).join(', ');
+
+  // Analyse du journal récent
+  const today = new Date();
+  const recentDays = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const e = journal[dateKey(d)];
+    if (e) recentDays.push(e);
+  }
+  const avgEnergie = recentDays.length
+    ? (recentDays.reduce((s,e)=>s+(e.energie||0),0)/recentDays.length).toFixed(1) : null;
+  const avgDouleur = recentDays.length
+    ? (recentDays.reduce((s,e)=>s+(e.douleur||0),0)/recentDays.length).toFixed(1) : null;
+  const nuitsSjsr  = recentDays.filter(e=>(e.sjsr||0)>0).length;
+
+  // Réponses contextualisées selon le sujet
+  if (q.includes('journal') || q.includes('semaine') || q.includes('analyse')) {
+    if (!recentDays.length)
+      return `Je n'ai pas encore de données dans votre journal${name}. Commencez par remplir votre journal ce soir — même 2 minutes suffisent pour un suivi utile ! 🌿`;
+    return `Voici votre bilan des 7 derniers jours${name} 📊
+
+⚡ Énergie moyenne : ${avgEnergie}/10
+💢 Douleur moyenne : ${avgDouleur}/10
+🦵 Nuits avec SJSR : ${nuitsSjsr}/7
+
+${nuitsSjsr >= 4 ? 'Beaucoup de nuits difficiles cette semaine. Pensez à vérifier votre apport en fer et magnésium, et à dîner léger avant 20h.' : nuitsSjsr <= 1 ? 'Bonne semaine côté SJSR ! Continuez sur cette lancée.' : 'Semaine mitigée. Les légumineuses 3x/semaine et le magnésium le soir peuvent aider.'}`;
+  }
+
+  if (q.includes('jambe') || q.includes('sjsr') || q.includes('agit') || q.includes('nuit')) {
+    return `Le SJSR${name} est lié à plusieurs facteurs 🦵
+
+🩸 Carence en fer (ferritine < 75 µg/L) — la cause n°1
+🧠 Carence en dopamine — les protéines le matin aident
+☕ Caféine après 14h aggrave les symptômes
+💊 Certains antidépresseurs et antihistaminiques
+
+Concernant votre alimentation : sardines et maquereaux 3x/semaine pour les oméga-3, lentilles avec citron pour le fer, et magnésium le soir (noix, graines). Évitez le sucre et l'alcool le soir.`;
+  }
+
+  if (q.includes('manger') || q.includes('recette') || q.includes('soir') || q.includes('dîner')) {
+    const sgNote = profile.sansGluten ? ' (sans gluten)' : '';
+    const slNote = profile.sansLactose ? ' (sans lactose)' : '';
+    return `Pour un dîner anti-SJSR ce soir${name}${sgNote}${slNote} 🌙
+
+🐟 Papillote de saumon aux légumes verts — oméga-3 + légèreté
+🥣 Soupe lentilles corail-curcuma — fer + anti-inflammatoire
+🥗 Salade de sarrasin-épinards-betterave — magnésium + fer
+
+Règle d'or : dîner léger, avant 20h, sans alcool ni caféine. Le curcuma et le gingembre dans votre repas réduisent l'inflammation nocturne. Trouvez ces recettes dans l'onglet Recettes 🍽️`;
+  }
+
+  if (q.includes('sommeil') || q.includes('dormir') || q.includes('endormi')) {
+    return `Pour améliorer votre sommeil${name} 🌙
+
+🕗 Coucher à heure fixe — votre cerveau TDAH adore la routine
+🍵 Infusion camomille-lavande 30 min avant le coucher
+📱 Écran off 1h avant — la lumière bleue supprime la mélatonine
+🧲 Magnésium bisglycinate le soir — réduit les crampes et l'agitation
+💊 Vos médicaments : ${meds || 'à prendre à heure fixe le soir'}
+
+Objectif : ${Math.round(7.5/1.5)} cycles de 90 min = 7h30 de sommeil. Programmez votre réveil sur un multiple de 90 min.`;
+  }
+
+  if (q.includes('médicament') || q.includes('tramadol') || q.includes('lyrica') || q.includes('traitement')) {
+    return `Concernant vos médicaments${name} 💊
+
+Je ne peux pas donner de conseils médicaux précis sur vos traitements — seul votre médecin peut ajuster votre posologie.
+
+⚕️ Ce que je peux dire : certains aliments interagissent avec les médicaments du SJSR :
+🍋 La vitamine C améliore l'absorption du fer
+🥛 Les produits laitiers peuvent réduire l'absorption de certains médicaments
+☕ La caféine peut amplifier les effets des opioïdes
+
+Signalez toujours vos médicaments à votre médecin lors de vos consultations.`;
+  }
+
+  if (q.includes('énergie') || q.includes('fatigue') || q.includes('fatigué')) {
+    return `Pour retrouver de l'énergie${name} ⚡
+
+Les causes les plus fréquentes dans le SJSR :
+
+🩸 Anémie / carence fer — vérifiez votre ferritine
+😴 Dette de sommeil accumulée
+🧠 TDAH + fatigue = double peine
+
+Petits déjeuners protéinés dès le matin (œufs, sardines, tofu), pas de sucre rapide, goûter obligatoire à 16h pour maintenir la glycémie. Et vos lentilles 3x/semaine pour le fer végétal avec du citron pour l'absorption. Votre énergie moyenne cette semaine : ${avgEnergie ? avgEnergie+'/10' : 'non encore mesurée'}.`;
+  }
+
+  if (q.includes('magnésium') || q.includes('fer') || q.includes('complément') || q.includes('vitamine')) {
+    return `Les compléments clés pour le SJSR${name} 💊
+
+🦵 Fer (bisglycinate de fer) : si ferritine < 75 µg/L — à prendre avec vitamine C, loin des produits laitiers
+🧲 Magnésium bisglycinate : 300mg le soir, réduit les crampes et améliore le sommeil
+🐟 Oméga-3 EPA/DHA : 1-2g/jour, anti-inflammatoire puissant
+☀️ Vitamine D3 : souvent déficitaire en cas de douleurs chroniques
+
+Préférez les aliments aux compléments quand possible : sardines (fer+oméga3), noix du Brésil (magnésium), épinards cuits (fer).`;
+  }
+
+  // Réponse générique contextuelle
+  return `Bonne question${name} 🌿
+
+Je suis votre assistante bien-être spécialisée SJSR/TDAH. Je peux vous aider sur :
+
+🦵 Comprendre et soulager le SJSR
+🥗 Recettes et nutrition anti-inflammatoire
+💊 Interférences alimentation/médicaments
+😴 Améliorer votre sommeil
+⚡ Gérer la fatigue et la douleur
+📊 Analyser votre journal de suivi
+
+⚠️ Note : je fonctionne en mode hors-ligne pour l'instant. Pour des réponses plus personnalisées, une connexion est nécessaire.`;
 }
 
 // ============================
