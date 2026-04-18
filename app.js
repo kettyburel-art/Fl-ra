@@ -4520,49 +4520,200 @@ function generateShoppingList() {
   result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-function generateMenusFromBasket(basketItems) {
-  // Trouver des recettes dont les ingrédients correspondent au panier
-  const scored = RECETTES.map(r => {
-    const matches = r.ingredients.filter(ing =>
-      basketItems.some(b => ing.toLowerCase().includes(b.toLowerCase()))
-    ).length;
-    return { r, matches };
-  }).filter(x => x.matches > 0)
-    .sort((a, b) => b.matches - a.matches);
+// Stockage global des menus générés depuis le panier
+let _basketMenus = { pdc: [], dej: [], din: [], snack: [] };
+let _basketItems = [];
 
-  const topRecettes = scored.slice(0, 9);
+function generateMenusFromBasket(basketItems) {
+  _basketItems = basketItems;
   const menusDiv = document.getElementById('shopping-menus');
   const menusContent = document.getElementById('shopping-menus-content');
 
-  if (!topRecettes.length) { menusDiv.classList.add('hidden'); return; }
+  // Score chaque recette selon correspondance avec le panier
+  function scoreRecettes(cat) {
+    return RECETTES
+      .filter(r => r.cat === cat && (!r.premium || isPremium))
+      .map(r => {
+        const matches = r.ingredients.filter(ing =>
+          basketItems.some(b => {
+            const bw = b.toLowerCase().replace(/\s*\(.*\)/, '').replace(/\s*x\d+/, '').trim();
+            return bw.length > 3 && ing.toLowerCase().includes(bw.split(' ')[0]);
+          })
+        ).length;
+        return { r, matches };
+      })
+      .sort((a, b) => b.matches - a.matches)
+      .map(x => x.r);
+  }
 
-  const bycat = { 'petit-dejeuner': [], 'dejeuner': [], 'diner': [] };
-  topRecettes.forEach(({r}) => { if (bycat[r.cat]) bycat[r.cat].push(r); });
+  _basketMenus = {
+    pdc:   scoreRecettes('petit-dejeuner'),
+    dej:   scoreRecettes('dejeuner'),
+    din:   scoreRecettes('diner'),
+    snack: scoreRecettes('snack'),
+  };
+
+  if (!_basketMenus.pdc.length && !_basketMenus.dej.length && !_basketMenus.din.length) {
+    menusDiv.classList.add('hidden');
+    return;
+  }
+
+  renderBasketMenus(menusDiv, menusContent);
+}
+
+function renderBasketMenus(menusDiv, menusContent) {
+  // Sélection courante (index dans chaque liste)
+  if (!window._basketIdx) window._basketIdx = { pdc: 0, dej: 0, din: 0, snack: 0 };
+
+  const idx = window._basketIdx;
+  const get = (cat) => _basketMenus[cat][idx[cat]] || _basketMenus[cat][0];
+
+  const pdc   = get('pdc');
+  const dej   = get('dej');
+  const din   = get('din');
+  const snack = get('snack');
+
+  function mealCard(r, slot, label, emoji) {
+    if (!r) return '';
+    const alts = _basketMenus[slot].length;
+    return `
+      <div class="basket-meal-row" id="basket-slot-${slot}">
+        <div class="basket-meal-label">${emoji} ${label}</div>
+        <div class="basket-meal-card" onclick="openRecette(${r.id})">
+          <div class="basket-meal-icon">${r.emoji}</div>
+          <div class="basket-meal-body">
+            <div class="basket-meal-name">${r.nom}</div>
+            <div class="basket-meal-sub">⏱ ${r.temps}</div>
+          </div>
+        </div>
+        ${alts > 1 ? `
+        <div class="basket-meal-alts">
+          <span style="font-size:0.75rem;color:var(--text-light);">${alts} options disponibles</span>
+          <button class="basket-alt-btn" onclick="prevBasketMeal('${slot}')">‹</button>
+          <button class="basket-alt-btn" onclick="nextBasketMeal('${slot}')">›</button>
+        </div>` : ''}
+      </div>`;
+  }
 
   menusContent.innerHTML = `
-    <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
-      Basé sur votre panier de ${basketItems.length} ingrédients
+    <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:14px;">
+      Recettes sélectionnées selon votre panier · Faites défiler pour changer
     </div>
-    ${Object.entries(bycat).map(([cat, recs]) => recs.length ? `
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:8px;">
-          ${cat === 'petit-dejeuner' ? '🌅 Petits-déjeuners' : cat === 'dejeuner' ? '☀️ Déjeuners' : '🌙 Dîners'}
-        </div>
-        ${recs.map(r => `
-          <div class="card" style="margin-bottom:8px;" onclick="openRecette(${r.id})">
-            <div class="card-icon">${r.emoji}</div>
-            <div class="card-body">
-              <div class="card-title">${r.nom}</div>
-              <div class="card-sub">⏱ ${r.temps}</div>
-            </div>
-            <div class="card-arrow">→</div>
-          </div>
-        `).join('')}
-      </div>
-    ` : '').join('')}
+    ${mealCard(pdc,   'pdc',   'Petit-déjeuner', '🌅')}
+    ${mealCard(dej,   'dej',   'Déjeuner',       '☀️')}
+    ${mealCard(din,   'din',   'Dîner',          '🌙')}
+    ${mealCard(snack, 'snack', 'Snack',          '🍎')}
+    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+      <button class="btn-primary full-width" onclick="addBasketMenusToAgenda()">
+        📅 Ajouter tous ces menus à l'agenda
+      </button>
+    </div>
   `;
 
+  // Injecter les styles si pas encore présents
+  if (!document.getElementById('basket-menu-styles')) {
+    const style = document.createElement('style');
+    style.id = 'basket-menu-styles';
+    style.textContent = `
+      .basket-meal-row { margin-bottom:14px; }
+      .basket-meal-label { font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:6px; }
+      .basket-meal-card { display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:var(--radius-md);padding:12px;cursor:pointer;transition:opacity .2s; }
+      .basket-meal-card:active { opacity:.7; }
+      .basket-meal-icon { font-size:1.6rem;flex-shrink:0; }
+      .basket-meal-body { flex:1;min-width:0; }
+      .basket-meal-name { font-size:0.88rem;font-weight:600;color:var(--green-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
+      .basket-meal-sub  { font-size:0.75rem;color:var(--text-light);margin-top:2px; }
+      .basket-meal-alts { display:flex;align-items:center;gap:8px;margin-top:6px;justify-content:flex-end; }
+      .basket-alt-btn   { background:var(--cream-dark);border:none;border-radius:50%;width:28px;height:28px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--green-deep);font-weight:700; }
+    `;
+    document.head.appendChild(style);
+  }
+
   menusDiv.classList.remove('hidden');
+}
+
+function nextBasketMeal(slot) {
+  if (!window._basketIdx) window._basketIdx = { pdc:0, dej:0, din:0, snack:0 };
+  const max = _basketMenus[slot].length;
+  window._basketIdx[slot] = (window._basketIdx[slot] + 1) % max;
+  const menusDiv = document.getElementById('shopping-menus');
+  const menusContent = document.getElementById('shopping-menus-content');
+  renderBasketMenus(menusDiv, menusContent);
+}
+
+function prevBasketMeal(slot) {
+  if (!window._basketIdx) window._basketIdx = { pdc:0, dej:0, din:0, snack:0 };
+  const max = _basketMenus[slot].length;
+  window._basketIdx[slot] = (window._basketIdx[slot] - 1 + max) % max;
+  const menusDiv = document.getElementById('shopping-menus');
+  const menusContent = document.getElementById('shopping-menus-content');
+  renderBasketMenus(menusDiv, menusContent);
+}
+
+function addBasketMenusToAgenda() {
+  if (!window._basketIdx) window._basketIdx = { pdc:0, dej:0, din:0, snack:0 };
+  const idx = window._basketIdx;
+  const get = (cat) => _basketMenus[cat][idx[cat]] || _basketMenus[cat][0];
+
+  const pdc   = get('pdc');
+  const dej   = get('dej');
+  const din   = get('din');
+  const snack = get('snack');
+
+  // Choisir le jour de départ
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:flex;align-items:flex-end;';
+
+  const today = new Date();
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(today);
+    d.setDate(today.getDate() + i);
+    dates.push(d);
+  }
+
+  overlay.innerHTML = `
+    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 36px;max-height:80vh;overflow-y:auto;">
+      <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--green-deep);margin-bottom:4px;">
+        📅 Ajouter à l'agenda
+      </div>
+      <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+        Choisissez le jour de départ. Les 4 repas seront ajoutés.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        ${dates.map(d => {
+          const dk = dateKey(d);
+          const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+          return `<button onclick="confirmAddBasketToAgenda('${dk}', ${pdc?.id||'null'}, ${dej?.id||'null'}, ${din?.id||'null'}, ${snack?.id||'null'}, this.closest('[style*=fixed]'))"
+            style="background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:var(--radius-md);padding:12px 16px;text-align:left;font-family:var(--font-body);font-size:0.88rem;color:var(--text-dark);cursor:pointer;">
+            📅 ${label}
+          </button>`;
+        }).join('')}
+      </div>
+      <button onclick="this.closest('[style*=fixed]').remove()"
+        style="width:100%;margin-top:16px;padding:12px;border:none;border-radius:var(--radius-md);background:var(--cream-dark);color:var(--text-mid);font-family:var(--font-body);cursor:pointer;">
+        Annuler
+      </button>
+    </div>`;
+
+  document.body.appendChild(overlay);
+}
+
+function confirmAddBasketToAgenda(dk, pdcId, dejId, dinId, snackId, overlayEl) {
+  if (!agenda[dk]) agenda[dk] = {};
+  if (pdcId)   agenda[dk]['petit-dejeuner'] = pdcId;
+  if (dejId)   agenda[dk]['dejeuner']       = dejId;
+  if (dinId)   agenda[dk]['diner']          = dinId;
+  if (snackId) agenda[dk]['snack']          = snackId;
+  saveState();
+  if (overlayEl) overlayEl.remove();
+  renderAgenda();
+
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
+  msg.textContent = '✅ 4 repas ajoutés à l\'agenda !';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2500);
 }
 
 function filterRecettesByPlacard() {
