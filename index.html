@@ -452,13 +452,31 @@
           <h2>Agenda alimentaire</h2>
         </div>
 
-        <div class="week-nav">
-          <button onclick="changeWeek(-1)">‹</button>
-          <span id="week-label"></span>
-          <button onclick="changeWeek(1)">›</button>
+        <!-- Onglets vue -->
+        <div class="jtab-bar" style="margin-bottom:12px;">
+          <button class="jtab active" id="agenda-tab-semaine" onclick="switchAgendaView('semaine', this)">📅 Semaine</button>
+          <button class="jtab" id="agenda-tab-mois" onclick="switchAgendaView('mois', this)">📆 Mois</button>
         </div>
 
-        <div id="agenda-grid" class="agenda-grid"></div>
+        <!-- Vue semaine -->
+        <div id="agenda-view-semaine">
+          <div class="week-nav">
+            <button onclick="changeWeek(-1)">‹</button>
+            <span id="week-label"></span>
+            <button onclick="changeWeek(1)">›</button>
+          </div>
+          <div id="agenda-grid" class="agenda-grid"></div>
+        </div>
+
+        <!-- Vue mensuelle -->
+        <div id="agenda-view-mois" class="hidden">
+          <div class="week-nav">
+            <button onclick="changeAgendaMonth(-1)">‹</button>
+            <span id="month-label"></span>
+            <button onclick="changeAgendaMonth(1)">›</button>
+          </div>
+          <div id="agenda-month-grid"></div>
+        </div>
 
         <div class="journal-block" style="margin-top:16px;">
           <button class="btn-primary full-width" onclick="generateShoppingFromAgenda()">

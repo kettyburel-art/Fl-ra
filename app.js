@@ -6105,6 +6105,103 @@ function changeWeek(dir) {
   renderAgenda();
 }
 
+let currentAgendaView = 'semaine';
+let currentMonthOffset = 0;
+
+function switchAgendaView(view, el) {
+  currentAgendaView = view;
+  document.querySelectorAll('#page-agenda .jtab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  document.getElementById('agenda-view-semaine').classList.toggle('hidden', view !== 'semaine');
+  document.getElementById('agenda-view-mois').classList.toggle('hidden', view !== 'mois');
+  if (view === 'mois') renderAgendaMensuel();
+  else renderAgenda();
+}
+
+function changeAgendaMonth(dir) {
+  currentMonthOffset += dir;
+  renderAgendaMensuel();
+}
+
+function renderAgendaMensuel() {
+  const now = new Date();
+  const targetDate = new Date(now.getFullYear(), now.getMonth() + currentMonthOffset, 1);
+  const year  = targetDate.getFullYear();
+  const month = targetDate.getMonth();
+  const today = dateKey(new Date());
+
+  const monthName = targetDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  document.getElementById('month-label').textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const grid = document.getElementById('agenda-month-grid');
+
+  // Construire les jours du mois
+  let html = '<div style="display:flex;flex-direction:column;gap:10px;">';
+
+  // Déterminer si on commence par la 2ème semaine (si on est après le 13)
+  // La vue commence toujours au 1er mais scroll vers aujourd'hui
+  for (let day = 1; day <= daysInMonth; day++) {
+    const d = new Date(year, month, day);
+    const dk = dateKey(d);
+    const isToday = dk === today;
+    const dayData = agenda[dk] || {};
+    const dow = d.getDay(); // 0=dim
+    const dowNames = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    const dowName = dowNames[dow];
+    const isWE = dow === 0 || dow === 6;
+
+    // Repas planifiés ce jour
+    const repasPlanned = REPAS.map(r => {
+      const recId = dayData[r.slug];
+      const rec = recId ? RECETTES.find(x => x.id === recId) : null;
+      return rec ? `<span style="font-size:0.75rem;background:var(--cream);border-radius:6px;padding:2px 6px;white-space:nowrap;">${rec.emoji} ${rec.nom.length > 18 ? rec.nom.slice(0,18)+'…' : rec.nom}</span>` : null;
+    }).filter(Boolean);
+
+    html += `
+      <div id="month-day-${dk}"
+        onclick="jumpToWeekDay('${dk}')"
+        style="background:${isToday ? 'var(--green-deep)' : isWE ? 'var(--cream)' : 'var(--white)'};
+               border:1.5px solid ${isToday ? 'var(--green-deep)' : 'var(--cream-dark)'};
+               border-radius:var(--radius-md);padding:10px 12px;cursor:pointer;transition:opacity .2s;"
+      >
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${repasPlanned.length ? '8px' : '0'};">
+          <div style="font-weight:700;font-size:0.9rem;color:${isToday ? 'var(--white)' : isWE ? 'var(--green-mid)' : 'var(--green-deep)'};">
+            ${dowName} ${day}${isToday ? ' 📍' : ''}
+          </div>
+          <div style="font-size:0.72rem;color:${isToday ? 'rgba(255,255,255,0.7)' : 'var(--text-light)'};">
+            ${repasPlanned.length ? repasPlanned.length + ' repas' : '+ Ajouter'}
+          </div>
+        </div>
+        ${repasPlanned.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;">${repasPlanned.join('')}</div>` : ''}
+      </div>`;
+  }
+
+  html += '</div>';
+  grid.innerHTML = html;
+
+  // Scroll vers aujourd'hui si on est dans le bon mois
+  if (month === now.getMonth() && year === now.getFullYear()) {
+    setTimeout(() => {
+      const todayEl = document.getElementById(`month-day-${today}`);
+      if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  }
+}
+
+function jumpToWeekDay(dk) {
+  // Basculer en vue semaine et naviguer vers la semaine contenant ce jour
+  const target = new Date(dk.slice(0,4), dk.slice(4,6)-1, dk.slice(6,8));
+  const now = new Date();
+  const nowMonday = new Date(now);
+  nowMonday.setDate(now.getDate() - (now.getDay()+6)%7);
+  const targetMonday = new Date(target);
+  targetMonday.setDate(target.getDate() - (target.getDay()+6)%7);
+  const diffDays = Math.round((targetMonday - nowMonday) / (1000*60*60*24));
+  currentWeekOffset = Math.round(diffDays / 7);
+  switchAgendaView('semaine', document.getElementById('agenda-tab-semaine'));
+}
+
 function editAgendaMeal(dk, slug) {
   // Récupère la catégorie depuis l'objet REPAS
   const repasObj = REPAS.find(r => r.slug === slug);
