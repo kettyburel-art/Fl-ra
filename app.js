@@ -5935,6 +5935,7 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
+  if (page === 'accueil')    { renderConseil(); updateDashboard(); }
   if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
@@ -7040,18 +7041,31 @@ function renderStats() {
 }
 
 
+const CONSEILS_SJSR = [
+  { icon: '🩸', text: 'Associez toujours vos sources de fer à de la vitamine C (citron, poivron) pour multiplier par 3 leur absorption.' },
+  { icon: '🦵', text: 'Le magnésium bisglycinate pris le soir réduit significativement les impatiences nocturnes. Privilégiez les eaux riches en magnésium.' },
+  { icon: '🐟', text: 'Les oméga-3 (sardines, maquereaux, saumon) réduisent l\'inflammation des nerfs responsable du SJSR. Objectif : 3 fois par semaine.' },
+  { icon: '☕', text: 'La caféine amplifie les symptômes SJSR. Évitez-la après 14h — cela inclut le thé, le cola et le chocolat noir en excès.' },
+  { icon: '🌙', text: '1 cycle de sommeil = 90 min. Programmez votre réveil sur un multiple de 90 min pour vous réveiller en phase légère.' },
+  { icon: '🫘', text: 'Les lentilles beluga (noires) sont les plus riches en fer végétal. Cuisez-les avec du jus de citron pour maximiser l\'absorption.' },
+  { icon: '🧠', text: 'Le SJSR et le TDAH partagent souvent une carence en dopamine. Les protéines au petit-déjeuner (œufs, sardines) boostent sa production.' },
+  { icon: '🏃', text: 'L\'exercice modéré (marche, yoga) améliore le SJSR. Évitez les efforts intenses le soir — ils aggravent les symptômes nocturnes.' },
+  { icon: '🥬', text: 'Les épinards cuits libèrent plus de fer que crus. Faites-les tomber à la poêle avec de l\'ail et un filet de citron en fin de cuisson.' },
+  { icon: '💊', text: 'Si votre ferritine est < 75 µg/L, demandez à votre médecin une supplémentation en fer — c\'est le premier traitement du SJSR léger.' },
+  { icon: '🌿', text: 'La valériane et la passiflore ont des effets prouvés sur l\'endormissement. À infuser 8 min, 30 min avant le coucher.' },
+  { icon: '🫀', text: 'La betterave améliore la circulation sanguine dans les jambes grâce à ses nitrates naturels. Consommez-en 3 fois par semaine.' },
+];
+
+let conseilIdx = new Date().getDate() % CONSEILS_SJSR.length;
+
 function renderConseil() {
+  if (!CONSEILS_SJSR || !CONSEILS_SJSR.length) return;
   const c = CONSEILS_SJSR[conseilIdx];
+  if (!c) return;
   const iconEl = document.getElementById('conseil-icon');
   const textEl = document.getElementById('conseil-text');
   if (iconEl) iconEl.textContent = c.icon;
-  if (textEl) {
-    textEl.style.opacity = '0';
-    setTimeout(() => {
-      textEl.textContent = c.text;
-      textEl.style.opacity = '1';
-    }, 150);
-  }
+  if (textEl) textEl.textContent = c.text; // Direct, sans animation opacity
 }
 
 function nextConseil() {
