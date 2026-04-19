@@ -6299,23 +6299,45 @@ function scheduleNotifications() {
     const target = new Date();
     target.setHours(rappel.h, rappel.m, 0, 0);
     if (target <= now) target.setDate(target.getDate() + 1);
-    const delay = target - now;
+    // Délai max 30 min pour éviter le throttling des timers en background
+    // Si le délai est > 30 min, on replanifie dans 30 min
+    const MAX_DELAY = 30 * 60 * 1000;
+    const delay = Math.min(target - now, MAX_DELAY);
 
     const t = setTimeout(() => {
+      const nowCheck = new Date();
+      // Vérifier si c'est bien l'heure de la notification
+      if (nowCheck.getHours() !== rappel.h || Math.abs(nowCheck.getMinutes() - rappel.m) > 2) {
+        scheduleOne(rappel); // pas encore l'heure, replanifier
+        return;
+      }
       // Ne pas notifier si l'app est au premier plan (l'utilisateur est là)
       if (document.visibilityState !== 'hidden') {
         scheduleOne(rappel); // reprogrammer pour demain
         return;
       }
+      // Utiliser ServiceWorker.showNotification() — seule méthode fiable sur Android
       try {
-        new Notification(rappel.title, {
-          body: rappel.body,
-          icon: '/Fl-ra/icon.svg',
-          badge: '/Fl-ra/icon.svg',
-          tag: 'flora-' + rappel.tag,
-          renotify: false,
-          silent: false,
-        });
+        if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+          navigator.serviceWorker.ready.then(reg => {
+            reg.showNotification(rappel.title, {
+              body: rappel.body,
+              icon: '/Fl-ra/icon.svg',
+              badge: '/Fl-ra/icon.svg',
+              tag: 'flora-' + rappel.tag,
+              renotify: false,
+              silent: false,
+              vibrate: [200, 100, 200],
+            });
+          }).catch(e => console.log('SW notif error:', e));
+        } else {
+          // Fallback navigateurs desktop
+          new Notification(rappel.title, {
+            body: rappel.body,
+            icon: '/Fl-ra/icon.svg',
+            tag: 'flora-' + rappel.tag,
+          });
+        }
       } catch(e) { console.log('Notif error:', e); }
       // Reprogrammer pour demain
       scheduleOne(rappel);
@@ -10450,12 +10472,38 @@ function loadProfil() {
   document.getElementById('profil-display-name').textContent = profile.name || 'Mon profil';
 
   const badge = document.getElementById('profil-plan-badge');
-  if (isPremium) {
-    badge.textContent = '⭐ Abonné·e Premium';
-    badge.className = 'profil-badge premium';
-  } else {
-    badge.textContent = 'Version gratuite';
-    badge.className = 'profil-badge';
+  if (badge) {
+    if (isPremium) {
+      badge.textContent = '👑 Abonné·e Premium';
+      badge.className = 'profil-badge premium';
+    } else {
+      badge.textContent = 'Version gratuite';
+      badge.className = 'profil-badge';
+    }
+  }
+
+  // Mettre à jour l'affichage du plan card selon statut premium
+  const planName = document.querySelector('#plan-card .plan-name');
+  if (planName) {
+    planName.textContent = isPremium ? 'Flōra Premium ⭐' : 'Flōra Gratuit';
+  }
+
+  // Afficher/masquer les features locked
+  document.querySelectorAll('.pf-locked').forEach(el => {
+    if (isPremium) {
+      el.style.opacity = '1';
+      el.textContent = el.textContent.replace('🔒 ', '✅ ');
+    }
+  });
+
+  // Bouton premium
+  const btnPrem = document.querySelector('.btn-premium');
+  if (btnPrem) {
+    if (isPremium) {
+      btnPrem.textContent = '✅ Accès Premium actif';
+      btnPrem.style.background = 'var(--green-deep)';
+      btnPrem.onclick = null;
+    }
   }
 }
 
@@ -10576,6 +10624,7 @@ function checkCode() {
 function activatePremium() {
   isPremium = true;
   localStorage.setItem('flora_premium', 'true');
+  loadProfil(); // Rafraîchir l'UI du profil
   loadProfil();
   renderRecettes();
 }
