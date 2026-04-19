@@ -488,9 +488,14 @@
             <div style="font-size:0.8rem;color:var(--text-light);">
               Votre historique complet
             </div>
-            <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">
-              📄 Exporter PDF
-            </button>
+            <div style="display:flex;gap:6px;">
+              <button style="background:var(--cream-dark);border:none;border-radius:99px;padding:8px 12px;font-size:0.8rem;cursor:pointer;" onclick="renderHistorique()" title="Rafraîchir">
+                🔄
+              </button>
+              <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">
+                📄 PDF
+              </button>
+            </div>
           </div>
           <div id="historique-list"></div>
         </div>

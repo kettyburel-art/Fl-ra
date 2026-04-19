@@ -1,6 +1,6 @@
 // Flōra Service Worker — v2.0
 // Cache auto-invalidé à chaque nouvelle version (changer CACHE_VERSION suffit)
-const CACHE_VERSION = 'flora-v2.0';
+const CACHE_VERSION = 'flora-v2.1';
 const CACHE_NAME = CACHE_VERSION;
 
 // Fichiers à mettre en cache pour le mode hors-ligne

@@ -8902,7 +8902,10 @@ function switchJTab(tab, el) {
   const targetId = tab === 'today' ? 'jtab-today' : 'jtab-historique';
   document.getElementById(targetId).classList.remove('hidden');
 
-  if (tab === 'historique') renderHistorique();
+  if (tab === 'historique') {
+    // Petit délai pour s'assurer que l'onglet est visible avant le rendu
+    requestAnimationFrame(() => renderHistorique());
+  }
 }
 
 // ============================
@@ -9169,13 +9172,18 @@ function exportJournalPDF() {
 
 function renderHistorique() {
   const container = document.getElementById('historique-list');
-  const entries   = Object.entries(journal).sort((a, b) => b[0].localeCompare(a[0]));
+  if (!container) return; // Guard : container peut être null si page non visible
+
+  const entries = Object.entries(journal)
+    .filter(([k]) => k && k.match(/^\d{4}-\d{2}-\d{2}$/)) // exclure les clés invalides
+    .sort((a, b) => b[0].localeCompare(a[0]));
 
   if (!entries.length) {
-    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Aucune entrée pour l\'instant.</p>';
+    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Aucune entrée pour l\'instant. 🌱</p>';
     return;
   }
 
+  try {
   container.innerHTML = entries.map(([date, e]) => {
     const d     = new Date(date + 'T12:00:00');
     const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -9236,11 +9244,11 @@ function renderHistorique() {
         ${e.notes ? `<div style="font-size:0.78rem;color:var(--text-mid);margin-top:6px;font-style:italic;border-left:2px solid var(--cream-dark);padding-left:8px;">${e.notes}</div>` : ''}
       </div>`;
   }).join('');
+  } catch(err) {
+    console.error('renderHistorique error:', err);
+    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Erreur d\'affichage — vos données sont sauvegardées. 💾</p>';
+  }
 }
-
-// ============================
-// RECETTES
-// ============================
 function renderRecettes() {
   const search = (document.getElementById('recette-search')?.value || '').toLowerCase();
   const grid   = document.getElementById('recettes-grid');
