@@ -5915,6 +5915,289 @@ function getRecetteDuJour() {
   return top10[new Date().getDate() % top10.length]?.r || pool[0];
 }
 
+
+function autoGenerateWeek() {
+  const dates = getWeekDates(currentWeekOffset);
+
+  // Filtrer recettes accessibles selon premium + profil
+  function pool(cat) {
+    let recs = RECETTES.filter(r => r.cat === cat && (!r.premium || isPremium));
+    if (profile.sansGluten)  recs = recs.filter(r => r.tags?.includes('sg'));
+    if (profile.sansLactose) recs = recs.filter(r => r.tags?.includes('sl'));
+    return recs.length ? recs : RECETTES.filter(r => r.cat === cat && (!r.premium || isPremium));
+  }
+
+  const pdjs    = pool('petit-dejeuner');
+  const dejs    = pool('dejeuner');
+  const gouters = pool('snack');
+  const dins    = pool('diner');
+
+  // Éviter les répétitions sur la semaine
+  const used = { pdc: new Set(), dej: new Set(), gou: new Set(), din: new Set() };
+  function pickUniq(arr, usedSet) {
+    const avail = arr.filter(r => !usedSet.has(r.id));
+    const pool2 = avail.length ? avail : arr;
+    // Score selon objectif profil
+    const scored = pool2.map(r => {
+      let score = Math.random(); // léger aléatoire
+      const b = (r.benefices || '').toLowerCase();
+      const goal = profile.goal || 'global';
+      if (goal === 'sommeil' && b.includes('sommeil')) score += 2;
+      if (goal === 'douleur' && b.includes('anti-inflam')) score += 2;
+      if (goal === 'sjsr'    && (b.includes('oméga') || b.includes('fer'))) score += 2;
+      if (goal === 'energie' && b.includes('énergie')) score += 2;
+      return { r, score };
+    }).sort((a, b) => b.score - a.score);
+    const chosen = scored[0].r;
+    usedSet.add(chosen.id);
+    return chosen;
+  }
+
+  // Générer le menu proposé (sans encore écrire dans agenda)
+  const proposed = dates.map((d, i) => {
+    const isWE = i === 5 || i === 6;
+    const pdc  = pickUniq(pdjs, used.pdc);
+    const dej  = pickUniq(isWE && pool('brunch').length ? pool('brunch') : dejs, used.dej);
+    const gou  = pickUniq(gouters, used.gou);
+    const din  = pickUniq(dins, used.din);
+    return { d, dk: dateKey(d), pdc, dej, gou, din, isWE };
+  });
+
+  // Afficher modal de prévisualisation
+  showWeekPreview(proposed);
+}
+
+function showWeekPreview(proposed) {
+  const overlay = document.createElement('div');
+  overlay.id = 'week-preview-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9998;overflow-y:auto;';
+
+  const JOURS_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+
+  const daysHTML = proposed.map(({ d, dk, pdc, dej, gou, din, isWE }) => {
+    const dayName = JOURS_COURT[d.getDay()];
+    const isToday = dk === dateKey(new Date());
+    return `
+      <div style="background:${isWE?'var(--cream)':'var(--white)'};border-radius:12px;padding:12px 14px;margin-bottom:8px;border:${isToday?'2px solid var(--green-mid)':'1px solid var(--cream-dark)'}">
+        <div style="font-weight:700;font-size:0.85rem;color:var(--green-deep);margin-bottom:8px;">
+          ${dayName} ${d.getDate()}${isToday?' 📍':''}${isWE?' 🌿':''}
+        </div>
+        ${[
+          { label:'🌅', rec: pdc,  slot:'pdc'  },
+          { label:'☀️', rec: dej,  slot:'dej'  },
+          { label:'🍎', rec: gou,  slot:'gou'  },
+          { label:'🌙', rec: din,  slot:'din'  },
+        ].map(({ label, rec, slot }) => `
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+            <span style="font-size:0.7rem;width:18px;flex-shrink:0;">${label}</span>
+            <span style="font-size:0.78rem;color:var(--text-dark);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${rec.emoji} ${rec.nom}</span>
+            <button onclick="swapPreviewMeal('${dk}','${slot}',${rec.id})"
+              style="background:var(--cream);border:none;border-radius:6px;padding:2px 7px;font-size:0.68rem;color:var(--green-deep);cursor:pointer;flex-shrink:0;">↻</button>
+          </div>`).join('')}
+      </div>`;
+  }).join('');
+
+  overlay.innerHTML = `
+    <div style="min-height:100%;background:var(--cream-bg,#f5f0eb);padding:0 0 32px;">
+      <div style="background:var(--green-deep);padding:18px 16px 14px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.65);">✨ MENU PROPOSÉ</div>
+          <div style="font-family:var(--font-display);font-size:1.1rem;color:white;">Ma semaine Flōra</div>
+        </div>
+        <button onclick="document.getElementById('week-preview-overlay').remove()"
+          style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:34px;height:34px;color:white;font-size:1rem;cursor:pointer;">✕</button>
+      </div>
+      <div style="padding:12px 12px 0;">
+        <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:12px;">
+          Appuyez sur ↻ pour changer un repas · Puis validez pour appliquer à l'agenda.
+        </p>
+        <div id="week-preview-days">${daysHTML}</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
+          <button onclick="applyWeekProposed()"
+            style="width:100%;padding:14px;background:var(--green-deep);color:white;border:none;border-radius:14px;font-family:var(--font-body);font-size:0.9rem;font-weight:600;cursor:pointer;">
+            ✅ Appliquer ce menu à l'agenda
+          </button>
+          <button onclick="generateShoppingFromProposed()"
+            style="width:100%;padding:12px;background:var(--white);color:var(--green-deep);border:1.5px solid var(--green-mid);border-radius:14px;font-family:var(--font-body);font-size:0.85rem;cursor:pointer;">
+            🛒 Voir la liste de courses
+          </button>
+          <button onclick="document.getElementById('week-preview-overlay').remove()"
+            style="width:100%;padding:10px;background:var(--cream-dark);color:var(--text-mid);border:none;border-radius:14px;font-family:var(--font-body);font-size:0.82rem;cursor:pointer;">
+            Annuler
+          </button>
+        </div>
+      </div>
+    </div>`;
+
+  // Stocker le menu proposé pour swap et apply
+  overlay._proposed = proposed;
+  document.body.appendChild(overlay);
+}
+
+function swapPreviewMeal(dk, slot, currentId) {
+  // Trouver le jour dans proposed
+  const overlay = document.getElementById('week-preview-overlay');
+  if (!overlay) return;
+  const proposed = overlay._proposed;
+  const day = proposed.find(p => p.dk === dk);
+  if (!day) return;
+
+  const catMap = { pdc:'petit-dejeuner', dej:'dejeuner', gou:'snack', din:'diner' };
+  let pool = RECETTES.filter(r => r.cat === catMap[slot] && (!r.premium || isPremium));
+  if (profile.sansGluten)  pool = pool.filter(r => r.tags?.includes('sg')) || pool;
+  if (profile.sansLactose) pool = pool.filter(r => r.tags?.includes('sl')) || pool;
+
+  // Passer à la recette suivante dans la liste (cycle)
+  const idx = pool.findIndex(r => r.id === currentId);
+  const next = pool[(idx + 1) % pool.length];
+  day[slot] = next;
+
+  // Re-render le preview
+  const container = document.getElementById('week-preview-days');
+  if (container) {
+    const JOURS_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+    container.innerHTML = proposed.map(({ d, dk: dk2, pdc, dej, gou, din, isWE }) => {
+      const dayName = JOURS_COURT[d.getDay()];
+      const isToday = dk2 === dateKey(new Date());
+      return `
+        <div style="background:${isWE?'var(--cream)':'var(--white)'};border-radius:12px;padding:12px 14px;margin-bottom:8px;border:${isToday?'2px solid var(--green-mid)':'1px solid var(--cream-dark)'}">
+          <div style="font-weight:700;font-size:0.85rem;color:var(--green-deep);margin-bottom:8px;">
+            ${dayName} ${d.getDate()}${isToday?' 📍':''}${isWE?' 🌿':''}
+          </div>
+          ${[
+            { label:'🌅', rec: pdc, slot:'pdc' },
+            { label:'☀️', rec: dej, slot:'dej' },
+            { label:'🍎', rec: gou, slot:'gou' },
+            { label:'🌙', rec: din, slot:'din' },
+          ].map(({ label, rec, slot: s }) => `
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
+              <span style="font-size:0.7rem;width:18px;flex-shrink:0;">${label}</span>
+              <span style="font-size:0.78rem;color:var(--text-dark);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${rec.emoji} ${rec.nom}</span>
+              <button onclick="swapPreviewMeal('${dk2}','${s}',${rec.id})"
+                style="background:var(--cream);border:none;border-radius:6px;padding:2px 7px;font-size:0.68rem;color:var(--green-deep);cursor:pointer;flex-shrink:0;">↻</button>
+            </div>`).join('')}
+        </div>`;
+    }).join('');
+  }
+}
+
+function applyWeekProposed() {
+  const overlay = document.getElementById('week-preview-overlay');
+  if (!overlay) return;
+  const proposed = overlay._proposed;
+
+  const slugMap = { pdc:'petitdej', dej:'dejeuner', gou:'gouter', din:'diner' };
+  proposed.forEach(({ dk, pdc, dej, gou, din }) => {
+    if (!agenda[dk]) agenda[dk] = {};
+    if (pdc) agenda[dk][slugMap.pdc] = pdc.id;
+    if (dej) agenda[dk][slugMap.dej] = dej.id;
+    if (gou) agenda[dk][slugMap.gou] = gou.id;
+    if (din) agenda[dk][slugMap.din] = din.id;
+  });
+
+  saveState();
+  overlay.remove();
+  renderAgenda();
+
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:white;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;';
+  msg.textContent = '✅ Menu de la semaine appliqué !';
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 2500);
+}
+
+function generateShoppingFromProposed() {
+  const overlay = document.getElementById('week-preview-overlay');
+  if (!overlay) return;
+  const proposed = overlay._proposed;
+
+  // Collecter tous les ingrédients
+  const ingredSet = {};
+  proposed.forEach(({ pdc, dej, gou, din }) => {
+    [pdc, dej, gou, din].forEach(rec => {
+      if (!rec) return;
+      rec.ingredients.forEach(ing => {
+        const clean = ing
+          .replace(/^\d[\d,./]* ?(?:g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée)s? /i,'')
+          .replace(/^\d+ /,'').trim();
+        if (clean.length < 3) return;
+        const key = clean.toLowerCase().split(' ')[0];
+        if (!ingredSet[key]) ingredSet[key] = { label: clean, count: 0 };
+        ingredSet[key].count++;
+      });
+    });
+  });
+
+  // Exclure le placard
+  const items = Object.values(ingredSet)
+    .sort((a, b) => b.count - a.count)
+    .filter(({ label }) => {
+      const l = label.toLowerCase();
+      return !Object.keys(placardItems).some(p => placardItems[p] && l.includes(p.toLowerCase().split(' ')[0]));
+    })
+    .map(({ label }) => label);
+
+  // Catégoriser
+  const CATS = [
+    { cat:'🥩 Protéines',   kw:['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','poulet','dinde','boeuf','bœuf','oeuf','œuf','tofu','tempeh','lentille','pois chiche','haricot'] },
+    { cat:'🥦 Légumes',     kw:['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate','oignon','ail','gingembre','tomate','concombre'] },
+    { cat:'🌾 Féculents',   kw:['quinoa','riz','sarrasin','pâte','nouille','galette','flocon','farine','polenta'] },
+    { cat:'🥑 Bons gras',   kw:['noix','amande','cajou','noisette','pistache','graine','tahini','avocat'] },
+    { cat:'🥫 Conserves',   kw:['lait de coco','tomate concass','bouillon','miso'] },
+    { cat:'🍋 Fruits',      kw:['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot'] },
+    { cat:'🌿 Épices',      kw:['curcuma','cumin','cannelle','paprika','basilic','persil','coriandre','menthe','thym','romarin','sel','poivre'] },
+    { cat:'🫙 Huiles',      kw:['huile','vinaigre','tamari'] },
+  ];
+
+  function getCat(label) {
+    const l = label.toLowerCase();
+    for (const { cat, kw } of CATS) { if (kw.some(k => l.includes(k))) return cat; }
+    return '🛒 Divers';
+  }
+
+  const byCategorie = {};
+  items.forEach(item => {
+    const cat = getCat(item);
+    if (!byCategorie[cat]) byCategorie[cat] = [];
+    const key = item.toLowerCase().split(' ')[0];
+    if (!byCategorie[cat].some(i => i.toLowerCase().split(' ')[0] === key)) {
+      byCategorie[cat].push(item);
+    }
+  });
+
+  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves','🍋 Fruits','🌿 Épices','🫙 Huiles','🛒 Divers'];
+
+  const listHTML = orderedCats
+    .filter(cat => byCategorie[cat]?.length)
+    .map(cat => `
+      <div style="margin-bottom:14px;">
+        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:6px;">${cat}</div>
+        ${byCategorie[cat].map(item => `
+          <div onclick="this.style.opacity=this.style.opacity==='0.4'?'1':'0.4';this.querySelector('span').textContent=this.style.opacity==='0.4'?'✓':' '"
+            style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
+            <span style="color:var(--green-mid);font-weight:700;width:14px;"> </span>
+            <span style="font-size:0.86rem;color:var(--text-dark);">${item}</span>
+          </div>`).join('')}
+      </div>`).join('');
+
+  const shopOverlay = document.createElement('div');
+  shopOverlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;';
+  shopOverlay.innerHTML = `
+    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:20px 18px 34px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+        <div style="font-family:var(--font-display);font-size:1.05rem;color:var(--green-deep);">🛒 Liste de courses — semaine</div>
+        <button onclick="this.closest('[style*=fixed]').remove()" style="background:var(--cream-dark);border:none;border-radius:50%;width:28px;height:28px;font-size:0.9rem;cursor:pointer;">✕</button>
+      </div>
+      <div style="font-size:0.75rem;color:var(--text-light);margin-bottom:14px;">${items.length} articles · Touchez pour cocher</div>
+      ${listHTML || '<p style="color:var(--text-light);text-align:center;">Tout est dans le placard ✅</p>'}
+      <button onclick="applyWeekProposed();this.closest('[style*=fixed]').remove()"
+        style="width:100%;margin-top:14px;padding:13px;background:var(--green-deep);color:white;border:none;border-radius:14px;font-family:var(--font-body);font-size:0.85rem;cursor:pointer;">
+        ✅ Appliquer ce menu à l'agenda aussi
+      </button>
+    </div>`;
+  document.body.appendChild(shopOverlay);
+}
+
 // ============================
 // NAVIGATION
 // ============================
@@ -7300,6 +7583,15 @@ function renderAgenda() {
   const startLabel = dates[0].toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
   const endLabel   = dates[6].toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
   weekLabel.textContent = `${startLabel} – ${endLabel}`;
+
+  // Détecter si la semaine est vide pour afficher la bannière
+  const weekIsEmpty = dates.every(d => {
+    const k = dateKey(d);
+    const day = agenda[k] || {};
+    return !Object.values(day).some(Boolean);
+  });
+  const banner = document.getElementById('agenda-autogen-banner');
+  if (banner) banner.classList.toggle('hidden', !weekIsEmpty);
 
   grid.innerHTML = dates.map((d, i) => {
     if (!(d instanceof Date) || isNaN(d.getTime())) return '';

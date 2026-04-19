@@ -543,6 +543,18 @@
             <span id="week-label"></span>
             <button onclick="changeWeek(1)">›</button>
           </div>
+          <!-- Bannière auto-génération si semaine vide -->
+          <div id="agenda-autogen-banner" class="hidden"
+            style="background:linear-gradient(135deg,var(--green-deep),#3d7a5a);border-radius:14px;padding:14px 16px;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+            <div>
+              <div style="font-size:0.82rem;font-weight:700;color:white;margin-bottom:2px;">✨ Semaine non planifiée</div>
+              <div style="font-size:0.75rem;color:rgba(255,255,255,0.8);">Générer un menu automatiquement ?</div>
+            </div>
+            <button onclick="autoGenerateWeek()" 
+              style="background:white;color:var(--green-deep);border:none;border-radius:99px;padding:8px 16px;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:var(--font-body);">
+              Générer 🌿
+            </button>
+          </div>
           <div id="agenda-grid" class="agenda-grid"></div>
         </div>
 
