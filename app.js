@@ -3784,6 +3784,196 @@ const RECETTES = [
       'Ajoutez les suprêmes d\'agrumes et le zaatar.',
       'Assaisonnez avec huile d\'olive et citron. La salade se mange tiède.'
     ]
+  },
+  {
+    id: 164, cat: 'petit-dejeuner', premium: false,
+    emoji: '🫐', nom: 'Pudding Aube Radieuse',
+    temps: '5 min + 8h', calories: 280, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les graines de chia sont riches en oméga-3 et en magnésium, essentiels pour réduire les symptômes SJSR. Le cassis apporte de la vitamine C qui optimise l\'absorption du fer. Le cacao cru fournit du magnésium biodisponible.',
+    ingredients: [
+      '3 càs graines de chia',
+      '150ml lait de noisette',
+      '2 càs coulis de cassis cru',
+      '1 càs éclats de fèves de cacao'
+    ],
+    etapes: [
+      'La veille au soir, mélanger les graines de chia et le lait de noisette dans un bocal. Bien remuer.',
+      'Réfrigérer toute la nuit.',
+      'Le matin, ajouter le coulis de cassis et les éclats de cacao. Servir frais.'
+    ]
+  },
+  {
+    id: 165, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥞', nom: 'Crêpes Sarrasin d\'Antan',
+    temps: '15 min', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le sarrasin est l\'un des aliments les plus riches en magnésium, clé pour calmer les jambes sans repos. La purée de cajou apporte des bonnes graisses et des protéines. Les myrtilles sont antioxydantes et anti-inflammatoires.',
+    ingredients: [
+      '50g farine de sarrasin',
+      '1 œuf',
+      '120ml lait d\'amande',
+      '1 càs purée de cajou',
+      'Myrtilles fraîches'
+    ],
+    etapes: [
+      'Mélanger la farine, l\'œuf et le lait d\'amande jusqu\'à obtenir une pâte lisse.',
+      'Cuire à la poêle légèrement huilée, 2 min de chaque côté.',
+      'Tartiner de purée de cajou et garnir de myrtilles fraîches.'
+    ]
+  },
+  {
+    id: 166, cat: 'dejeuner', premium: false,
+    emoji: '🥦', nom: 'Rôti Terre & Curcuma',
+    temps: '35 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le curcuma + poivre noir forment le duo anti-inflammatoire le plus puissant. La patate douce à index glycémique bas fournit une énergie stable sans pic. Le chou-fleur est riche en vitamine C qui améliore l\'absorption du fer.',
+    ingredients: [
+      '1/2 chou-fleur en fleurettes',
+      '1 càc curcuma',
+      'Poivre noir',
+      '2 patates douces',
+      '100ml lait de coco'
+    ],
+    etapes: [
+      'Préchauffer le four à 200°C.',
+      'Enrober le chou-fleur de curcuma, poivre et huile. Rôtir 25 min.',
+      'Cuire les patates douces vapeur, mixer avec le lait de coco.',
+      'Servir le chou-fleur rôti sur la purée de patate douce.'
+    ]
+  },
+  {
+    id: 167, cat: 'dejeuner', premium: false,
+    emoji: '🫙', nom: 'Bento Printanier',
+    temps: '20 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les lentilles béluga sont les plus riches en fer végétal. L\'orange apporte la vitamine C qui multiplie par 3 l\'absorption du fer des lentilles. L\'huile de noix complète avec des oméga-3. Idéal pour le bureau.',
+    ingredients: [
+      '100g lentilles béluga cuites',
+      '6 asperges',
+      '1 orange (suprêmes)',
+      '1 càs huile de noix'
+    ],
+    etapes: [
+      'Égoutter et refroidir les lentilles cuites.',
+      'Blanchir les asperges 3 min, les couper en tronçons.',
+      'Prélever les suprêmes de l\'orange au-dessus d\'un bol pour récupérer le jus.',
+      'Mélanger le tout avec l\'huile de noix. Saler. Mettre en bento.'
+    ]
+  },
+  {
+    id: 168, cat: 'snack', premium: false,
+    emoji: '🟠', nom: 'Energy Balls Abricot-Maca',
+    temps: '15 min + 30 min frigo', calories: 180, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les abricots secs sont une source concentrée de fer végétal. La maca est un adaptogène qui réduit la fatigue. Les amandes apportent du magnésium. Le citron optimise l\'absorption du fer.',
+    ingredients: [
+      '100g abricots secs',
+      '80g amandes',
+      'Jus d\'1/2 citron',
+      '1 càc maca en poudre'
+    ],
+    etapes: [
+      'Mixer les abricots et les amandes dans un robot jusqu\'à obtenir une pâte.',
+      'Ajouter le jus de citron et la maca. Mixer encore.',
+      'Former des boules de la taille d\'une noix.',
+      'Réfrigérer 30 min avant de déguster.'
+    ]
+  },
+  {
+    id: 169, cat: 'diner', premium: false,
+    emoji: '🧡', nom: 'Velouté Coucher de Soleil',
+    temps: '25 min', calories: 260, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les lentilles corail sont riches en fer et en protéines végétales. Les carottes apportent du bêta-carotène anti-inflammatoire. Les graines de courge en finition ajoutent du magnésium essentiel pour le SJSR nocturne.',
+    ingredients: [
+      '3 carottes',
+      '80g lentilles corail',
+      '150ml lait de coco',
+      '1 càs graines de courge',
+      'Sel, curcuma, gingembre'
+    ],
+    etapes: [
+      'Cuire les carottes et les lentilles 20 min dans de l\'eau bouillante.',
+      'Mixer avec le lait de coco, le curcuma et le gingembre.',
+      'Assaisonner. Servir parsemé de graines de courge.'
+    ]
+  },
+  {
+    id: 170, cat: 'petit-dejeuner', premium: false,
+    emoji: '🟢', nom: 'Omelette Verte à la Spiruline',
+    temps: '10 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La spiruline est l\'aliment le plus concentré en fer biodisponible au monde. Les œufs apportent des protéines et de la B12. Les épinards renforcent l\'apport en fer végétal. Trio gagnant contre la fatigue SJSR.',
+    ingredients: [
+      '2 œufs',
+      '1 càc spiruline en poudre',
+      'Grande poignée épinards frais',
+      '1 càs huile d\'olive'
+    ],
+    etapes: [
+      'Battre les œufs avec la spiruline jusqu\'à obtenir une couleur verte uniforme.',
+      'Chauffer l\'huile à feu moyen.',
+      'Ajouter les épinards, les faire tomber 1 min.',
+      'Verser les œufs, cuire à feu doux. Plier et servir.'
+    ]
+  },
+  {
+    id: 171, cat: 'dejeuner', premium: false,
+    emoji: '🥬', nom: 'Salade Kale et Grenade',
+    temps: '15 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le kale est la plus riche des feuilles vertes en fer, calcium et vitamine C. La grenade est un puissant antioxydant qui réduit l\'inflammation. La pomme apporte de la quercétine anti-inflammatoire.',
+    ingredients: [
+      '100g chou kale',
+      'Grains d\'1/2 grenade',
+      '1 pomme coupée',
+      '1 càs vinaigre de cidre',
+      '1 càs huile d\'olive'
+    ],
+    etapes: [
+      'Effeuiller et laver le kale. Le masser 2 min avec le vinaigre et l\'huile pour l\'attendrir.',
+      'Couper la pomme en fines tranches.',
+      'Ajouter les grains de grenade et la pomme.',
+      'Assaisonner et servir immédiatement.'
+    ]
+  },
+  {
+    id: 172, cat: 'diner', premium: false,
+    emoji: '🐟', nom: 'Saumon en Croûte de Sésame',
+    temps: '20 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le saumon est la source la plus concentrée en oméga-3 EPA/DHA, essentiels pour réduire l\'inflammation nerveuse du SJSR. Le sésame noir apporte du calcium et du magnésium. Idéal 3x par semaine.',
+    ingredients: [
+      '150g pavé de saumon',
+      '2 càs sésame noir',
+      '150g haricots verts',
+      '1/2 citron'
+    ],
+    etapes: [
+      'Presser le citron sur le saumon, laisser mariner 5 min.',
+      'Passer le saumon dans le sésame noir des deux côtés.',
+      'Cuire à la vapeur 12 min avec les haricots verts.',
+      'Servir avec un filet de citron.'
+    ]
+  },
+  {
+    id: 173, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Mousse Chocolat-Avocat',
+    temps: '10 min + 30 min frigo', calories: 220, diff: 'Très facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'avocat est riche en bonnes graisses anti-inflammatoires et en potassium. Le cacao pur est l\'une des sources les plus concentrées en magnésium. Cette mousse apaise le système nerveux en soirée.',
+    ingredients: [
+      '1 avocat mûr',
+      '2 càs cacao pur non sucré',
+      '1 càs sirop d\'érable'
+    ],
+    etapes: [
+      'Couper l\'avocat en deux, retirer le noyau.',
+      'Mixer la chair avec le cacao et le sirop d\'érable.',
+      'Fouetter jusqu\'à obtenir une texture lisse et aérienne.',
+      'Réfrigérer 30 min. Servir en petite verrine.'
+    ]
   }
 ];
 
@@ -5801,7 +5991,7 @@ Concernant votre alimentation : sardines et maquereaux 3x/semaine pour les omég
 🥣 Soupe lentilles corail-curcuma — fer + anti-inflammatoire
 🥗 Salade de sarrasin-épinards-betterave — magnésium + fer
 
-Règle d'or : dîner léger, avant 20h, sans alcool ni caféine. Le curcuma et le gingembre dans votre repas réduisent l'inflammation nocturne. Trouvez ces recettes dans l'onglet Recettes 🍽️`;
+Règle d'or : dîner léger, avant 20h, sans alcool ni caféine. Le curcuma et le gingembre dans votre repas réduisent l\'inflammation nocturne. Trouvez ces recettes dans l'onglet Recettes 🍽️`;
   }
 
   if (q.includes('sommeil') || q.includes('dormir') || q.includes('endormi')) {
@@ -5822,8 +6012,8 @@ Objectif : ${Math.round(7.5/1.5)} cycles de 90 min = 7h30 de sommeil. Programmez
 Je ne peux pas donner de conseils médicaux précis sur vos traitements — seul votre médecin peut ajuster votre posologie.
 
 ⚕️ Ce que je peux dire : certains aliments interagissent avec les médicaments du SJSR :
-🍋 La vitamine C améliore l'absorption du fer
-🥛 Les produits laitiers peuvent réduire l'absorption de certains médicaments
+🍋 La vitamine C améliore l\'absorption du fer
+🥛 Les produits laitiers peuvent réduire l\'absorption de certains médicaments
 ☕ La caféine peut amplifier les effets des opioïdes
 
 Signalez toujours vos médicaments à votre médecin lors de vos consultations.`;
@@ -5838,7 +6028,7 @@ Les causes les plus fréquentes dans le SJSR :
 😴 Dette de sommeil accumulée
 🧠 TDAH + fatigue = double peine
 
-Petits déjeuners protéinés dès le matin (œufs, sardines, tofu), pas de sucre rapide, goûter obligatoire à 16h pour maintenir la glycémie. Et vos lentilles 3x/semaine pour le fer végétal avec du citron pour l'absorption. Votre énergie moyenne cette semaine : ${avgEnergie ? avgEnergie+'/10' : 'non encore mesurée'}.`;
+Petits déjeuners protéinés dès le matin (œufs, sardines, tofu), pas de sucre rapide, goûter obligatoire à 16h pour maintenir la glycémie. Et vos lentilles 3x/semaine pour le fer végétal avec du citron pour l\'absorption. Votre énergie moyenne cette semaine : ${avgEnergie ? avgEnergie+'/10' : 'non encore mesurée'}.`;
   }
 
   if (q.includes('magnésium') || q.includes('fer') || q.includes('complément') || q.includes('vitamine')) {
