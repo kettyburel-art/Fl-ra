@@ -5614,7 +5614,9 @@ RÈGLES DE RÉPONSE :
 - Pour les questions médicales, donne des informations utiles mais rappelle de consulter un médecin
 - Quand tu analyses le journal, cite les données réelles
 - Tes réponses : concises (max 200 mots), structurées avec des sauts de ligne, jamais de listes à puces avec tirets (utilise des emojis à la place)
-- Ne parle jamais de toi comme d\'une IA, mais comme d\'une assistante bien-être`;
+- Ne parle jamais de toi comme d\'une IA, mais comme d\'une assistante bien-être
+- Rappelle systématiquement de consulter un médecin pour tout conseil médical
+- Ajoute toujours une note de prudence sur les interactions médicamenteuses`;
 }
 
 async function sendAssistantMessage() {
@@ -6333,7 +6335,11 @@ function saveJournal() {
 
   const confirm = document.getElementById('save-confirm');
   confirm.classList.remove('hidden');
-  setTimeout(() => confirm.classList.add('hidden'), 2500);
+  setTimeout(() => {
+    confirm.classList.add('hidden');
+    // Rediriger vers l'historique de la semaine
+    switchJTab('historique', document.querySelector('#page-journal .jtab:last-child'));
+  }, 2000);
 }
 
 function switchJTab(tab, el) {
