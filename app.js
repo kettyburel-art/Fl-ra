@@ -3974,6 +3974,2018 @@ const RECETTES = [
       'Fouetter jusqu\'à obtenir une texture lisse et aérienne.',
       'Réfrigérer 30 min. Servir en petite verrine.'
     ]
+  },
+  {
+    id: 174, cat: 'petit-dejeuner', premium: false,
+    emoji: '🟢', nom: 'Porridge de Teff à la Poire',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Riche en fer et magnésium, le teff est une céréale sans gluten. La cardamome est anti-inflammatoire.',
+    ingredients: [
+      '50g flocons de teff',
+      '150ml lait de riz',
+      '1 poire mûre',
+      'Cardamome en poudre',
+      'Éclats de noix'
+    ],
+    etapes: [
+      'Cuire le teff dans le lait avec la cardamome. Ajouter la poire coupée en dés et les noix.'
+    ]
+  },
+  {
+    id: 175, cat: 'petit-dejeuner', premium: false,
+    emoji: '🧡', nom: 'Smoothie Dopamine Boost',
+    temps: '15 min', calories: 350, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La banane et le cacao sont précurseurs de dopamine. Le magnésium du cacao calme le système nerveux.',
+    ingredients: [
+      '1 banane bien mûre',
+      '1 càs beurre d\'amande',
+      '200ml lait d\'avoine',
+      '1 càs cacao pur',
+      'Pincée de sel'
+    ],
+    etapes: [
+      'Mixer tous les ingrédients. Le cacao et la banane stimulent la production de dopamine.'
+    ]
+  },
+  {
+    id: 176, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥛', nom: 'Pain de Fleurs à l\'Anchois',
+    temps: '15 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les anchois sont riches en oméga-3 et calcium. La purée d\'amande apporte du magnésium.',
+    ingredients: [
+      '3 tartines de sarrasin',
+      'Purée d\'amande complète',
+      '4 filets d\'anchois dessalés',
+      'Ciboulette'
+    ],
+    etapes: [
+      'Tartiner la purée d\'amande, déposer les anchois et la ciboulette ciselée.'
+    ]
+  },
+  {
+    id: 177, cat: 'dejeuner', premium: false,
+    emoji: '🥘', nom: 'Bowl de Quinoa Rouge et Grenade',
+    temps: '15 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La grenade est un puissant antioxydant. L\'huile de colza apporte des oméga-3. Le persil est riche en fer.',
+    ingredients: [
+      'Quinoa rouge cuit',
+      'Grains de grenade',
+      'Persil plat à volonté',
+      'Jus de citron',
+      'Huile de colza'
+    ],
+    etapes: [
+      'Mélanger le quinoa froid avec le persil haché et la grenade. Assaisonner avec citron et huile de colza.'
+    ]
+  },
+  {
+    id: 178, cat: 'dejeuner', premium: false,
+    emoji: '🌯', nom: 'Salade de Thon et Haricots Blancs',
+    temps: '15 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le thon apporte des protéines et oméga-3. Les haricots blancs sont riches en fer végétal.',
+    ingredients: [
+      'Thon au naturel',
+      'Haricots blancs en bocal',
+      'Oignon rouge émincé',
+      'Vinaigre de cidre',
+      'Persil'
+    ],
+    etapes: [
+      'Rincer les haricots. Mélanger avec le thon, l\'oignon et le persil. Le vinaigre de cidre aide à la digestion.'
+    ]
+  },
+  {
+    id: 179, cat: 'dejeuner', premium: false,
+    emoji: '🫕', nom: 'Poulet au Citron et Olives',
+    temps: '15 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le poulet est riche en tryptophane et protéines. Le citron apporte la vitamine C qui fixe le fer.',
+    ingredients: [
+      'Émincé de poulet',
+      'Olives vertes',
+      'Citron confit',
+      'Courgettes',
+      'Cumin'
+    ],
+    etapes: [
+      'Sauter le poulet avec les courgettes et le cumin. Ajouter les olives et le citron confit en fin.'
+    ]
+  },
+  {
+    id: 180, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Risotto de Sarrasin aux Champignons',
+    temps: '15 min', calories: 390, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le sarrasin est l\'une des céréales les plus riches en magnésium, essentiel pour le SJSR.',
+    ingredients: [
+      'Grains de sarrasin Kasha',
+      'Champignons de Paris',
+      'Bouillon de légumes',
+      'Crème de soja'
+    ],
+    etapes: [
+      'Cuire le sarrasin comme un risotto. Ajouter les champignons sautés et lier à la crème végétale.'
+    ]
+  },
+  {
+    id: 181, cat: 'snack', premium: false,
+    emoji: '🥜', nom: 'Tartinade de Lentilles au Curry',
+    temps: '15 min', calories: 180, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les lentilles corail sont riches en fer végétal. Le curry est un puissant anti-inflammatoire.',
+    ingredients: [
+      'Lentilles corail mixées',
+      'Curry doux',
+      'Lait de coco',
+      'Bâtonnets de carottes'
+    ],
+    etapes: [
+      'Préparer un dahl épais et le mixer. Utiliser comme trempette pour les carottes.'
+    ]
+  },
+  {
+    id: 182, cat: 'snack', premium: false,
+    emoji: '🫐', nom: 'Amandes au Tamari',
+    temps: '15 min', calories: 200, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les amandes sont une source exceptionnelle de magnésium et de vitamine E anti-oxydante.',
+    ingredients: [
+      'Amandes entières',
+      'Sauce tamari sans gluten'
+    ],
+    etapes: [
+      'Passer les amandes à la poêle avec un peu de tamari jusqu\'à absorption complète. Laisser refroidir.'
+    ]
+  },
+  {
+    id: 183, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Yaourt de Soja au Gingembre',
+    temps: '15 min', calories: 190, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le gingembre est anti-inflammatoire. Les noix apportent des oméga-3 et du magnésium.',
+    ingredients: [
+      'Yaourt de soja nature',
+      'Gingembre frais râpé',
+      'Quelques noix de Grenoble'
+    ],
+    etapes: [
+      'Mélanger le gingembre au yaourt, ajouter les noix pour le croquant.'
+    ]
+  },
+  {
+    id: 184, cat: 'snack', premium: false,
+    emoji: '🥕', nom: 'Pomme au Four à la Cannelle',
+    temps: '15 min', calories: 120, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La cannelle aide à réguler la glycémie. La pomme cuite est très digeste et alcalinisante.',
+    ingredients: [
+      '1 pomme',
+      'Cannelle en poudre'
+    ],
+    etapes: [
+      'Évider la pomme, saupoudrer de cannelle. Cuire 20 min au four ou 3 min au micro-ondes.'
+    ]
+  },
+  {
+    id: 185, cat: 'diner', premium: false,
+    emoji: '🥗', nom: 'Soupe Froide Petits Pois et Menthe',
+    temps: '15 min', calories: 250, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les petits pois sont riches en vitamines B favorisant le sommeil. La menthe est apaisante.',
+    ingredients: [
+      'Petits pois',
+      'Menthe fraîche',
+      'Bouillon de légumes',
+      'Crème de riz'
+    ],
+    etapes: [
+      'Cuire les petits pois, mixer avec la menthe et la crème de riz. Servir frais ou tiède.'
+    ]
+  },
+  {
+    id: 186, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Filet de Cabillaud Vapeur de Thym',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le cabillaud est un poisson maigre riche en iode. La vapeur préserve tous les nutriments.',
+    ingredients: [
+      'Filet de cabillaud',
+      'Thym frais',
+      'Haricots plats',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Cuire le poisson et les haricots à la vapeur avec le thym. Ajouter un filet d\'huile d\'olive crue.'
+    ]
+  },
+  {
+    id: 187, cat: 'diner', premium: false,
+    emoji: '🍜', nom: 'Gratin de Blettes au Lait d\'Amande',
+    temps: '15 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les blettes sont exceptionnellement riches en fer et magnésium. Le lait d\'amande évite le lactose.',
+    ingredients: [
+      'Côtes de blettes',
+      'Lait d\'amande',
+      'Fécule de maïs',
+      'Noix de muscade'
+    ],
+    etapes: [
+      'Faire une béchamel avec lait amande et fécule. Napper les blettes cuites et gratiner légèrement.'
+    ]
+  },
+  {
+    id: 188, cat: 'diner', premium: false,
+    emoji: '🌿', nom: 'Tofu Sauté au Brocoli Sésame',
+    temps: '15 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le tofu et le sésame sont riches en calcium. Le brocoli apporte vitamine C et fer végétal.',
+    ingredients: [
+      'Tofu ferme en dés',
+      'Têtes de brocoli',
+      'Graines de sésame',
+      'Huile de sésame'
+    ],
+    etapes: [
+      'Sauter le tofu et le brocoli rapidement à feu vif. Parsemer de sésame.'
+    ]
+  },
+  {
+    id: 189, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥑', nom: 'Chia Pudding Mangue et Coco Light',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les graines de chia sont riches en oméga-3 et magnésium. La mangue apporte la vitamine C.',
+    ingredients: [
+      'Graines de chia',
+      'Lait de coco light',
+      'Mangue fraîche',
+      'Gingembre'
+    ],
+    etapes: [
+      'Mélanger chia et lait. Laisser reposer une nuit. Ajouter la mangue et le gingembre.'
+    ]
+  },
+  {
+    id: 190, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥣', nom: 'Muffins Sarrasin et Myrtilles',
+    temps: '15 min', calories: 270, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le sarrasin est riche en magnésium. Les myrtilles sont d\'excellents antioxydants anti-inflammatoires.',
+    ingredients: [
+      'Farine de sarrasin',
+      'Compote de pomme',
+      'Myrtilles',
+      'Poudre à lever sans gluten'
+    ],
+    etapes: [
+      'Mélanger farine, compote et poudre. Ajouter les myrtilles. Cuire 20 min à 180°C.'
+    ]
+  },
+  {
+    id: 191, cat: 'dejeuner', premium: false,
+    emoji: '🫙', nom: 'Salade de Pois Chiches au Cumin',
+    temps: '15 min', calories: 370, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les pois chiches sont riches en fer et protéines. Le cumin est un digestif puissant.',
+    ingredients: [
+      'Pois chiches cuits',
+      'Carottes râpées',
+      'Cumin',
+      'Coriandre fraîche',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Mélanger tous les ingrédients. Le cumin facilite la digestion des légumineuses.'
+    ]
+  },
+  {
+    id: 192, cat: 'diner', premium: false,
+    emoji: '🥣', nom: 'Bouillon Miso aux Algues',
+    temps: '15 min', calories: 180, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le miso est riche en probiotiques. Les algues apportent iode et minéraux essentiels.',
+    ingredients: [
+      'Pâte miso',
+      'Algues wakamé',
+      'Champignons de Paris',
+      'Ciboulette'
+    ],
+    etapes: [
+      'Diluer le miso dans de l\'eau chaude non bouillante. Ajouter les algues et les champignons émincés.'
+    ]
+  },
+  {
+    id: 193, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌿', nom: 'Smoothie Bowl Matin de Fer',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La spiruline est la source la plus concentrée en fer. La vitamine C de l\'orange booste son absorption.',
+    ingredients: [
+      '1 banane',
+      '1 càc spiruline',
+      'Jus d\'une orange',
+      '1 càs graines de lin',
+      '125ml lait d\'amande'
+    ],
+    etapes: [
+      'Mixer la banane, la spiruline, le jus d\'orange et le lait. Parsemer de graines de lin.'
+    ]
+  },
+  {
+    id: 194, cat: 'petit-dejeuner', premium: false,
+    emoji: '🟢', nom: 'Porridge d\'Amarante aux Framboises',
+    temps: '15 min', calories: 330, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'L\'amarante est sans gluten et exceptionnellement riche en fer, magnésium et protéines complètes.',
+    ingredients: [
+      '50g amarante',
+      '150ml lait de noisette',
+      '1 poignée de framboises',
+      'Éclats de noisettes'
+    ],
+    etapes: [
+      'Cuire l\'amarante dans le lait 20 min. Servir avec les framboises et les noisettes.'
+    ]
+  },
+  {
+    id: 195, cat: 'petit-dejeuner', premium: false,
+    emoji: '🧡', nom: 'Tartines Sarrasin Purée de Noix',
+    temps: '15 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les noix sont riches en oméga-3 et magnésium. Le sarrasin apporte des glucides lents sans gluten.',
+    ingredients: [
+      '2 tartines de sarrasin',
+      'Purée de noix de Grenoble',
+      'Quelques tranches de pomme'
+    ],
+    etapes: [
+      'Tartiner la purée de noix sur le sarrasin, disposer les pommes. Riche en bons gras pour le cerveau.'
+    ]
+  },
+  {
+    id: 196, cat: 'dejeuner', premium: false,
+    emoji: '🍲', nom: 'Bowl Quinoa Haricots Noirs Citron Vert',
+    temps: '15 min', calories: 400, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le quinoa est une protéine complète. Les haricots noirs sont riches en fer et fibres.',
+    ingredients: [
+      'Quinoa',
+      'Haricots noirs',
+      'Maïs',
+      'Coriandre',
+      'Jus de citron vert'
+    ],
+    etapes: [
+      'Mélanger les ingrédients. Le citron vert assure l\'absorption du fer des haricots et du quinoa.'
+    ]
+  },
+  {
+    id: 197, cat: 'dejeuner', premium: false,
+    emoji: '🥘', nom: 'Cabillaud en Croûte d\'Herbes',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le cabillaud est riche en iode et protéines légères. Les asperges sont diurétiques et riches en acide folique.',
+    ingredients: [
+      'Filet de cabillaud',
+      'Persil et aneth mixés',
+      'Asperges vertes vapeur'
+    ],
+    etapes: [
+      'Recouvrir le poisson d\'herbes mixées. Cuire à la vapeur avec les asperges. Arroser d\'huile d\'olive.'
+    ]
+  },
+  {
+    id: 198, cat: 'dejeuner', premium: false,
+    emoji: '🌯', nom: 'Salade Pois Chiches et Graines de Chanvre',
+    temps: '15 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les graines de chanvre contiennent tous les acides aminés essentiels et des oméga-3.',
+    ingredients: [
+      'Pois chiches',
+      'Concombre',
+      'Menthe',
+      '2 càs graines de chanvre'
+    ],
+    etapes: [
+      'Le chanvre apporte les acides aminés essentiels et des oméga-3 anti-inflammatoires.'
+    ]
+  },
+  {
+    id: 199, cat: 'dejeuner', premium: false,
+    emoji: '🫕', nom: 'Wok de Dinde au Gingembre',
+    temps: '15 min', calories: 390, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La dinde est riche en tryptophane. Le gingembre est l\'un des anti-inflammatoires les plus puissants.',
+    ingredients: [
+      'Émincé de dinde',
+      'Brocoli',
+      'Gingembre frais',
+      'Sauce tamari'
+    ],
+    etapes: [
+      'Sauter la dinde et le brocoli avec beaucoup de gingembre. Le gingembre calme l\'inflammation.'
+    ]
+  },
+  {
+    id: 200, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Rillettes de Sardines sur Crackers',
+    temps: '15 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les sardines sont riches en oméga-3, calcium et fer. Le citron optimise l\'absorption du fer.',
+    ingredients: [
+      'Sardines à l\'huile',
+      'Jus de citron',
+      'Ciboulette',
+      'Crackers de sarrasin'
+    ],
+    etapes: [
+      'Écraser les sardines avec le citron et la ciboulette. Tartiner sur les crackers.'
+    ]
+  },
+  {
+    id: 201, cat: 'dejeuner', premium: false,
+    emoji: '🫙', nom: 'Wrap de Laitue au Chou-Fleur Rôti',
+    temps: '15 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La laitue remplace le pain. Le houmous apporte fer et protéines. Le chou-fleur est alcalinisant.',
+    ingredients: [
+      'Grandes feuilles de laitue',
+      'Chou-fleur rôti au cumin',
+      'Houmous'
+    ],
+    etapes: [
+      'Garnir la laitue de houmous et de chou-fleur. Rouler comme un wrap. Très digeste.'
+    ]
+  },
+  {
+    id: 202, cat: 'dejeuner', premium: false,
+    emoji: '🥩', nom: 'Zoodles au Pesto de Noix',
+    temps: '15 min', calories: 330, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les zoodles sont sans gluten et très hydratants. Les noix apportent des oméga-3 anti-inflammatoires.',
+    ingredients: [
+      'Courgettes en spaghettis',
+      'Basilic',
+      'Noix',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Mélanger les zoodles crus ou tiédis avec le pesto de noix riche en bons gras.'
+    ]
+  },
+  {
+    id: 203, cat: 'dejeuner', premium: false,
+    emoji: '🐟', nom: 'Tartare de Saumon Avocat Agrumes',
+    temps: '15 min', calories: 430, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Triple action SJSR : oméga-3 du saumon + bons gras de l\'avocat + vitamine C du pamplemousse.',
+    ingredients: [
+      'Saumon frais',
+      'Avocat',
+      'Pamplemousse',
+      'Huile de noisette'
+    ],
+    etapes: [
+      'Couper en dés le saumon et l\'avocat. Ajouter des morceaux de pamplemousse. Assaisonner à l\'huile de noisette.'
+    ]
+  },
+  {
+    id: 204, cat: 'snack', premium: false,
+    emoji: '🥕', nom: 'Mix Noix du Brésil et Éclats de Cacao',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: '2 noix du Brésil couvrent 100% des besoins en sélénium. Le cacao cru est riche en magnésium.',
+    ingredients: [
+      '2 noix du Brésil',
+      '1 càc éclats de fèves de cacao cru'
+    ],
+    etapes: [
+      'Une poignée rapide pour protéger le système nerveux et recharger le magnésium.'
+    ]
+  },
+  {
+    id: 205, cat: 'snack', premium: false,
+    emoji: '🥚', nom: 'Tranches de Pomme au Beurre d\'Amande',
+    temps: '15 min', calories: 170, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'équilibre sucres naturels, protéines et bons gras évite les pics glycémiques.',
+    ingredients: [
+      '1 pomme',
+      '1 càs purée d\'amande complète'
+    ],
+    etapes: [
+      'Tremper les tranches de pomme dans la purée d\'amande. Équilibre parfait sucre/gras/fibres.'
+    ]
+  },
+  {
+    id: 206, cat: 'snack', premium: false,
+    emoji: '🫒', nom: 'Snack Algues Nori au Sésame',
+    temps: '15 min', calories: 80, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le nori est riche en iode, fer et minéraux marins. Le sésame apporte calcium et magnésium.',
+    ingredients: [
+      'Feuilles de nori séchées',
+      'Graines de sésame'
+    ],
+    etapes: [
+      'Grignoter des feuilles de nori. Apporte des minéraux essentiels sans calories inutiles.'
+    ]
+  },
+  {
+    id: 207, cat: 'snack', premium: false,
+    emoji: '🌰', nom: 'Bâtonnets de Poivron et Houmous',
+    temps: '15 min', calories: 190, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le duo poivron (vitamine C) + houmous (fer de pois chiches) maximise l\'absorption du fer végétal.',
+    ingredients: [
+      'Poivron rouge',
+      'Houmous maison'
+    ],
+    etapes: [
+      'Le poivron rouge est l\'une des meilleures sources de vitamine C pour aider le fer du houmous.'
+    ]
+  },
+  {
+    id: 208, cat: 'snack', premium: false,
+    emoji: '🫚', nom: 'Oeuf Dur au Cumin',
+    temps: '15 min', calories: 100, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'oeuf est une source complète de protéines. La tyrosine est précurseur de la dopamine.',
+    ingredients: [
+      '1 oeuf dur',
+      'Pincée de cumin'
+    ],
+    etapes: [
+      'L\'oeuf fournit la tyrosine nécessaire à la dopamine. Le cumin facilite la digestion.'
+    ]
+  },
+  {
+    id: 209, cat: 'snack', premium: false,
+    emoji: '🍊', nom: 'Duo Abricots Secs et Noix',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les abricots secs sont une source concentrée de fer végétal. Les noix apportent des oméga-3.',
+    ingredients: [
+      '3 abricots secs',
+      '3 cerneaux de noix'
+    ],
+    etapes: [
+      'Le fer de l\'abricot s\'associe aux bons gras de la noix. Idéal avant une séance de sport.'
+    ]
+  },
+  {
+    id: 210, cat: 'snack', premium: false,
+    emoji: '🍎', nom: 'Guacamole et Carottes Croquantes',
+    temps: '15 min', calories: 210, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'L\'avocat est riche en bonnes graisses. Les carottes apportent du bêta-carotène protecteur.',
+    ingredients: [
+      '1/2 avocat écrasé',
+      'Citron',
+      'Carottes en bâtonnets'
+    ],
+    etapes: [
+      'L\'avocat aide à absorber les caroténoïdes des carottes. Anti-inflammatoire et rassasiant.'
+    ]
+  },
+  {
+    id: 211, cat: 'snack', premium: false,
+    emoji: '🥜', nom: 'Chia Pot Lait de Coco Vanille',
+    temps: '15 min', calories: 220, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les graines de chia sont riches en magnésium et oméga-3. Évite le coup de barre de l\'après-midi.',
+    ingredients: [
+      'Graines de chia',
+      'Lait de coco',
+      'Vanille'
+    ],
+    etapes: [
+      'Préparer le matin en bocal. Consommer à 16h pour éviter le grignotage sucré.'
+    ]
+  },
+  {
+    id: 212, cat: 'snack', premium: false,
+    emoji: '🫐', nom: 'Poignée de Graines de Courge',
+    temps: '15 min', calories: 150, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les graines de courge sont l\'une des meilleures sources de magnésium et de zinc anti-inflammatoire.',
+    ingredients: [
+      'Graines de courge nature'
+    ],
+    etapes: [
+      'Le snack numéro 1 pour le SJSR. Une petite poignée apporte une dose massive de magnésium.'
+    ]
+  },
+  {
+    id: 213, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Galette de Riz au Tahini et Framboises',
+    temps: '15 min', calories: 180, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le tahini est riche en calcium et magnésium. Les framboises apportent de la vitamine C.',
+    ingredients: [
+      '1 galette de riz ou sarrasin',
+      'Tahini',
+      '3 framboises'
+    ],
+    etapes: [
+      'Étaler le tahini, écraser les framboises dessus. Un délice minéralisant.'
+    ]
+  },
+  {
+    id: 214, cat: 'diner', premium: false,
+    emoji: '🍲', nom: 'Poisson Blanc Vapeur de Gingembre',
+    temps: '15 min', calories: 270, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le gingembre est anti-inflammatoire puissant. La vapeur préserve tous les oméga-3 du poisson.',
+    ingredients: [
+      'Dos de lieu ou cabillaud',
+      'Gingembre râpé',
+      'Bok choy'
+    ],
+    etapes: [
+      'Cuire le tout à la vapeur. Le gingembre réchauffe et calme l\'inflammation nerveuse.'
+    ]
+  },
+  {
+    id: 215, cat: 'diner', premium: false,
+    emoji: '🥗', nom: 'Soupe de Potiron au Coco et Graines',
+    temps: '15 min', calories: 260, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le potiron est riche en bêta-carotène. Les graines de courge apportent du magnésium essentiel.',
+    ingredients: [
+      'Potiron',
+      'Lait de coco',
+      'Graines de courge torréfiées'
+    ],
+    etapes: [
+      'Velouté onctueux. Les graines ajoutent le magnésium nécessaire à la détente musculaire.'
+    ]
+  },
+  {
+    id: 216, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Brochettes de Tofu au Curcuma',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le curcuma est le plus puissant anti-inflammatoire naturel. Le tofu apporte des protéines végétales.',
+    ingredients: [
+      'Tofu ferme',
+      'Courgettes',
+      'Poivrons',
+      'Curcuma',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Griller les brochettes au four. Le curcuma aide à prévenir les douleurs nocturnes.'
+    ]
+  },
+  {
+    id: 217, cat: 'diner', premium: false,
+    emoji: '🍜', nom: 'Coeurs d\'Artichauts au Citron',
+    temps: '15 min', calories: 200, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'L\'artichaut soutient le foie pendant la nuit. Un foie bien drainé réduit l\'inflammation systémique.',
+    ingredients: [
+      'Coeurs d\'artichauts au naturel',
+      'Huile d\'olive',
+      'Jus de citron'
+    ],
+    etapes: [
+      'L\'artichaut aide au drainage hépatique, crucial pour un sommeil sans impatiences.'
+    ]
+  },
+  {
+    id: 218, cat: 'diner', premium: false,
+    emoji: '🌿', nom: 'Patate Douce Farcie aux Épinards',
+    temps: '15 min', calories: 370, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La patate douce est à index glycémique bas. Les épinards et le tahini apportent fer et magnésium.',
+    ingredients: [
+      '1 patate douce rôtie',
+      'Épinards sautés',
+      'Sauce tahini'
+    ],
+    etapes: [
+      'Ouvrir la patate, garnir d\'épinards et napper de sésame. Repas complet et apaisant.'
+    ]
+  },
+  {
+    id: 219, cat: 'diner', premium: false,
+    emoji: '🫙', nom: 'Soupe Miso au Tofu Soyeux',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le miso est riche en probiotiques qui réduisent l\'inflammation intestinale. Très digeste le soir.',
+    ingredients: [
+      'Pâte miso',
+      'Tofu soyeux',
+      'Ciboulette'
+    ],
+    etapes: [
+      'Dissoudre le miso à chaud non bouillant. Très léger, parfait avant le coucher.'
+    ]
+  },
+  {
+    id: 220, cat: 'diner', premium: false,
+    emoji: '🌙', nom: 'Potage de Lentilles Corail au Cumin',
+    temps: '15 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les lentilles corail se digèrent facilement. Le cumin anti-spasmodique évite les crampes nocturnes.',
+    ingredients: [
+      'Lentilles corail',
+      'Cumin',
+      'Jus de citron'
+    ],
+    etapes: [
+      'Mixer les lentilles avec le cumin. Ajouter le citron au bol. Les lentilles corail sont les plus digestes.'
+    ]
+  },
+  {
+    id: 221, cat: 'diner', premium: false,
+    emoji: '🐟', nom: 'Poêlée de Champignons et Épinards',
+    temps: '15 min', calories: 190, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les champignons sont riches en sélénium et vitamines B. Les épinards apportent fer et magnésium.',
+    ingredients: [
+      'Champignons variés',
+      'Épinards frais',
+      'Ail',
+      'Persil'
+    ],
+    etapes: [
+      'Sauter rapidement. Un concentré de minéraux pour calmer le système nerveux.'
+    ]
+  },
+  {
+    id: 222, cat: 'diner', premium: false,
+    emoji: '🥣', nom: 'Saumon Poché et Concombre Vinaigré',
+    temps: '15 min', calories: 350, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le saumon poché préserve tous les oméga-3. Le vinaigre de cidre aide à l\'équilibre acido-basique.',
+    ingredients: [
+      'Pavé de saumon',
+      'Concombre',
+      'Aneth',
+      'Vinaigre de cidre'
+    ],
+    etapes: [
+      'Pocher le saumon à l\'eau frémissante. Servir froid ou tiède avec le concombre vinaigré.'
+    ]
+  },
+  {
+    id: 223, cat: 'diner', premium: false,
+    emoji: '🫕', nom: 'Quinoa au Persil et Pignons',
+    temps: '15 min', calories: 350, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le persil en grande quantité est l\'un des meilleurs aliments pour le fer végétal biodisponible.',
+    ingredients: [
+      'Quinoa',
+      'Gros bouquet de persil haché',
+      'Jus de citron',
+      'Pignons de pin'
+    ],
+    etapes: [
+      'Inspiration taboulé chaud. Le persil apporte une dose massive de fer pour la nuit.'
+    ]
+  },
+  {
+    id: 224, cat: 'petit-dejeuner', premium: false,
+    emoji: '🟢', nom: 'Socca Niçoise au Romarin',
+    temps: '15 min', calories: 330, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La farine de pois chiches est exceptionnellement riche en fer végétal et protéines.',
+    ingredients: [
+      '100g farine de pois chiches',
+      '250ml eau',
+      '2 càs huile d\'olive',
+      'Romarin frais'
+    ],
+    etapes: [
+      'Mélanger la farine, l\'eau et l\'huile. Laisser reposer 30 min. Cuire au four très chaud.'
+    ]
+  },
+  {
+    id: 225, cat: 'petit-dejeuner', premium: false,
+    emoji: '🧡', nom: 'Granola Sarrasin et Amandes Maison',
+    temps: '15 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le sarrasin apporte du magnésium. Les amandes et graines de tournesol enrichissent en vitamine E.',
+    ingredients: [
+      'Kasha sarrasin grillé',
+      'Amandes concassées',
+      'Graines de tournesol',
+      'Sirop d\'érable',
+      'Huile de coco'
+    ],
+    etapes: [
+      'Mélanger et passer au four 15 min à 160°C. Servir avec un lait végétal.'
+    ]
+  },
+  {
+    id: 226, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥛', nom: 'Toast Petit Pois et Menthe',
+    temps: '15 min', calories: 270, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les petits pois sont riches en vitamines B et protéines végétales. L\'huile de lin apporte des oméga-3.',
+    ingredients: [
+      'Pain de sarrasin',
+      'Petits pois écrasés',
+      'Menthe',
+      'Citron',
+      'Huile de lin'
+    ],
+    etapes: [
+      'Écraser les pois avec citron et menthe. Tartiner et ajouter l\'huile de lin pour les oméga-3.'
+    ]
+  },
+  {
+    id: 227, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌾', nom: 'Golden Porridge au Curcuma',
+    temps: '15 min', calories: 300, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le curcuma + poivre noir est le duo anti-inflammatoire le plus puissant. Le gingembre calme les nerfs.',
+    ingredients: [
+      'Flocons de riz',
+      'Lait d\'amande',
+      'Curcuma',
+      'Poivre',
+      'Gingembre',
+      'Miel de Manuka'
+    ],
+    etapes: [
+      'Cuire les flocons dans le lait avec les épices. Sucrer légèrement au miel après cuisson.'
+    ]
+  },
+  {
+    id: 228, cat: 'petit-dejeuner', premium: false,
+    emoji: '🍵', nom: 'Rillettes de Maquereau au Citron',
+    temps: '15 min', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le maquereau est plus riche en oméga-3 que le saumon. Un matin protéiné stabilise la dopamine.',
+    ingredients: [
+      'Maquereau cuit',
+      'Moutarde douce',
+      'Ciboulette',
+      'Pain des fleurs au sarrasin'
+    ],
+    etapes: [
+      'Écraser le maquereau avec la moutarde et la ciboulette. Tartiner généreusement.'
+    ]
+  },
+  {
+    id: 229, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥑', nom: 'Pancakes de Teff aux Myrtilles',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le teff est la céréale la plus riche en fer. Les myrtilles sont d\'excellents antioxydants pour le cerveau.',
+    ingredients: [
+      'Farine de teff',
+      'Lait de noisette',
+      '1 oeuf',
+      'Myrtilles fraîches'
+    ],
+    etapes: [
+      'Faire une pâte à pancakes épaisse. Ajouter les myrtilles lors de la cuisson à la poêle.'
+    ]
+  },
+  {
+    id: 230, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥣', nom: 'Bowl Riz Noir et Mangue',
+    temps: '15 min', calories: 340, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le riz noir contient plus d\'antioxydants que les myrtilles. La mangue fournit vitamine C et bêta-carotène.',
+    ingredients: [
+      'Riz noir cuit',
+      'Dés de mangue',
+      'Noix de coco râpée',
+      'Jus de lime'
+    ],
+    etapes: [
+      'Le riz noir est exceptionnellement riche en fer et antioxydants. La mangue aide à l\'absorption.'
+    ]
+  },
+  {
+    id: 231, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥞', nom: 'Tofu Brouillé à la Levure Maltée',
+    temps: '15 min', calories: 250, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La levure maltée est riche en vitamines B et B12. Le tofu apporte des protéines végétales et calcium.',
+    ingredients: [
+      'Tofu soyeux',
+      'Curcuma',
+      'Levure de bière sans gluten',
+      'Oignon vert'
+    ],
+    etapes: [
+      'Poêler le tofu écrasé avec le curcuma et la levure. Parfait pour le système nerveux.'
+    ]
+  },
+  {
+    id: 232, cat: 'petit-dejeuner', premium: false,
+    emoji: '🫐', nom: 'Scones Amande et Citron',
+    temps: '15 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La poudre d\'amande est riche en magnésium et vitamine E. Le zeste de citron apporte des flavonoïdes.',
+    ingredients: [
+      'Poudre d\'amande',
+      'Farine de riz',
+      'Zeste de citron',
+      'Huile de coco'
+    ],
+    etapes: [
+      'Former des petits tas et cuire 15 min. Riche en magnésium pour détendre les muscles.'
+    ]
+  },
+  {
+    id: 233, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌿', nom: 'Smoothie Betterave et Gingembre',
+    temps: '15 min', calories: 150, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La betterave améliore l\'oxygénation du sang et la circulation dans les jambes.',
+    ingredients: [
+      '1/2 betterave crue',
+      '1 pomme',
+      'Gingembre frais',
+      'Eau'
+    ],
+    etapes: [
+      'Mixer finement. La betterave aide à la circulation sanguine, crucial pour le SJSR.'
+    ]
+  },
+  {
+    id: 234, cat: 'dejeuner', premium: false,
+    emoji: '🥦', nom: 'Pizza Base de Chou-Fleur',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La croûte de chou-fleur remplace la farine. Riche en vitamine C et léger pour le soir.',
+    ingredients: [
+      'Chou-fleur mixé',
+      '1 oeuf',
+      'Tomates cerises',
+      'Roquette',
+      'Pignons de pin'
+    ],
+    etapes: [
+      'Presser le chou-fleur pour ôter l\'eau, mélanger à l\'oeuf pour la pâte. Garnir et cuire 20 min.'
+    ]
+  },
+  {
+    id: 235, cat: 'dejeuner', premium: false,
+    emoji: '🌮', nom: 'Lasagnes de Courgettes au Boeuf',
+    temps: '15 min', calories: 450, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le fer héminique du boeuf est le mieux absorbé par l\'organisme. Les courgettes remplacent les pâtes.',
+    ingredients: [
+      'Tranches de courgettes',
+      'Boeuf haché 5%',
+      'Coulis de tomate',
+      'Crème de cajou'
+    ],
+    etapes: [
+      'Alterner courgettes, viande et tomate. Finir par la crème de cajou. Le boeuf est la meilleure source de fer.'
+    ]
+  },
+  {
+    id: 236, cat: 'dejeuner', premium: false,
+    emoji: '🍲', nom: 'Salade de Pomme de Terre et Hareng',
+    temps: '15 min', calories: 390, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le hareng est plus riche en oméga-3 que le saumon. La vitamine D est souvent déficitaire dans le SJSR.',
+    ingredients: [
+      'Pommes de terre vapeur',
+      'Hareng fumé',
+      'Oignon rouge',
+      'Huile de colza'
+    ],
+    etapes: [
+      'Mélanger froid. Le hareng est l\'un des poissons les plus riches en oméga-3 et vitamine D.'
+    ]
+  },
+  {
+    id: 237, cat: 'dejeuner', premium: false,
+    emoji: '🥘', nom: 'Poivrons Farcis au Quinoa',
+    temps: '15 min', calories: 370, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le poivron rouge contient 3 fois plus de vitamine C que l\'orange. Le quinoa est une protéine complète.',
+    ingredients: [
+      'Poivron entier',
+      'Quinoa cuit',
+      'Raisins secs',
+      'Graines de tournesol'
+    ],
+    etapes: [
+      'Farcir le poivron et cuire au four. Le poivron apporte la vitamine C pour le fer du quinoa.'
+    ]
+  },
+  {
+    id: 238, cat: 'dejeuner', premium: false,
+    emoji: '🌯', nom: 'Poke Bowl Thon et Radis Noir',
+    temps: '15 min', calories: 420, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le radis noir est détoxifiant hépatique. Les edamames apportent protéines végétales et fer.',
+    ingredients: [
+      'Thon cru mariné',
+      'Radis noir',
+      'Edamames',
+      'Riz complet'
+    ],
+    etapes: [
+      'Assembler le tout. Le radis noir aide le foie à traiter les toxines inflammatoires.'
+    ]
+  },
+  {
+    id: 239, cat: 'dejeuner', premium: false,
+    emoji: '🫕', nom: 'Burger Sarrasin et Steak de Lentilles',
+    temps: '15 min', calories: 440, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les lentilles sont riches en fer et protéines. L\'avocat remplace le fromage avec de bons gras.',
+    ingredients: [
+      'Pain burger sans gluten',
+      'Steak de lentilles maison',
+      'Avocat',
+      'Épinards'
+    ],
+    etapes: [
+      'Remplacer le fromage par de l\'avocat pour le crémeux et les bons gras.'
+    ]
+  },
+  {
+    id: 240, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Curry de Pois Chiches à l\'Ananas',
+    temps: '15 min', calories: 400, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La bromélaïne de l\'ananas frais est un anti-inflammatoire naturel puissant. Les pois chiches apportent le fer.',
+    ingredients: [
+      'Pois chiches',
+      'Ananas frais',
+      'Lait de coco',
+      'Curry'
+    ],
+    etapes: [
+      'L\'ananas contient de la bromélaïne, une enzyme anti-inflammatoire puissante.'
+    ]
+  },
+  {
+    id: 241, cat: 'dejeuner', premium: false,
+    emoji: '🫙', nom: 'Salade de Pâtes de Lentilles Corail',
+    temps: '15 min', calories: 410, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les pâtes de lentilles contiennent 2 à 3 fois plus de fer que les pâtes classiques.',
+    ingredients: [
+      'Pâtes de lentilles',
+      'Brocoli vapeur',
+      'Sauce pesto basilic-amande'
+    ],
+    etapes: [
+      'Utiliser des pâtes de légumineuses pour doubler l\'apport en fer par rapport aux pâtes de riz.'
+    ]
+  },
+  {
+    id: 242, cat: 'dejeuner', premium: false,
+    emoji: '🥩', nom: 'Steak de Thon au Poivre et Haricots',
+    temps: '15 min', calories: 390, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le thon frais est riche en oméga-3 et dopamine. Les haricots blancs apportent fer et magnésium.',
+    ingredients: [
+      'Thon frais',
+      'Haricots blancs',
+      'Échalotes',
+      'Poivre noir'
+    ],
+    etapes: [
+      'Poêler le thon juste assez. Servir avec les haricots blancs riches en fibres et fer.'
+    ]
+  },
+  {
+    id: 243, cat: 'dejeuner', premium: false,
+    emoji: '🐟', nom: 'Bowl de Millet aux Légumes Rôtis',
+    temps: '15 min', calories: 370, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le millet est alcalinisant et riche en magnésium. Le tahini apporte calcium et bons gras.',
+    ingredients: [
+      'Millet cuit',
+      'Carottes et panais rôtis',
+      'Sauce tahini'
+    ],
+    etapes: [
+      'Le millet est une céréale ancienne alcalinisante et très digeste.'
+    ]
+  },
+  {
+    id: 244, cat: 'snack', premium: false,
+    emoji: '🥕', nom: 'Hummus de Betterave et Graines de Lin',
+    temps: '15 min', calories: 200, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La betterave est riche en nitrates qui améliorent la circulation. L\'huile de lin apporte des oméga-3.',
+    ingredients: [
+      'Pois chiches',
+      'Betterave cuite',
+      'Huile de lin',
+      'Pain de fleurs'
+    ],
+    etapes: [
+      'Mixer le tout. La couleur vive indique la présence forte d\'antioxydants.'
+    ]
+  },
+  {
+    id: 245, cat: 'snack', premium: false,
+    emoji: '🥚', nom: 'Noix de Pécan à la Cannelle',
+    temps: '15 min', calories: 190, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les noix de pécan sont riches en antioxydants. La cannelle aide à réguler la glycémie.',
+    ingredients: [
+      'Noix de pécan',
+      'Cannelle',
+      'Pincée de sel'
+    ],
+    etapes: [
+      'Passer au four 10 min. Les noix de pécan sont d\'excellentes alliées anti-inflammatoires.'
+    ]
+  },
+  {
+    id: 246, cat: 'snack', premium: false,
+    emoji: '🫒', nom: 'Bouchées de Datte et Beurre de Cajou',
+    temps: '15 min', calories: 130, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La datte Medjool est riche en magnésium et potassium. Le cajou apporte des protéines et du zinc.',
+    ingredients: [
+      '1 datte Medjool',
+      '1 càc beurre de cajou'
+    ],
+    etapes: [
+      'Ouvrir la datte, farcir avec le beurre de cajou. Le snack parfait avant un effort.'
+    ]
+  },
+  {
+    id: 247, cat: 'snack', premium: false,
+    emoji: '🌰', nom: 'Chips de Chou Kale Maison',
+    temps: '15 min', calories: 120, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le kale est riche en fer, calcium et vitamine K. La levure maltée apporte des vitamines B.',
+    ingredients: [
+      'Feuilles de kale',
+      'Huile d\'olive',
+      'Levure maltée'
+    ],
+    etapes: [
+      'Masser les feuilles avec l\'huile, cuire au four 10 min à 150°C jusqu\'à ce que ce soit croustillant.'
+    ]
+  },
+  {
+    id: 248, cat: 'snack', premium: false,
+    emoji: '🫚', nom: 'Kéfir de Fruits et Noix',
+    temps: '15 min', calories: 170, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le kéfir est riche en probiotiques. Un microbiote sain réduit l\'inflammation liée au SJSR.',
+    ingredients: [
+      '200ml kéfir de fruits',
+      '5 noix de Grenoble'
+    ],
+    etapes: [
+      'Soutenir l\'intestin réduit l\'inflammation systémique liée au SJSR.'
+    ]
+  },
+  {
+    id: 249, cat: 'snack', premium: false,
+    emoji: '🍊', nom: 'Bâtonnets Concombre Sauce Menthe-Soja',
+    temps: '15 min', calories: 100, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le concombre est très hydratant. La menthe est apaisante pour le système nerveux.',
+    ingredients: [
+      'Concombre',
+      'Yaourt de soja',
+      'Menthe fraîche'
+    ],
+    etapes: [
+      'Trempette rafraîchissante et sans lactose.'
+    ]
+  },
+  {
+    id: 250, cat: 'snack', premium: false,
+    emoji: '🍎', nom: 'Poire Cuite au Gingembre et Pistaches',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La poire cuite est très digeste et alcalinisante. Les pistaches apportent magnésium et bons gras.',
+    ingredients: [
+      '1 poire',
+      'Gingembre râpé',
+      'Quelques pistaches'
+    ],
+    etapes: [
+      'Cuire la poire à la vapeur, saupoudrer de gingembre et pistaches concassées.'
+    ]
+  },
+  {
+    id: 251, cat: 'snack', premium: false,
+    emoji: '🥜', nom: 'Mélange Graines de Citrouille et Goji',
+    temps: '15 min', calories: 170, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les graines de citrouille sont la référence pour le magnésium. Les baies de goji apportent des antioxydants.',
+    ingredients: [
+      'Graines de citrouille',
+      'Baies de goji séchées'
+    ],
+    etapes: [
+      'Un mélange haute densité nutritionnelle facile à garder dans un tiroir.'
+    ]
+  },
+  {
+    id: 252, cat: 'snack', premium: false,
+    emoji: '🫐', nom: 'Galette Sarrasin au Chocolat Noir',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le chocolat noir à 90% est riche en magnésium et polyphénols anti-inflammatoires.',
+    ingredients: [
+      '1 galette de sarrasin soufflé',
+      '1 carré de chocolat noir fondu'
+    ],
+    etapes: [
+      'Étaler le chocolat noir riche en magnésium sur la galette croustillante.'
+    ]
+  },
+  {
+    id: 253, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Smoothie Myrtille et Chanvre',
+    temps: '15 min', calories: 180, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les myrtilles protègent les vaisseaux sanguins. Le chanvre apporte des oméga-3 et protéines complètes.',
+    ingredients: [
+      'Myrtilles',
+      '2 càs graines de chanvre',
+      'Eau'
+    ],
+    etapes: [
+      'Mixer. Le chanvre apporte les bons gras sans avoir besoin de lait végétal.'
+    ]
+  },
+  {
+    id: 254, cat: 'diner', premium: false,
+    emoji: '🍲', nom: 'Soupe Pois Cassés et Tofu Fumé',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les pois cassés sont des légumineuses riches en fer et en protéines végétales.',
+    ingredients: [
+      'Pois cassés',
+      'Tofu fumé en dés',
+      'Carottes'
+    ],
+    etapes: [
+      'Les pois cassés sont très riches en fer. Le tofu fumé apporte le goût sans le gras saturé.'
+    ]
+  },
+  {
+    id: 255, cat: 'diner', premium: false,
+    emoji: '🥗', nom: 'Cabillaud au Coco et Citronnelle',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La citronnelle est apaisante pour le système nerveux. Le coco apporte des graisses énergisantes.',
+    ingredients: [
+      'Dos de cabillaud',
+      'Lait de coco',
+      'Citronnelle',
+      'Épinards'
+    ],
+    etapes: [
+      'Pocher le poisson dans le coco infusé à la citronnelle. Servir sur un lit d\'épinards.'
+    ]
+  },
+  {
+    id: 256, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Risotto de Quinoa aux Champignons',
+    temps: '15 min', calories: 350, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les champignons sont riches en sélénium et vitamines B. Le quinoa est une protéine végétale complète.',
+    ingredients: [
+      'Quinoa',
+      'Bouillon de légumes',
+      'Champignons variés',
+      'Persillade'
+    ],
+    etapes: [
+      'Cuire le quinoa comme un risotto. Ajouter les champignons sautés en fin de cuisson.'
+    ]
+  },
+  {
+    id: 257, cat: 'diner', premium: false,
+    emoji: '🍜', nom: 'Salade Tiède d\'Artichaut et Noix',
+    temps: '15 min', calories: 270, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'L\'artichaut est hépato-protecteur. La mâche est exceptionnellement riche en oméga-3.',
+    ingredients: [
+      'Coeurs d\'artichauts',
+      'Mâche',
+      'Noix',
+      'Vinaigre de cidre'
+    ],
+    etapes: [
+      'L\'artichaut soutient le foie pendant la nuit, ce qui peut réduire les impatiences.'
+    ]
+  },
+  {
+    id: 258, cat: 'diner', premium: false,
+    emoji: '🌿', nom: 'Frittata Asperges et Aneth',
+    temps: '15 min', calories: 280, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les oeufs apportent du tryptophane pour le sommeil. L\'aneth a des propriétés relaxantes.',
+    ingredients: [
+      '2 oeufs',
+      'Asperges vertes',
+      'Aneth frais',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Cuire à la poêle à feu doux. L\'aneth est apaisant pour le système nerveux.'
+    ]
+  },
+  {
+    id: 259, cat: 'diner', premium: false,
+    emoji: '🫙', nom: 'Tofu Laqué au Tamari et Brocoli',
+    temps: '15 min', calories: 300, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le tofu est riche en calcium et isoflavones. Le brocoli apporte vitamine C et fer végétal.',
+    ingredients: [
+      'Tofu ferme',
+      'Tamari sans gluten',
+      'Gingembre',
+      'Brocoli vapeur'
+    ],
+    etapes: [
+      'Faire mariner le tofu et le griller. Servir avec le brocoli riche en fibres et minéraux.'
+    ]
+  },
+  {
+    id: 260, cat: 'diner', premium: false,
+    emoji: '🌙', nom: 'Bouillon Thaï aux Crevettes',
+    temps: '15 min', calories: 200, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les crevettes sont riches en iode et sélénium. Ce bouillon très léger favorise un sommeil profond.',
+    ingredients: [
+      'Bouillon',
+      'Crevettes',
+      'Champignons',
+      'Coriandre'
+    ],
+    etapes: [
+      'Un dîner très léger qui ne pèse pas sur la digestion nocturne.'
+    ]
+  },
+  {
+    id: 261, cat: 'diner', premium: false,
+    emoji: '🐟', nom: 'Écrasé de Courge Butternut et Pignons',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La courge butternut est riche en bêta-carotène et potassium. Les pignons apportent du magnésium.',
+    ingredients: [
+      'Courge butternut',
+      'Pignons de pin torréfiés',
+      'Muscade'
+    ],
+    etapes: [
+      'Réconfortant et riche en nutriments essentiels pour la relaxation musculaire.'
+    ]
+  },
+  {
+    id: 262, cat: 'diner', premium: false,
+    emoji: '🥣', nom: 'Sardines Grillées et Fenouil',
+    temps: '15 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les sardines fraîches sont riches en oméga-3 et calcium. Le fenouil est antispasmodique.',
+    ingredients: [
+      'Sardines fraîches',
+      'Fenouil émincé',
+      'Citron',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Le fenouil cru aide à une digestion parfaite, évitant les reflux qui aggravent le SJSR.'
+    ]
+  },
+  {
+    id: 263, cat: 'diner', premium: false,
+    emoji: '🫕', nom: 'Riz Sauté Légumes Verts et Sésame',
+    temps: '15 min', calories: 330, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le sésame noir est très riche en calcium et magnésium. Le riz basmati a un index glycémique modéré.',
+    ingredients: [
+      'Riz basmati cuit',
+      'Courgettes',
+      'Pois gourmands',
+      'Graines de sésame'
+    ],
+    etapes: [
+      'Sauter rapidement les légumes, ajouter le riz et finir par le sésame noir.'
+    ]
+  },
+  {
+    id: 264, cat: 'petit-dejeuner', premium: false,
+    emoji: '🟢', nom: 'Bol d\'Énergie Spiruline et Kiwi',
+    temps: '15 min', calories: 260, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La spiruline est la source la plus concentrée en fer végétal. La vitamine C du kiwi multiplie son absorption.',
+    ingredients: [
+      '1 càc spiruline',
+      '2 kiwis mûrs',
+      'Yaourt de soja',
+      'Graines de chanvre'
+    ],
+    etapes: [
+      'Mélanger la spiruline au yaourt. Ajouter les kiwis en morceaux.'
+    ]
+  },
+  {
+    id: 265, cat: 'petit-dejeuner', premium: false,
+    emoji: '🧡', nom: 'Omelette au Persil et Épinards',
+    temps: '15 min', calories: 240, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le persil en grande quantité apporte du fer végétal. Les oeufs fournissent tyrosine pour la dopamine.',
+    ingredients: [
+      '2 oeufs bio',
+      'Une poignée de persil frais',
+      'Jeunes pousses d\'épinards'
+    ],
+    etapes: [
+      'Hacher finement le persil et l\'incorporer aux oeufs. Cuire avec les épinards.'
+    ]
+  },
+  {
+    id: 266, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥛', nom: 'Pudding Chia Noisette et Banane',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La banane est riche en tryptophane et potassium. Le cacao non sucré est une source exceptionnelle de magnésium.',
+    ingredients: [
+      '3 càs graines de chia',
+      'Lait de noisette',
+      '1/2 banane mûre',
+      'Éclats de cacao 100%'
+    ],
+    etapes: [
+      'Laisser gonfler le chia toute la nuit. La banane et le cacao soutiennent la production de dopamine.'
+    ]
+  },
+  {
+    id: 267, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌾', nom: 'Tartine Sarrasin Avocat et Sésame Noir',
+    temps: '15 min', calories: 330, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'L\'avocat est riche en bons gras anti-inflammatoires. Le sésame noir apporte calcium et magnésium.',
+    ingredients: [
+      'Pain de sarrasin',
+      '1/2 avocat',
+      'Sésame noir',
+      'Citron'
+    ],
+    etapes: [
+      'Écraser l\'avocat avec le citron. Le sésame noir est un excellent complément anti-inflammatoire.'
+    ]
+  },
+  {
+    id: 268, cat: 'petit-dejeuner', premium: false,
+    emoji: '🍵', nom: 'Smoothie Vert Céleri Pomme Gingembre',
+    temps: '15 min', calories: 130, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le céleri est très alcalinisant. Le gingembre anti-inflammatoire calme le système nerveux dès le matin.',
+    ingredients: [
+      '2 branches de céleri',
+      '1 pomme',
+      '2cm gingembre frais',
+      'Eau'
+    ],
+    etapes: [
+      'Mixer pour un réveil sans acidité, idéal pour calmer les nerfs.'
+    ]
+  },
+  {
+    id: 269, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥑', nom: 'Crêpes à la Farine de Châtaigne',
+    temps: '15 min', calories: 310, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La farine de châtaigne est alcalinisante et riche en magnésium. Elle est naturellement sucrée.',
+    ingredients: [
+      '100g farine de châtaigne',
+      '200ml lait d\'amande',
+      '1 oeuf'
+    ],
+    etapes: [
+      'La châtaigne est l\'une des rares fécules alcalinisantes, riche en minéraux.'
+    ]
+  },
+  {
+    id: 270, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥣', nom: 'Salade de Fruits Mûrs et Menthe',
+    temps: '15 min', calories: 150, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les fruits mûrs sont alcalinisants et riches en antioxydants. La menthe facilite la digestion.',
+    ingredients: [
+      'Pêches',
+      'Poires mûres',
+      'Menthe fraîche hachée'
+    ],
+    etapes: [
+      'Les fruits bien mûrs sont plus digestes et alcalinisants que les fruits acides.'
+    ]
+  },
+  {
+    id: 271, cat: 'petit-dejeuner', premium: false,
+    emoji: '🥞', nom: 'Kasha au Lait de Riz et Noix du Brésil',
+    temps: '15 min', calories: 300, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: '2 noix du Brésil couvrent 100% des besoins en sélénium, essentiel pour le système nerveux.',
+    ingredients: [
+      'Sarrasin grillé Kasha',
+      'Lait de riz',
+      '2 noix du Brésil'
+    ],
+    etapes: [
+      'Cuire le sarrasin dans le lait de riz. Les noix du Brésil apportent le sélénium pour le système nerveux.'
+    ]
+  },
+  {
+    id: 272, cat: 'petit-dejeuner', premium: false,
+    emoji: '🫐', nom: 'Pâte à Tartiner Amande et Curcuma',
+    temps: '15 min', calories: 260, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La purée d\'amande est riche en magnésium et vitamine E. Le curcuma + poivre est anti-inflammatoire.',
+    ingredients: [
+      'Purée d\'amande blanche',
+      'Curcuma',
+      'Poivre',
+      'Miel de fleurs'
+    ],
+    etapes: [
+      'Mélanger le curcuma à la purée d\'amande avec une pointe de poivre pour l\'activation.'
+    ]
+  },
+  {
+    id: 273, cat: 'petit-dejeuner', premium: false,
+    emoji: '🌿', nom: 'Bouillon Miso et Tofu Soyeux',
+    temps: '15 min', calories: 150, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le miso est riche en probiotiques et acides aminés. Le tofu soyeux apporte des protéines douces.',
+    ingredients: [
+      'Pâte miso blanc',
+      'Tofu soyeux',
+      'Algues wakamé',
+      'Eau'
+    ],
+    etapes: [
+      'Une option salée japonaise parfaite pour démarrer la journée sans pics glycémiques.'
+    ]
+  },
+  {
+    id: 274, cat: 'dejeuner', premium: false,
+    emoji: '🥦', nom: 'Lunchbox Poulet Citron et Brocoli',
+    temps: '15 min', calories: 370, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le trio poulet-brocoli-citron maximise l\'absorption du fer héminique avec la vitamine C.',
+    ingredients: [
+      'Blanc de poulet',
+      'Brocoli',
+      'Zeste de citron',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'Associer le poulet (fer) au brocoli et citron (vitamine C) pour l\'absorption.'
+    ]
+  },
+  {
+    id: 275, cat: 'dejeuner', premium: false,
+    emoji: '🌮', nom: 'Salade Lentilles Béluga et Poivrons',
+    temps: '15 min', calories: 370, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les lentilles béluga sont les plus riches en fer végétal. Le poivron rouge triple l\'absorption.',
+    ingredients: [
+      'Lentilles noires béluga',
+      'Poivron rouge cru',
+      'Oignon rouge',
+      'Coriandre'
+    ],
+    etapes: [
+      'Le poivron rouge est l\'une des meilleures sources de vitamine C pour fixer le fer des lentilles.'
+    ]
+  },
+  {
+    id: 276, cat: 'dejeuner', premium: false,
+    emoji: '🍲', nom: 'Cabillaud en Papillote et Panais',
+    temps: '15 min', calories: 300, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le cabillaud en papillote préserve tous les nutriments. Le panais est alcalinisant et digeste.',
+    ingredients: [
+      'Filet de cabillaud',
+      'Panais',
+      'Thym',
+      'Huile de colza'
+    ],
+    etapes: [
+      'Le panais est un légume racine doux et alcalinisant qui remplace avantageusement les pâtes.'
+    ]
+  },
+  {
+    id: 277, cat: 'dejeuner', premium: false,
+    emoji: '🥘', nom: 'Bowl Quinoa Patate Douce et Tahini',
+    temps: '15 min', calories: 430, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La patate douce est à index glycémique bas. Le tahini apporte calcium et magnésium.',
+    ingredients: [
+      'Quinoa',
+      'Patate douce rôtie',
+      'Sauce tahini',
+      'Graines de courge'
+    ],
+    etapes: [
+      'Le sésame et la courge soutiennent la relaxation musculaire nocturne.'
+    ]
+  },
+  {
+    id: 278, cat: 'dejeuner', premium: false,
+    emoji: '🌯', nom: 'Tartare de Saumon à l\'Aneth',
+    temps: '15 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le saumon frais préserve tous ses oméga-3. La vitamine D réduit l\'inflammation nerveuse du SJSR.',
+    ingredients: [
+      'Saumon frais haché',
+      'Aneth',
+      'Citron lime',
+      'Huile d\'olive'
+    ],
+    etapes: [
+      'La vitamine D du saumon est essentielle en cas de carence liée au SJSR.'
+    ]
+  },
+  {
+    id: 279, cat: 'dejeuner', premium: false,
+    emoji: '🫕', nom: 'Riz Sauvage aux Amandes et Abricots',
+    temps: '15 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le riz sauvage est riche en magnésium et zinc. Les abricots secs concentrent le fer végétal.',
+    ingredients: [
+      'Riz sauvage',
+      'Amandes effilées',
+      'Abricots secs bio'
+    ],
+    etapes: [
+      'Les abricots secs apportent du fer et les amandes du magnésium.'
+    ]
+  },
+  {
+    id: 280, cat: 'dejeuner', premium: false,
+    emoji: '🥗', nom: 'Sauté de Boeuf aux Pois Gourmands',
+    temps: '15 min', calories: 450, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le fer héminique du boeuf est absorbé à 25%, contre 5% pour le fer végétal. Puissance incomparable.',
+    ingredients: [
+      'Bavette de boeuf',
+      'Pois gourmands',
+      'Gingembre',
+      'Tamari'
+    ],
+    etapes: [
+      'Le boeuf apporte le fer le mieux absorbé. Les pois gourmands apportent le croquant et la vitamine C.'
+    ]
+  },
+  {
+    id: 281, cat: 'dejeuner', premium: false,
+    emoji: '🫙', nom: 'Gratin Courge Butternut au Coco',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La courge butternut est riche en bêta-carotène et anti-oxydants. Le coco n\'apporte pas de lactose.',
+    ingredients: [
+      'Butternut',
+      'Lait de coco',
+      'Noix de muscade'
+    ],
+    etapes: [
+      'Alternative onctueuse et réconfortante sans produits laitiers.'
+    ]
+  },
+  {
+    id: 282, cat: 'dejeuner', premium: false,
+    emoji: '🥩', nom: 'Salade Pois Chiches Tomate et Persil',
+    temps: '15 min', calories: 360, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le persil en grande quantité est l\'un des meilleurs aliments pour le fer végétal biodisponible.',
+    ingredients: [
+      'Pois chiches',
+      'Tomates cerises',
+      'Ail',
+      'Beaucoup de persil'
+    ],
+    etapes: [
+      'Le persil ne doit pas être une décoration mais un ingrédient majeur pour son apport en fer.'
+    ]
+  },
+  {
+    id: 283, cat: 'dejeuner', premium: false,
+    emoji: '🐟', nom: 'Dinde à la Sauge et Purée de Carotte',
+    temps: '15 min', calories: 380, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le tryptophane de la dinde se convertit en sérotonine puis mélatonine pour un bon sommeil.',
+    ingredients: [
+      'Escalope de dinde',
+      'Sauge fraîche',
+      'Carottes vapeur'
+    ],
+    etapes: [
+      'La dinde est riche en tryptophane, précurseur de la sérotonine pour un bon sommeil.'
+    ]
+  },
+  {
+    id: 284, cat: 'snack', premium: false,
+    emoji: '🥕', nom: 'Infusion Gingembre et Noix Mélangées',
+    temps: '15 min', calories: 120, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le gingembre infusé est anti-inflammatoire. Le mélange de noix apporte magnésium et sélénium.',
+    ingredients: [
+      'Gingembre frais infusé',
+      '1 noix du Brésil',
+      '2 amandes',
+      '1 noix'
+    ],
+    etapes: [
+      'L\'infusion remplace le thé noir (acidifiant) et les noix apportent les minéraux.'
+    ]
+  },
+  {
+    id: 285, cat: 'snack', premium: false,
+    emoji: '🥚', nom: 'Carré de Chocolat et Beurre de Cacahuète',
+    temps: '15 min', calories: 140, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le chocolat noir est riche en magnésium et polyphénols. Le beurre de cacahuète apporte des protéines.',
+    ingredients: [
+      '1 carré chocolat 90%',
+      '1 càc beurre de cacahuète sans sucre'
+    ],
+    etapes: [
+      'Un duo gagnant pour le moral et les muscles sans sucre raffiné.'
+    ]
+  },
+  {
+    id: 286, cat: 'snack', premium: false,
+    emoji: '🫒', nom: 'Jus Frais Carotte Orange Curcuma',
+    temps: '15 min', calories: 130, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La vitamine C de l\'orange aide à absorber le fer des carottes. Le curcuma est anti-inflammatoire.',
+    ingredients: [
+      '2 carottes',
+      '1 orange',
+      '1cm racine de curcuma'
+    ],
+    etapes: [
+      'À presser frais pour garder tous les micronutriments.'
+    ]
+  },
+  {
+    id: 287, cat: 'snack', premium: false,
+    emoji: '🌰', nom: 'Graines de Tournesol Grillées',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les graines de tournesol sont riches en vitamine E antioxydante et en magnésium.',
+    ingredients: [
+      'Graines de tournesol',
+      'Pincée de sel de mer'
+    ],
+    etapes: [
+      'Griller légèrement à la poêle. Riche en vitamine E et magnésium.'
+    ]
+  },
+  {
+    id: 288, cat: 'snack', premium: false,
+    emoji: '🫚', nom: 'Compote Pomme et Cannelle Maison',
+    temps: '15 min', calories: 110, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La cannelle est l\'une des épices les plus efficaces pour stabiliser la glycémie.',
+    ingredients: [
+      'Pommes',
+      'Cannelle en poudre'
+    ],
+    etapes: [
+      'Cuire les pommes sans sucre ajouté. La cannelle aide à réguler le taux de sucre sanguin.'
+    ]
+  },
+  {
+    id: 289, cat: 'snack', premium: false,
+    emoji: '🍊', nom: 'Yaourt de Coco et Baies de Goji',
+    temps: '15 min', calories: 150, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Le yaourt de coco est sans lactose. Les baies de goji sont riches en antioxydants et vitamine C.',
+    ingredients: [
+      'Yaourt coco',
+      '1 càs baies de goji'
+    ],
+    etapes: [
+      'Snack gourmand et protecteur pour les cellules nerveuses.'
+    ]
+  },
+  {
+    id: 290, cat: 'snack', premium: false,
+    emoji: '🍎', nom: 'Bâtonnets Carotte et Hummus de Lentilles',
+    temps: '15 min', calories: 180, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les lentilles corail sont riches en fer. Le citron optimise l\'absorption du fer végétal.',
+    ingredients: [
+      'Carottes',
+      'Lentilles corail mixées avec citron et tahini'
+    ],
+    etapes: [
+      'L\'apport de citron dans le hummus assure l\'absorption du fer des lentilles.'
+    ]
+  },
+  {
+    id: 291, cat: 'snack', premium: false,
+    emoji: '🥜', nom: 'Noix de Macadamia et Menthe',
+    temps: '15 min', calories: 170, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les noix de macadamia sont les plus riches en acides gras mono-insaturés, anti-inflammatoires.',
+    ingredients: [
+      '5 noix de macadamia',
+      'Tisane de menthe'
+    ],
+    etapes: [
+      'La macadamia est très riche en bons gras et magnésium.'
+    ]
+  },
+  {
+    id: 292, cat: 'snack', premium: false,
+    emoji: '🫐', nom: 'Galette de Riz et Purée de Noisette',
+    temps: '15 min', calories: 170, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'La purée de noisette est riche en vitamine E et magnésium. La tyrosine soutient la dopamine.',
+    ingredients: [
+      'Galette de riz complet',
+      'Purée de noisette'
+    ],
+    etapes: [
+      'La noisette contient de la tyrosine pour soutenir la production de dopamine en fin de journée.'
+    ]
+  },
+  {
+    id: 293, cat: 'snack', premium: false,
+    emoji: '🍫', nom: 'Smoothie Myrtilles et Lait d\'Amande',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl', 'vg'],
+    benefices: 'Les myrtilles protègent les vaisseaux sanguins grâce aux anthocyanes. Le lait d\'amande apporte du calcium.',
+    ingredients: [
+      'Myrtilles surgelées ou fraîches',
+      'Lait d\'amande'
+    ],
+    etapes: [
+      'Mixer pour un snack protecteur des vaisseaux sanguins.'
+    ]
+  },
+  {
+    id: 294, cat: 'diner', premium: false,
+    emoji: '🍲', nom: 'Soupe de Potiron au Sésame Noir',
+    temps: '15 min', calories: 220, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le potiron est riche en bêta-carotène. Le sésame noir est une source exceptionnelle de calcium.',
+    ingredients: [
+      'Potiron',
+      'Oignon',
+      'Sésame noir'
+    ],
+    etapes: [
+      'Dîner tôt et léger pour éviter d\'encombrer la digestion nocturne.'
+    ]
+  },
+  {
+    id: 295, cat: 'diner', premium: false,
+    emoji: '🥗', nom: 'Tofu Grillé Épinards et Chanvre',
+    temps: '15 min', calories: 290, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le tofu, les épinards et le chanvre forment un trio exceptionnel pour le fer, calcium et magnésium.',
+    ingredients: [
+      'Tofu ferme',
+      'Grandes feuilles d\'épinards',
+      'Chanvre'
+    ],
+    etapes: [
+      'Faire sauter les épinards brièvement pour garder les minéraux intacts.'
+    ]
+  },
+  {
+    id: 296, cat: 'diner', premium: false,
+    emoji: '🥦', nom: 'Asperges Vapeur et Huile de Lin',
+    temps: '15 min', calories: 160, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les asperges sont diurétiques et riches en acide folique. L\'huile de lin crue préserve ses oméga-3.',
+    ingredients: [
+      'Asperges',
+      'Huile de lin crue',
+      'Sel de mer'
+    ],
+    etapes: [
+      'L\'asperge est très digeste. L\'huile de lin apporte les oméga-3 essentiels après cuisson.'
+    ]
+  },
+  {
+    id: 297, cat: 'diner', premium: false,
+    emoji: '🍜', nom: 'Salade de Mâche et Noix',
+    temps: '15 min', calories: 210, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La mâche est la salade la plus riche en oméga-3. Les noix renforcent cet apport considérablement.',
+    ingredients: [
+      'Mâche',
+      'Cerneaux de noix',
+      'Vinaigre de cidre'
+    ],
+    etapes: [
+      'La mâche est une salade d\'exception pour le système nerveux.'
+    ]
+  },
+  {
+    id: 298, cat: 'diner', premium: false,
+    emoji: '🌿', nom: 'Maquereau au Four et Pommes Vapeur',
+    temps: '15 min', calories: 400, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le maquereau est très riche en oméga-3 et vitamine D. Les pommes vapeur sont alcalinisantes.',
+    ingredients: [
+      'Filet de maquereau',
+      'Pommes de terre vapeur',
+      'Échalotes'
+    ],
+    etapes: [
+      'Les pommes de terre vapeur sont d\'excellents alcalinisants.'
+    ]
+  },
+  {
+    id: 299, cat: 'diner', premium: false,
+    emoji: '🫙', nom: 'Omelette Blanche aux Fines Herbes',
+    temps: '15 min', calories: 130, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les blancs d\'oeufs sont les protéines les plus légères. L\'estragon est naturellement relaxant.',
+    ingredients: [
+      '2 blancs d\'oeufs',
+      'Ciboulette',
+      'Persil',
+      'Estragon'
+    ],
+    etapes: [
+      'Pour un soir où la digestion doit être quasi inexistante avant le coucher.'
+    ]
+  },
+  {
+    id: 300, cat: 'diner', premium: false,
+    emoji: '🌙', nom: 'Velouté de Courgettes et Menthe',
+    temps: '15 min', calories: 180, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La courgette est très légère et alcalinisante. La menthe calme les spasmes musculaires nocturnes.',
+    ingredients: [
+      'Courgettes',
+      'Menthe fraîche',
+      'Une noisette de beurre de cajou'
+    ],
+    etapes: [
+      'La menthe apporte une sensation de fraîcheur interne calmante.'
+    ]
+  },
+  {
+    id: 301, cat: 'diner', premium: false,
+    emoji: '🐟', nom: 'Dahl de Lentilles Corail au Curcuma',
+    temps: '15 min', calories: 300, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Le curcuma + poivre est le duo anti-inflammatoire le plus puissant. Les lentilles sont riches en fer.',
+    ingredients: [
+      'Lentilles corail',
+      'Curcuma',
+      'Poivre',
+      'Lait de coco'
+    ],
+    etapes: [
+      'Mijoter doucement. Les lentilles corail sont les plus digestes des légumineuses.'
+    ]
+  },
+  {
+    id: 302, cat: 'diner', premium: false,
+    emoji: '🥣', nom: 'Champignons à l\'Ail et Persil',
+    temps: '15 min', calories: 140, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'Les champignons shiitakés sont riches en sélénium et vitamines B. L\'ail est anti-inflammatoire.',
+    ingredients: [
+      'Champignons de Paris ou shiitakés',
+      'Ail',
+      'Persil plat'
+    ],
+    etapes: [
+      'Sauter à la poêle sans matières grasses saturées. Riche en minéraux essentiels.'
+    ]
+  },
+  {
+    id: 303, cat: 'diner', premium: false,
+    emoji: '🫕', nom: 'Tisane Nuit Paisible et Chocolat Noir',
+    temps: '15 min', calories: 100, diff: 'Facile',
+    tags: ['sg', 'sl'],
+    benefices: 'La valériane favorise le sommeil profond. Le chocolat noir à 90% apporte du magnésium relaxant.',
+    ingredients: [
+      'Tisane mélisse/valériane',
+      'Chocolat 90%'
+    ],
+    etapes: [
+      'Terminer par un rituel relaxant pour préparer le cerveau au sommeil profond.'
+    ]
   }
 ];
 
