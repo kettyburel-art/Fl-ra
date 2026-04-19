@@ -6043,10 +6043,11 @@ window.addEventListener('load', () => {
 });
 
 function loadState() {
-  profile   = JSON.parse(localStorage.getItem('flora_profile') || '{}');
-  journal   = JSON.parse(localStorage.getItem('flora_journal') || '{}');
-  agenda    = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
-  isPremium = localStorage.getItem('flora_premium') === 'true';
+  profile      = JSON.parse(localStorage.getItem('flora_profile')  || '{}');
+  journal      = JSON.parse(localStorage.getItem('flora_journal')  || '{}');
+  agenda       = JSON.parse(localStorage.getItem('flora_agenda')   || '{}');
+  placardItems = JSON.parse(localStorage.getItem('flora_placard')  || '{}');
+  isPremium    = localStorage.getItem('flora_premium') === 'true';
 }
 
 function saveState() {
@@ -8124,9 +8125,11 @@ function autoGenerateWeek() {
   // Filtrer recettes accessibles selon premium + profil
   function pool(cat) {
     let recs = RECETTES.filter(r => r.cat === cat && (!r.premium || isPremium));
-    if (profile.sansGluten)  recs = recs.filter(r => r.tags?.includes('sg'));
-    if (profile.sansLactose) recs = recs.filter(r => r.tags?.includes('sl'));
-    return recs.length ? recs : RECETTES.filter(r => r.cat === cat && (!r.premium || isPremium));
+    const full = [...recs]; // garder pool complet pour fallback
+    if (profile.sansGluten)   recs = recs.filter(r => r.tags?.includes('sg'));
+    if (profile.sansLactose)  recs = recs.filter(r => r.tags?.includes('sl'));
+    if (profile.vegetarien)   recs = recs.filter(r => r.tags?.includes('vg'));
+    return recs.length ? recs : full; // fallback si filtre trop restrictif
   }
 
   const pdjs    = pool('petit-dejeuner');
@@ -8422,7 +8425,7 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
-  if (page === 'accueil')    { renderConseil(); updateDashboard(); }
+  if (page === 'accueil')    { renderConseil(); updateDashboard(); renderStreakOnDashboard(); }
   if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
@@ -8510,6 +8513,19 @@ function updateDashboard() {
     if (menuDuJourEl) menuDuJourEl.classList.add('hidden');
   }
 
+  // Résumé sommeil du jour sur le dashboard (card Journal du jour)
+  const todaySleep = journal[dateKey(now)];
+  const journalSubEl = document.getElementById('journal-today-status');
+  if (journalSubEl) {
+    if (todaySleep && (todaySleep.coucher || todaySleep.duree)) {
+      const duree = todaySleep.duree ? `${todaySleep.duree}h` : '';
+      const stars = todaySleep.qualite ? ' · ' + '★'.repeat(todaySleep.qualite) : '';
+      journalSubEl.textContent = (duree + stars) || 'Entrée enregistrée ✓';
+    } else {
+      journalSubEl.textContent = 'Aucune entrée…';
+    }
+  }
+
   // Week chart
   renderWeekChart();
 }
@@ -8550,6 +8566,7 @@ function dateKey(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+
 function setJournalDate() {
   renderJournalMedChips();
   const now  = new Date();
@@ -8557,14 +8574,59 @@ function setJournalDate() {
   document.getElementById('journal-entry-date').textContent =
     now.toLocaleDateString('fr-FR', opts);
 
+  // ── RÉINITIALISATION COMPLÈTE du formulaire avant rechargement ──
+  // Sliders aux valeurs par défaut
+  const defaults = { 'sl-qualite':3, 'sl-sjsr':0, 'sl-energie':5, 'sl-douleur':0 };
+  Object.entries(defaults).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  });
+  updateSliderVal('sl-qualite', 'val-qualite', true, false);
+  updateSliderVal('sl-sjsr',    'val-sjsr',    false, true);
+  updateSliderVal('sl-energie', 'val-energie', false, false);
+  updateSliderVal('sl-douleur', 'val-douleur', false, false);
+
+  // Heures par défaut
+  const coucherEl = document.getElementById('sl-coucher');
+  const leverEl   = document.getElementById('sl-lever');
+  if (coucherEl) coucherEl.value = '23:00';
+  if (leverEl)   leverEl.value   = '07:00';
+  updateSleepCalc();
+
+  // Cycles par défaut
+  currentCycles = 4;
+  setCyclesByCount(4);
+
+  // Levers nocturnes à zéro
+  leversCount = 0;
+  const lc = document.getElementById('levers-count');
+  if (lc) lc.textContent = leversLabels[0];
+
+  // Désactiver toutes les chips
+  document.querySelectorAll('#symptom-chips .chip.active').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('[onclick*="rituel"].active').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('[onclick*="endormissement"].active').forEach(c => {
+    c.classList.remove('active');
+    delete c.dataset.selected;
+  });
+  document.querySelectorAll('[onclick*="location"].active').forEach(c => {
+    c.classList.remove('active');
+    delete c.dataset.selected;
+  });
+  document.querySelectorAll('.journal-med-chip.active').forEach(c => c.classList.remove('active'));
+  const locRow = document.getElementById('sjsr-location-row');
+  if (locRow) locRow.style.display = 'none';
+
+  // Notes
+  const notesEl = document.getElementById('journal-notes');
+  if (notesEl) notesEl.value = '';
+
   // Charger les données existantes du jour si elles existent
   const today = dateKey(now);
   const e = journal[today];
-  if (!e) return; // Pas d'entrée aujourd'hui — formulaire vide par défaut
+  if (!e) return; // Pas d'entrée aujourd'hui — formulaire à zéro
 
-  // Heures coucher/lever
-  const coucherEl = document.getElementById('sl-coucher');
-  const leverEl   = document.getElementById('sl-lever');
+  // Heures coucher/lever (réutilise les vars déjà déclarées)
   if (coucherEl && e.coucher) coucherEl.value = e.coucher;
   if (leverEl   && e.lever)   leverEl.value   = e.lever;
   updateSleepCalc();
@@ -8643,8 +8705,7 @@ function setJournalDate() {
     });
   }
 
-  // Notes
-  const notesEl = document.getElementById('journal-notes');
+  // Notes (réutilise notesEl déjà déclaré)
   if (notesEl && e.notes) notesEl.value = e.notes;
 }
 
@@ -8752,12 +8813,15 @@ function initSjsrToggle() {
 
 // Collecter toutes les données sommeil avancées
 function getSleepData() {
+  // Cibler uniquement la page journal pour éviter les conflits inter-pages
+  const journalPage = document.getElementById('page-journal') || document;
+
   // Endormissement
-  const endEl = document.querySelector('[data-selected][onclick*="endormissement"]');
+  const endEl = journalPage.querySelector('[data-selected][onclick*="endormissement"]');
   const endormissement = endEl ? endEl.dataset.selected : 'rapide';
 
   // Localisation SJSR
-  const locEl = document.querySelector('[data-selected][onclick*="location"]');
+  const locEl = journalPage.querySelector('[data-selected][onclick*="location"]');
   const sjsrLocation = locEl ? locEl.dataset.selected : '';
 
   // Médications cochées (chips dynamiques générées depuis le profil)
@@ -9117,9 +9181,15 @@ function renderHistorique() {
     const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
     const capLabel = label.charAt(0).toUpperCase() + label.slice(1);
     const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
+    const leversStr = typeof e.levers === 'number' && e.levers > 0
+      ? ` · ${['','1 lever','2 levers','3 levers','4+ levers'][Math.min(e.levers,4)]}`
+      : '';
+    const endStr = e.endormissement && e.endormissement !== 'rapide'
+      ? ` · endorm. ${e.endormissement}` : '';
+    const durStr = (e.duree && e.duree > 0) ? e.duree+'h' : '';
     const sleepLabel = e.coucher && e.lever
-      ? `${e.coucher}→${e.lever} · ${e.duree}h · ${e.cycles||'?'} cycles`
-      : e.duree ? `${e.duree}h de sommeil` : '—';
+      ? `${e.coucher}→${e.lever}${durStr?' · '+durStr:''} · ${e.cycles||'?'} cycles${leversStr}${endStr}`
+      : durStr ? `${durStr} de sommeil${leversStr}` : '—';
     const medsHTML = e.meds && e.meds.length
       ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
           ${e.meds.map(m => `<span style="background:#fef5e8;color:#d35400;border-radius:99px;padding:2px 8px;font-size:0.68rem;font-weight:600;">💊 ${m}</span>`).join('')}
@@ -9664,8 +9734,11 @@ function getStreak() {
   const today = new Date();
   let streak = 0;
   let d = new Date(today);
+  // Ne compter le jour en cours que s'il a une vraie entrée
   while (true) {
-    if (journal[dateKey(d)]) { streak++; d.setDate(d.getDate() - 1); }
+    const entry = journal[dateKey(d)];
+    const hasRealData = entry && (entry.coucher || entry.energie || entry.sjsr !== undefined);
+    if (hasRealData) { streak++; d.setDate(d.getDate() - 1); }
     else break;
   }
   return streak;
