@@ -6,6 +6,44 @@
 'use strict';
 
 // ============================
+// HELPERS SÉCURITÉ
+// ============================
+function escapeHTML(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+
+function showToast(message, duration = 2500, color = null) {
+  const bg = color || 'var(--green-deep)';
+  const existing = document.querySelectorAll('.flora-toast');
+  existing.forEach(t => t.remove()); // Éviter empilement
+  const msg = document.createElement('div');
+  msg.className = 'flora-toast';
+  msg.style.cssText = `position:fixed;top:70px;left:50%;transform:translateX(-50%);background:${bg};color:white;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;`;
+  msg.textContent = message;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), duration);
+}
+
+// localStorage wrappé pour gérer les erreurs (incognito, quota plein)
+function safeLocalStorage(key, value) {
+  try {
+    if (value === undefined) return localStorage.getItem(key);
+    localStorage.setItem(key, value);
+    return true;
+  } catch(e) {
+    console.log('localStorage indisponible:', e.message);
+    return null;
+  }
+}
+
+// ============================
 // DATA — Recettes
 // ============================
 const RECETTES = [
@@ -6043,18 +6081,35 @@ window.addEventListener('load', () => {
 });
 
 function loadState() {
-  profile      = JSON.parse(localStorage.getItem('flora_profile')  || '{}');
-  journal      = JSON.parse(localStorage.getItem('flora_journal')  || '{}');
-  agenda       = JSON.parse(localStorage.getItem('flora_agenda')   || '{}');
-  placardItems = JSON.parse(localStorage.getItem('flora_placard')  || '{}');
-  isPremium    = localStorage.getItem('flora_premium') === 'true';
+  try {
+    profile      = JSON.parse(localStorage.getItem('flora_profile')  || '{}');
+    journal      = JSON.parse(localStorage.getItem('flora_journal')  || '{}');
+    agenda       = JSON.parse(localStorage.getItem('flora_agenda')   || '{}');
+    placardItems = JSON.parse(localStorage.getItem('flora_placard')  || '{}');
+    isPremium    = localStorage.getItem('flora_premium') === 'true';
+  } catch(e) {
+    console.error('loadState error:', e.message);
+    profile = {}; journal = {}; agenda = {}; placardItems = {}; isPremium = false;
+  }
 }
 
 function saveState() {
-  localStorage.setItem('flora_profile', JSON.stringify(profile));
-  localStorage.setItem('flora_journal',  JSON.stringify(journal));
-  localStorage.setItem('flora_agenda',   JSON.stringify(agenda));
-  localStorage.setItem('flora_placard',  JSON.stringify(placardItems));
+  try {
+    localStorage.setItem('flora_profile', JSON.stringify(profile));
+    localStorage.setItem('flora_journal',  JSON.stringify(journal));
+    localStorage.setItem('flora_agenda',   JSON.stringify(agenda));
+    localStorage.setItem('flora_placard',  JSON.stringify(placardItems));
+  } catch(e) {
+    console.error('saveState error:', e.message);
+    // Afficher un message à l'utilisateur si localStorage est plein
+    if (e.name === 'QuotaExceededError') {
+      const msg = document.createElement('div');
+      msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#e88080;color:white;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);';
+      msg.textContent = '⚠️ Stockage plein — libérez de l\'espace';
+      document.body.appendChild(msg);
+      setTimeout(() => msg.remove(), 4000);
+    }
+  }
 }
 
 // unlockDemo — ouvre la modale premium sur la zone code
@@ -6521,7 +6576,7 @@ function adminAddPremium(email, name, code) {
     name: name,
     premium: true
   };
-  alert(`✅ Compte ajouté : ${email}\nMot de passe : ${code}`);
+  showToast(`✅ Compte ajouté : ${email} — mot de passe : ${code}`, 4000);
 }
 
 function tryLoginOnEnter(e) {
@@ -8936,7 +8991,7 @@ function switchJTab(tab, el) {
 function exportJournalPDF() {
   const entries = Object.entries(journal).sort((a,b) => a[0].localeCompare(b[0]));
   if (!entries.length) {
-    alert('Aucune entrée à exporter. Commencez par remplir votre journal !');
+    showToast('Aucune entrée à exporter. Commencez par remplir votre journal !', 3000);
     return;
   }
 
@@ -9263,7 +9318,7 @@ function renderHistorique() {
         ${medsHTML}
         ${symptomsHTML}
         ${rituelsHTML}
-        ${e.notes ? `<div style="font-size:0.78rem;color:var(--text-mid);margin-top:6px;font-style:italic;border-left:2px solid var(--cream-dark);padding-left:8px;">${e.notes}</div>` : ''}
+        ${e.notes ? `<div style="font-size:0.78rem;color:var(--text-mid);margin-top:6px;font-style:italic;border-left:2px solid var(--cream-dark);padding-left:8px;">${escapeHTML(e.notes)}</div>` : ''}
       </div>`;
   }).join('');
   } catch(err) {
@@ -9761,6 +9816,7 @@ function openRecetteDuJour() {
 
 
 function getStreak() {
+  if (!journal || Object.keys(journal).length === 0) return 0;
   const today = new Date();
   let streak = 0;
   let d = new Date(today);
