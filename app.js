@@ -8614,6 +8614,9 @@ function updateDashboard() {
 
   // Week chart
   renderWeekChart();
+
+  // Stats compactes accueil (3 chiffres + mini-graphique énergie 7j)
+  renderHomeStats();
 }
 
 function renderWeekChart() {
@@ -8643,6 +8646,103 @@ function renderWeekChart() {
       <div class="chart-day" style="${isToday?'font-weight:700;color:var(--green-deep);':''}">${dayLabel}</div>
     </div>`;
   }).join('');
+}
+
+// ============================
+// HOME STATS (3 chiffres + mini-graph 7j)
+// ============================
+function renderHomeStats() {
+  const elE = document.getElementById('home-stat-energie');
+  const elD = document.getElementById('home-stat-douleur');
+  const elS = document.getElementById('home-stat-sjsr');
+  const svg = document.getElementById('home-energie-chart');
+  const moyEl = document.getElementById('home-energie-moy');
+  const labelsEl = document.getElementById('home-energie-labels');
+  if (!elE || !elD || !elS || !svg) return;
+
+  // Collecte des 7 derniers jours
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(d.getDate() - i);
+    days.push({ d, k: dateKey(d), entry: journal[dateKey(d)] });
+  }
+
+  const entries = days.map(x => x.entry).filter(e => e && typeof e === 'object');
+  const energies = entries.map(e => typeof e.energie === 'number' ? e.energie : null).filter(v => v !== null && v > 0);
+  const douleurs = entries.map(e => typeof e.douleur === 'number' ? e.douleur : null).filter(v => v !== null);
+  const nbSjsr  = entries.filter(e => typeof e.sjsr === 'number' && e.sjsr > 0).length;
+
+  // Chiffres
+  elE.textContent = energies.length ? (energies.reduce((a,b)=>a+b,0)/energies.length).toFixed(1) : '—';
+  elD.textContent = douleurs.length ? (douleurs.reduce((a,b)=>a+b,0)/douleurs.length).toFixed(1) : '—';
+  elS.textContent = nbSjsr > 0 ? nbSjsr : '—';
+  if (moyEl) moyEl.textContent = energies.length ? `moy. ${(energies.reduce((a,b)=>a+b,0)/energies.length).toFixed(1)}/10` : '';
+
+  // Mini-graphique énergie 7j — courbe SVG
+  const W = 300, H = 60, PAD_X = 8, PAD_Y = 6;
+  const n = days.length;
+  const step = (W - 2*PAD_X) / (n - 1);
+  const yFor = v => {
+    // v dans [0,10] → inversé (haut = haut score)
+    if (v === null || v === undefined) return null;
+    return H - PAD_Y - (v / 10) * (H - 2*PAD_Y);
+  };
+
+  const points = days.map((x, i) => {
+    const v = (x.entry && typeof x.entry.energie === 'number' && x.entry.energie > 0) ? x.entry.energie : null;
+    return { i, x: PAD_X + i*step, y: yFor(v), v };
+  });
+
+  // Tracer une ligne qui saute les trous (plusieurs segments)
+  const segments = [];
+  let current = [];
+  points.forEach(p => {
+    if (p.y === null) {
+      if (current.length) { segments.push(current); current = []; }
+    } else {
+      current.push(p);
+    }
+  });
+  if (current.length) segments.push(current);
+
+  const pathStrokes = segments.map(seg => {
+    if (seg.length === 1) {
+      // Un seul point → petit cercle, pas de ligne
+      return `<circle cx="${seg[0].x}" cy="${seg[0].y}" r="2.5" fill="#5a8a5a"/>`;
+    }
+    const d = seg.map((p,idx) => (idx===0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ');
+    return `<path d="${d}" fill="none" stroke="#5a8a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
+  }).join('');
+
+  // Points visibles
+  const dots = points.filter(p => p.y !== null).map(p =>
+    `<circle cx="${p.x}" cy="${p.y}" r="2.2" fill="#5a8a5a"/>`
+  ).join('');
+
+  // Ligne de base (0/10)
+  const baseY = H - PAD_Y;
+  const gridLine = `<line x1="${PAD_X}" y1="${baseY}" x2="${W-PAD_X}" y2="${baseY}" stroke="#e5e5e5" stroke-width="1" stroke-dasharray="2,3"/>`;
+
+  // Placeholder si aucune donnée
+  if (energies.length === 0) {
+    svg.innerHTML = `
+      ${gridLine}
+      <text x="${W/2}" y="${H/2 + 4}" text-anchor="middle" font-size="10" fill="#aaa">Pas encore de données — remplissez votre journal 🌱</text>
+    `;
+  } else {
+    svg.innerHTML = gridLine + pathStrokes + dots;
+  }
+
+  // Labels des jours (J-6 … J)
+  if (labelsEl) {
+    const dayShort = ['D','L','M','M','J','V','S'];
+    labelsEl.innerHTML = days.map(x => {
+      const isToday = x.k === dateKey(new Date());
+      const dayChar = dayShort[x.d.getDay()];
+      return `<span style="${isToday?'color:var(--green-deep);font-weight:700;':''}">${dayChar}</span>`;
+    }).join('');
+  }
 }
 
 // ============================
