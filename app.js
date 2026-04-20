@@ -8503,7 +8503,16 @@ function showPage(page) {
   });
 
   if (page === 'accueil')    { renderConseil(); updateDashboard(); renderStreakOnDashboard(); }
-  if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
+  if (page === 'journal')    {
+    setJournalDate();
+    updateSleepCalc();
+    initSjsrToggle();
+    // Re-rendre l'historique si l'onglet Historique est celui qui est visible
+    const histPanel = document.getElementById('jtab-historique');
+    if (histPanel && !histPanel.classList.contains('hidden')) {
+      renderHistorique();
+    }
+  }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     { loadProfil(); renderStats(); renderNotifPrefs(); }
@@ -9249,14 +9258,48 @@ function exportJournalPDF() {
 
 function renderHistorique() {
   const container = document.getElementById('historique-list');
-  if (!container) return; // Guard : container peut être null si page non visible
+  if (!container) {
+    console.warn('renderHistorique: container #historique-list absent');
+    return;
+  }
 
-  const entries = Object.entries(journal)
-    .filter(([k]) => k && k.match(/^\d{4}-\d{2}-\d{2}$/)) // exclure les clés invalides
-    .sort((a, b) => b[0].localeCompare(a[0]));
+  // DIAGNOSTIC : lire directement le localStorage pour vérifier la synchro
+  let raw = {};
+  try {
+    raw = JSON.parse(localStorage.getItem('flora_journal') || '{}');
+  } catch(e) {
+    container.innerHTML = '<p style="text-align:center;color:#c0392b;margin-top:32px;">⚠️ Données corrompues en stockage.</p>';
+    console.error('flora_journal JSON parse error:', e);
+    return;
+  }
+
+  // Si la var globale journal est désynchronisée, la resynchroniser
+  if (typeof journal !== 'object' || journal === null || Object.keys(journal).length !== Object.keys(raw).length) {
+    console.warn('journal en mémoire désynchronisé — resync depuis localStorage');
+    journal = raw;
+  }
+
+  let entries;
+  try {
+    entries = Object.entries(journal)
+      .filter(([k, v]) => k && /^\d{4}-\d{2}-\d{2}$/.test(k) && v && typeof v === 'object')
+      .sort((a, b) => b[0].localeCompare(a[0]));
+  } catch(err) {
+    console.error('renderHistorique filter error:', err);
+    container.innerHTML = '<p style="text-align:center;color:#c0392b;margin-top:32px;">⚠️ Erreur de lecture — recharge la page.</p>';
+    return;
+  }
 
   if (!entries.length) {
-    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Aucune entrée pour l\'instant. 🌱</p>';
+    const totalKeys = Object.keys(journal).length;
+    container.innerHTML = `
+      <p style="text-align:center;color:var(--text-light);margin-top:32px;">
+        Aucune entrée pour l'instant. 🌱
+      </p>
+      ${totalKeys > 0 ? `<p style="text-align:center;color:#c0392b;font-size:0.75rem;margin-top:8px;">
+        (${totalKeys} clé(s) trouvée(s) mais format invalide — debug : ${Object.keys(journal).slice(0,3).join(', ')})
+      </p>` : ''}
+    `;
     return;
   }
 
@@ -9837,6 +9880,30 @@ function getStreakMessage(n) {
   if (n < 14)  return 'Une semaine complète 🎉';
   if (n < 30)  return 'Régulière et déterminée 💚';
   return 'Un mois de suivi — extraordinaire 🏆';
+}
+
+// ============================
+// DEBUG — à retirer après diagnostic
+// ============================
+function debugJournal() {
+  const raw = localStorage.getItem('flora_journal') || '{}';
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch(e) {
+    alert('⚠️ PARSE ERROR: ' + e.message);
+    return;
+  }
+  const keys = Object.keys(parsed);
+  const sample = keys.length ? JSON.stringify(parsed[keys[0]], null, 2).slice(0, 400) : '(vide)';
+  alert(
+    '=== DEBUG JOURNAL ===\n\n' +
+    'Nombre de clés : ' + keys.length + '\n\n' +
+    'Clés : ' + keys.join(', ') + '\n\n' +
+    'journal (var mémoire) : ' + Object.keys(journal || {}).length + ' clé(s)\n\n' +
+    'Streak calculé : ' + getStreak() + '\n\n' +
+    'Première entrée :\n' + sample
+  );
 }
 
 function renderStreakOnDashboard() {
