@@ -1010,6 +1010,303 @@
           </div>
         </div>
 
+
+      <!-- PAGE ASSISTANT IA -->
+      <section id="page-assistant" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>🤖 Assistante Flōra</h2>
+        </div>
+        <div id="assistant-intro" style="padding:16px 0 8px;">
+          <div style="background:#fff8e8;border:1.5px solid #f0c040;border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start;">
+            <span style="font-size:1.1rem;flex-shrink:0;">⚠️</span>
+            <div style="font-size:0.75rem;color:#7a5a00;line-height:1.5;">
+              <strong>Information importante :</strong> Cette assistante fournit des informations générales sur le SJSR et la nutrition. Elle ne remplace pas l'avis d'un médecin. L'IA peut se tromper.
+            </div>
+          </div>
+          <div style="background:linear-gradient(135deg,var(--green-deep),#3d7a5a);border-radius:16px;padding:16px;margin-bottom:14px;">
+            <div style="font-family:var(--font-display);font-size:1.05rem;color:white;margin-bottom:6px;">🌿 Bonjour !</div>
+            <div style="font-size:0.82rem;color:rgba(255,255,255,0.88);line-height:1.6;">Je suis votre assistante bien-être personnelle. Posez-moi vos questions sur le SJSR, la nutrition, vos symptômes ou votre suivi.</div>
+          </div>
+          <div style="margin-bottom:14px;">
+            <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:8px;">Suggestions</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;" id="assistant-suggestions">
+              <button class="assist-chip" onclick="askAssistant(this.textContent)">Pourquoi mes jambes s'agitent-elles la nuit ?</button>
+              <button class="assist-chip" onclick="askAssistant(this.textContent)">Que manger ce soir pour mieux dormir ?</button>
+              <button class="assist-chip" onclick="askAssistant(this.textContent)">Analyse mon journal cette semaine</button>
+              <button class="assist-chip" onclick="askAssistant(this.textContent)">Mes médicaments interagissent-ils avec l'alimentation ?</button>
+              <button class="assist-chip" onclick="askAssistant(this.textContent)">Recette anti-SJSR rapide pour ce soir</button>
+              <button class="assist-chip" onclick="askAssistant(this.textContent)">Comment améliorer mon sommeil ?</button>
+            </div>
+          </div>
+        </div>
+        <div id="assistant-messages" style="display:flex;flex-direction:column;gap:12px;padding-bottom:120px;"></div>
+        <div style="position:fixed;bottom:64px;left:0;right:0;background:var(--white);border-top:1px solid var(--cream-dark);padding:10px 12px;z-index:100;">
+          <div style="display:flex;gap:8px;align-items:flex-end;">
+            <textarea id="assistant-input" placeholder="Posez votre question…" rows="1"
+              style="flex:1;border:1.5px solid var(--cream-dark);border-radius:12px;padding:10px 12px;font-family:var(--font-body);font-size:0.85rem;resize:none;outline:none;background:var(--cream);color:var(--text-dark);max-height:120px;overflow-y:auto;line-height:1.4;"
+              oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
+              onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAssistantMessage();}"></textarea>
+            <button onclick="sendAssistantMessage()" id="assistant-send-btn"
+              style="background:var(--green-deep);border:none;border-radius:12px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:1.1rem;">→</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE COMPLÉMENTS -->
+      <section id="page-complements" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Compléments 💊</h2>
+        </div>
+        <div class="batch-intro" style="margin-bottom:16px;">
+          <div class="batch-intro-icon">🔬</div>
+          <div class="batch-intro-text"><strong>Compléments &amp; SJSR</strong><br>Fiches détaillées sur les compléments alimentaires étudiés dans la prise en charge du syndrome des jambes sans repos.</div>
+        </div>
+        <div style="background:#fff8e1;border-left:4px solid #f59e0b;border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:0.78rem;color:#78510a;line-height:1.5;">⚠️ Ces informations sont données à titre éducatif. Consultez toujours votre médecin ou neurologue avant de débuter tout complément alimentaire.</div>
+
+        <!-- FICHE LACTOFERRINE -->
+        <div class="journal-block" style="border-left:4px solid var(--green-mid);padding:0;overflow:hidden;border-radius:16px;">
+          <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:20px 18px;color:white;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="font-size:2.2rem;">🧬</div>
+              <div>
+                <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;">Lactoferrine</div>
+                <div style="font-size:0.75rem;opacity:0.85;margin-top:2px;">Glycoprotéine liant le fer · Complément alimentaire</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;">
+              <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">🦵 SJSR</span>
+              <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">🧠 Dopamine</span>
+              <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">🔥 Anti-inflammatoire</span>
+              <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">⚗️ Données émergentes</span>
+            </div>
+          </div>
+          <div style="padding:16px 18px;display:flex;flex-direction:column;gap:18px;">
+            <div><div class="jblock-title" style="margin-bottom:8px;">🔎 Qu'est-ce que c'est ?</div><p style="font-size:0.83rem;color:var(--text-dark);line-height:1.6;margin:0;">La lactoferrine est une glycoprotéine naturellement présente dans le lait et les sécrétions biologiques. Sous forme de complément alimentaire (gélules ou poudre), elle est extraite et concentrée — <strong>sans lactose ni caséine</strong>, ce qui la rend compatible avec un protocole anti-inflammatoire.</p></div>
+            <div><div class="jblock-title" style="margin-bottom:8px;">⚙️ Mécanismes d'action</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="background:var(--cream);border-radius:10px;padding:10px 12px;"><div style="font-size:0.75rem;font-weight:600;color:var(--green-deep);margin-bottom:3px;">🔩 Transport du fer</div><div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">Facilite l'absorption intestinale du fer tout en limitant le fer libre pro-oxydant. Optimise le transport vers le cerveau.</div></div>
+                <div style="background:var(--cream);border-radius:10px;padding:10px 12px;"><div style="font-size:0.75rem;font-weight:600;color:var(--green-deep);margin-bottom:3px;">🧠 Axe dopamine–fer</div><div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">Dans le SJSR, le déficit en fer cérébral altère la tyrosine hydroxylase → baisse de synthèse de dopamine → perturbation des circuits moteurs.</div></div>
+                <div style="background:var(--cream);border-radius:10px;padding:10px 12px;"><div style="font-size:0.75rem;font-weight:600;color:var(--green-deep);margin-bottom:3px;">🔥 Anti-inflammatoire &amp; neuroprotecteur</div><div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">Modulation du stress oxydatif, effets neuroprotecteurs documentés.</div></div>
+              </div>
+            </div>
+            <div><div class="jblock-title" style="margin-bottom:8px;">🦵 Pertinence pour le SJSR</div><div style="font-size:0.83rem;color:var(--text-dark);line-height:1.6;">Plusieurs études montrent une <strong>diminution du fer dans le SNC</strong> indépendamment des taux sériques. Intérêt particulier si <strong>ferritine basse ou inflammation chronique</strong>.</div></div>
+            <div><div class="jblock-title" style="margin-bottom:8px;">📊 Données cliniques</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;"><span style="color:var(--green-mid);font-weight:700;flex-shrink:0;">✓</span>Amélioration des symptômes chez certains patients supplémentés</div>
+                <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;"><span style="color:var(--green-mid);font-weight:700;flex-shrink:0;">✓</span>Meilleure tolérance digestive que les sels de fer classiques</div>
+                <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:#c0392b;line-height:1.5;"><span style="font-weight:700;flex-shrink:0;">!</span>Pas de recommandation officielle à ce jour</div>
+              </div>
+            </div>
+            <div><div class="jblock-title" style="margin-bottom:8px;">💊 Dosage indicatif</div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                  <div style="text-align:center;"><div style="font-size:1.3rem;font-weight:700;color:var(--green-deep);">100–300 mg</div><div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">dose journalière</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.3rem;font-weight:700;color:var(--green-deep);">3–6 mois</div><div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">durée minimale</div></div>
+                </div>
+                <div style="font-size:0.72rem;color:var(--text-mid);margin-top:10px;border-top:1px solid var(--cream-dark);padding-top:8px;">À prendre de préférence à jeun. Dosage à adapter selon bilan et avis médical.</div>
+              </div>
+            </div>
+            <div><div class="jblock-title" style="margin-bottom:8px;">⚠️ Précautions</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">• Déconseillé en cas de surcharge en fer (hémochromatose)</div>
+                <div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">• Vérifier allergie aux protéines du lait</div>
+                <div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">• Bilan ferritine + fer sérique avant de débuter</div>
+              </div>
+            </div>
+            <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+              <div style="font-size:0.72rem;font-weight:600;color:var(--text-mid);margin-bottom:8px;">📚 Références</div>
+              <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;">Allen RP et al. <em>Sleep Med</em>, 2014 · Earley CJ et al. <em>Sleep Med</em>, 2017 · Legrand D. <em>Biochem Cell Biol</em>, 2016</div>
+            </div>
+            <div style="text-align:center;padding-bottom:4px;">
+              <button class="btn-primary" style="font-size:0.82rem;" onclick="copyLactoferrinMsg()">📋 Copier le message pour mon médecin</button>
+              <div id="lacto-copy-confirm" class="hidden" style="font-size:0.75rem;color:var(--green-mid);margin-top:8px;">✅ Message copié !</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NIVEAU 1 -->
+        <div style="margin-top:28px;">
+          <div class="section-title" style="display:flex;align-items:center;gap:8px;"><span style="background:var(--green-mid);color:white;font-size:0.65rem;padding:3px 8px;border-radius:99px;font-weight:700;">NIVEAU 1</span>Indispensables — preuves solides</div>
+
+          <!-- MAGNÉSIUM -->
+          <div class="journal-block" style="border-left:4px solid #7b9e87;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
+            <div style="background:linear-gradient(135deg,#4a7c59,#7b9e87);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('mag')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">🧲</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Magnésium bisglycinate</div><div style="font-size:0.7rem;opacity:0.85;">Minéral calmant · SJSR + TDAH + Sommeil</div></div></div>
+                <span id="mag-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR</span>
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 TDAH</span>
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">😴 Sommeil</span>
+              </div>
+            </div>
+            <div id="fiche-mag" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Intervient dans plus de 300 réactions enzymatiques. Régule la synthèse du GABA → effet calmant. Réduit l'excitabilité neuromusculaire — lié aux impatiences nocturnes du SJSR. Améliore le sommeil profond.</div></div>
+              <div><div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Essai clinique randomisé (Jadidi et al., 2022) : magnésium + B6 réduit significativement les symptômes du SJSR. Meta-analyse 2019 : taux de magnésium plus bas chez les personnes avec TDAH.</div></div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">200–400 mg</div><div style="font-size:0.62rem;color:var(--text-light);">dose journalière</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Le soir</div><div style="font-size:0.62rem;color:var(--text-light);">meilleur moment</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Bisglycinate ou thréonate (meilleure biodisponibilité). Effets laxatifs si > 400 mg/j.</div>
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-light);">Jadidi A. et al., BMC, 2022 · Effatpanah M. et al., Psychiatry Res, 2019</div>
+            </div>
+          </div>
+
+          <!-- OMÉGA-3 -->
+          <div class="journal-block" style="border-left:4px solid #3d7ab5;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
+            <div style="background:linear-gradient(135deg,#1a5276,#3d7ab5);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('omega')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">🐟</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Oméga-3 EPA/DHA</div><div style="font-size:0.7rem;opacity:0.85;">Acides gras essentiels · Priorité EPA</div></div></div>
+                <span id="omega-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🔥 Anti-inflam.</span>
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 Dopamine</span>
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">💡 Attention</span>
+              </div>
+            </div>
+            <div id="fiche-omega" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">DHA constitue 20–25% des acides gras des membranes neuronales. EPA essentiel au fonctionnement dopaminergique. Réduit la neuroinflammation chronique. Ratio 4:1 EPA/DHA optimal pour le TDAH.</div></div>
+              <div><div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Preuve la plus solide parmi tous les compléments pour le TDAH (Cochrane review 2023, 37 essais). Anti-inflammatoire prouvé, pertinent pour la composante inflammatoire du SJSR.</div></div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">1–2 g/j</div><div style="font-size:0.62rem;color:var(--text-light);">EPA+DHA total</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Ratio 4:1</div><div style="font-size:0.62rem;color:var(--text-light);">EPA/DHA recommandé</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Huile de poisson de qualité, au réfrigérateur. Prendre pendant les repas.</div>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text-mid);">⚠️ Anticoagulants (surveiller). Allergie poisson.</div>
+              <div style="font-size:0.7rem;color:var(--text-light);">Cochrane Review, 2023 · Journal of Lipids</div>
+            </div>
+          </div>
+
+          <!-- VITAMINE D3+K2 -->
+          <div class="journal-block" style="border-left:4px solid #d4a017;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
+            <div style="background:linear-gradient(135deg,#a0760a,#d4a017);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('vitd')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">☀️</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Vitamine D3 + K2</div><div style="font-size:0.7rem;opacity:0.85;">Hormone neuroactive · Carence fréquente</div></div></div>
+                <span id="vitd-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 TDAH</span>
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR</span>
+                <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🛡️ Immunité</span>
+              </div>
+            </div>
+            <div id="fiche-vitd" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">D3 agit comme hormone neuroactive : régule la synthèse de dopamine et sérotonine. K2 (MK-7) oriente le calcium vers les os — indispensable avec D3. Déficit D3 corrélé à la sévérité TDAH.</div></div>
+              <div><div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Carence > 70% population française en hiver. Essai randomisé : D3 + magnésium réduit les problèmes comportementaux chez enfants TDAH. Déficit D3 associé à aggravation du SJSR.</div></div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">2000–4000 UI</div><div style="font-size:0.62rem;color:var(--text-light);">D3/j (adulte)</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">100–200 µg</div><div style="font-size:0.62rem;color:var(--text-light);">K2 MK-7/j</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Prendre avec repas gras (liposoluble). Adapter selon dosage sanguin 25-OH vitamine D.</div>
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-light);">Ríos-Hernández A. et al., Pediatrics, 2017</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- NIVEAU 2 -->
+        <div style="margin-top:8px;margin-bottom:32px;">
+          <div class="section-title" style="display:flex;align-items:center;gap:8px;"><span style="background:#7a4eab;color:white;font-size:0.65rem;padding:3px 8px;border-radius:99px;font-weight:700;">NIVEAU 2</span>Conseillés — preuves émergentes</div>
+
+          <!-- B6+B12 -->
+          <div class="journal-block" style="border-left:4px solid #a0522d;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
+            <div style="background:linear-gradient(135deg,#6b3a1f,#a0522d);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('vitb')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">🧪</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Vitamines B6 + B12</div><div style="font-size:0.7rem;opacity:0.85;">Cofacteurs neuronaux · Synthèse dopamine</div></div></div>
+                <span id="vitb-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+            </div>
+            <div id="fiche-vitb" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;"><strong>B6 :</strong> coenzyme de la synthèse dopamine, sérotonine, GABA. Potentialise le magnésium. <strong>B12 :</strong> synthèse de la myéline, production de globules rouges.</div></div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">25–50 mg</div><div style="font-size:0.62rem;color:var(--text-light);">B6/j (P-5-P)</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">250–1000 µg</div><div style="font-size:0.62rem;color:var(--text-light);">B12/j (méthylcob.)</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Préférer formes actives P-5-P et méthylcobalamine. B6 > 100 mg/j → neuropathie possible.</div>
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-light);">Geng C. et al., Clin Neurol Neurosurg, 2022 · Jadidi A. et al., BMC, 2022</div>
+            </div>
+          </div>
+
+          <!-- ZINC -->
+          <div class="journal-block" style="border-left:4px solid #5d7a8c;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
+            <div style="background:linear-gradient(135deg,#2c4a5c,#5d7a8c);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('zinc')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">⚗️</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Zinc bisglycinate</div><div style="font-size:0.7rem;opacity:0.85;">Oligo-élément · Dopamine + Mélatonine</div></div></div>
+                <span id="zinc-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+            </div>
+            <div id="fiche-zinc" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Cofacteur de 100+ réactions enzymatiques incluant métabolisme dopamine et production mélatonine. Niveaux plus bas chez les personnes avec TDAH dans de multiples études.</div></div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">15–25 mg</div><div style="font-size:0.62rem;color:var(--text-light);">dose journalière</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">+ 1–2 mg</div><div style="font-size:0.62rem;color:var(--text-light);">cuivre si > 3 mois</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Espacer du fer (compétition). Ne pas dépasser 40 mg/j. Nausées si à jeun.</div>
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-light);">Bilici M. et al., 2004 · PMC systematic review, 2015</div>
+            </div>
+          </div>
+
+          <!-- FER -->
+          <div class="journal-block" style="border-left:4px solid #c0392b;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
+            <div style="background:linear-gradient(135deg,#7b241c,#c0392b);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('fer')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">🔴</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Fer (sous bilan)</div><div style="font-size:0.7rem;opacity:0.85;">1ère intention si ferritine &lt; 50 ng/mL</div></div></div>
+                <span id="fer-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+            </div>
+            <div id="fiche-fer" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Cofacteur de la tyrosine hydroxylase — enzyme limitante de la synthèse dopamine. Déficit en fer cérébral documenté dans le SJSR même à ferritine normale.</div></div>
+              <div style="background:#ffeaea;border-left:3px solid #c0392b;border-radius:10px;padding:12px 14px;">
+                <div style="font-size:0.75rem;font-weight:600;color:#c0392b;margin-bottom:4px;">⚠️ NE PAS PRENDRE SANS BILAN</div>
+                <div style="font-size:0.72rem;color:#7b0a0a;line-height:1.5;">Le fer en excès est toxique et pro-oxydant. Vérifier ferritine + saturation de la transferrine AVANT toute supplémentation.</div>
+              </div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">80–200 mg</div><div style="font-size:0.62rem;color:var(--text-light);">si prescrit</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">+ Vit. C</div><div style="font-size:0.62rem;color:var(--text-light);">× 3 l'absorption</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Prendre au coucher. Espacer des laitages, thé, café. Bisglycinate = moins d'effets digestifs.</div>
+              </div>
+              <div style="font-size:0.7rem;color:var(--text-light);">Manuel MSD SJSR, 2025 · Earley CJ et al., Sleep Med, 2017</div>
+            </div>
+          </div>
+
+          <!-- L-TYROSINE -->
+          <div class="journal-block" style="border-left:4px solid #7a4eab;padding:0;overflow:hidden;border-radius:16px;margin-bottom:32px;">
+            <div style="background:linear-gradient(135deg,#4a2070,#7a4eab);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('tyro')">
+              <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:10px;"><span style="font-size:1.8rem;">🧬</span><div><div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">L-Tyrosine</div><div style="font-size:0.7rem;opacity:0.85;">Précurseur dopamine · Énergie mentale</div></div></div>
+                <span id="tyro-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
+              </div>
+            </div>
+            <div id="fiche-tyro" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
+              <div><div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div><div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Précurseur direct de la dopamine, noradrénaline et adrénaline. Convertie en L-DOPA par la tyrosine hydroxylase (enzyme dépendante du fer). Soutient la synthèse dopaminergique au niveau de la substance noire.</div></div>
+              <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">500–2000 mg</div><div style="font-size:0.62rem;color:var(--text-light);">dose journalière</div></div>
+                  <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Le matin</div><div style="font-size:0.62rem;color:var(--text-light);">à jeun</div></div>
+                </div>
+                <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Effet stimulant — éviter le soir. Démarrer à 500 mg.</div>
+              </div>
+              <div style="font-size:0.75rem;color:var(--text-mid);">⚠️ Contre-indiqué avec IMAO. Prudence traitements thyroïdiens.</div>
+              <div style="font-size:0.7rem;color:var(--text-light);">PMC ADHD nutrition review, 2024</div>
+            </div>
+          </div>
+        </div>
+      </section>
     </main>
 
     <nav id="bottom-nav">
@@ -1048,543 +1345,6 @@
     </nav>
 
   </div>
-
-  <!-- PAGE ASSISTANT IA -->
-  <section id="page-assistant" class="page hidden">
-    <div class="page-header-inner">
-      <button class="back-btn" onclick="showPage('accueil')">←</button>
-      <h2>🤖 Assistante Flōra</h2>
-    </div>
-
-    <!-- Intro -->
-    <div id="assistant-intro" style="padding:16px 0 8px;">
-      <!-- Disclaimer IA -->
-      <div style="background:#fff8e8;border:1.5px solid #f0c040;border-radius:12px;padding:12px 14px;margin-bottom:12px;display:flex;gap:10px;align-items:flex-start;">
-        <span style="font-size:1.1rem;flex-shrink:0;">⚠️</span>
-        <div style="font-size:0.75rem;color:#7a5a00;line-height:1.5;">
-          <strong>Information importante :</strong> Cette assistante fournit des informations générales sur le SJSR et la nutrition. 
-          Elle ne remplace pas l'avis d'un médecin. Vérifiez toujours les informations avec votre professionnel de santé. 
-          L'IA peut se tromper.
-        </div>
-      </div>
-      <div style="background:linear-gradient(135deg,var(--green-deep),#3d7a5a);border-radius:16px;padding:16px;margin-bottom:14px;">
-        <div style="font-family:var(--font-display);font-size:1.05rem;color:white;margin-bottom:6px;">🌿 Bonjour !</div>
-        <div style="font-size:0.82rem;color:rgba(255,255,255,0.88);line-height:1.6;">
-          Je suis votre assistante bien-être personnelle. Je connais votre profil, vos médicaments, et votre historique SJSR.
-          Posez-moi vos questions sur le SJSR, la nutrition, vos symptômes ou votre suivi.
-        </div>
-      </div>
-      <!-- Suggestions rapides -->
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:8px;">Suggestions</div>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;" id="assistant-suggestions">
-          <button class="assist-chip" onclick="askAssistant(this.textContent)">Pourquoi mes jambes s'agitent-elles la nuit ?</button>
-          <button class="assist-chip" onclick="askAssistant(this.textContent)">Que manger ce soir pour mieux dormir ?</button>
-          <button class="assist-chip" onclick="askAssistant(this.textContent)">Analyse mon journal cette semaine</button>
-          <button class="assist-chip" onclick="askAssistant(this.textContent)">Mes médicaments interagissent-ils avec l'alimentation ?</button>
-          <button class="assist-chip" onclick="askAssistant(this.textContent)">Recette anti-SJSR rapide pour ce soir</button>
-          <button class="assist-chip" onclick="askAssistant(this.textContent)">Comment améliorer mon sommeil ?</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Conversation -->
-    <div id="assistant-messages" style="display:flex;flex-direction:column;gap:12px;padding-bottom:100px;"></div>
-
-    <!-- Input -->
-    <div style="position:fixed;bottom:64px;left:0;right:0;background:var(--white);border-top:1px solid var(--cream-dark);padding:10px 12px;z-index:100;">
-      <div style="display:flex;gap:8px;align-items:flex-end;">
-        <textarea id="assistant-input"
-          placeholder="Posez votre question…"
-          rows="1"
-          style="flex:1;border:1.5px solid var(--cream-dark);border-radius:12px;padding:10px 12px;font-family:var(--font-body);font-size:0.85rem;resize:none;outline:none;background:var(--cream);color:var(--text-dark);max-height:120px;overflow-y:auto;line-height:1.4;"
-          oninput="this.style.height='auto';this.style.height=Math.min(this.scrollHeight,120)+'px'"
-          onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendAssistantMessage();}"></textarea>
-        <button onclick="sendAssistantMessage()"
-          id="assistant-send-btn"
-          style="background:var(--green-deep);border:none;border-radius:12px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:1.1rem;">
-          →
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <!-- PAGE COMPLÉMENTS -->
-  <section id="page-complements" class="page hidden">
-    <div class="page-header-inner">
-      <button class="back-btn" onclick="showPage('accueil')">←</button>
-      <h2>Compléments 💊</h2>
-    </div>
-
-    <!-- Intro -->
-    <div class="batch-intro" style="margin-bottom:16px;">
-      <div class="batch-intro-icon">🔬</div>
-      <div class="batch-intro-text">
-        <strong>Compléments &amp; SJSR</strong><br>
-        Fiches détaillées sur les compléments alimentaires étudiés dans la prise en charge du syndrome des jambes sans repos.
-      </div>
-    </div>
-
-    <!-- Avertissement médical -->
-    <div style="background:#fff8e1;border-left:4px solid #f59e0b;border-radius:10px;padding:12px 14px;margin-bottom:20px;font-size:0.78rem;color:#78510a;line-height:1.5;">
-      ⚠️ Ces informations sont données à titre éducatif. Consultez toujours votre médecin ou neurologue avant de débuter tout complément alimentaire.
-    </div>
-
-    <!-- FICHE LACTOFERRINE -->
-    <div class="journal-block" style="border-left:4px solid var(--green-mid);padding:0;overflow:hidden;border-radius:16px;">
-
-      <!-- En-tête fiche -->
-      <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));padding:20px 18px;color:white;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="font-size:2.2rem;">🧬</div>
-          <div>
-            <div style="font-family:var(--font-display);font-size:1.2rem;font-weight:600;">Lactoferrine</div>
-            <div style="font-size:0.75rem;opacity:0.85;margin-top:2px;">Glycoprotéine liant le fer · Complément alimentaire</div>
-          </div>
-        </div>
-        <!-- Badges -->
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;">
-          <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">🦵 SJSR</span>
-          <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">🧠 Dopamine</span>
-          <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">🔥 Anti-inflammatoire</span>
-          <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:4px 10px;font-size:0.7rem;">⚗️ Données émergentes</span>
-        </div>
-      </div>
-
-      <div style="padding:16px 18px;display:flex;flex-direction:column;gap:18px;">
-
-        <!-- Qu'est-ce que c'est -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">🔎 Qu'est-ce que c'est ?</div>
-          <p style="font-size:0.83rem;color:var(--text-dark);line-height:1.6;margin:0;">
-            La lactoferrine est une glycoprotéine naturellement présente dans le lait et les sécrétions biologiques. Sous forme de complément alimentaire (gélules ou poudre), elle est extraite et concentrée — <strong>sans lactose ni caséine</strong>, ce qui la rend compatible avec un protocole anti-inflammatoire.
-          </p>
-        </div>
-
-        <!-- Mécanismes -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">⚙️ Mécanismes d'action</div>
-          <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="background:var(--cream);border-radius:10px;padding:10px 12px;">
-              <div style="font-size:0.75rem;font-weight:600;color:var(--green-deep);margin-bottom:3px;">🔩 Transport du fer</div>
-              <div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">Facilite l'absorption intestinale du fer tout en limitant le fer libre pro-oxydant. Optimise le transport vers le cerveau.</div>
-            </div>
-            <div style="background:var(--cream);border-radius:10px;padding:10px 12px;">
-              <div style="font-size:0.75rem;font-weight:600;color:var(--green-deep);margin-bottom:3px;">🧠 Axe dopamine–fer</div>
-              <div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">Dans le SJSR, le déficit en fer cérébral (substance noire) altère la tyrosine hydroxylase → baisse de synthèse de dopamine → perturbation des circuits moteurs. La lactoferrine agit directement sur cet axe.</div>
-            </div>
-            <div style="background:var(--cream);border-radius:10px;padding:10px 12px;">
-              <div style="font-size:0.75rem;font-weight:600;color:var(--green-deep);margin-bottom:3px;">🔥 Anti-inflammatoire &amp; neuroprotecteur</div>
-              <div style="font-size:0.78rem;color:var(--text-dark);line-height:1.5;">Modulation du stress oxydatif, effets neuroprotecteurs documentés. Agit à l'interface entre métabolisme du fer, inflammation et neurotransmission.</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Lien SJSR -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">🦵 Pertinence pour le SJSR</div>
-          <div style="font-size:0.83rem;color:var(--text-dark);line-height:1.6;">
-            Plusieurs études montrent une <strong>diminution du fer dans le système nerveux central</strong> dans le SJSR — indépendamment des taux sériques. Le fer sanguin peut sembler normal alors que le cerveau en manque. La lactoferrine représente une piste d'intérêt particulier chez les personnes avec <strong>ferritine basse ou inflammation chronique</strong>.
-          </div>
-        </div>
-
-        <!-- Données cliniques -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">📊 Données cliniques</div>
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="color:var(--green-mid);font-weight:700;flex-shrink:0;">✓</span>
-              Amélioration des symptômes chez certains patients supplémentés
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="color:var(--green-mid);font-weight:700;flex-shrink:0;">✓</span>
-              Meilleure tolérance digestive que les sels de fer classiques
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="color:var(--green-mid);font-weight:700;flex-shrink:0;">✓</span>
-              Intérêt particulier si ferritine basse ou inflammation chronique
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:#c0392b;line-height:1.5;">
-              <span style="font-weight:700;flex-shrink:0;">!</span>
-              Données encore limitées — pas de recommandation officielle à ce jour
-            </div>
-          </div>
-        </div>
-
-        <!-- Dosage -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">💊 Dosage indicatif</div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <div style="text-align:center;">
-                <div style="font-size:1.3rem;font-weight:700;color:var(--green-deep);">100–300 mg</div>
-                <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">dose journalière courante</div>
-              </div>
-              <div style="text-align:center;">
-                <div style="font-size:1.3rem;font-weight:700;color:var(--green-deep);">3–6 mois</div>
-                <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">durée d'évaluation minimale</div>
-              </div>
-            </div>
-            <div style="font-size:0.72rem;color:var(--text-mid);margin-top:10px;border-top:1px solid var(--cream-dark);padding-top:8px;">
-              À prendre de préférence à jeun ou entre les repas. Dosage à adapter selon bilan biologique et avis médical.
-            </div>
-          </div>
-        </div>
-
-        <!-- Précautions -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">⚠️ Précautions</div>
-          <div style="display:flex;flex-direction:column;gap:6px;">
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="flex-shrink:0;">•</span> Déconseillé en cas de surcharge en fer (hémochromatose)
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="flex-shrink:0;">•</span> Vérifier l'absence d'allergie aux protéines du lait (même si sans lactose)
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="flex-shrink:0;">•</span> À ne pas combiner avec des suppléments de fer sans suivi médical
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--text-dark);line-height:1.5;">
-              <span style="flex-shrink:0;">•</span> Faire un bilan ferritine + fer sérique avant de débuter
-            </div>
-          </div>
-        </div>
-
-        <!-- Synergie avec le protocole Flōra -->
-        <div>
-          <div class="jblock-title" style="margin-bottom:8px;">🌿 Synergie avec le protocole Flōra</div>
-          <div style="font-size:0.83rem;color:var(--text-dark);line-height:1.6;">
-            La lactoferrine s'inscrit en complément du protocole alimentaire anti-inflammatoire : associée aux sources de vitamine C (citron systématique), aux légumineuses du déjeuner et au persil/basilic riches en fer non-hémique, elle peut optimiser la disponibilité du fer cérébral.
-          </div>
-        </div>
-
-        <!-- Références -->
-        <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-          <div style="font-size:0.72rem;font-weight:600;color:var(--text-mid);margin-bottom:8px;">📚 Références scientifiques</div>
-          <div style="display:flex;flex-direction:column;gap:4px;font-size:0.7rem;color:var(--text-light);line-height:1.5;">
-            <div>Allen RP et al. — Restless Legs Syndrome pathophysiology, <em>Sleep Med</em>, 2014</div>
-            <div>Earley CJ et al. — Iron deficiency and RLS, <em>Sleep Med</em>, 2017</div>
-            <div>Trotti LM. — Iron in RLS, <em>Curr Treat Options Neurol</em>, 2020</div>
-            <div>Legrand D. — Lactoferrin, a key player in iron metabolism, <em>Biochem Cell Biol</em>, 2016</div>
-          </div>
-        </div>
-
-        <!-- Bouton demander à son médecin -->
-        <div style="text-align:center;padding-bottom:4px;">
-          <div style="font-size:0.75rem;color:var(--text-light);margin-bottom:10px;">Intéressé·e ? Parlez-en à votre neurologue ou médecin traitant.</div>
-          <button class="btn-primary" style="font-size:0.82rem;" onclick="copyLactoferrinMsg()">
-            📋 Copier le message pour mon médecin
-          </button>
-          <div id="lacto-copy-confirm" class="hidden" style="font-size:0.75rem;color:var(--green-mid);margin-top:8px;">✅ Message copié !</div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- NIVEAU 1 — Indispensables -->
-    <div style="margin-top:28px;">
-      <div class="section-title" style="display:flex;align-items:center;gap:8px;">
-        <span style="background:var(--green-mid);color:white;font-size:0.65rem;padding:3px 8px;border-radius:99px;font-weight:700;">NIVEAU 1</span>
-        Indispensables — preuves solides
-      </div>
-
-      <!-- FICHE MAGNÉSIUM -->
-      <div class="journal-block" style="border-left:4px solid #7b9e87;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#4a7c59,#7b9e87);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('mag')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">🧲</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Magnésium bisglycinate</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Minéral calmant · SJSR + TDAH + Sommeil</div>
-              </div>
-            </div>
-            <span id="mag-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 TDAH</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">😴 Sommeil</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">💪 Muscles</span>
-          </div>
-        </div>
-        <div id="fiche-mag" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Intervient dans plus de 300 réactions enzymatiques. Régule la synthèse du GABA (neurotransmetteur inhibiteur) → effet calmant sur le système nerveux. Réduit l'excitabilité neuromusculaire — directement lié aux crampes et impatiences nocturnes du SJSR. Améliore la qualité du sommeil profond.</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Essai clinique randomisé (Jadidi et al., 2022) : magnésium + B6 réduit significativement les symptômes du SJSR. Meta-analyse 2019 : taux de magnésium significativement plus bas chez les personnes avec TDAH. Déficit très fréquent en population générale (stress, alimentation moderne).</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">200–400 mg</div><div style="font-size:0.62rem;color:var(--text-light);">dose journalière</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Le soir</div><div style="font-size:0.62rem;color:var(--text-light);">meilleur moment</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Préférer bisglycinate ou thréonate (meilleure biodisponibilité que l'oxyde). Éviter doses > 400 mg/j sans suivi (effets laxatifs).</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;"><strong>Précautions :</strong> insuffisance rénale sévère. Peut interagir avec certains antibiotiques et diurétiques. Démarrer à faible dose (100 mg) et augmenter progressivement.</div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Jadidi A. et al., BMC Complement Med Ther, 2022 · Effatpanah M. et al., Psychiatry Res, 2019</em></div>
-        </div>
-      </div>
-
-      <!-- FICHE OMÉGA-3 -->
-      <div class="journal-block" style="border-left:4px solid #3d7ab5;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#1a5276,#3d7ab5);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('omega')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">🐟</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Oméga-3 EPA/DHA</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Acides gras essentiels · Priorité EPA pour SJSR+TDAH</div>
-              </div>
-            </div>
-            <span id="omega-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🔥 Anti-inflam.</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 Dopamine</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧬 Neurones</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">💡 Attention</span>
-          </div>
-        </div>
-        <div id="fiche-omega" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Le DHA constitue 20–25% des acides gras des membranes neuronales. L'EPA est essentiel au fonctionnement dopaminergique et sérotoninergique. Réduction de la neuroinflammation chronique — mécanisme central du SJSR. L'EPA (ratio 4:1 EPA/DHA) est le plus actif dans le TDAH pour l'attention et l'impulsivité.</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Preuve la plus solide parmi tous les compléments pour le TDAH (Cochrane review 2023, 37 essais). Amélioration modeste mais constante de l'attention et du comportement. Anti-inflammatoire prouvé, pertinent pour la composante inflammatoire du SJSR. Synergie forte avec le protocole alimentaire Flōra.</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">1–2 g/j</div><div style="font-size:0.62rem;color:var(--text-light);">EPA+DHA total</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Ratio 4:1</div><div style="font-size:0.62rem;color:var(--text-light);">EPA/DHA recommandé</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Huile de poisson de qualité (non oxydée), conservation au réfrigérateur. Prendre pendant les repas pour limiter les remontées.</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;"><strong>Précautions :</strong> anticoagulants (surveiller). Allergie poisson/fruits de mer. Éviter si chirurgie prévue dans les 2 semaines.</div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Cochrane Review, 2023 · PMC 2024 — Nutrition and ADHD · Journal of Lipids</em></div>
-        </div>
-      </div>
-
-      <!-- FICHE VITAMINE D3+K2 -->
-      <div class="journal-block" style="border-left:4px solid #d4a017;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#a0760a,#d4a017);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('vitd')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">☀️</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Vitamine D3 + K2</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Hormone neuroactive · Carence très fréquente en France</div>
-              </div>
-            </div>
-            <span id="vitd-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 TDAH</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦴 Os</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🛡️ Immunité</span>
-          </div>
-        </div>
-        <div id="fiche-vitd" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">La D3 agit comme une hormone neuroactive : régule la synthèse de dopamine et sérotonine. Modulation immunitaire et anti-inflammatoire. La K2 (MK-7) oriente le calcium vers les os et évite les dépôts artériels — indispensable en association avec D3. Déficit en D3 corrélé à la sévérité des symptômes TDAH (étude espagnole Ríos-Hernández, 2017).</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Carence très répandue (> 70% de la population française en hiver). Essai randomisé : magnésium + D3 réduit les problèmes comportementaux et émotionnels chez les enfants avec TDAH. Déficit ferritine < 50 ng/mL et D3 < 30 ng/mL associés à une aggravation du SJSR (Aroma-Zone / Medscape données).</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">2000–4000 UI</div><div style="font-size:0.62rem;color:var(--text-light);">D3/j (adulte)</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">100–200 µg</div><div style="font-size:0.62rem;color:var(--text-light);">K2 MK-7 /j</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Prendre avec un repas contenant des graisses (liposoluble). Idéalement adapter selon dosage sanguin 25-OH vitamine D.</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;"><strong>Précautions :</strong> hypercalcémie, sarcoidose. Interagit avec anticoagulants (K2). Dosage sanguin recommandé avant forte supplémentation.</div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Ríos-Hernández A. et al., Pediatrics, 2017 · Aroma-Zone / SJSR data compilation, 2025</em></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- NIVEAU 2 — Conseillés -->
-    <div style="margin-top:8px;margin-bottom:32px;">
-      <div class="section-title" style="display:flex;align-items:center;gap:8px;">
-        <span style="background:#7a4eab;color:white;font-size:0.65rem;padding:3px 8px;border-radius:99px;font-weight:700;">NIVEAU 2</span>
-        Conseillés — preuves émergentes
-      </div>
-
-      <!-- FICHE B6+B12 -->
-      <div class="journal-block" style="border-left:4px solid #a0522d;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#6b3a1f,#a0522d);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('vitb')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">🧪</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Vitamines B6 + B12</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Cofacteurs neuronaux · Synthèse dopamine + myéline</div>
-              </div>
-            </div>
-            <span id="vitb-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 Dopamine</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🩸 Globules rouges</span>
-          </div>
-        </div>
-        <div id="fiche-vitb" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;"><strong>B6 (pyridoxine) :</strong> coenzyme de la synthèse de dopamine, sérotonine, GABA et noradrénaline. Potentialise l'effet du magnésium. <strong>B12 :</strong> synthèse de la myéline (gaine nerveuse), production de globules rouges. Déficit B12 fréquent chez les végétariens/végétaliens, les personnes > 50 ans et sous metformine.</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">B6 + magnésium : essai clinique randomisé avec réduction significative des symptômes du SJSR (2022). B12 et SJSR : association documentée entre déficit B12 et aggravation (Geng C. et al., Clin Neurol Neurosurg, 2022). B6 : cofacteur essentiel des neurotransmetteurs, déficit corrélé à la sévérité du TDAH.</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">25–50 mg</div><div style="font-size:0.62rem;color:var(--text-light);">B6/j (P-5-P forme active)</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">250–1000 µg</div><div style="font-size:0.62rem;color:var(--text-light);">B12/j (méthylcobalamine)</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Préférer P-5-P (B6 active) et méthylcobalamine (B12 active) pour une meilleure assimilation. Souvent associés dans les complexes B.</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;"><strong>Précautions :</strong> B6 > 100 mg/j sur le long terme peut causer neuropathie périphérique. Respecter les doses.</div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Geng C. et al., Clin Neurol Neurosurg, 2022 · Jadidi A. et al., BMC, 2022</em></div>
-        </div>
-      </div>
-
-      <!-- FICHE ZINC -->
-      <div class="journal-block" style="border-left:4px solid #5d7a8c;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#2c4a5c,#5d7a8c);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('zinc')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">⚗️</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Zinc bisglycinate</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Oligo-élément · Régulation dopamine + mélatonine</div>
-              </div>
-            </div>
-            <span id="zinc-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 TDAH</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">😴 Mélatonine</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🛡️ Immunité</span>
-          </div>
-        </div>
-        <div id="fiche-zinc" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Cofacteur de plus de 100 réactions enzymatiques dont le métabolisme de la dopamine et la production de mélatonine. Stabilisation des membranes cellulaires. Propriétés antioxydantes. Niveaux de zinc significativement plus bas chez les personnes avec TDAH dans plusieurs études internationales.</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Grand essai randomisé (Bilici et al., 400 enfants) : réduction de l'hyperactivité et l'impulsivité. Bénéfice surtout en cas de déficit documenté. Peut potentialiser l'effet du méthylphénidate à doses plus faibles. Déficit en zinc corrélé à l'anxiété et aux problèmes comportementaux dans le TDAH.</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">15–25 mg</div><div style="font-size:0.62rem;color:var(--text-light);">dose journalière</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Bisglycinate</div><div style="font-size:0.62rem;color:var(--text-light);">forme recommandée</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Prendre à distance du fer (compétition d'absorption). Ne pas dépasser 40 mg/j sans suivi. Vérifier le statut avant supplémentation prolongée.</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;"><strong>Précautions :</strong> excès de zinc inhibe l'absorption du cuivre. Nausées si pris à jeun. Associer 1–2 mg de cuivre si cure > 3 mois.</div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Bilici M. et al., Prog Neuropsychopharmacol Biol Psychiatry, 2004 · PMC systematic review, 2015</em></div>
-        </div>
-      </div>
-
-      <!-- FICHE FER -->
-      <div class="journal-block" style="border-left:4px solid #c0392b;padding:0;overflow:hidden;border-radius:16px;margin-bottom:16px;">
-        <div style="background:linear-gradient(135deg,#7b241c,#c0392b);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('fer')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">🔴</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">Fer (sous bilan)</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Traitement de 1ère intention si ferritine &lt; 50 ng/mL</div>
-              </div>
-            </div>
-            <span id="fer-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR priorité</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 Dopamine</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">⚡ Énergie</span>
-          </div>
-        </div>
-        <div id="fiche-fer" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Cofacteur de la tyrosine hydroxylase — enzyme limitante de la synthèse de dopamine et noradrénaline. Déficit en fer cérébral (substance noire) documenté dans le SJSR même à ferritine normale. Le fer sérique peut être normal pendant que le cerveau en manque. Coffre-fort du transport d'oxygène.</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;"><strong>Traitement de 1ère intention recommandé par le Manuel MSD</strong> si ferritine &lt; 50 ng/mL. Sulfate ferreux + vitamine C 100–200 mg au coucher. Amélioration TDAH chez les enfants avec ferritine basse (essai 23 enfants, sulfate ferreux 80 mg/j). Lactoferrine = alternative mieux tolérée.</div>
-          </div>
-          <div style="background:#ffeaea;border-left:3px solid #c0392b;border-radius:10px;padding:12px 14px;">
-            <div style="font-size:0.75rem;font-weight:600;color:#c0392b;margin-bottom:4px;">⚠️ NE PAS PRENDRE SANS BILAN</div>
-            <div style="font-size:0.72rem;color:#7b0a0a;line-height:1.5;">Le fer en excès est toxique et pro-oxydant. Vérifier ferritine + saturation de la transferrine AVANT toute supplémentation. Dosage et durée à définir avec votre médecin.</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">80–200 mg</div><div style="font-size:0.62rem;color:var(--text-light);">fer élémentaire/j (si prescrit)</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">+ Vit. C</div><div style="font-size:0.62rem;color:var(--text-light);">× 3 l'absorption</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Prendre au coucher (pic d'absorption nocturne). Espacer de 2h des produits laitiers, thé, café. Bisglycinate de fer = moins d'effets digestifs que le sulfate.</div>
-          </div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Manuel MSD — SJSR, 2025 · Earley CJ et al., Sleep Med, 2017 · Allen RP et al., Sleep Med, 2014</em></div>
-        </div>
-      </div>
-
-      <!-- FICHE L-TYROSINE -->
-      <div class="journal-block" style="border-left:4px solid #7a4eab;padding:0;overflow:hidden;border-radius:16px;margin-bottom:32px;">
-        <div style="background:linear-gradient(135deg,#4a2070,#7a4eab);padding:16px 18px;color:white;cursor:pointer;" onclick="toggleFiche('tyro')">
-          <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <span style="font-size:1.8rem;">🧬</span>
-              <div>
-                <div style="font-family:var(--font-display);font-size:1.05rem;font-weight:600;">L-Tyrosine</div>
-                <div style="font-size:0.7rem;opacity:0.85;">Acide aminé précurseur · Dopamine + Noradrénaline</div>
-              </div>
-            </div>
-            <span id="tyro-arrow" style="font-size:1.1rem;transition:transform .3s;">▼</span>
-          </div>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;">
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🧠 TDAH</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">🦵 SJSR</span>
-            <span style="background:rgba(255,255,255,0.2);border-radius:99px;padding:3px 8px;font-size:0.65rem;">⚡ Énergie mentale</span>
-          </div>
-        </div>
-        <div id="fiche-tyro" class="hidden" style="padding:16px 18px;display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">⚙️ Mécanismes</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">La tyrosine est le précurseur direct de la dopamine, la noradrénaline et l'adrénaline. Convertie en L-DOPA par la tyrosine hydroxylase (enzyme qui dépend du fer). Soutient la synthèse de dopamine au niveau de la substance noire. Utilisée traditionnellement pour la fatigue mentale, la motivation et la cognition sous stress.</div>
-          </div>
-          <div>
-            <div class="jblock-title" style="margin-bottom:6px;">📊 Preuves</div>
-            <div style="font-size:0.82rem;color:var(--text-dark);line-height:1.6;">Preuve indirecte via le mécanisme dopaminergique central du SJSR. Recommandée par certains protocoles naturopathiques SJSR (complémentation en tyrosine → soutien du contrôle moteur). Données TDAH : amélioration de l'attention et de la concentration, effet modeste mais cohérent. Compatible avec le protocole alimentaire Flōra (riche en protéines tyrosine le matin).</div>
-          </div>
-          <div style="background:var(--cream);border-radius:10px;padding:12px 14px;">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:8px;">
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">500–2000 mg</div><div style="font-size:0.62rem;color:var(--text-light);">dose journalière</div></div>
-              <div style="text-align:center;"><div style="font-size:1.2rem;font-weight:700;color:var(--green-deep);">Le matin</div><div style="font-size:0.62rem;color:var(--text-light);">à jeun ou avant repas</div></div>
-            </div>
-            <div style="font-size:0.7rem;color:var(--text-mid);border-top:1px solid var(--cream-dark);padding-top:8px;">Démarrer à 500 mg et augmenter selon tolérance. Effet stimulant — éviter le soir. S'inscrit dans la continuité du petit-déjeuner protéiné recommandé dans Flōra.</div>
-          </div>
-          <div style="font-size:0.75rem;color:var(--text-mid);line-height:1.5;"><strong>Précautions :</strong> contre-indiqué avec IMAO. Prudence avec les traitements thyroïdiens (T4). Hyperthyroïdie. Consulter si traitement psychiatrique en cours.</div>
-          <div style="font-size:0.7rem;color:var(--text-light);line-height:1.5;"><em>Lereca.com — SJSR et Tyrosine · PMC ADHD nutrition review, 2024</em></div>
-        </div>
-      </div>
-
-    </div>
-
-  </section>
 
   <!-- PREMIUM MODAL -->
   <div id="premium-modal" class="modal hidden">
@@ -1639,28 +1399,25 @@
     </div>
   </div>
 
-  <script src="app.js"></script>
+
   <script>
     function toggleFiche(id) {
       const el = document.getElementById('fiche-' + id);
       const arrow = document.getElementById(id + '-arrow');
       if (!el) return;
-      const hidden = el.classList.contains('hidden');
-      el.classList.toggle('hidden', !hidden);
-      if (arrow) arrow.style.transform = hidden ? 'rotate(180deg)' : '';
+      const isHidden = el.classList.contains('hidden');
+      el.classList.toggle('hidden', !isHidden);
+      if (arrow) arrow.style.transform = isHidden ? 'rotate(180deg)' : '';
     }
-
     function copyLactoferrinMsg() {
-      const msg = `Bonjour,\n\nJ'ai lu des études sur la lactoferrine (glycoprotéine liant le fer) comme complément potentiel dans le SJSR, notamment pour optimiser la biodisponibilité du fer cérébral et soutenir la synthèse de dopamine.\n\nJ'aimerais avoir votre avis sur l'intérêt de ce complément dans mon cas, en tenant compte de mon bilan ferritine actuel.\n\nRéférences : Earley CJ et al. (Sleep Med, 2017) ; Legrand D. (Biochem Cell Biol, 2016).\n\nMerci.`;
+      const msg = "Bonjour,\n\nJ\'ai lu des études sur la lactoferrine comme complément potentiel dans le SJSR, notamment pour optimiser la biodisponibilité du fer cérébral et soutenir la synthèse de dopamine.\n\nJ\'aimerais avoir votre avis sur l\'intérêt de ce complément dans mon cas, en tenant compte de mon bilan ferritine.\n\nRéférences : Earley CJ et al. (Sleep Med, 2017) ; Legrand D. (Biochem Cell Biol, 2016).\n\nMerci.";
       navigator.clipboard.writeText(msg).then(() => {
         const el = document.getElementById('lacto-copy-confirm');
         if (el) { el.classList.remove('hidden'); setTimeout(() => el.classList.add('hidden'), 3000); }
-      }).catch(() => {
-        alert('Copiez manuellement :\n\n' + msg);
-      });
+      }).catch(() => alert('Copiez manuellement le message pour votre médecin.'));
     }
   </script>
-
+  <script src="app.js"></script>
   <script>
     // Enregistrement Service Worker — mise à jour automatique
     if ('serviceWorker' in navigator) {
@@ -1690,5 +1447,341 @@
       });
     }
   </script>
+
+  <script>
+    /* ============================================================
+       ASSISTANT IA — VERSION AMÉLIORÉE
+    ============================================================ */
+
+    const HISTORY_KEY = 'flora_chat_history';
+    let assistantHistory = [];
+
+    function loadHistory() {
+      try {
+        const saved = localStorage.getItem(HISTORY_KEY);
+        if (!saved) return;
+        assistantHistory = JSON.parse(saved);
+        const container = document.getElementById('assistant-messages');
+        if (!container) return;
+        assistantHistory.forEach(function(msg) {
+          if (msg.role === 'user') appendUserBubble(msg.content);
+          else if (msg.role === 'assistant') appendAIBubble(formatAIResponse(msg.content));
+        });
+        if (assistantHistory.length > 0) {
+          const intro = document.getElementById('assistant-intro');
+          if (intro) intro.style.display = 'none';
+          scrollToBottom();
+        }
+      } catch(e) { assistantHistory = []; }
+    }
+
+    function saveHistory() {
+      try {
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(assistantHistory.slice(-20)));
+      } catch(e) {}
+    }
+
+    function clearHistory() {
+      assistantHistory = [];
+      localStorage.removeItem(HISTORY_KEY);
+      const container = document.getElementById('assistant-messages');
+      if (container) container.innerHTML = '';
+      const intro = document.getElementById('assistant-intro');
+      if (intro) intro.style.display = '';
+      renderSuggestions();
+    }
+
+    function formatAIResponse(text) {
+      if (!text) return '';
+      // Traitement ligne par ligne pour éviter les regex complexes
+      var lines = text.split('\n');
+      var result = [];
+      for (var i = 0; i < lines.length; i++) {
+        var line = lines[i];
+        // Titres ## et ###
+        if (line.indexOf('### ') === 0) {
+          result.push('<div style="font-weight:700;color:var(--green-deep);margin:10px 0 4px;font-size:0.88rem;">' + escHtml(line.slice(4)) + '</div>');
+          continue;
+        }
+        if (line.indexOf('## ') === 0) {
+          result.push('<div style="font-weight:700;color:var(--green-deep);margin:12px 0 6px;font-size:0.92rem;">' + escHtml(line.slice(3)) + '</div>');
+          continue;
+        }
+        // Listes - et •
+        if (line.match(/^[-\u2022] /)) {
+          result.push('<div style="display:flex;gap:6px;margin:3px 0;"><span style="color:var(--green-mid);flex-shrink:0;">\u2022</span><span>' + inlineFormat(line.slice(2)) + '</span></div>');
+          continue;
+        }
+        // Listes numérotées
+        var numMatch = line.match(/^(\d+)\. (.+)/);
+        if (numMatch) {
+          result.push('<div style="display:flex;gap:6px;margin:3px 0;"><span style="color:var(--green-mid);font-weight:600;flex-shrink:0;min-width:16px;">' + numMatch[1] + '.</span><span>' + inlineFormat(numMatch[2]) + '</span></div>');
+          continue;
+        }
+        // Ligne vide
+        if (line.trim() === '') {
+          result.push('<br>');
+          continue;
+        }
+        result.push('<div style="margin:2px 0;">' + inlineFormat(line) + '</div>');
+      }
+      return result.join('');
+    }
+
+    function escHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function inlineFormat(str) {
+      // Gras **texte** — traitement manuel sans regex lookbehind
+      var out = '';
+      var bold = false;
+      var i = 0;
+      while (i < str.length) {
+        if (str[i] === '*' && str[i+1] === '*') {
+          out += bold ? '</strong>' : '<strong>';
+          bold = !bold;
+          i += 2;
+        } else if (str[i] === '*' && str[i+1] !== '*') {
+          // italique simple ignoré pour simplicité
+          out += escHtml(str[i]);
+          i++;
+        } else if (str[i] === '<') {
+          out += '&lt;'; i++;
+        } else if (str[i] === '>') {
+          out += '&gt;'; i++;
+        } else if (str[i] === '&') {
+          out += '&amp;'; i++;
+        } else {
+          out += str[i]; i++;
+        }
+      }
+      if (bold) out += '</strong>';
+      return out;
+    }
+
+    function appendUserBubble(text) {
+      const container = document.getElementById('assistant-messages');
+      if (!container) return;
+      const div = document.createElement('div');
+      div.className = 'assist-msg-user';
+      div.textContent = text;
+      container.appendChild(div);
+    }
+
+    function appendAIBubble(htmlContent) {
+      const container = document.getElementById('assistant-messages');
+      if (!container) return;
+      const div = document.createElement('div');
+      div.className = 'assist-msg-ai';
+      div.innerHTML = htmlContent;
+      container.appendChild(div);
+      return div;
+    }
+
+    function appendTyping() {
+      const container = document.getElementById('assistant-messages');
+      if (!container) return null;
+      const div = document.createElement('div');
+      div.className = 'assist-msg-ai';
+      div.id = 'assist-typing-bubble';
+      div.innerHTML = '<div class="assist-typing"><div class="assist-dot"></div><div class="assist-dot"></div><div class="assist-dot"></div></div>';
+      container.appendChild(div);
+      scrollToBottom();
+      return div;
+    }
+
+    function scrollToBottom() {
+      var main = document.getElementById('main-content');
+      if (main) main.scrollTop = main.scrollHeight;
+    }
+
+    var SUGGESTIONS_CATS = [
+      { label: '\uD83E\uDDB5 SJSR', color: '#7a4eab', items: [
+        'Pourquoi mes jambes s\u2019agitent-elles la nuit\u202f?',
+        'Quels aliments aggravent le SJSR\u202f?',
+        'Que manger ce soir pour mieux dormir\u202f?',
+        'Comment le fer influence-t-il le SJSR\u202f?'
+      ]},
+      { label: '\uD83E\uDDE0 TDAH', color: '#1a5276', items: [
+        'Quels compl\u00e9ments aident le TDAH\u202f?',
+        'Menu riche en dopamine pour la journ\u00e9e',
+        'Aliments pour am\u00e9liorer la concentration',
+        'Comment l\u2019om\u00e9ga-3 aide-t-il le TDAH\u202f?'
+      ]},
+      { label: '\uD83D\uDCCA Mon suivi', color: '#2d4a3e', items: [
+        'Analyse mon journal cette semaine',
+        'Mes m\u00e9dicaments interagissent-ils avec l\u2019alimentation\u202f?',
+        'Comment am\u00e9liorer mon \u00e9nergie\u202f?',
+        'R\u00e9sume mes nuits SJSR ce mois'
+      ]},
+      { label: '\uD83E\uDD57 Recettes', color: '#4a7c59', items: [
+        'Recette anti-SJSR rapide pour ce soir',
+        'Id\u00e9e de petit-d\u00e9jeuner anti-inflammatoire',
+        'Menu batch cooking dominical',
+        'Collation anti-fatigue de l\u2019apr\u00e8s-midi'
+      ]}
+    ];
+
+    var activeSugCat = 0;
+
+    function renderSuggestions() {
+      var tabBar = document.getElementById('sug-tab-bar');
+      var wrap = document.getElementById('assistant-suggestions');
+      if (!tabBar || !wrap) return;
+
+      tabBar.innerHTML = '';
+      SUGGESTIONS_CATS.forEach(function(cat, i) {
+        var btn = document.createElement('button');
+        var active = (i === activeSugCat);
+        btn.style.cssText = 'background:' + (active ? cat.color : 'var(--cream)') + ';color:' + (active ? 'white' : 'var(--text-mid)') + ';border:1.5px solid ' + (active ? cat.color : 'var(--cream-dark)') + ';border-radius:99px;padding:5px 10px;font-size:0.7rem;cursor:pointer;font-family:var(--font-body);white-space:nowrap;';
+        btn.textContent = cat.label;
+        btn.onclick = (function(idx){ return function(){ activeSugCat = idx; renderSuggestions(); }; })(i);
+        tabBar.appendChild(btn);
+      });
+
+      wrap.innerHTML = '';
+      SUGGESTIONS_CATS[activeSugCat].items.forEach(function(text) {
+        var btn = document.createElement('button');
+        btn.className = 'assist-chip';
+        btn.textContent = text;
+        btn.onclick = (function(t){ return function(){ askAssistant(t); }; })(text);
+        wrap.appendChild(btn);
+      });
+    }
+
+    function buildSystemPrompt() {
+      var prefs = {};
+      var journal = {};
+      try { prefs = JSON.parse(localStorage.getItem('flora_prefs') || '{}'); } catch(e) {}
+      try { journal = JSON.parse(localStorage.getItem('flora_journal') || '{}'); } catch(e) {}
+      var name = prefs.firstName || 'l\'utilisatrice';
+      var meds = (prefs.medications || []).join(', ') || 'non renseign\u00e9s';
+      var today = new Date();
+      var sjsrCount = 0, energySum = 0, energyCount = 0;
+      for (var i = 0; i < 7; i++) {
+        var d = new Date(today); d.setDate(d.getDate() - i);
+        var key = d.toISOString().split('T')[0];
+        var entry = journal[key];
+        if (entry) {
+          if (entry.sjsr) sjsrCount++;
+          if (entry.energy) { energySum += entry.energy; energyCount++; }
+        }
+      }
+      var avgEnergy = energyCount ? (energySum / energyCount).toFixed(1) : 'non disponible';
+      return 'Tu es l\'assistante bien-\u00eatre personnelle de ' + name + ' dans l\'application Fl\u014dra, sp\u00e9cialis\u00e9e SJSR, TDAH et nutrition anti-inflammatoire.\n\nProfil :\n- Pr\u00e9nom\u202f: ' + name + '\n- M\u00e9dicaments\u202f: ' + meds + '\n- Stats 7j\u202f: ' + sjsrCount + '/7 nuits SJSR, \u00e9nergie moyenne ' + avgEnergy + '/10\n\nProtocole Fl\u014dra\u202f:\n- Petits-d\u00e9jeuners\u202f: chia pudding + sarrasin, slow carbs + vitamine C + ol\u00e9agineux\n- D\u00e9jeuners\u202f: l\u00e9gumineuses + poissons gras\n- D\u00eeners\u202f: papillotes poisson/tofu + velout\u00e9s\n- Z\u00e9ro glutamate, citron syst\u00e9matique, cuisson vapeur\n\nCo mpl\u00e9ments document\u00e9s\u202f: lactoferrine, magn\u00e9sium bisglycinate, om\u00e9ga-3 EPA/DHA, vitamine D3+K2, B6+B12, zinc, fer (sous bilan), L-tyrosine.\n\nR\u00e9ponds toujours en fran\u00e7ais, de fa\u00e7on chaleureuse. Utilise **gras** pour les points importants, des listes avec - pour les \u00e9tapes. Maximum 200 mots sauf si analyse demand\u00e9e. Rappelle de consulter un m\u00e9decin pour les questions m\u00e9dicales.';
+    }
+
+    async function sendAssistantMessage() {
+      var input = document.getElementById('assistant-input');
+      if (!input) return;
+      var text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      input.style.height = 'auto';
+      await askAssistant(text);
+    }
+
+    async function askAssistant(text) {
+      if (!text || !text.trim()) return;
+      var intro = document.getElementById('assistant-intro');
+      if (intro) intro.style.display = 'none';
+      appendUserBubble(text);
+      assistantHistory.push({ role: 'user', content: text });
+      scrollToBottom();
+      var typingBubble = appendTyping();
+      var btn = document.getElementById('assistant-send-btn');
+      if (btn) btn.disabled = true;
+      try {
+        var resp = await fetch('https://api.anthropic.com/v1/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'claude-sonnet-4-20250514',
+            max_tokens: 600,
+            system: buildSystemPrompt(),
+            messages: assistantHistory.slice(-12)
+          })
+        });
+        var data = await resp.json();
+        var aiText = (data.content && data.content[0] && data.content[0].text) || 'D\u00e9sol\u00e9e, je n\'ai pas pu r\u00e9pondre. R\u00e9essayez.';
+        if (typingBubble) typingBubble.remove();
+        appendAIBubble(formatAIResponse(aiText));
+        assistantHistory.push({ role: 'assistant', content: aiText });
+        saveHistory();
+        suggestFollowUp(aiText);
+      } catch(err) {
+        if (typingBubble) typingBubble.remove();
+        appendAIBubble('<span style="color:#c0392b;">\u26a0\ufe0f Erreur de connexion. V\u00e9rifiez votre r\u00e9seau et r\u00e9essayez.</span>');
+      }
+      if (btn) btn.disabled = false;
+      scrollToBottom();
+    }
+
+    function suggestFollowUp(aiText) {
+      var lower = aiText.toLowerCase();
+      var wrap = document.getElementById('assistant-suggestions');
+      var tabBar = document.getElementById('sug-tab-bar');
+      if (!wrap) return;
+      var followUps = [];
+      if (lower.indexOf('magn\u00e9sium') >= 0 || lower.indexOf('compl\u00e9ment') >= 0) followUps.push('Quels compl\u00e9ments prendre ensemble\u202f?');
+      if (lower.indexOf('fer') >= 0 || lower.indexOf('ferritine') >= 0) followUps.push('Comment optimiser mon absorption du fer\u202f?');
+      if (lower.indexOf('recette') >= 0 || lower.indexOf('manger') >= 0) followUps.push('Donne-moi une autre id\u00e9e de recette');
+      if (lower.indexOf('sommeil') >= 0 || lower.indexOf('nuit') >= 0) followUps.push('Routine du soir pour le SJSR');
+      if (lower.indexOf('dopamine') >= 0) followUps.push('Aliments qui boostent la dopamine');
+      followUps.push('Autre question \u2192');
+      if (tabBar) tabBar.innerHTML = '<span style="font-size:0.7rem;color:var(--text-light);padding:4px 2px;">Continuer\u202f:</span>';
+      wrap.innerHTML = '';
+      followUps.slice(0, 4).forEach(function(text) {
+        var b = document.createElement('button');
+        b.className = 'assist-chip';
+        b.textContent = text;
+        b.onclick = (function(t){ return function(){
+          if (t === 'Autre question \u2192') { renderSuggestions(); return; }
+          askAssistant(t);
+        }; })(text);
+        wrap.appendChild(b);
+      });
+    }
+
+    function initAssistant() {
+      var sugDiv = document.getElementById('assistant-suggestions');
+      if (sugDiv && !document.getElementById('sug-tab-bar')) {
+        var tabBar = document.createElement('div');
+        tabBar.id = 'sug-tab-bar';
+        tabBar.style.cssText = 'display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-bottom:6px;scrollbar-width:none;';
+        sugDiv.parentNode.insertBefore(tabBar, sugDiv);
+      }
+      var header = document.querySelector('#page-assistant .page-header-inner');
+      if (header && !document.getElementById('clear-chat-btn')) {
+        var clrBtn = document.createElement('button');
+        clrBtn.id = 'clear-chat-btn';
+        clrBtn.innerHTML = '\uD83D\uDDD1\uFE0F';
+        clrBtn.title = 'Effacer la conversation';
+        clrBtn.style.cssText = 'background:none;border:none;font-size:1.1rem;cursor:pointer;padding:4px 8px;color:var(--text-light);margin-left:auto;';
+        clrBtn.onclick = function(){ if(confirm('Effacer toute la conversation\u202f?')) clearHistory(); };
+        header.appendChild(clrBtn);
+      }
+      renderSuggestions();
+      loadHistory();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var initiated = false;
+      var observer = new MutationObserver(function() {
+        var page = document.getElementById('page-assistant');
+        if (page && !page.classList.contains('hidden') && !initiated) {
+          initiated = true;
+          initAssistant();
+        }
+      });
+      var main = document.getElementById('main-content');
+      if (main) observer.observe(main, { subtree: true, attributeFilter: ['class'] });
+      var page = document.getElementById('page-assistant');
+      if (page && !page.classList.contains('hidden')) { initiated = true; initAssistant(); }
+    });
+
+  </script>
+
 </body>
 </html>
