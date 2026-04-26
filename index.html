@@ -369,12 +369,20 @@
         </div>
 
         <div class="journal-tabs">
-          <button class="jtab active" onclick="switchJTab('today', this)">Aujourd'hui</button>
-          <button class="jtab" onclick="switchJTab('historique', this)">Historique</button>
+          <button class="jtab active" id="jtab-btn-today" onclick="switchJTab('today', this)">Aujourd'hui</button>
+          <button class="jtab" id="jtab-btn-historique" onclick="switchJTab('historique', this)">Historique</button>
         </div>
 
         <div id="jtab-today">
-          <div class="journal-date" id="journal-entry-date"></div>
+          <!-- Navigation par date -->
+          <div id="journal-date-nav" style="display:flex;align-items:center;justify-content:space-between;background:var(--cream-dark,#ede8df);border-radius:14px;padding:8px 12px;margin-bottom:12px;">
+            <button onclick="journalNavDate(-1)" style="background:none;border:none;font-size:1.5rem;cursor:pointer;padding:2px 10px;color:var(--green-deep,#2d4a3e);line-height:1;" title="Jour précédent">‹</button>
+            <div style="text-align:center;">
+              <div id="journal-entry-date" style="font-weight:600;color:var(--green-deep,#2d4a3e);font-size:0.95rem;"></div>
+              <div id="journal-date-saved-badge" style="font-size:0.72rem;color:var(--green-mid,#4a7c59);margin-top:2px;display:none;">✅ Entrée existante chargée</div>
+            </div>
+            <button onclick="journalNavDate(+1)" id="journal-nav-next" style="background:none;border:none;font-size:1.5rem;cursor:pointer;padding:2px 10px;color:var(--green-deep,#2d4a3e);line-height:1;" title="Jour suivant">›</button>
+          </div>
 
           <div class="journal-block">
             <div class="jblock-title">🌙 Sommeil</div>
@@ -1783,5 +1791,281 @@
 
   </script>
 
+
+  <script>
+    /* ============================================================
+       PATCH FLŌRA — Navigation Journal par date + Historique fix
+       Chargé après app.js pour surcharger les fonctions défaillantes
+    ============================================================ */
+
+    // === ÉTAT GLOBAL DATE JOURNAL ===
+    var _journalCurrentDate = new Date();
+    _journalCurrentDate.setHours(0,0,0,0);
+
+    function _dateKey(d) {
+      // Retourne YYYY-MM-DD en heure locale (pas UTC)
+      var y = d.getFullYear();
+      var m = String(d.getMonth()+1).padStart(2,'0');
+      var day = String(d.getDate()).padStart(2,'0');
+      return y + '-' + m + '-' + day;
+    }
+
+    function _formatDateFR(d) {
+      var jours = ['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
+      var mois = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+      var today = new Date(); today.setHours(0,0,0,0);
+      var yesterday = new Date(today); yesterday.setDate(today.getDate()-1);
+      var prefix = '';
+      if (d.getTime() === today.getTime()) prefix = 'Aujourd'hui · ';
+      else if (d.getTime() === yesterday.getTime()) prefix = 'Hier · ';
+      return prefix + jours[d.getDay()] + ' ' + d.getDate() + ' ' + mois[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
+    function _updateDateNav() {
+      var dateEl = document.getElementById('journal-entry-date');
+      var badge = document.getElementById('journal-date-saved-badge');
+      var nextBtn = document.getElementById('journal-nav-next');
+      var today = new Date(); today.setHours(0,0,0,0);
+
+      if (dateEl) dateEl.textContent = _formatDateFR(_journalCurrentDate);
+
+      // Désactiver le bouton ">" si on est aujourd'hui
+      if (nextBtn) nextBtn.style.opacity = (_journalCurrentDate >= today) ? '0.3' : '1';
+      if (nextBtn) nextBtn.style.pointerEvents = (_journalCurrentDate >= today) ? 'none' : 'auto';
+
+      // Vérifier si une entrée existe pour ce jour
+      if (badge) {
+        var journal = {};
+        try { journal = JSON.parse(localStorage.getItem('flora_journal') || '{}'); } catch(e) {}
+        var key = _dateKey(_journalCurrentDate);
+        if (journal[key]) {
+          badge.style.display = 'block';
+          _loadJournalEntryForDate(journal[key]);
+        } else {
+          badge.style.display = 'none';
+          _resetJournalForm();
+        }
+      }
+    }
+
+    function journalNavDate(delta) {
+      var today = new Date(); today.setHours(0,0,0,0);
+      var next = new Date(_journalCurrentDate);
+      next.setDate(next.getDate() + delta);
+      if (next > today) return; // Pas de futur
+      _journalCurrentDate = next;
+      _updateDateNav();
+    }
+
+    function _resetJournalForm() {
+      // Remettre les valeurs par défaut du formulaire
+      var ids = ['sl-coucher','sl-lever','sl-sjsr','sl-qualite','sl-energie','sl-douleur','journal-notes'];
+      var defaults = {'sl-coucher':'23:00','sl-lever':'07:00','sl-sjsr':'0','sl-qualite':'3','sl-energie':'5','sl-douleur':'0','journal-notes':''};
+      ids.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el) el.value = defaults[id] || '';
+      });
+      // Réinitialiser les sliders affichés
+      if (typeof updateSleepCalc === 'function') updateSleepCalc();
+      if (typeof updateSliderVal === 'function') {
+        updateSliderVal('sl-sjsr','val-sjsr',false,true);
+        updateSliderVal('sl-qualite','val-qualite',true);
+        updateSliderVal('sl-energie','val-energie');
+        updateSliderVal('sl-douleur','val-douleur');
+      }
+      // Désélectionner chips symptômes
+      document.querySelectorAll('#symptom-chips .chip').forEach(function(c){ c.classList.remove('active'); });
+      document.querySelectorAll('.sleep-chip').forEach(function(c){ c.classList.remove('active'); });
+    }
+
+    function _loadJournalEntryForDate(entry) {
+      if (!entry) return;
+      // Charger les valeurs dans le formulaire
+      if (entry.coucher) { var el = document.getElementById('sl-coucher'); if (el) el.value = entry.coucher; }
+      if (entry.lever)   { var el = document.getElementById('sl-lever');   if (el) el.value = entry.lever;   }
+      if (entry.sjsr !== undefined) { var el = document.getElementById('sl-sjsr');    if (el) { el.value = entry.sjsr;    if (typeof updateSliderVal==='function') updateSliderVal('sl-sjsr','val-sjsr',false,true); } }
+      if (entry.qualite !== undefined) { var el = document.getElementById('sl-qualite'); if (el) { el.value = entry.qualite; if (typeof updateSliderVal==='function') updateSliderVal('sl-qualite','val-qualite',true); } }
+      if (entry.energy !== undefined) { var el = document.getElementById('sl-energie'); if (el) { el.value = entry.energy; if (typeof updateSliderVal==='function') updateSliderVal('sl-energie','val-energie'); } }
+      if (entry.pain !== undefined)   { var el = document.getElementById('sl-douleur'); if (el) { el.value = entry.pain;   if (typeof updateSliderVal==='function') updateSliderVal('sl-douleur','val-douleur'); } }
+      if (entry.notes) { var el = document.getElementById('journal-notes'); if (el) el.value = entry.notes; }
+      if (typeof updateSleepCalc === 'function') updateSleepCalc();
+    }
+
+    // Surcharger saveJournal pour sauvegarder à la bonne date
+    var _origSaveJournal = null;
+    function _patchSaveJournal() {
+      if (typeof saveJournal === 'function' && !saveJournal._patched) {
+        _origSaveJournal = saveJournal;
+        window.saveJournal = function() {
+          var today = new Date(); today.setHours(0,0,0,0);
+          var isToday = (_journalCurrentDate.getTime() === today.getTime());
+          if (isToday) {
+            // Comportement original pour aujourd'hui
+            _origSaveJournal();
+          } else {
+            // Sauvegarder manuellement pour une date passée
+            var journal = {};
+            try { journal = JSON.parse(localStorage.getItem('flora_journal') || '{}'); } catch(e) {}
+            var key = _dateKey(_journalCurrentDate);
+            var coucher = document.getElementById('sl-coucher') ? document.getElementById('sl-coucher').value : '23:00';
+            var lever = document.getElementById('sl-lever') ? document.getElementById('sl-lever').value : '07:00';
+            var sjsr = document.getElementById('sl-sjsr') ? parseInt(document.getElementById('sl-sjsr').value) : 0;
+            var qualite = document.getElementById('sl-qualite') ? parseInt(document.getElementById('sl-qualite').value) : 3;
+            var energy = document.getElementById('sl-energie') ? parseInt(document.getElementById('sl-energie').value) : 5;
+            var pain = document.getElementById('sl-douleur') ? parseInt(document.getElementById('sl-douleur').value) : 0;
+            var notes = document.getElementById('journal-notes') ? document.getElementById('journal-notes').value : '';
+            // Calcul durée sommeil
+            var sleepH = 0;
+            try {
+              var c = coucher.split(':'); var l = lever.split(':');
+              var cMin = parseInt(c[0])*60+parseInt(c[1]);
+              var lMin = parseInt(l[0])*60+parseInt(l[1]);
+              if (lMin <= cMin) lMin += 1440;
+              sleepH = Math.round((lMin - cMin) / 60 * 10) / 10;
+            } catch(e) {}
+            journal[key] = { coucher: coucher, lever: lever, sleep: sleepH, sjsr: sjsr, qualite: qualite, energy: energy, pain: pain, notes: notes, date: key };
+            try { localStorage.setItem('flora_journal', JSON.stringify(journal)); } catch(e) {}
+            var sc = document.getElementById('save-confirm');
+            if (sc) { sc.classList.remove('hidden'); setTimeout(function(){ sc.classList.add('hidden'); }, 2500); }
+            var badge = document.getElementById('journal-date-saved-badge');
+            if (badge) badge.style.display = 'block';
+          }
+        };
+        window.saveJournal._patched = true;
+      }
+    }
+
+    // === HISTORIQUE — VERSION ROBUSTE ===
+    function renderHistorique() {
+      var list = document.getElementById('historique-list');
+      if (!list) return;
+
+      var journal = {};
+      try { journal = JSON.parse(localStorage.getItem('flora_journal') || '{}'); } catch(e) {}
+
+      var keys = Object.keys(journal).sort().reverse();
+
+      if (keys.length === 0) {
+        list.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--text-light,#888);">' +
+          '<div style="font-size:2rem;margin-bottom:12px;">📔</div>' +
+          '<div style="font-size:0.9rem;">Aucune entrée enregistrée.<br>Commencez dès aujourd'hui !</div>' +
+          '</div>';
+        return;
+      }
+
+      var moisFR = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+      var jourFR = ['dim','lun','mar','mer','jeu','ven','sam'];
+
+      var html = '';
+      var currentMonth = '';
+
+      keys.forEach(function(key) {
+        var e = journal[key];
+        if (!e) return;
+        var d = new Date(key + 'T12:00:00');
+        var monthLabel = moisFR[d.getMonth()] + ' ' + d.getFullYear();
+
+        if (monthLabel !== currentMonth) {
+          currentMonth = monthLabel;
+          html += '<div style="font-weight:700;color:var(--green-deep,#2d4a3e);font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;margin:16px 0 8px;">' + monthLabel + '</div>';
+        }
+
+        var dayLabel = jourFR[d.getDay()] + ' ' + d.getDate();
+        var energyBar = '';
+        if (e.energy) {
+          var pct = Math.round(e.energy / 10 * 100);
+          energyBar = '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">' +
+            '<span style="font-size:0.7rem;color:var(--text-light,#888);width:50px;">Énergie</span>' +
+            '<div style="flex:1;background:#e8e4dc;border-radius:99px;height:5px;">' +
+            '<div style="width:' + pct + '%;background:var(--green-mid,#4a7c59);border-radius:99px;height:5px;"></div></div>' +
+            '<span style="font-size:0.7rem;color:var(--green-deep,#2d4a3e);font-weight:600;">' + e.energy + '/10</span></div>';
+        }
+        var painBar = '';
+        if (e.pain !== undefined && e.pain > 0) {
+          var pct2 = Math.round(e.pain / 10 * 100);
+          painBar = '<div style="display:flex;align-items:center;gap:6px;margin-top:4px;">' +
+            '<span style="font-size:0.7rem;color:var(--text-light,#888);width:50px;">Douleur</span>' +
+            '<div style="flex:1;background:#e8e4dc;border-radius:99px;height:5px;">' +
+            '<div style="width:' + pct2 + '%;background:#c0392b;border-radius:99px;height:5px;"></div></div>' +
+            '<span style="font-size:0.7rem;color:#c0392b;font-weight:600;">' + e.pain + '/10</span></div>';
+        }
+        var sleepStr = e.sleep ? e.sleep + 'h' : (e.coucher && e.lever ? e.coucher + '→' + e.lever : '—');
+        var sjsrStr = e.sjsr ? (e.sjsr > 0 ? '🦵 SJSR ' + e.sjsr + '/5' : '') : '';
+        var notesStr = e.notes ? '<div style="font-size:0.78rem;color:var(--text-mid,#555);margin-top:6px;font-style:italic;white-space:pre-wrap;word-break:break-word;">"' + e.notes.slice(0,120) + (e.notes.length > 120 ? '…' : '') + '"</div>' : '';
+
+        html += '<div style="background:white;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 4px rgba(0,0,0,0.07);" onclick="journalGoToDate('' + key + '')" style="cursor:pointer;">' +
+          '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+          '<span style="font-weight:700;color:var(--green-deep,#2d4a3e);font-size:0.92rem;">' + dayLabel + '</span>' +
+          '<div style="display:flex;gap:6px;align-items:center;">' +
+          '<span style="font-size:0.75rem;color:var(--text-light,#888);">🌙 ' + sleepStr + '</span>' +
+          (sjsrStr ? '<span style="font-size:0.72rem;color:#7a4eab;">' + sjsrStr + '</span>' : '') +
+          '</div></div>' +
+          energyBar + painBar + notesStr +
+          '</div>';
+      });
+
+      list.innerHTML = html;
+    }
+
+    function journalGoToDate(dateStr) {
+      // Naviguer vers une date dans le tab Aujourd'hui
+      var d = new Date(dateStr + 'T12:00:00');
+      d.setHours(0,0,0,0);
+      _journalCurrentDate = d;
+      // Passer au tab "Aujourd'hui"
+      var btnToday = document.getElementById('jtab-btn-today');
+      if (btnToday) switchJTab('today', btnToday);
+      _updateDateNav();
+    }
+
+    // Surcharger switchJTab pour déclencher renderHistorique automatiquement
+    var _origSwitchJTab = null;
+    function _patchSwitchJTab() {
+      if (typeof switchJTab === 'function' && !switchJTab._patched) {
+        _origSwitchJTab = switchJTab;
+        window.switchJTab = function(tab, btn) {
+          _origSwitchJTab(tab, btn);
+          if (tab === 'historique') {
+            setTimeout(renderHistorique, 50);
+          }
+        };
+        window.switchJTab._patched = true;
+      }
+    }
+
+    // Init au chargement du journal
+    function _initJournalPatch() {
+      _patchSaveJournal();
+      _patchSwitchJTab();
+      _updateDateNav();
+    }
+
+    // Observer pour détecter l'ouverture du journal
+    document.addEventListener('DOMContentLoaded', function() {
+      var observer = new MutationObserver(function() {
+        var page = document.getElementById('page-journal');
+        if (page && !page.classList.contains('hidden')) {
+          _initJournalPatch();
+          // Reset à aujourd'hui chaque fois qu'on ouvre le journal
+          var today = new Date(); today.setHours(0,0,0,0);
+          _journalCurrentDate = today;
+          _updateDateNav();
+        }
+      });
+      var main = document.getElementById('main-content');
+      if (main) observer.observe(main, { subtree: true, attributeFilter: ['class'] });
+
+      // Aussi écouter les clics nav
+      document.querySelectorAll('[data-page="journal"], .nav-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          setTimeout(_initJournalPatch, 100);
+        });
+      });
+
+      // Patch immédiat si déjà visible
+      setTimeout(_initJournalPatch, 500);
+    });
+
+  </script>
 </body>
 </html>
