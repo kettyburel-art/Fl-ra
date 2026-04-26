@@ -4826,7 +4826,11 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
-  if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
+  if (page === 'journal') {
+    setJournalDate();
+    initSleepCyclesUI();
+    loadJournalEntry();
+  }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     { loadProfil(); renderStats(); }
@@ -6528,6 +6532,506 @@ function activatePremium() {
 // ============================
 // SERVICE WORKER
 // ============================
+
+
+// ===== JOURNAL SJSR AMÉLIORÉ =====
+// ========================================
+// FLŌRA — JOURNAL SJSR AMÉLIORÉ
+// Coller ces fonctions dans app.js
+// en remplacement des anciennes fonctions journal
+// ========================================
+
+// --- Génération des options time (select) ---
+function generateTimeOptions() {
+  const opts = [];
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const hh = String(h).padStart(2,'0');
+      const mm = String(m).padStart(2,'0');
+      opts.push(`<option value="${hh}:${mm}">${hh}h${mm}</option>`);
+    }
+  }
+  return opts.join('');
+}
+
+// --- Cycles de sommeil ---
+let sleepCycles = []; // [{ couche: '23:00', leve: '07:00' }]
+let currentLevers = 0;
+let currentStarsQualite = 0;
+let currentMoodReveil = null;
+let statsPeriod = 14;
+
+function initSleepCyclesUI() {
+  sleepCycles = [];
+  // Charger depuis l'entrée en cours si elle existe
+  const dk = window.currentJournalDate || dateKey(new Date());
+  const entry = journal[dk];
+  if (entry && entry.sleepCycles && entry.sleepCycles.length) {
+    sleepCycles = entry.sleepCycles;
+  } else {
+    sleepCycles = [{ couche: '23:00', leve: '07:00' }];
+  }
+  renderSleepCycles();
+}
+
+function renderSleepCycles() {
+  const list = document.getElementById('sleep-cycles-list');
+  if (!list) return;
+
+  const timeOpts = generateTimeOptions();
+
+  list.innerHTML = sleepCycles.map((c, i) => {
+    const dur = calcCycleDuration(c.couche, c.leve);
+    return `
+    <div class="cycle-block" id="cycle-block-${i}">
+      <div class="cycle-block-header">
+        <span>🌙 Cycle ${i+1}</span>
+        ${sleepCycles.length > 1 ? `<button class="cycle-remove-btn" onclick="removeSleepCycle(${i})">✕</button>` : ''}
+      </div>
+      <div class="cycle-time-row">
+        <div class="cycle-time-field">
+          <label>Couché</label>
+          <select onchange="updateCycle(${i},'couche',this.value)">
+            ${generateTimeOptionsSelected(c.couche)}
+          </select>
+        </div>
+        <div class="cycle-time-field">
+          <label>Levé</label>
+          <select onchange="updateCycle(${i},'leve',this.value)">
+            ${generateTimeOptionsSelected(c.leve)}
+          </select>
+        </div>
+      </div>
+      <div class="cycle-duration">⏱ ${dur}</div>
+    </div>`;
+  }).join('');
+
+  updateSleepTotals();
+}
+
+function generateTimeOptionsSelected(selected) {
+  const opts = [];
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const hh = String(h).padStart(2,'0');
+      const mm = String(m).padStart(2,'0');
+      const val = `${hh}:${mm}`;
+      opts.push(`<option value="${val}" ${val === selected ? 'selected' : ''}>${hh}h${mm}</option>`);
+    }
+  }
+  return opts.join('');
+}
+
+function updateCycle(idx, field, val) {
+  sleepCycles[idx][field] = val;
+  // Recalcul durée du cycle
+  const dur = calcCycleDuration(sleepCycles[idx].couche, sleepCycles[idx].leve);
+  const durEl = document.querySelector(`#cycle-block-${idx} .cycle-duration`);
+  if (durEl) durEl.textContent = `⏱ ${dur}`;
+  updateSleepTotals();
+}
+
+function addSleepCycle() {
+  // Le nouveau cycle commence là où le précédent se termine
+  const last = sleepCycles[sleepCycles.length - 1];
+  sleepCycles.push({ couche: last.leve, leve: last.leve });
+  renderSleepCycles();
+}
+
+function removeSleepCycle(idx) {
+  if (sleepCycles.length <= 1) return;
+  sleepCycles.splice(idx, 1);
+  renderSleepCycles();
+}
+
+function calcCycleDuration(couche, leve) {
+  const [h1, m1] = couche.split(':').map(Number);
+  const [h2, m2] = leve.split(':').map(Number);
+  let total = (h2 * 60 + m2) - (h1 * 60 + m1);
+  if (total < 0) total += 24 * 60;
+  const h = Math.floor(total / 60);
+  const m = total % 60;
+  return m > 0 ? `${h}h${String(m).padStart(2,'0')}` : `${h}h`;
+}
+
+function updateSleepTotals() {
+  let totalSleep = 0;
+  let bedStart = null, bedEnd = null;
+
+  sleepCycles.forEach(c => {
+    const [h1, m1] = c.couche.split(':').map(Number);
+    const [h2, m2] = c.leve.split(':').map(Number);
+    let dur = (h2 * 60 + m2) - (h1 * 60 + m1);
+    if (dur < 0) dur += 24 * 60;
+    totalSleep += dur;
+
+    // Calculer temps au lit (premier coucher au dernier lever)
+    if (bedStart === null || h1 * 60 + m1 < bedStart) bedStart = h1 * 60 + m1;
+    if (bedEnd === null || h2 * 60 + m2 > bedEnd) bedEnd = h2 * 60 + m2;
+  });
+
+  const formatMin = (m) => {
+    const h = Math.floor(m / 60);
+    const min = m % 60;
+    return min > 0 ? `${h}h${String(min).padStart(2,'0')}` : `${h}h`;
+  };
+
+  const totalEl = document.getElementById('total-sleep-val');
+  const bedEl = document.getElementById('total-bed-val');
+  const leversEl = document.getElementById('levers-count-new');
+
+  if (totalEl) totalEl.textContent = formatMin(totalSleep);
+
+  if (bedEl) {
+    if (bedStart !== null && bedEnd !== null) {
+      let bedTime = bedEnd - bedStart;
+      if (bedTime < 0) bedTime += 24 * 60;
+      bedEl.textContent = sleepCycles.length > 1 ? formatMin(bedTime) : '—';
+    } else {
+      bedEl.textContent = '—';
+    }
+  }
+
+  if (leversEl) leversEl.textContent = `${currentLevers}x`;
+}
+
+// --- Étoiles qualité ---
+function setStars(val) {
+  currentStarsQualite = val;
+  document.querySelectorAll('#stars-qualite .star').forEach((s, i) => {
+    s.classList.toggle('active', i < val);
+  });
+}
+
+// --- Humeur réveil ---
+function selectMood(el, type, val) {
+  document.querySelectorAll(`#mood-${type} .mood-btn`).forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  currentMoodReveil = val;
+}
+
+// --- Sieste ---
+function updateSiesteDisplay() {
+  const val = parseInt(document.getElementById('sieste-select')?.value || '0');
+  const info = document.getElementById('sieste-info');
+  if (!info) return;
+  if (val === 0) {
+    info.textContent = 'Pas de sieste aujourd\'hui';
+  } else if (val < 60) {
+    info.textContent = `Sieste de ${val} min`;
+  } else {
+    info.textContent = `Sieste de ${Math.floor(val/60)}h${val%60 ? val%60+'min' : ''}`;
+  }
+}
+
+// --- Douleurs 3 moments ---
+function updateDouleur(moment) {
+  const val = parseInt(document.getElementById(`sl-douleur-${moment}`)?.value || '0');
+  const el = document.getElementById(`val-douleur-${moment}`);
+  if (!el) return;
+
+  let label, cls;
+  if (val === 0) { label = 'Aucune douleur'; cls = 'green'; }
+  else if (val <= 3) { label = 'Légère'; cls = 'green'; }
+  else if (val <= 6) { label = 'Modérée'; cls = 'orange'; }
+  else if (val <= 8) { label = 'Intense'; cls = 'orange'; }
+  else { label = 'Insupportable'; cls = 'red'; }
+
+  el.textContent = `${val} — ${label}`;
+  el.className = `douleur-val ${cls}`;
+}
+
+// --- Levers nocturnes ---
+function changeCounter(type, delta) {
+  if (type === 'levers') {
+    currentLevers = Math.max(0, currentLevers + delta);
+    const el = document.getElementById('levers-count');
+    if (el) el.textContent = currentLevers;
+    updateSleepTotals();
+  }
+}
+
+// --- Statistiques journal ---
+let _statsPeriod = 14;
+
+function setStatsPeriod(period, btn) {
+  _statsPeriod = period;
+  document.querySelectorAll('.stats-period-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderJournalStats();
+}
+
+function renderJournalStats() {
+  const container = document.getElementById('stats-journal-content');
+  if (!container) return;
+
+  const isCompare = _statsPeriod === 'compare';
+  const days = isCompare ? 30 : _statsPeriod;
+  const today = new Date();
+
+  const entries = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dk = dateKey(d);
+    entries.push({ dk, data: journal[dk] || null, d });
+  }
+
+  const filled = entries.filter(e => e.data);
+  const n = filled.length;
+
+  if (n === 0) {
+    container.innerHTML = `<div class="journal-block" style="text-align:center;color:var(--text-light);padding:32px 16px;">
+      <div style="font-size:2rem;">🌙</div>
+      <p>Aucune entrée sur cette période.<br>Commencez à remplir votre journal !</p>
+    </div>`;
+    return;
+  }
+
+  // Calculs sommeil
+  const avgSleep = n ? filled.reduce((s,e) => {
+    if (!e.data.sleepCycles) return s + (e.data.sleepDuration || 0);
+    const total = e.data.sleepCycles.reduce((t, c) => {
+      const [h1,m1] = c.couche.split(':').map(Number);
+      const [h2,m2] = c.leve.split(':').map(Number);
+      let d = (h2*60+m2)-(h1*60+m1);
+      if (d<0) d+=1440;
+      return t+d;
+    }, 0);
+    return s + total;
+  }, 0) / n : 0;
+
+  const avgQualite = n ? filled.reduce((s,e) => s + (e.data.qualite || 0), 0) / n : 0;
+  const avgLevers = n ? filled.reduce((s,e) => s + (e.data.levers || 0), 0) / n : 0;
+  const avgSieste = n ? filled.reduce((s,e) => s + (e.data.sieste || 0), 0) / n : 0;
+
+  // Douleurs
+  const avgDouleurReveil = n ? filled.reduce((s,e) => s+(e.data.douleurReveil||0),0)/n : 0;
+  const avgDouleurJour   = n ? filled.reduce((s,e) => s+(e.data.douleurJour||0),0)/n : 0;
+  const avgDouleurNuit   = n ? filled.reduce((s,e) => s+(e.data.douleurNuit||0),0)/n : 0;
+  const avgDouleurGlobal = (avgDouleurReveil+avgDouleurJour+avgDouleurNuit)/3;
+
+  // Bien-être
+  const bestNight = filled.reduce((best, e) => {
+    if (!e.data.sleepCycles) return best;
+    const total = e.data.sleepCycles.reduce((t,c) => {
+      const [h1,m1]=c.couche.split(':').map(Number);
+      const [h2,m2]=c.leve.split(':').map(Number);
+      let d=(h2*60+m2)-(h1*60+m1);if(d<0)d+=1440;return t+d;
+    },0);
+    return total > best ? total : best;
+  }, 0);
+
+  const goodNights = filled.filter(e => {
+    if (!e.data.sleepCycles) return false;
+    const total = e.data.sleepCycles.reduce((t,c) => {
+      const [h1,m1]=c.couche.split(':').map(Number);
+      const [h2,m2]=c.leve.split(':').map(Number);
+      let d=(h2*60+m2)-(h1*60+m1);if(d<0)d+=1440;return t+d;
+    },0);
+    return total >= 420; // 7h
+  }).length;
+
+  const fmt = (m) => {
+    if (!m) return '—';
+    const h=Math.floor(m/60), min=Math.round(m%60);
+    return min>0?`${h}.${Math.round(min/6)}h`:`${h}h`;
+  };
+
+  const starStr = (avg) => {
+    if (!avg) return '—';
+    return '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg));
+  };
+
+  // Humeurs fréquentes
+  const moods = filled.map(e=>e.data.moodReveil).filter(Boolean);
+  const moodEmoji = { epuisee:'😫', fatiguee:'😔', correcte:'😐', bien:'🙂', reposee:'😊', excellente:'🤩' };
+  const moodCount = moods.reduce((acc,m)=>{ acc[m]=(acc[m]||0)+1; return acc; }, {});
+  const topMood = Object.entries(moodCount).sort((a,b)=>b[1]-a[1])[0];
+
+  container.innerHTML = `
+    <div class="stats-block">
+      <div class="stats-block-title">😴 Sommeil</div>
+      <div class="stats-kpi-grid">
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${fmt(avgSleep)}</div>
+          <div class="stats-kpi-label">Durée<br>moyenne</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-val" style="font-size:0.9rem;">${starStr(avgQualite)}</div>
+          <div class="stats-kpi-label">Qualité ⭐</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${avgLevers.toFixed(1)}x</div>
+          <div class="stats-kpi-label">Levers /<br>nuit</div>
+        </div>
+      </div>
+      <div class="stats-kpi-wide">
+        <div class="stats-kpi-val">${Math.round(avgSieste)} min</div>
+        <div class="stats-kpi-label">Sieste moy. 💤</div>
+      </div>
+    </div>
+
+    <div class="stats-block douleur">
+      <div class="stats-block-title">🦵 Douleurs SJSR</div>
+      <div class="stats-kpi-grid">
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${avgDouleurReveil.toFixed(1)}/10</div>
+          <div class="stats-kpi-label">🌅 Au<br>réveil</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${avgDouleurJour.toFixed(1)}/10</div>
+          <div class="stats-kpi-label">☀️ En<br>journée</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${avgDouleurNuit.toFixed(1)}/10</div>
+          <div class="stats-kpi-label">🌙 La<br>nuit</div>
+        </div>
+      </div>
+      <div class="stats-kpi-wide">
+        <div class="stats-kpi-val" style="color:#c2547a;">${avgDouleurGlobal.toFixed(1)}/10</div>
+        <div class="stats-kpi-label">📊 Moyenne globale</div>
+      </div>
+    </div>
+
+    <div class="stats-block wellbeing">
+      <div class="stats-block-title">✨ Ressenti & Bien-être</div>
+      <div class="stats-kpi-grid">
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${fmt(bestNight)}</div>
+          <div class="stats-kpi-label">Meilleure<br>nuit</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-val">${goodNights}</div>
+          <div class="stats-kpi-label">Nuits<br>≥ 7h ✅</div>
+        </div>
+        <div class="stats-kpi">
+          <div class="stats-kpi-val" style="font-size:1.4rem;">${topMood ? moodEmoji[topMood[0]] : '—'}</div>
+          <div class="stats-kpi-label">Humeur<br>réveil</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:0.75rem;color:var(--text-light);text-align:center;padding:8px 0;">
+      ${n} entrée${n>1?'s':''} sur ${days} jours
+    </div>`;
+}
+
+// --- Surcharge de switchJTab pour inclure stats ---
+const _origSwitchJTab = typeof switchJTab === 'function' ? switchJTab : null;
+function switchJTab(tab, btn) {
+  ['today','stats','historique'].forEach(t => {
+    const el = document.getElementById(`jtab-${t}`);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(`jtab-${tab}`);
+  if (target) target.classList.remove('hidden');
+
+  document.querySelectorAll('#page-journal .jtab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+
+  if (tab === 'today') {
+    setJournalDate();
+    initSleepCyclesUI();
+    loadJournalEntry();
+  }
+  if (tab === 'stats') renderJournalStats();
+  if (tab === 'historique') renderHistorique();
+}
+
+// --- Surcharge saveJournal ---
+function saveJournal() {
+  const dk = window.currentJournalDate || dateKey(new Date());
+
+  journal[dk] = {
+    sleepCycles: sleepCycles,
+    levers: currentLevers,
+    qualite: currentStarsQualite,
+    moodReveil: currentMoodReveil,
+    sieste: parseInt(document.getElementById('sieste-select')?.value || '0'),
+    douleurReveil: parseInt(document.getElementById('sl-douleur-reveil')?.value || '0'),
+    douleurJour:   parseInt(document.getElementById('sl-douleur-jour')?.value || '0'),
+    douleurNuit:   parseInt(document.getElementById('sl-douleur-nuit')?.value || '0'),
+    notes: document.getElementById('journal-notes')?.value || '',
+    med: Array.from(document.querySelectorAll('.sleep-chip.active[data-group="med"]')).map(el => el.textContent),
+    rituel: Array.from(document.querySelectorAll('.sleep-chip.active[data-group="rituel"]')).map(el => el.textContent),
+    ts: Date.now()
+  };
+
+  saveState();
+  updateDashboard();
+
+  const confirm = document.getElementById('save-confirm');
+  if (confirm) {
+    confirm.classList.remove('hidden');
+    setTimeout(() => confirm.classList.add('hidden'), 2500);
+  }
+}
+
+// --- Charger une entrée existante ---
+function loadJournalEntry() {
+  const dk = window.currentJournalDate || dateKey(new Date());
+  const entry = journal[dk];
+
+  // Reset UI
+  currentLevers = 0;
+  currentStarsQualite = 0;
+  currentMoodReveil = null;
+
+  if (!entry) {
+    sleepCycles = [{ couche: '23:00', leve: '07:00' }];
+    renderSleepCycles();
+    setStars(0);
+    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
+    ['reveil','jour','nuit'].forEach(m => {
+      const sl = document.getElementById(`sl-douleur-${m}`);
+      if (sl) { sl.value = 0; updateDouleur(m); }
+    });
+    const sel = document.getElementById('sieste-select');
+    if (sel) { sel.value = '0'; updateSiesteDisplay(); }
+    const notes = document.getElementById('journal-notes');
+    if (notes) notes.value = '';
+    const leversEl = document.getElementById('levers-count');
+    if (leversEl) leversEl.textContent = '0';
+    return;
+  }
+
+  // Charger les données
+  if (entry.sleepCycles) {
+    sleepCycles = entry.sleepCycles;
+    renderSleepCycles();
+  }
+
+  currentLevers = entry.levers || 0;
+  const leversEl = document.getElementById('levers-count');
+  if (leversEl) leversEl.textContent = currentLevers;
+  updateSleepTotals();
+
+  if (entry.qualite) setStars(entry.qualite);
+
+  if (entry.moodReveil) {
+    currentMoodReveil = entry.moodReveil;
+    const btn = document.querySelector(`#mood-reveil [data-val="${entry.moodReveil}"]`);
+    if (btn) btn.classList.add('selected');
+  }
+
+  const sel = document.getElementById('sieste-select');
+  if (sel) { sel.value = entry.sieste || '0'; updateSiesteDisplay(); }
+
+  ['reveil','jour','nuit'].forEach(m => {
+    const sl = document.getElementById(`sl-douleur-${m}`);
+    const key = `douleur${m.charAt(0).toUpperCase()+m.slice(1)}`;
+    if (sl) { sl.value = entry[key] || 0; updateDouleur(m); }
+  });
+
+  const notes = document.getElementById('journal-notes');
+  if (notes) notes.value = entry.notes || '';
+}
+
+// --- Hook showPage pour initialiser le journal ---
+const _origShowPage = typeof showPage === 'function' ? showPage : null;
+
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
