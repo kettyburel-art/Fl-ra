@@ -6,17 +6,11 @@
 <meta name="theme-color" content="#2d4a3e" />
 <meta name="description" content="Flōra — Bien-être anti-inflammatoire, journal et nutrition personnalisés" />
 
-<!-- ✅ FIX: CSP de base (bloquer XSS) -->
-<meta http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://buy.stripe.com https://plausible.io https://api.anthropic.com; frame-src https://js.stripe.com;" />
-
 <title>Flōra</title>
 <link rel="manifest" href="manifest.json" />
 
-<!-- ✅ FIX BUG 2: apple-touch-icon doit être PNG, pas SVG (iOS ne supporte pas SVG ici) -->
-<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<link rel="apple-touch-icon" href="icon.svg" />
 
-<!-- ✅ FIX BUG 4: preconnect gstatic manquant + crossorigin obligatoire -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -160,7 +154,6 @@
         Abonné·e Premium ou Administratrice ? Connectez-vous ici.
       </p>
       <div class="settings-row" style="flex-direction:column;gap:8px;align-items:stretch;">
-        <!-- ✅ FIX BUG 9: tryLoginOnEnter gère la touche Entrée -->
         <input type="email" class="field" id="login-email"
           placeholder="Votre email" autocomplete="email"
           onkeydown="tryLoginOnEnter(event)" />
