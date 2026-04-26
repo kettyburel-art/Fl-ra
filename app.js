@@ -4821,6 +4821,7 @@ function showPage(page) {
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     { loadProfil(); renderStats(); }
   if (page === 'apropos')    { /* static */ }
+  if (page === 'batch')      { /* batch s'initialise via generateBatch() */ }
   if (page === 'generateur') {
     checkGenAccess();
     // Réinitialiser sur l'onglet semaine à chaque ouverture
@@ -4970,27 +4971,33 @@ function loadJournalEntry(date) {
     else el.value = val || '';
   };
 
-  set('sl-coucher', entry.coucher);
-  set('sl-lever',   entry.lever);
-  set('j-energie',  entry.energie || 5);
-  set('j-douleur',  entry.douleur || 0);
-  set('j-sjsr',     entry.sjsr    || 0);
-  set('j-notes',    entry.notes   || '');
+  set('sl-coucher',   entry.coucher);
+  set('sl-lever',     entry.lever);
+  set('sl-energie',   entry.energie || 5);
+  set('sl-douleur',   entry.douleur || 0);
+  set('sl-sjsr',      entry.sjsr    || 0);
+  set('journal-notes', entry.notes  || '');
 
-  // Qualité sommeil
-  if (entry.qualite) {
-    document.querySelectorAll('.star-btn').forEach((btn, i) => {
-      btn.classList.toggle('active', i < entry.qualite);
-    });
+  // Qualité sommeil — range input sl-qualite
+  const qualiteEl = document.getElementById('sl-qualite');
+  if (qualiteEl && entry.qualite) {
+    qualiteEl.value = entry.qualite;
+    // Mettre à jour le label étoiles
+    const stars = ['★☆☆☆☆','★★☆☆☆','★★★☆☆','★★★★☆','★★★★★'];
+    const valQual = document.getElementById('val-qualite');
+    if (valQual) valQual.textContent = stars[(entry.qualite || 3) - 1] || '★★★☆☆';
   }
 
-  // Slider labels
+  // Slider labels — synchroniser avec les valeurs rechargées
   const enVal = document.getElementById('val-energie');
   const doVal = document.getElementById('val-douleur');
   const sjVal = document.getElementById('val-sjsr');
-  if (enVal) enVal.textContent = entry.energie || 5;
-  if (doVal) doVal.textContent = entry.douleur || 0;
-  if (sjVal) sjVal.textContent = entry.sjsr    || 0;
+  if (enVal) enVal.textContent = (entry.energie || 5) + '/10';
+  if (doVal) doVal.textContent = (entry.douleur || 0) + '/10';
+  if (sjVal) {
+    const sjsrLabels = ['Aucun','Léger','Modéré','Fort','Très fort','Insupportable'];
+    sjVal.textContent = sjsrLabels[entry.sjsr || 0] || '0';
+  }
 
   updateSleepCalc();
 }
@@ -5650,6 +5657,9 @@ function closeModal() {
   document.getElementById('recette-modal').classList.add('hidden');
 }
 
+// Alias pour compatibilité vue jour Sérénité
+function closeRecette() { closeModal(); }
+
 function shareRecette(id) {
   const r = RECETTES.find(x => x.id === id);
   if (!r) return;
@@ -6178,12 +6188,12 @@ function renderPlanMoisSpec(moisIdx) {
 
     return `
       <div class="plan-jour${locked?' plan-jour-locked':''}${isToday?' plan-jour-today':''}${isPast?' plan-jour-past':''}">
-        <div class="plan-jour-header" ${!locked ? `onclick="openJourDetail(${moisIdx},${jour.j})" style="cursor:pointer;"` : ''}>
+        <div class="plan-jour-header">
           <div class="plan-jour-date">
             <strong>${dayName} ${jour.j}${isToday?' 📍':''}</strong>
             <span class="plan-jour-theme">${jour.theme}</span>
           </div>
-          ${locked?'<span class="plan-lock">⭐ Premium</span>':'<span style="font-size:0.75rem;color:var(--text-light);">→ détail</span>'}
+          ${locked?'<span class="plan-lock">⭐ Premium</span>':''}
         </div>
         ${locked?`
           <div class="plan-locked-msg" onclick="showPremium()">
@@ -6210,128 +6220,6 @@ function renderPlanMoisSpec(moisIdx) {
       if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 200);
   }
-}
-
-// ============================
-// VUE JOUR — Style Sérénité
-// ============================
-function openJourDetail(moisIdx, jourNum) {
-  const plan    = moisIdx === 3 ? PLAN_MENSUEL_AVRIL : moisIdx === 4 ? PLAN_MENSUEL_MAI : PLAN_MENSUEL_JUIN;
-  const jour    = plan.find(j => j.j === jourNum);
-  if (!jour) return;
-
-  const getR    = id => RECETTES.find(r => r.id === id);
-  const annee   = 2026;
-  const date    = new Date(annee, moisIdx, jourNum);
-  const jours   = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-  const moisNom = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
-  const dayName = jours[date.getDay()];
-  const isWE    = date.getDay() === 0 || date.getDay() === 6;
-
-  const pdc   = getR(jour.pdc);
-  const dej   = getR(jour.dej);
-  const din   = getR(jour.din);
-  const snack = getR(jour.snack);
-
-  // Badges nutri colorés
-  const NUTRI_COLORS = {
-    fer:          { bg:'#fde8e8', text:'#b03020', icon:'🩸', label:'FER' },
-    omega3:       { bg:'#e8f0fe', text:'#1a56a0', icon:'🐟', label:'ΩΩ3' },
-    magnesium:    { bg:'#e8f5e9', text:'#2e7d32', icon:'💊', label:'MAG' },
-    vitC:         { bg:'#fff3e0', text:'#e65100', icon:'🍋', label:'VIT C' },
-    proteines:    { bg:'#f3e5f5', text:'#6a1b9a', icon:'💪', label:'PROT' },
-    antioxydants: { bg:'#fce4ec', text:'#880e4f', icon:'🌸', label:'AOX' },
-  };
-
-  function nutriBadges(r) {
-    if (!r?.nutri) return '';
-    return Object.entries(r.nutri)
-      .filter(([, v]) => v)
-      .map(([k, v]) => {
-        const c = NUTRI_COLORS[k];
-        if (!c) return '';
-        const stars = v === '+++' ? '●●●' : v === '++' ? '●●' : '●';
-        return `<span class="jd-badge" style="background:${c.bg};color:${c.text}">${c.label} ${stars}</span>`;
-      }).join('');
-  }
-
-  function repasCard(r, { emoji, label, heures, contexte }) {
-    if (!r) return '';
-    const conseil = r.conseil ? `<div class="jd-conseil">🌿 ${r.conseil}</div>` : '';
-    const benfice = r.benefices ? `<div class="jd-benefice">${r.benefices.split('.')[0]}.</div>` : '';
-    return `
-      <div class="jd-card" onclick="openRecette(${r.id})">
-        <div class="jd-card-header">
-          <div class="jd-card-icon">${emoji}</div>
-          <div class="jd-card-meta">
-            <div class="jd-card-label">${label}${contexte ? ' · <span class="jd-contexte">' + contexte + '</span>' : ''}</div>
-            <div class="jd-card-heures">${heures}</div>
-          </div>
-        </div>
-        <div class="jd-card-nom">${r.emoji} ${r.nom}</div>
-        <div class="jd-badges-row">${nutriBadges(r)}</div>
-        ${conseil}
-      </div>`;
-  }
-
-  const pdcEmoji = isWE ? '🥂' : '☀️';
-  const pdcLabel = isWE ? 'BRUNCH · WEEK-END' : 'PETIT-DÉJEUNER';
-  const pdcHeure = isWE ? '9h – 11h' : '7h30 – 8h30';
-
-  const html = `
-    <div class="jd-wrap">
-      <div class="jd-top">
-        <div class="jd-date">${dayName.toUpperCase()} ${jourNum} ${moisNom[moisIdx].toUpperCase()}</div>
-        <div class="jd-theme-pill">${jour.theme}</div>
-      </div>
-
-      ${repasCard(pdc, { emoji: pdcEmoji, label: pdcLabel, heures: pdcHeure, contexte: '' })}
-      ${repasCard(dej, { emoji: '☀️', label: 'DÉJEUNER', heures: '12h30 – 13h30', contexte: isWE ? 'Maison' : 'Bureau' })}
-
-      ${snack ? `
-        <div class="jd-card jd-card-snack" onclick="openRecette(${snack.id})">
-          <div class="jd-card-header">
-            <div class="jd-card-icon">🍎</div>
-            <div class="jd-card-meta">
-              <div class="jd-card-label">GOÛTER · <span class="jd-contexte">16h – 17h</span></div>
-            </div>
-          </div>
-          <div class="jd-card-nom">${snack.emoji} ${snack.nom}</div>
-          <div class="jd-badges-row">${nutriBadges(snack)}</div>
-        </div>` : ''}
-
-      ${repasCard(din, { emoji: '🌙', label: 'DÎNER · SOMMEIL 🌿', heures: '19h – 20h max', contexte: '' })}
-
-      <div class="jd-card jd-card-soiree">
-        <div class="jd-card-header">
-          <div class="jd-card-icon">📺</div>
-          <div class="jd-card-meta">
-            <div class="jd-card-label">SOIRÉE · <span class="jd-contexte">20h – 21h</span></div>
-          </div>
-        </div>
-        <div class="jd-card-nom" style="font-style:italic;color:var(--text-mid);">Chocolat 85% · Infusion hibiscus · Repos 🌸</div>
-        <div class="jd-badges-row">
-          <span class="jd-badge" style="background:#fce4ec;color:#880e4f">ALK</span>
-          <span class="jd-badge" style="background:#e8f5e9;color:#2e7d32">FUN</span>
-        </div>
-      </div>
-
-      <div class="jd-footer">
-        <div style="font-size:0.75rem;color:var(--text-light);text-align:center;">
-          Touchez un repas pour voir la recette complète
-        </div>
-      </div>
-    </div>`;
-
-  // Ouvrir dans le modal recette existant
-  const modal = document.getElementById('recette-modal');
-  const modalCard = modal?.querySelector('.modal-card');
-  if (!modal || !modalCard) return;
-
-  modalCard.innerHTML = `
-    <button class="modal-close" onclick="closeRecette()">✕</button>
-    ${html}`;
-  modal.classList.remove('hidden');
 }
 
 function renderBrunchList() {
@@ -6415,11 +6303,21 @@ function generateMenu() {
 
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 
-  // Filtre par priorité
+  // Filtre par priorité — basé sur nutri et benefices (les tags sg/sl/vg n'incluent pas fer)
   const filterPriority = (arr) => {
-    if (priorite === 'energie')   return arr.filter(r => r.tags?.includes('fer') || r.calories > 350) || arr;
-    if (priorite === 'sommeil')   return arr.filter(r => r.benefices?.toLowerCase().includes('sommeil')) || arr;
-    if (priorite === 'digestion') return arr.filter(r => r.tags?.includes('vg')) || arr;
+    if (!arr || !arr.length) return arr;
+    if (priorite === 'energie') {
+      const filtered = arr.filter(r => r.nutri?.fer || r.nutri?.proteines || r.calories > 350);
+      return filtered.length ? filtered : arr;
+    }
+    if (priorite === 'sommeil') {
+      const filtered = arr.filter(r => r.benefices?.toLowerCase().includes('sommeil') || r.nutri?.magnesium);
+      return filtered.length ? filtered : arr;
+    }
+    if (priorite === 'digestion') {
+      const filtered = arr.filter(r => r.tags?.includes('vg') || r.benefices?.toLowerCase().includes('microbiot') || r.benefices?.toLowerCase().includes('digest'));
+      return filtered.length ? filtered : arr;
+    }
     return arr; // anti-inflammatoire = tout
   };
 

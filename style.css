@@ -1170,12 +1170,734 @@ textarea.field { resize: vertical; min-height: 80px; }
   #app { height: 860px; border-radius: var(--radius-xl); overflow: hidden; box-shadow: 0 24px 60px rgba(0,0,0,0.2); }
 }
 
+/* ================================================
+   FLŌRA — CSS COMPLÉMENTAIRE
+   Correctifs audit — classes manquantes
+   ================================================ */
+
 /* ============================
-   VUE JOUR — Style Sérénité
+   PLAN MENSUEL
    ============================*/
-.jd-wrap {
-  padding: 4px 0 16px;
+.plan-jour {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 4px var(--shadow);
+  border: 1.5px solid transparent;
+  transition: border-color 0.2s;
 }
+
+.plan-jour-today {
+  border-color: var(--green-mid);
+  box-shadow: 0 2px 12px rgba(61,107,88,0.18);
+}
+
+.plan-jour-past {
+  opacity: 0.62;
+}
+
+.plan-jour-locked {
+  background: var(--cream);
+  opacity: 0.85;
+}
+
+.plan-jour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 11px 14px 8px;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.plan-jour-date {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.plan-jour-date strong {
+  font-size: 0.88rem;
+  color: var(--text-dark);
+}
+
+.plan-jour-theme {
+  font-size: 0.72rem;
+  color: var(--text-light);
+}
+
+.plan-repas {
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.plan-meal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.82rem;
+  color: var(--text-dark);
+  transition: background 0.15s;
+}
+
+.plan-meal:hover, .plan-meal:active {
+  background: var(--cream);
+}
+
+.plan-meal-label {
+  font-size: 0.9rem;
+  flex-shrink: 0;
+  width: 22px;
+}
+
+.plan-lock {
+  font-size: 0.72rem;
+  background: var(--gold);
+  color: var(--white);
+  padding: 3px 8px;
+  border-radius: 99px;
+  font-weight: 600;
+}
+
+.plan-locked-msg {
+  padding: 12px 14px;
+  font-size: 0.82rem;
+  color: var(--earth);
+  text-align: center;
+  cursor: pointer;
+  font-style: italic;
+}
+
+.plan-locked-msg:hover { text-decoration: underline; }
+
+/* ============================
+   BATCH COOKING
+   ============================*/
+.batch-step {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  padding: 14px 16px;
+  box-shadow: 0 1px 4px var(--shadow);
+  border-left: 4px solid var(--cream-dark);
+  transition: border-color 0.2s;
+}
+
+.batch-step.active {
+  border-left-color: var(--green-mid);
+  box-shadow: 0 2px 12px rgba(61,107,88,0.15);
+}
+
+.batch-step.done {
+  border-left-color: var(--green-light);
+  opacity: 0.7;
+}
+
+.batch-step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.batch-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--green-pale);
+  color: var(--green-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.batch-step.done .batch-step-num {
+  background: var(--green-light);
+  color: var(--white);
+}
+
+.batch-step-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  flex: 1;
+}
+
+.batch-step-time {
+  font-size: 0.75rem;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.batch-step-body {
+  font-size: 0.84rem;
+  color: var(--text-mid);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+
+.batch-step-body ul { padding-left: 18px; margin-top: 6px; }
+.batch-step-body li { margin-bottom: 4px; }
+
+.batch-timer {
+  font-size: 0.75rem;
+  color: var(--green-mid);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+
+.batch-step-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.batch-btn-done {
+  flex: 1;
+  padding: 10px;
+  background: var(--green-deep);
+  color: var(--white);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.batch-btn-done:hover { background: var(--green-mid); }
+
+.batch-btn-skip {
+  padding: 10px 16px;
+  background: var(--cream-dark);
+  color: var(--text-mid);
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+
+/* ============================
+   FICHE RECETTE — MODAL
+   ============================*/
+.recipe-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.recipe-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.recipe-tag-pill {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 99px;
+}
+
+.recipe-benefits {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--green-pale);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin: 14px 0;
+  font-size: 0.84rem;
+  color: var(--green-deep);
+  line-height: 1.5;
+}
+
+.recipe-benefits-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.nutri-badges-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.nutri-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 5px 10px;
+  border-radius: 99px;
+}
+
+.nutri-stars {
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+}
+
+.recipe-section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-light);
+  margin: 16px 0 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.recipe-section-sub {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-light);
+}
+
+.recipe-ingredient-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.recipe-ingredient-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--text-dark);
+  padding: 4px 0;
+  border-bottom: 1px solid var(--cream-dark);
+}
+
+.recipe-ingredient-list li:last-child { border-bottom: none; }
+
+.ingredient-dot {
+  color: var(--green-light);
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.ingredient-locked {
+  filter: blur(3px);
+  user-select: none;
+  pointer-events: none;
+}
+
+.recipe-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.recipe-step-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.step-number {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--green-deep);
+  color: var(--white);
+  font-size: 0.78rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-text {
+  font-size: 0.86rem;
+  color: var(--text-dark);
+  line-height: 1.55;
+  flex: 1;
+}
+
+.recipe-conseil {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: #fffbf0;
+  border: 1px solid var(--gold);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin: 14px 0;
+  font-size: 0.84rem;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.recipe-conseil-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.recipe-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cream-dark);
+}
+
+/* Carte recette verrouillée */
+.recette-card-locked {
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.recette-emoji-blurred {
+  filter: blur(6px);
+  transform: scale(1.1);
+}
+
+.recette-lock-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(247,243,238,0.72);
+  backdrop-filter: blur(2px);
+}
+
+.recette-lock-icon { font-size: 1.2rem; }
+
+.recette-lock-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--gold);
+  margin-top: 2px;
+}
+
+.recette-tag.premium {
+  background: var(--gold);
+  color: var(--white);
+  padding: 2px 6px;
+  border-radius: 99px;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+
+/* Aperçu recette premium */
+.preview-locked-steps {
+  position: relative;
+  margin-bottom: 16px;
+}
+
+.preview-step-blur {
+  padding: 12px 0;
+  opacity: 0.35;
+}
+
+.step-blur-line {
+  height: 10px;
+  background: var(--cream-dark);
+  border-radius: 99px;
+  margin-bottom: 10px;
+}
+
+.preview-lock-banner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(247,243,238,0.9);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+
+.preview-lock-icon { font-size: 1.4rem; }
+
+.preview-lock-text { font-size: 0.84rem; color: var(--text-dark); line-height: 1.4; }
+
+.preview-cta-block {
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-top: 8px;
+}
+
+.preview-cta-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.8rem;
+  color: var(--green-mid);
+  margin-bottom: 12px;
+}
+
+/* ============================
+   STATISTIQUES
+   ============================*/
+.stats-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.stats-summary-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 12px 8px;
+  text-align: center;
+  box-shadow: 0 1px 4px var(--shadow);
+}
+
+.stats-summary-val {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+
+.stats-summary-label {
+  font-size: 0.68rem;
+  color: var(--text-light);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+.stats-section {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 14px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 4px var(--shadow);
+}
+
+.stats-section-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  margin-bottom: 12px;
+}
+
+.stats-chart-wrap { overflow-x: auto; }
+
+.stats-chart-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  min-height: 80px;
+  padding-bottom: 4px;
+}
+
+.stats-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+  min-width: 20px;
+}
+
+.stats-bar {
+  width: 100%;
+  border-radius: 3px 3px 0 0;
+  min-height: 3px;
+  transition: height 0.3s ease;
+}
+
+.stats-bar.energie { background: var(--green-mid); }
+.stats-bar.douleur { background: var(--red-soft); opacity: 0.8; }
+.stats-bar.sjsr    { background: var(--earth-light); }
+
+.stats-day-label {
+  font-size: 0.62rem;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.stats-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.stats-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--text-mid);
+}
+
+.stats-legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.stats-premium-wall {
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+  border: 1.5px dashed var(--earth-light);
+  margin-top: 8px;
+}
+
+/* ============================
+   HISTORIQUE JOURNAL
+   ============================*/
+.hist-entry {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px var(--shadow);
+}
+
+.hist-date {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--green-deep);
+  margin-bottom: 6px;
+  text-transform: capitalize;
+}
+
+.hist-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hist-stat {
+  font-size: 0.75rem;
+  color: var(--text-mid);
+  background: var(--cream);
+  padding: 3px 8px;
+  border-radius: 99px;
+}
+
+/* ============================
+   ONBOARDING RECAP
+   ============================*/
+.onboard-greeting {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  color: var(--green-deep);
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.onboard-recs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.onboard-rec-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--cream);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+}
+
+.onboard-rec-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.onboard-rec-text {
+  font-size: 0.84rem;
+  color: var(--text-dark);
+  line-height: 1.4;
+}
+
+/* ============================
+   BUDGET CHIP (plan mensuel)
+   ============================*/
+.budget-chip {
+  padding: 6px 14px;
+  border-radius: 99px;
+  border: 1.5px solid var(--cream-dark);
+  background: var(--white);
+  color: var(--text-mid);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.budget-chip.active {
+  background: var(--green-deep);
+  color: var(--white);
+  border-color: var(--green-deep);
+}
+
+/* ============================
+   RECETTE CARD — badge nouveauté
+   ============================*/
+.badge-nouveaute {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: linear-gradient(135deg, #2d7d4f, #4aad6e);
+  color: #fff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 2px 8px;
+  border-radius: 99px;
+  z-index: 2;
+  box-shadow: 0 1px 4px rgba(45,125,79,0.25);
+}
+
+.recette-card-new {
+  position: relative;
+  border: 1.5px solid rgba(74,173,110,0.2);
+}
+
+.chip-new {
+  background: linear-gradient(135deg, #2d7d4f, #4aad6e) !important;
+  color: #fff !important;
+  font-weight: 700;
+}
+
+/* ============================
+   VUE JOUR SÉRÉNITÉ
+   ============================*/
+.jd-wrap { padding: 4px 0 16px; }
 
 .jd-top {
   display: flex;
@@ -1187,7 +1909,6 @@ textarea.field { resize: vertical; min-height: 80px; }
 }
 
 .jd-date {
-  font-family: var(--font-body);
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.08em;
@@ -1203,7 +1924,6 @@ textarea.field { resize: vertical; min-height: 80px; }
   border-radius: 99px;
 }
 
-/* Carte repas */
 .jd-card {
   background: var(--white);
   border-radius: var(--radius-md);
@@ -1214,10 +1934,7 @@ textarea.field { resize: vertical; min-height: 80px; }
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.jd-card:active {
-  transform: scale(0.98);
-  box-shadow: 0 1px 3px var(--shadow);
-}
+.jd-card:active { transform: scale(0.98); }
 
 .jd-card-snack {
   background: var(--cream);
@@ -1239,16 +1956,7 @@ textarea.field { resize: vertical; min-height: 80px; }
   margin-bottom: 8px;
 }
 
-.jd-card-icon {
-  font-size: 1.4rem;
-  line-height: 1;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.jd-card-meta {
-  flex: 1;
-}
+.jd-card-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
 
 .jd-card-label {
   font-size: 0.68rem;
@@ -1266,10 +1974,7 @@ textarea.field { resize: vertical; min-height: 80px; }
   letter-spacing: 0;
 }
 
-.jd-card-heures {
-  font-size: 0.75rem;
-  color: var(--text-light);
-}
+.jd-card-heures { font-size: 0.75rem; color: var(--text-light); }
 
 .jd-card-nom {
   font-family: var(--font-display);
@@ -1279,7 +1984,6 @@ textarea.field { resize: vertical; min-height: 80px; }
   margin-bottom: 10px;
 }
 
-/* Badges nutritionnels */
 .jd-badges-row {
   display: flex;
   flex-wrap: wrap;
@@ -1295,7 +1999,6 @@ textarea.field { resize: vertical; min-height: 80px; }
   border-radius: 99px;
 }
 
-/* Conseil chef */
 .jd-conseil {
   font-size: 0.78rem;
   color: var(--green-mid);
@@ -1303,15 +2006,4 @@ textarea.field { resize: vertical; min-height: 80px; }
   line-height: 1.4;
   padding-top: 4px;
   border-top: 1px solid var(--cream-dark);
-}
-
-.jd-footer {
-  padding-top: 8px;
-}
-
-/* Lien "→ détail" sur le plan-jour */
-.plan-jour-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
