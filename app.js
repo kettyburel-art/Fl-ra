@@ -3558,7 +3558,7 @@ const RECETTES = [
   // Exclusives abonnés Premium
   // =============================================
   {
-    id: 154, cat: 'dejeuner', premium: true,
+    id: 154, cat: 'dejeuner', premium: true, nouveaute: true,
     emoji: '🦑', nom: 'Encornets grillés sauce vierge yuzu-gingembre',
     temps: '20 min', calories: 340, diff: 'Moyen',
     tags: ['sg', 'sl'],
@@ -3581,7 +3581,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 155, cat: 'diner', premium: true,
+    id: 155, cat: 'diner', premium: true, nouveaute: true,
     emoji: '🌿', nom: 'Tartare de betterave-lentilles beluga-huile de lin',
     temps: '25 min', calories: 290, diff: 'Moyen',
     tags: ['sg', 'sl', 'vg'],
@@ -3604,7 +3604,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 156, cat: 'diner', premium: true,
+    id: 156, cat: 'diner', premium: true, nouveaute: true,
     emoji: '🐙', nom: 'Ceviche de maquereau-concombre-lait de coco',
     temps: '15 min + 30min marinade', calories: 310, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -3627,7 +3627,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 157, cat: 'diner', premium: true,
+    id: 157, cat: 'diner', premium: true, nouveaute: true,
     emoji: '🌾', nom: 'Risotto de millet-safran-moules fumées',
     temps: '35 min', calories: 420, diff: 'Moyen',
     tags: ['sg', 'sl'],
@@ -3650,7 +3650,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 158, cat: 'dejeuner', premium: true,
+    id: 158, cat: 'dejeuner', premium: true, nouveaute: true,
     emoji: '🥬', nom: 'Nems crus feuille de riz-spiruline-crevettes',
     temps: '20 min', calories: 280, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -3673,7 +3673,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 159, cat: 'diner', premium: true,
+    id: 159, cat: 'diner', premium: true, nouveaute: true,
     emoji: '🫀', nom: 'Carpaccio de betterave-fraise-vinaigre balsamique vieilli',
     temps: '20 min + 1h frigo', calories: 220, diff: 'Moyen',
     tags: ['sg', 'sl', 'vg'],
@@ -3695,7 +3695,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 160, cat: 'dejeuner', premium: true,
+    id: 160, cat: 'dejeuner', premium: true, nouveaute: true,
     emoji: '🦈', nom: 'Tataki de thon rouge-sésame noir-sauce ponzu',
     temps: '15 min', calories: 380, diff: 'Moyen',
     tags: ['sg', 'sl'],
@@ -3718,7 +3718,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 161, cat: 'snack', premium: true,
+    id: 161, cat: 'snack', premium: true, nouveaute: true,
     emoji: '🍵', nom: 'Matcha latte froid lait d\'avoine-miel de thym',
     temps: '5 min', calories: 120, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3740,7 +3740,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 162, cat: 'diner', premium: true,
+    id: 162, cat: 'diner', premium: true, nouveaute: true,
     emoji: '🌸', nom: 'Velouté d\'asperges vertes-amande-huile de truffe',
     temps: '30 min', calories: 260, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3763,7 +3763,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 163, cat: 'dejeuner', premium: true,
+    id: 163, cat: 'dejeuner', premium: true, nouveaute: true,
     emoji: '🏔️', nom: 'Salade de sarrasin kasha-agrumes-herbes fraîches-zaatar',
     temps: '20 min', calories: 360, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -5360,7 +5360,9 @@ function renderRecettes() {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
     if (search && !r.nom.toLowerCase().includes(search)) return false;
     // Filtre nutritionnel
-    if (currentNutriFilter) {
+    if (currentNutriFilter === 'nouveaute') {
+      if (!r.nouveaute) return false;
+    } else if (currentNutriFilter) {
       if (currentNutriFilter === 'rapide') {
         const mins = parseInt((r.temps_actif || r.temps || '99').replace(/\D/g,'')) || 99;
         if (mins >= 20) return false;
@@ -5394,7 +5396,8 @@ function renderRecettes() {
     // Carte premium verrouillée — avec aperçu alléchant
     if (locked) {
       return `
-        <div class="recette-card recette-card-locked" onclick="openRecettePreview(${r.id})">
+        <div class="recette-card recette-card-locked${r.nouveaute ? ' recette-card-new' : ''}" onclick="openRecettePreview(${r.id})">
+          ${r.nouveaute ? '<div class="badge-nouveaute">🆕 Mai 2026</div>' : ''}
           <div class="recette-emoji recette-emoji-blurred">${r.emoji}</div>
           <div class="recette-lock-overlay">
             <div class="recette-lock-icon">⭐</div>
@@ -5412,7 +5415,8 @@ function renderRecettes() {
 
     // Carte normale déverrouillée
     return `
-      <div class="recette-card" onclick="openRecette(${r.id})">
+      <div class="recette-card${r.nouveaute ? ' recette-card-new' : ''}" onclick="openRecette(${r.id})">
+        ${r.nouveaute ? '<div class="badge-nouveaute">🆕 Mai 2026</div>' : ''}
         <div class="recette-emoji">${r.emoji}</div>
         <div class="recette-info">
           <div class="recette-name">${r.nom}</div>
@@ -6132,21 +6136,62 @@ const PLAN_MENSUEL_MAI = [
   { j:31, pdc:96,  dej:107, din:114, snack:161, theme:'🎉 Dernier jour mai' },
 ];
 
-const JOURS_SEMAINE = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
+// Plan mensuel Juin 2026
+const PLAN_MENSUEL_JUIN = [
+  // Semaine 1 — Thème "Printemps Oriental" · Focus Fer & SJSR
+  { j:1,  pdc:1,   dej:51,  din:75,  snack:161, theme:'🌸 1er Juin · Oriental' },
+  { j:2,  pdc:2,   dej:154, din:155, snack:80,  theme:'🦑 Nouveauté Chef' },
+  { j:3,  pdc:3,   dej:52,  din:76,  snack:81,  theme:'🩸 Boost Fer' },
+  { j:4,  pdc:4,   dej:53,  din:157, snack:82,  theme:'🌾 Safran & Millet' },
+  { j:5,  pdc:5,   dej:54,  din:77,  snack:83,  theme:'🦵 Jambes légères' },
+  { j:6,  pdc:96,  dej:163, din:156, snack:161, theme:'🥂 Week-end Nouveautés' },
+  { j:7,  pdc:97,  dej:55,  din:78,  snack:84,  theme:'🛌 Sommeil' },
+  // Semaine 2 — Thème "Saveurs d'Asie" · Anti-inflammatoire max
+  { j:8,  pdc:98,  dej:158, din:79,  snack:128, theme:'🥬 Nems Spiruline' },
+  { j:9,  pdc:99,  dej:56,  din:112, snack:85,  theme:'🧠 Focus TDAH' },
+  { j:10, pdc:100, dej:57,  din:113, snack:86,  theme:'🌿 Anti-inflam' },
+  { j:11, pdc:101, dej:160, din:114, snack:87,  theme:'🦈 Tataki Thon' },
+  { j:12, pdc:102, dej:58,  din:115, snack:88,  theme:'💊 Magnésium' },
+  { j:13, pdc:103, dej:59,  din:159, snack:89,  theme:'🥂 Brunch Été' },
+  { j:14, pdc:131, dej:60,  din:116, snack:90,  theme:'🛌 Récupération' },
+  // Semaine 3 — Thème "Méditerranéen Réparateur" · Oméga-3
+  { j:15, pdc:1,   dej:61,  din:162, snack:91,  theme:'🌸 Velouté Asperges' },
+  { j:16, pdc:2,   dej:62,  din:117, snack:92,  theme:'🐟 Oméga-3' },
+  { j:17, pdc:3,   dej:63,  din:118, snack:93,  theme:'⚡ Énergie' },
+  { j:18, pdc:4,   dej:64,  din:155, snack:94,  theme:'🌿 Tartare Betterave' },
+  { j:19, pdc:5,   dej:65,  din:119, snack:95,  theme:'🩸 Fer & Lentilles' },
+  { j:20, pdc:96,  dej:66,  din:120, snack:124, theme:'🥂 Brunch Printemps' },
+  { j:21, pdc:97,  dej:67,  din:121, snack:125, theme:'🛌 Solstice d\'été' },
+  // Semaine 4 — Thème "Exotique & Douceur" · Intestin & Probiotiques
+  { j:22, pdc:98,  dej:68,  din:156, snack:126, theme:'🐙 Ceviche Maquereau' },
+  { j:23, pdc:99,  dej:69,  din:122, snack:127, theme:'🦵 Circulation' },
+  { j:24, pdc:100, dej:154, din:123, snack:128, theme:'🦑 Encornets & Yuzu' },
+  { j:25, pdc:101, dej:70,  din:75,  snack:129, theme:'⚡ Vitalité' },
+  { j:26, pdc:102, dej:71,  din:76,  snack:130, theme:'🧠 Concentration' },
+  { j:27, pdc:103, dej:160, din:77,  snack:80,  theme:'🥂 Brunch Estival' },
+  { j:28, pdc:131, dej:72,  din:78,  snack:81,  theme:'🛌 Sommeil réparateur' },
+  // Semaine 5 — Thème "Fusion & Équilibre" · Bilan
+  { j:29, pdc:1,   dej:158, din:79,  snack:82,  theme:'🌿 Fusion Légère' },
+  { j:30, pdc:2,   dej:163, din:162, snack:161, theme:'🎉 Bilan Juin · Chef ⭐' },
+];
+
+
 const MOIS = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];
 
 function renderPlanMensuel() {
   const now = new Date();
-  const moisNum = now.getMonth(); // 3=avril, 4=mai
-  renderPlanMoisSpec(moisNum === 3 ? 3 : 4);
+  const moisNum = now.getMonth(); // 3=avril, 4=mai, 5=juin
+  if (moisNum === 3) renderPlanMoisSpec(3);
+  else if (moisNum === 4) renderPlanMoisSpec(4);
+  else renderPlanMoisSpec(5);
 }
 
 function renderPlanMoisSpec(moisIdx) {
   const container = document.getElementById('plan-mensuel-content');
   if (!container) return;
 
-  const plan    = moisIdx === 3 ? PLAN_MENSUEL_AVRIL : PLAN_MENSUEL_MAI;
-  const nomMois = moisIdx === 3 ? 'Avril 2026' : 'Mai 2026';
+  const plan    = moisIdx === 3 ? PLAN_MENSUEL_AVRIL : moisIdx === 4 ? PLAN_MENSUEL_MAI : PLAN_MENSUEL_JUIN;
+  const nomMois = moisIdx === 3 ? 'Avril 2026' : moisIdx === 4 ? 'Mai 2026' : 'Juin 2026';
   const annee   = 2026;
   const getR    = id => RECETTES.find(r => r.id === id);
   const now     = new Date();
@@ -6157,6 +6202,7 @@ function renderPlanMoisSpec(moisIdx) {
     <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;">
       <button class="budget-chip ${moisIdx===3?'active':''}" onclick="renderPlanMoisSpec(3)">🌸 Avril 2026</button>
       <button class="budget-chip ${moisIdx===4?'active':''}" onclick="renderPlanMoisSpec(4)">🌿 Mai 2026</button>
+      <button class="budget-chip ${moisIdx===5?'active':''}" onclick="renderPlanMoisSpec(5)">☀️ Juin 2026</button>
     </div>
     <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:12px;">
       ${plan.length} jours · Cliquez sur une recette pour la voir · 📍 = aujourd\'hui
