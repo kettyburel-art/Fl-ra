@@ -11,35 +11,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <style>
-    /* === Nouveautés Mai 2026 === */
-    .badge-nouveaute {
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      background: linear-gradient(135deg, #2d7d4f, #4aad6e);
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.03em;
-      padding: 2px 8px;
-      border-radius: 99px;
-      z-index: 2;
-      box-shadow: 0 1px 4px rgba(45,125,79,0.25);
-    }
-    .recette-card-new {
-      position: relative;
-      border: 1.5px solid #4aad6e22;
-    }
-    .chip-new {
-      background: linear-gradient(135deg, #2d7d4f, #4aad6e) !important;
-      color: #fff !important;
-      font-weight: 700;
-    }
-    .chip-new.active {
-      box-shadow: 0 0 0 2px #2d7d4f55;
-    }
-  </style>
   <!-- Analytics — Plausible (RGPD, sans cookies, sans bandeau) -->
   <script defer data-domain="kettyburel-art.github.io" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -455,8 +426,17 @@
       <section id="page-recettes" class="page hidden">
         <div class="page-header-inner">
           <button class="back-btn" onclick="showPage('accueil')">←</button>
-          <h2>Recettes</h2>
+          <h2>Recettes & Compléments</h2>
         </div>
+
+        <!-- Onglets principaux -->
+        <div class="journal-tabs" style="margin-bottom:12px;">
+          <button class="jtab active" onclick="switchRecettesTab('recettes', this)">🥗 Recettes</button>
+          <button class="jtab" onclick="switchRecettesTab('complements', this)">💊 Compléments</button>
+        </div>
+
+        <!-- TAB RECETTES -->
+        <div id="recettes-tab-content">
 
         <div class="search-bar">
           <input type="text" id="recette-search" placeholder="🔍 Rechercher une recette…" oninput="filterRecettes()" />
@@ -476,16 +456,31 @@
           <span class="chip" onclick="filterNutri('omega3', this)">🐟 Oméga-3</span>
           <span class="chip" onclick="filterNutri('magnesium', this)">💊 Magnésium</span>
           <span class="chip" onclick="filterNutri('rapide', this)">⚡ < 20 min</span>
-          <span class="chip chip-new" onclick="filterNutri('nouveaute', this)">🆕 Nouveautés mai</span>
           <span class="chip" onclick="filterNutri('', this)">✕ Aucun</span>
         </div>
 
         <!-- Badge filtre placard actif -->
-        <div id="placard-filter-badge" style="display:none;background:var(--green-pale);color:var(--green-deep);border-radius:var(--radius-md);padding:8px 14px;font-size:0.8rem;font-weight:600;margin-bottom:12px;display:none;cursor:pointer;" onclick="window._placardFilter=null;renderRecettes();">
+        <div id="placard-filter-badge" style="display:none;background:var(--green-pale);color:var(--green-deep);border-radius:var(--radius-md);padding:8px 14px;font-size:0.8rem;font-weight:600;margin-bottom:12px;cursor:pointer;" onclick="window._placardFilter=null;renderRecettes();">
           🗄️ Filtre placard actif — Toucher pour effacer
         </div>
 
         <div id="recettes-grid" class="recettes-grid"></div>
+
+        </div><!-- fin recettes-tab-content -->
+
+        <!-- TAB COMPLÉMENTS -->
+        <div id="complements-tab-content" class="hidden">
+          <div class="journal-block">
+            <div class="jblock-title">💊 Compléments alimentaires SJSR/TDAH</div>
+            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+              Basé sur les dernières recherches cliniques. Consultez toujours votre médecin avant toute supplémentation.
+            </p>
+          </div>
+
+          <!-- Fiches compléments -->
+          <div id="complements-list"></div>
+
+        </div><!-- fin complements-tab-content -->
 
       </section>
 
@@ -630,16 +625,13 @@
             <div class="plan-name">Flōra Gratuit</div>
             <div class="plan-features">
               <div class="pf">✅ 20 recettes anti-inflammatoires</div>
-              <div class="pf">✅ Journal bien-être illimité</div>
-              <div class="pf">✅ Agenda sur 1 semaine</div>
-              <div class="pf pf-locked">🔒 163+ recettes (dont plans mensuels complets)</div>
-              <div class="pf pf-locked">🔒 Générateur de menus personnalisé illimité</div>
-              <div class="pf pf-locked">🔒 Plans mensuels avril, mai & juin 2026</div>
-              <div class="pf pf-locked">🔒 Statistiques & suivi de tendances</div>
-              <div class="pf pf-locked">🔒 Export journal en PDF</div>
-              <div class="pf pf-locked">🔒 Compléments & fiches bien-être</div>
+              <div class="pf">✅ Journal illimité</div>
+              <div class="pf">✅ Agenda 1 semaine</div>
+              <div class="pf pf-locked">🔒 Bibliothèque complète (120+ recettes)</div>
+              <div class="pf pf-locked">🔒 Générateur illimité</div>
+              <div class="pf pf-locked">🔒 Statistiques avancées</div>
             </div>
-            <button class="btn-premium" onclick="showPremium()">Débloquer tout — 4,99€/mois →</button>
+            <button class="btn-premium" onclick="showPremium()">Passer à Premium →</button>
           </div>
         </div>
 
@@ -870,18 +862,16 @@
       <button class="modal-close" onclick="closePremium()">✕</button>
       <div class="premium-header">
         <div class="premium-logo">Flōra ⭐</div>
-        <h2>Flōra Premium</h2>
-        <p>L'accompagnement complet pour votre bien-être SJSR au quotidien</p>
+        <h2>Passez à Premium</h2>
+        <p>Tout ce dont vous avez besoin pour votre bien-être</p>
       </div>
       <div class="premium-features">
-        <div class="pf-item">🌿 <strong>163+ recettes</strong> anti-inflammatoires sans gluten ni lactose</div>
-        <div class="pf-item">📅 <strong>Plans mensuels complets</strong> — avril, mai & juin 2026 inclus</div>
-        <div class="pf-item">✨ <strong>Générateur de menus illimité</strong> adapté à vos restrictions</div>
-        <div class="pf-item">💊 <strong>Fiches compléments</strong> — fer, magnésium, oméga-3 et plus</div>
-        <div class="pf-item">📊 <strong>Statistiques & tendances</strong> sommeil, douleur, énergie</div>
-        <div class="pf-item">📄 <strong>Export PDF</strong> de votre journal bien-être</div>
-        <div class="pf-item">🔔 <strong>Rappels personnalisés</strong> repas, compléments, hydratation</div>
-        <div class="pf-item">🆕 <strong>Nouvelles recettes</strong> ajoutées chaque mois</div>
+        <div class="pf-item">✅ 65 recettes anti-inflammatoires (dont 30+ exclusives)</div>
+        <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
+        <div class="pf-item">✅ Générateur de menus illimité</div>
+        <div class="pf-item">✅ Statistiques & tendances avancées</div>
+        <div class="pf-item">✅ Export journal PDF</div>
+        <div class="pf-item">✅ Rappels personnalisés</div>
       </div>
       <div class="premium-price">4,99€ <span>/mois</span></div>
 
