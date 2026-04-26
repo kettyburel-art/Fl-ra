@@ -6,44 +6,6 @@
 'use strict';
 
 // ============================
-// HELPERS SÉCURITÉ
-// ============================
-function escapeHTML(str) {
-  if (str == null) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
-}
-
-
-function showToast(message, duration = 2500, color = null) {
-  const bg = color || 'var(--green-deep)';
-  const existing = document.querySelectorAll('.flora-toast');
-  existing.forEach(t => t.remove()); // Éviter empilement
-  const msg = document.createElement('div');
-  msg.className = 'flora-toast';
-  msg.style.cssText = `position:fixed;top:70px;left:50%;transform:translateX(-50%);background:${bg};color:white;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;max-width:90vw;overflow:hidden;text-overflow:ellipsis;`;
-  msg.textContent = message;
-  document.body.appendChild(msg);
-  setTimeout(() => msg.remove(), duration);
-}
-
-// localStorage wrappé pour gérer les erreurs (incognito, quota plein)
-function safeLocalStorage(key, value) {
-  try {
-    if (value === undefined) return localStorage.getItem(key);
-    localStorage.setItem(key, value);
-    return true;
-  } catch(e) {
-    console.log('localStorage indisponible:', e.message);
-    return null;
-  }
-}
-
-// ============================
 // DATA — Recettes
 // ============================
 const RECETTES = [
@@ -3822,2208 +3784,6 @@ const RECETTES = [
       'Ajoutez les suprêmes d\'agrumes et le zaatar.',
       'Assaisonnez avec huile d\'olive et citron. La salade se mange tiède.'
     ]
-  },
-  {
-    id: 164, cat: 'petit-dejeuner', premium: false,
-    emoji: '🫐', nom: 'Pudding Aube Radieuse',
-    temps: '5 min + 8h', calories: 280, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les graines de chia sont riches en oméga-3 et en magnésium, essentiels pour réduire les symptômes SJSR. Le cassis apporte de la vitamine C qui optimise l\'absorption du fer. Le cacao cru fournit du magnésium biodisponible.',
-    ingredients: [
-      '3 càs graines de chia',
-      '150ml lait de noisette',
-      '2 càs coulis de cassis cru',
-      '1 càs éclats de fèves de cacao'
-    ],
-    etapes: [
-      'La veille au soir, mélanger les graines de chia et le lait de noisette dans un bocal. Bien remuer.',
-      'Réfrigérer toute la nuit.',
-      'Le matin, ajouter le coulis de cassis et les éclats de cacao. Servir frais.'
-    ]
-  },
-  {
-    id: 165, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥞', nom: 'Crêpes Sarrasin d\'Antan',
-    temps: '15 min', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le sarrasin est l\'un des aliments les plus riches en magnésium, clé pour calmer les jambes sans repos. La purée de cajou apporte des bonnes graisses et des protéines. Les myrtilles sont antioxydantes et anti-inflammatoires.',
-    ingredients: [
-      '50g farine de sarrasin',
-      '1 œuf',
-      '120ml lait d\'amande',
-      '1 càs purée de cajou',
-      'Myrtilles fraîches'
-    ],
-    etapes: [
-      'Mélanger la farine, l\'œuf et le lait d\'amande jusqu\'à obtenir une pâte lisse.',
-      'Cuire à la poêle légèrement huilée, 2 min de chaque côté.',
-      'Tartiner de purée de cajou et garnir de myrtilles fraîches.'
-    ]
-  },
-  {
-    id: 166, cat: 'dejeuner', premium: false,
-    emoji: '🥦', nom: 'Rôti Terre & Curcuma',
-    temps: '35 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le curcuma + poivre noir forment le duo anti-inflammatoire le plus puissant. La patate douce à index glycémique bas fournit une énergie stable sans pic. Le chou-fleur est riche en vitamine C qui améliore l\'absorption du fer.',
-    ingredients: [
-      '1/2 chou-fleur en fleurettes',
-      '1 càc curcuma',
-      'Poivre noir',
-      '2 patates douces',
-      '100ml lait de coco'
-    ],
-    etapes: [
-      'Préchauffer le four à 200°C.',
-      'Enrober le chou-fleur de curcuma, poivre et huile. Rôtir 25 min.',
-      'Cuire les patates douces vapeur, mixer avec le lait de coco.',
-      'Servir le chou-fleur rôti sur la purée de patate douce.'
-    ]
-  },
-  {
-    id: 167, cat: 'dejeuner', premium: false,
-    emoji: '🫙', nom: 'Bento Printanier',
-    temps: '20 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les lentilles béluga sont les plus riches en fer végétal. L\'orange apporte la vitamine C qui multiplie par 3 l\'absorption du fer des lentilles. L\'huile de noix complète avec des oméga-3. Idéal pour le bureau.',
-    ingredients: [
-      '100g lentilles béluga cuites',
-      '6 asperges',
-      '1 orange (suprêmes)',
-      '1 càs huile de noix'
-    ],
-    etapes: [
-      'Égoutter et refroidir les lentilles cuites.',
-      'Blanchir les asperges 3 min, les couper en tronçons.',
-      'Prélever les suprêmes de l\'orange au-dessus d\'un bol pour récupérer le jus.',
-      'Mélanger le tout avec l\'huile de noix. Saler. Mettre en bento.'
-    ]
-  },
-  {
-    id: 168, cat: 'snack', premium: false,
-    emoji: '🟠', nom: 'Energy Balls Abricot-Maca',
-    temps: '15 min + 30 min frigo', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les abricots secs sont une source concentrée de fer végétal. La maca est un adaptogène qui réduit la fatigue. Les amandes apportent du magnésium. Le citron optimise l\'absorption du fer.',
-    ingredients: [
-      '100g abricots secs',
-      '80g amandes',
-      'Jus d\'1/2 citron',
-      '1 càc maca en poudre'
-    ],
-    etapes: [
-      'Mixer les abricots et les amandes dans un robot jusqu\'à obtenir une pâte.',
-      'Ajouter le jus de citron et la maca. Mixer encore.',
-      'Former des boules de la taille d\'une noix.',
-      'Réfrigérer 30 min avant de déguster.'
-    ]
-  },
-  {
-    id: 169, cat: 'diner', premium: false,
-    emoji: '🧡', nom: 'Velouté Coucher de Soleil',
-    temps: '25 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les lentilles corail sont riches en fer et en protéines végétales. Les carottes apportent du bêta-carotène anti-inflammatoire. Les graines de courge en finition ajoutent du magnésium essentiel pour le SJSR nocturne.',
-    ingredients: [
-      '3 carottes',
-      '80g lentilles corail',
-      '150ml lait de coco',
-      '1 càs graines de courge',
-      'Sel, curcuma, gingembre'
-    ],
-    etapes: [
-      'Cuire les carottes et les lentilles 20 min dans de l\'eau bouillante.',
-      'Mixer avec le lait de coco, le curcuma et le gingembre.',
-      'Assaisonner. Servir parsemé de graines de courge.'
-    ]
-  },
-  {
-    id: 170, cat: 'petit-dejeuner', premium: false,
-    emoji: '🟢', nom: 'Omelette Verte à la Spiruline',
-    temps: '10 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La spiruline est l\'aliment le plus concentré en fer biodisponible au monde. Les œufs apportent des protéines et de la B12. Les épinards renforcent l\'apport en fer végétal. Trio gagnant contre la fatigue SJSR.',
-    ingredients: [
-      '2 œufs',
-      '1 càc spiruline en poudre',
-      'Grande poignée épinards frais',
-      '1 càs huile d\'olive'
-    ],
-    etapes: [
-      'Battre les œufs avec la spiruline jusqu\'à obtenir une couleur verte uniforme.',
-      'Chauffer l\'huile à feu moyen.',
-      'Ajouter les épinards, les faire tomber 1 min.',
-      'Verser les œufs, cuire à feu doux. Plier et servir.'
-    ]
-  },
-  {
-    id: 171, cat: 'dejeuner', premium: false,
-    emoji: '🥬', nom: 'Salade Kale et Grenade',
-    temps: '15 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le kale est la plus riche des feuilles vertes en fer, calcium et vitamine C. La grenade est un puissant antioxydant qui réduit l\'inflammation. La pomme apporte de la quercétine anti-inflammatoire.',
-    ingredients: [
-      '100g chou kale',
-      'Grains d\'1/2 grenade',
-      '1 pomme coupée',
-      '1 càs vinaigre de cidre',
-      '1 càs huile d\'olive'
-    ],
-    etapes: [
-      'Effeuiller et laver le kale. Le masser 2 min avec le vinaigre et l\'huile pour l\'attendrir.',
-      'Couper la pomme en fines tranches.',
-      'Ajouter les grains de grenade et la pomme.',
-      'Assaisonner et servir immédiatement.'
-    ]
-  },
-  {
-    id: 172, cat: 'diner', premium: false,
-    emoji: '🐟', nom: 'Saumon en Croûte de Sésame',
-    temps: '20 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le saumon est la source la plus concentrée en oméga-3 EPA/DHA, essentiels pour réduire l\'inflammation nerveuse du SJSR. Le sésame noir apporte du calcium et du magnésium. Idéal 3x par semaine.',
-    ingredients: [
-      '150g pavé de saumon',
-      '2 càs sésame noir',
-      '150g haricots verts',
-      '1/2 citron'
-    ],
-    etapes: [
-      'Presser le citron sur le saumon, laisser mariner 5 min.',
-      'Passer le saumon dans le sésame noir des deux côtés.',
-      'Cuire à la vapeur 12 min avec les haricots verts.',
-      'Servir avec un filet de citron.'
-    ]
-  },
-  {
-    id: 173, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Mousse Chocolat-Avocat',
-    temps: '10 min + 30 min frigo', calories: 220, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'avocat est riche en bonnes graisses anti-inflammatoires et en potassium. Le cacao pur est l\'une des sources les plus concentrées en magnésium. Cette mousse apaise le système nerveux en soirée.',
-    ingredients: [
-      '1 avocat mûr',
-      '2 càs cacao pur non sucré',
-      '1 càs sirop d\'érable'
-    ],
-    etapes: [
-      'Couper l\'avocat en deux, retirer le noyau.',
-      'Mixer la chair avec le cacao et le sirop d\'érable.',
-      'Fouetter jusqu\'à obtenir une texture lisse et aérienne.',
-      'Réfrigérer 30 min. Servir en petite verrine.'
-    ]
-  },
-  {
-    id: 174, cat: 'petit-dejeuner', premium: false,
-    emoji: '🟢', nom: 'Porridge de Teff à la Poire',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Riche en fer et magnésium, le teff est une céréale sans gluten. La cardamome est anti-inflammatoire.',
-    ingredients: [
-      '50g flocons de teff',
-      '150ml lait de riz',
-      '1 poire mûre',
-      'Cardamome en poudre',
-      'Éclats de noix'
-    ],
-    etapes: [
-      'Cuire le teff dans le lait avec la cardamome. Ajouter la poire coupée en dés et les noix.'
-    ]
-  },
-  {
-    id: 175, cat: 'petit-dejeuner', premium: false,
-    emoji: '🧡', nom: 'Smoothie Dopamine Boost',
-    temps: '15 min', calories: 350, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La banane et le cacao sont précurseurs de dopamine. Le magnésium du cacao calme le système nerveux.',
-    ingredients: [
-      '1 banane bien mûre',
-      '1 càs beurre d\'amande',
-      '200ml lait d\'avoine',
-      '1 càs cacao pur',
-      'Pincée de sel'
-    ],
-    etapes: [
-      'Mixer tous les ingrédients. Le cacao et la banane stimulent la production de dopamine.'
-    ]
-  },
-  {
-    id: 176, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥛', nom: 'Pain de Fleurs à l\'Anchois',
-    temps: '15 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les anchois sont riches en oméga-3 et calcium. La purée d\'amande apporte du magnésium.',
-    ingredients: [
-      '3 tartines de sarrasin',
-      'Purée d\'amande complète',
-      '4 filets d\'anchois dessalés',
-      'Ciboulette'
-    ],
-    etapes: [
-      'Tartiner la purée d\'amande, déposer les anchois et la ciboulette ciselée.'
-    ]
-  },
-  {
-    id: 177, cat: 'dejeuner', premium: false,
-    emoji: '🥘', nom: 'Bowl de Quinoa Rouge et Grenade',
-    temps: '15 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La grenade est un puissant antioxydant. L\'huile de colza apporte des oméga-3. Le persil est riche en fer.',
-    ingredients: [
-      'Quinoa rouge cuit',
-      'Grains de grenade',
-      'Persil plat à volonté',
-      'Jus de citron',
-      'Huile de colza'
-    ],
-    etapes: [
-      'Mélanger le quinoa froid avec le persil haché et la grenade. Assaisonner avec citron et huile de colza.'
-    ]
-  },
-  {
-    id: 178, cat: 'dejeuner', premium: false,
-    emoji: '🌯', nom: 'Salade de Thon et Haricots Blancs',
-    temps: '15 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le thon apporte des protéines et oméga-3. Les haricots blancs sont riches en fer végétal.',
-    ingredients: [
-      'Thon au naturel',
-      'Haricots blancs en bocal',
-      'Oignon rouge émincé',
-      'Vinaigre de cidre',
-      'Persil'
-    ],
-    etapes: [
-      'Rincer les haricots. Mélanger avec le thon, l\'oignon et le persil. Le vinaigre de cidre aide à la digestion.'
-    ]
-  },
-  {
-    id: 179, cat: 'dejeuner', premium: false,
-    emoji: '🫕', nom: 'Poulet au Citron et Olives',
-    temps: '15 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le poulet est riche en tryptophane et protéines. Le citron apporte la vitamine C qui fixe le fer.',
-    ingredients: [
-      'Émincé de poulet',
-      'Olives vertes',
-      'Citron confit',
-      'Courgettes',
-      'Cumin'
-    ],
-    etapes: [
-      'Sauter le poulet avec les courgettes et le cumin. Ajouter les olives et le citron confit en fin.'
-    ]
-  },
-  {
-    id: 180, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Risotto de Sarrasin aux Champignons',
-    temps: '15 min', calories: 390, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le sarrasin est l\'une des céréales les plus riches en magnésium, essentiel pour le SJSR.',
-    ingredients: [
-      'Grains de sarrasin Kasha',
-      'Champignons de Paris',
-      'Bouillon de légumes',
-      'Crème de soja'
-    ],
-    etapes: [
-      'Cuire le sarrasin comme un risotto. Ajouter les champignons sautés et lier à la crème végétale.'
-    ]
-  },
-  {
-    id: 181, cat: 'snack', premium: false,
-    emoji: '🥜', nom: 'Tartinade de Lentilles au Curry',
-    temps: '15 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les lentilles corail sont riches en fer végétal. Le curry est un puissant anti-inflammatoire.',
-    ingredients: [
-      'Lentilles corail mixées',
-      'Curry doux',
-      'Lait de coco',
-      'Bâtonnets de carottes'
-    ],
-    etapes: [
-      'Préparer un dahl épais et le mixer. Utiliser comme trempette pour les carottes.'
-    ]
-  },
-  {
-    id: 182, cat: 'snack', premium: false,
-    emoji: '🫐', nom: 'Amandes au Tamari',
-    temps: '15 min', calories: 200, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les amandes sont une source exceptionnelle de magnésium et de vitamine E anti-oxydante.',
-    ingredients: [
-      'Amandes entières',
-      'Sauce tamari sans gluten'
-    ],
-    etapes: [
-      'Passer les amandes à la poêle avec un peu de tamari jusqu\'à absorption complète. Laisser refroidir.'
-    ]
-  },
-  {
-    id: 183, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Yaourt de Soja au Gingembre',
-    temps: '15 min', calories: 190, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le gingembre est anti-inflammatoire. Les noix apportent des oméga-3 et du magnésium.',
-    ingredients: [
-      'Yaourt de soja nature',
-      'Gingembre frais râpé',
-      'Quelques noix de Grenoble'
-    ],
-    etapes: [
-      'Mélanger le gingembre au yaourt, ajouter les noix pour le croquant.'
-    ]
-  },
-  {
-    id: 184, cat: 'snack', premium: false,
-    emoji: '🥕', nom: 'Pomme au Four à la Cannelle',
-    temps: '15 min', calories: 120, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La cannelle aide à réguler la glycémie. La pomme cuite est très digeste et alcalinisante.',
-    ingredients: [
-      '1 pomme',
-      'Cannelle en poudre'
-    ],
-    etapes: [
-      'Évider la pomme, saupoudrer de cannelle. Cuire 20 min au four ou 3 min au micro-ondes.'
-    ]
-  },
-  {
-    id: 185, cat: 'diner', premium: false,
-    emoji: '🥗', nom: 'Soupe Froide Petits Pois et Menthe',
-    temps: '15 min', calories: 250, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les petits pois sont riches en vitamines B favorisant le sommeil. La menthe est apaisante.',
-    ingredients: [
-      'Petits pois',
-      'Menthe fraîche',
-      'Bouillon de légumes',
-      'Crème de riz'
-    ],
-    etapes: [
-      'Cuire les petits pois, mixer avec la menthe et la crème de riz. Servir frais ou tiède.'
-    ]
-  },
-  {
-    id: 186, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Filet de Cabillaud Vapeur de Thym',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le cabillaud est un poisson maigre riche en iode. La vapeur préserve tous les nutriments.',
-    ingredients: [
-      'Filet de cabillaud',
-      'Thym frais',
-      'Haricots plats',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Cuire le poisson et les haricots à la vapeur avec le thym. Ajouter un filet d\'huile d\'olive crue.'
-    ]
-  },
-  {
-    id: 187, cat: 'diner', premium: false,
-    emoji: '🍜', nom: 'Gratin de Blettes au Lait d\'Amande',
-    temps: '15 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les blettes sont exceptionnellement riches en fer et magnésium. Le lait d\'amande évite le lactose.',
-    ingredients: [
-      'Côtes de blettes',
-      'Lait d\'amande',
-      'Fécule de maïs',
-      'Noix de muscade'
-    ],
-    etapes: [
-      'Faire une béchamel avec lait amande et fécule. Napper les blettes cuites et gratiner légèrement.'
-    ]
-  },
-  {
-    id: 188, cat: 'diner', premium: false,
-    emoji: '🌿', nom: 'Tofu Sauté au Brocoli Sésame',
-    temps: '15 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le tofu et le sésame sont riches en calcium. Le brocoli apporte vitamine C et fer végétal.',
-    ingredients: [
-      'Tofu ferme en dés',
-      'Têtes de brocoli',
-      'Graines de sésame',
-      'Huile de sésame'
-    ],
-    etapes: [
-      'Sauter le tofu et le brocoli rapidement à feu vif. Parsemer de sésame.'
-    ]
-  },
-  {
-    id: 189, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥑', nom: 'Chia Pudding Mangue et Coco Light',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les graines de chia sont riches en oméga-3 et magnésium. La mangue apporte la vitamine C.',
-    ingredients: [
-      'Graines de chia',
-      'Lait de coco light',
-      'Mangue fraîche',
-      'Gingembre'
-    ],
-    etapes: [
-      'Mélanger chia et lait. Laisser reposer une nuit. Ajouter la mangue et le gingembre.'
-    ]
-  },
-  {
-    id: 190, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥣', nom: 'Muffins Sarrasin et Myrtilles',
-    temps: '15 min', calories: 270, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le sarrasin est riche en magnésium. Les myrtilles sont d\'excellents antioxydants anti-inflammatoires.',
-    ingredients: [
-      'Farine de sarrasin',
-      'Compote de pomme',
-      'Myrtilles',
-      'Poudre à lever sans gluten'
-    ],
-    etapes: [
-      'Mélanger farine, compote et poudre. Ajouter les myrtilles. Cuire 20 min à 180°C.'
-    ]
-  },
-  {
-    id: 191, cat: 'dejeuner', premium: false,
-    emoji: '🫙', nom: 'Salade de Pois Chiches au Cumin',
-    temps: '15 min', calories: 370, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les pois chiches sont riches en fer et protéines. Le cumin est un digestif puissant.',
-    ingredients: [
-      'Pois chiches cuits',
-      'Carottes râpées',
-      'Cumin',
-      'Coriandre fraîche',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Mélanger tous les ingrédients. Le cumin facilite la digestion des légumineuses.'
-    ]
-  },
-  {
-    id: 192, cat: 'diner', premium: false,
-    emoji: '🥣', nom: 'Bouillon Miso aux Algues',
-    temps: '15 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le miso est riche en probiotiques. Les algues apportent iode et minéraux essentiels.',
-    ingredients: [
-      'Pâte miso',
-      'Algues wakamé',
-      'Champignons de Paris',
-      'Ciboulette'
-    ],
-    etapes: [
-      'Diluer le miso dans de l\'eau chaude non bouillante. Ajouter les algues et les champignons émincés.'
-    ]
-  },
-  {
-    id: 193, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌿', nom: 'Smoothie Bowl Matin de Fer',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La spiruline est la source la plus concentrée en fer. La vitamine C de l\'orange booste son absorption.',
-    ingredients: [
-      '1 banane',
-      '1 càc spiruline',
-      'Jus d\'une orange',
-      '1 càs graines de lin',
-      '125ml lait d\'amande'
-    ],
-    etapes: [
-      'Mixer la banane, la spiruline, le jus d\'orange et le lait. Parsemer de graines de lin.'
-    ]
-  },
-  {
-    id: 194, cat: 'petit-dejeuner', premium: false,
-    emoji: '🟢', nom: 'Porridge d\'Amarante aux Framboises',
-    temps: '15 min', calories: 330, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'L\'amarante est sans gluten et exceptionnellement riche en fer, magnésium et protéines complètes.',
-    ingredients: [
-      '50g amarante',
-      '150ml lait de noisette',
-      '1 poignée de framboises',
-      'Éclats de noisettes'
-    ],
-    etapes: [
-      'Cuire l\'amarante dans le lait 20 min. Servir avec les framboises et les noisettes.'
-    ]
-  },
-  {
-    id: 195, cat: 'petit-dejeuner', premium: false,
-    emoji: '🧡', nom: 'Tartines Sarrasin Purée de Noix',
-    temps: '15 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les noix sont riches en oméga-3 et magnésium. Le sarrasin apporte des glucides lents sans gluten.',
-    ingredients: [
-      '2 tartines de sarrasin',
-      'Purée de noix de Grenoble',
-      'Quelques tranches de pomme'
-    ],
-    etapes: [
-      'Tartiner la purée de noix sur le sarrasin, disposer les pommes. Riche en bons gras pour le cerveau.'
-    ]
-  },
-  {
-    id: 196, cat: 'dejeuner', premium: false,
-    emoji: '🍲', nom: 'Bowl Quinoa Haricots Noirs Citron Vert',
-    temps: '15 min', calories: 400, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le quinoa est une protéine complète. Les haricots noirs sont riches en fer et fibres.',
-    ingredients: [
-      'Quinoa',
-      'Haricots noirs',
-      'Maïs',
-      'Coriandre',
-      'Jus de citron vert'
-    ],
-    etapes: [
-      'Mélanger les ingrédients. Le citron vert assure l\'absorption du fer des haricots et du quinoa.'
-    ]
-  },
-  {
-    id: 197, cat: 'dejeuner', premium: false,
-    emoji: '🥘', nom: 'Cabillaud en Croûte d\'Herbes',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le cabillaud est riche en iode et protéines légères. Les asperges sont diurétiques et riches en acide folique.',
-    ingredients: [
-      'Filet de cabillaud',
-      'Persil et aneth mixés',
-      'Asperges vertes vapeur'
-    ],
-    etapes: [
-      'Recouvrir le poisson d\'herbes mixées. Cuire à la vapeur avec les asperges. Arroser d\'huile d\'olive.'
-    ]
-  },
-  {
-    id: 198, cat: 'dejeuner', premium: false,
-    emoji: '🌯', nom: 'Salade Pois Chiches et Graines de Chanvre',
-    temps: '15 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les graines de chanvre contiennent tous les acides aminés essentiels et des oméga-3.',
-    ingredients: [
-      'Pois chiches',
-      'Concombre',
-      'Menthe',
-      '2 càs graines de chanvre'
-    ],
-    etapes: [
-      'Le chanvre apporte les acides aminés essentiels et des oméga-3 anti-inflammatoires.'
-    ]
-  },
-  {
-    id: 199, cat: 'dejeuner', premium: false,
-    emoji: '🫕', nom: 'Wok de Dinde au Gingembre',
-    temps: '15 min', calories: 390, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La dinde est riche en tryptophane. Le gingembre est l\'un des anti-inflammatoires les plus puissants.',
-    ingredients: [
-      'Émincé de dinde',
-      'Brocoli',
-      'Gingembre frais',
-      'Sauce tamari'
-    ],
-    etapes: [
-      'Sauter la dinde et le brocoli avec beaucoup de gingembre. Le gingembre calme l\'inflammation.'
-    ]
-  },
-  {
-    id: 200, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Rillettes de Sardines sur Crackers',
-    temps: '15 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les sardines sont riches en oméga-3, calcium et fer. Le citron optimise l\'absorption du fer.',
-    ingredients: [
-      'Sardines à l\'huile',
-      'Jus de citron',
-      'Ciboulette',
-      'Crackers de sarrasin'
-    ],
-    etapes: [
-      'Écraser les sardines avec le citron et la ciboulette. Tartiner sur les crackers.'
-    ]
-  },
-  {
-    id: 201, cat: 'dejeuner', premium: false,
-    emoji: '🫙', nom: 'Wrap de Laitue au Chou-Fleur Rôti',
-    temps: '15 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La laitue remplace le pain. Le houmous apporte fer et protéines. Le chou-fleur est alcalinisant.',
-    ingredients: [
-      'Grandes feuilles de laitue',
-      'Chou-fleur rôti au cumin',
-      'Houmous'
-    ],
-    etapes: [
-      'Garnir la laitue de houmous et de chou-fleur. Rouler comme un wrap. Très digeste.'
-    ]
-  },
-  {
-    id: 202, cat: 'dejeuner', premium: false,
-    emoji: '🥩', nom: 'Zoodles au Pesto de Noix',
-    temps: '15 min', calories: 330, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les zoodles sont sans gluten et très hydratants. Les noix apportent des oméga-3 anti-inflammatoires.',
-    ingredients: [
-      'Courgettes en spaghettis',
-      'Basilic',
-      'Noix',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Mélanger les zoodles crus ou tiédis avec le pesto de noix riche en bons gras.'
-    ]
-  },
-  {
-    id: 203, cat: 'dejeuner', premium: false,
-    emoji: '🐟', nom: 'Tartare de Saumon Avocat Agrumes',
-    temps: '15 min', calories: 430, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Triple action SJSR : oméga-3 du saumon + bons gras de l\'avocat + vitamine C du pamplemousse.',
-    ingredients: [
-      'Saumon frais',
-      'Avocat',
-      'Pamplemousse',
-      'Huile de noisette'
-    ],
-    etapes: [
-      'Couper en dés le saumon et l\'avocat. Ajouter des morceaux de pamplemousse. Assaisonner à l\'huile de noisette.'
-    ]
-  },
-  {
-    id: 204, cat: 'snack', premium: false,
-    emoji: '🥕', nom: 'Mix Noix du Brésil et Éclats de Cacao',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: '2 noix du Brésil couvrent 100% des besoins en sélénium. Le cacao cru est riche en magnésium.',
-    ingredients: [
-      '2 noix du Brésil',
-      '1 càc éclats de fèves de cacao cru'
-    ],
-    etapes: [
-      'Une poignée rapide pour protéger le système nerveux et recharger le magnésium.'
-    ]
-  },
-  {
-    id: 205, cat: 'snack', premium: false,
-    emoji: '🥚', nom: 'Tranches de Pomme au Beurre d\'Amande',
-    temps: '15 min', calories: 170, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'équilibre sucres naturels, protéines et bons gras évite les pics glycémiques.',
-    ingredients: [
-      '1 pomme',
-      '1 càs purée d\'amande complète'
-    ],
-    etapes: [
-      'Tremper les tranches de pomme dans la purée d\'amande. Équilibre parfait sucre/gras/fibres.'
-    ]
-  },
-  {
-    id: 206, cat: 'snack', premium: false,
-    emoji: '🫒', nom: 'Snack Algues Nori au Sésame',
-    temps: '15 min', calories: 80, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le nori est riche en iode, fer et minéraux marins. Le sésame apporte calcium et magnésium.',
-    ingredients: [
-      'Feuilles de nori séchées',
-      'Graines de sésame'
-    ],
-    etapes: [
-      'Grignoter des feuilles de nori. Apporte des minéraux essentiels sans calories inutiles.'
-    ]
-  },
-  {
-    id: 207, cat: 'snack', premium: false,
-    emoji: '🌰', nom: 'Bâtonnets de Poivron et Houmous',
-    temps: '15 min', calories: 190, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le duo poivron (vitamine C) + houmous (fer de pois chiches) maximise l\'absorption du fer végétal.',
-    ingredients: [
-      'Poivron rouge',
-      'Houmous maison'
-    ],
-    etapes: [
-      'Le poivron rouge est l\'une des meilleures sources de vitamine C pour aider le fer du houmous.'
-    ]
-  },
-  {
-    id: 208, cat: 'snack', premium: false,
-    emoji: '🫚', nom: 'Oeuf Dur au Cumin',
-    temps: '15 min', calories: 100, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'oeuf est une source complète de protéines. La tyrosine est précurseur de la dopamine.',
-    ingredients: [
-      '1 oeuf dur',
-      'Pincée de cumin'
-    ],
-    etapes: [
-      'L\'oeuf fournit la tyrosine nécessaire à la dopamine. Le cumin facilite la digestion.'
-    ]
-  },
-  {
-    id: 209, cat: 'snack', premium: false,
-    emoji: '🍊', nom: 'Duo Abricots Secs et Noix',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les abricots secs sont une source concentrée de fer végétal. Les noix apportent des oméga-3.',
-    ingredients: [
-      '3 abricots secs',
-      '3 cerneaux de noix'
-    ],
-    etapes: [
-      'Le fer de l\'abricot s\'associe aux bons gras de la noix. Idéal avant une séance de sport.'
-    ]
-  },
-  {
-    id: 210, cat: 'snack', premium: false,
-    emoji: '🍎', nom: 'Guacamole et Carottes Croquantes',
-    temps: '15 min', calories: 210, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'avocat est riche en bonnes graisses. Les carottes apportent du bêta-carotène protecteur.',
-    ingredients: [
-      '1/2 avocat écrasé',
-      'Citron',
-      'Carottes en bâtonnets'
-    ],
-    etapes: [
-      'L\'avocat aide à absorber les caroténoïdes des carottes. Anti-inflammatoire et rassasiant.'
-    ]
-  },
-  {
-    id: 211, cat: 'snack', premium: false,
-    emoji: '🥜', nom: 'Chia Pot Lait de Coco Vanille',
-    temps: '15 min', calories: 220, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les graines de chia sont riches en magnésium et oméga-3. Évite le coup de barre de l\'après-midi.',
-    ingredients: [
-      'Graines de chia',
-      'Lait de coco',
-      'Vanille'
-    ],
-    etapes: [
-      'Préparer le matin en bocal. Consommer à 16h pour éviter le grignotage sucré.'
-    ]
-  },
-  {
-    id: 212, cat: 'snack', premium: false,
-    emoji: '🫐', nom: 'Poignée de Graines de Courge',
-    temps: '15 min', calories: 150, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les graines de courge sont l\'une des meilleures sources de magnésium et de zinc anti-inflammatoire.',
-    ingredients: [
-      'Graines de courge nature'
-    ],
-    etapes: [
-      'Le snack numéro 1 pour le SJSR. Une petite poignée apporte une dose massive de magnésium.'
-    ]
-  },
-  {
-    id: 213, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Galette de Riz au Tahini et Framboises',
-    temps: '15 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le tahini est riche en calcium et magnésium. Les framboises apportent de la vitamine C.',
-    ingredients: [
-      '1 galette de riz ou sarrasin',
-      'Tahini',
-      '3 framboises'
-    ],
-    etapes: [
-      'Étaler le tahini, écraser les framboises dessus. Un délice minéralisant.'
-    ]
-  },
-  {
-    id: 214, cat: 'diner', premium: false,
-    emoji: '🍲', nom: 'Poisson Blanc Vapeur de Gingembre',
-    temps: '15 min', calories: 270, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le gingembre est anti-inflammatoire puissant. La vapeur préserve tous les oméga-3 du poisson.',
-    ingredients: [
-      'Dos de lieu ou cabillaud',
-      'Gingembre râpé',
-      'Bok choy'
-    ],
-    etapes: [
-      'Cuire le tout à la vapeur. Le gingembre réchauffe et calme l\'inflammation nerveuse.'
-    ]
-  },
-  {
-    id: 215, cat: 'diner', premium: false,
-    emoji: '🥗', nom: 'Soupe de Potiron au Coco et Graines',
-    temps: '15 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le potiron est riche en bêta-carotène. Les graines de courge apportent du magnésium essentiel.',
-    ingredients: [
-      'Potiron',
-      'Lait de coco',
-      'Graines de courge torréfiées'
-    ],
-    etapes: [
-      'Velouté onctueux. Les graines ajoutent le magnésium nécessaire à la détente musculaire.'
-    ]
-  },
-  {
-    id: 216, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Brochettes de Tofu au Curcuma',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le curcuma est le plus puissant anti-inflammatoire naturel. Le tofu apporte des protéines végétales.',
-    ingredients: [
-      'Tofu ferme',
-      'Courgettes',
-      'Poivrons',
-      'Curcuma',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Griller les brochettes au four. Le curcuma aide à prévenir les douleurs nocturnes.'
-    ]
-  },
-  {
-    id: 217, cat: 'diner', premium: false,
-    emoji: '🍜', nom: 'Coeurs d\'Artichauts au Citron',
-    temps: '15 min', calories: 200, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'L\'artichaut soutient le foie pendant la nuit. Un foie bien drainé réduit l\'inflammation systémique.',
-    ingredients: [
-      'Coeurs d\'artichauts au naturel',
-      'Huile d\'olive',
-      'Jus de citron'
-    ],
-    etapes: [
-      'L\'artichaut aide au drainage hépatique, crucial pour un sommeil sans impatiences.'
-    ]
-  },
-  {
-    id: 218, cat: 'diner', premium: false,
-    emoji: '🌿', nom: 'Patate Douce Farcie aux Épinards',
-    temps: '15 min', calories: 370, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La patate douce est à index glycémique bas. Les épinards et le tahini apportent fer et magnésium.',
-    ingredients: [
-      '1 patate douce rôtie',
-      'Épinards sautés',
-      'Sauce tahini'
-    ],
-    etapes: [
-      'Ouvrir la patate, garnir d\'épinards et napper de sésame. Repas complet et apaisant.'
-    ]
-  },
-  {
-    id: 219, cat: 'diner', premium: false,
-    emoji: '🫙', nom: 'Soupe Miso au Tofu Soyeux',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le miso est riche en probiotiques qui réduisent l\'inflammation intestinale. Très digeste le soir.',
-    ingredients: [
-      'Pâte miso',
-      'Tofu soyeux',
-      'Ciboulette'
-    ],
-    etapes: [
-      'Dissoudre le miso à chaud non bouillant. Très léger, parfait avant le coucher.'
-    ]
-  },
-  {
-    id: 220, cat: 'diner', premium: false,
-    emoji: '🌙', nom: 'Potage de Lentilles Corail au Cumin',
-    temps: '15 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les lentilles corail se digèrent facilement. Le cumin anti-spasmodique évite les crampes nocturnes.',
-    ingredients: [
-      'Lentilles corail',
-      'Cumin',
-      'Jus de citron'
-    ],
-    etapes: [
-      'Mixer les lentilles avec le cumin. Ajouter le citron au bol. Les lentilles corail sont les plus digestes.'
-    ]
-  },
-  {
-    id: 221, cat: 'diner', premium: false,
-    emoji: '🐟', nom: 'Poêlée de Champignons et Épinards',
-    temps: '15 min', calories: 190, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les champignons sont riches en sélénium et vitamines B. Les épinards apportent fer et magnésium.',
-    ingredients: [
-      'Champignons variés',
-      'Épinards frais',
-      'Ail',
-      'Persil'
-    ],
-    etapes: [
-      'Sauter rapidement. Un concentré de minéraux pour calmer le système nerveux.'
-    ]
-  },
-  {
-    id: 222, cat: 'diner', premium: false,
-    emoji: '🥣', nom: 'Saumon Poché et Concombre Vinaigré',
-    temps: '15 min', calories: 350, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le saumon poché préserve tous les oméga-3. Le vinaigre de cidre aide à l\'équilibre acido-basique.',
-    ingredients: [
-      'Pavé de saumon',
-      'Concombre',
-      'Aneth',
-      'Vinaigre de cidre'
-    ],
-    etapes: [
-      'Pocher le saumon à l\'eau frémissante. Servir froid ou tiède avec le concombre vinaigré.'
-    ]
-  },
-  {
-    id: 223, cat: 'diner', premium: false,
-    emoji: '🫕', nom: 'Quinoa au Persil et Pignons',
-    temps: '15 min', calories: 350, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le persil en grande quantité est l\'un des meilleurs aliments pour le fer végétal biodisponible.',
-    ingredients: [
-      'Quinoa',
-      'Gros bouquet de persil haché',
-      'Jus de citron',
-      'Pignons de pin'
-    ],
-    etapes: [
-      'Inspiration taboulé chaud. Le persil apporte une dose massive de fer pour la nuit.'
-    ]
-  },
-  {
-    id: 224, cat: 'petit-dejeuner', premium: false,
-    emoji: '🟢', nom: 'Socca Niçoise au Romarin',
-    temps: '15 min', calories: 330, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La farine de pois chiches est exceptionnellement riche en fer végétal et protéines.',
-    ingredients: [
-      '100g farine de pois chiches',
-      '250ml eau',
-      '2 càs huile d\'olive',
-      'Romarin frais'
-    ],
-    etapes: [
-      'Mélanger la farine, l\'eau et l\'huile. Laisser reposer 30 min. Cuire au four très chaud.'
-    ]
-  },
-  {
-    id: 225, cat: 'petit-dejeuner', premium: false,
-    emoji: '🧡', nom: 'Granola Sarrasin et Amandes Maison',
-    temps: '15 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le sarrasin apporte du magnésium. Les amandes et graines de tournesol enrichissent en vitamine E.',
-    ingredients: [
-      'Kasha sarrasin grillé',
-      'Amandes concassées',
-      'Graines de tournesol',
-      'Sirop d\'érable',
-      'Huile de coco'
-    ],
-    etapes: [
-      'Mélanger et passer au four 15 min à 160°C. Servir avec un lait végétal.'
-    ]
-  },
-  {
-    id: 226, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥛', nom: 'Toast Petit Pois et Menthe',
-    temps: '15 min', calories: 270, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les petits pois sont riches en vitamines B et protéines végétales. L\'huile de lin apporte des oméga-3.',
-    ingredients: [
-      'Pain de sarrasin',
-      'Petits pois écrasés',
-      'Menthe',
-      'Citron',
-      'Huile de lin'
-    ],
-    etapes: [
-      'Écraser les pois avec citron et menthe. Tartiner et ajouter l\'huile de lin pour les oméga-3.'
-    ]
-  },
-  {
-    id: 227, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌾', nom: 'Golden Porridge au Curcuma',
-    temps: '15 min', calories: 300, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le curcuma + poivre noir est le duo anti-inflammatoire le plus puissant. Le gingembre calme les nerfs.',
-    ingredients: [
-      'Flocons de riz',
-      'Lait d\'amande',
-      'Curcuma',
-      'Poivre',
-      'Gingembre',
-      'Miel de Manuka'
-    ],
-    etapes: [
-      'Cuire les flocons dans le lait avec les épices. Sucrer légèrement au miel après cuisson.'
-    ]
-  },
-  {
-    id: 228, cat: 'petit-dejeuner', premium: false,
-    emoji: '🍵', nom: 'Rillettes de Maquereau au Citron',
-    temps: '15 min', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le maquereau est plus riche en oméga-3 que le saumon. Un matin protéiné stabilise la dopamine.',
-    ingredients: [
-      'Maquereau cuit',
-      'Moutarde douce',
-      'Ciboulette',
-      'Pain des fleurs au sarrasin'
-    ],
-    etapes: [
-      'Écraser le maquereau avec la moutarde et la ciboulette. Tartiner généreusement.'
-    ]
-  },
-  {
-    id: 229, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥑', nom: 'Pancakes de Teff aux Myrtilles',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le teff est la céréale la plus riche en fer. Les myrtilles sont d\'excellents antioxydants pour le cerveau.',
-    ingredients: [
-      'Farine de teff',
-      'Lait de noisette',
-      '1 oeuf',
-      'Myrtilles fraîches'
-    ],
-    etapes: [
-      'Faire une pâte à pancakes épaisse. Ajouter les myrtilles lors de la cuisson à la poêle.'
-    ]
-  },
-  {
-    id: 230, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥣', nom: 'Bowl Riz Noir et Mangue',
-    temps: '15 min', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le riz noir contient plus d\'antioxydants que les myrtilles. La mangue fournit vitamine C et bêta-carotène.',
-    ingredients: [
-      'Riz noir cuit',
-      'Dés de mangue',
-      'Noix de coco râpée',
-      'Jus de lime'
-    ],
-    etapes: [
-      'Le riz noir est exceptionnellement riche en fer et antioxydants. La mangue aide à l\'absorption.'
-    ]
-  },
-  {
-    id: 231, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥞', nom: 'Tofu Brouillé à la Levure Maltée',
-    temps: '15 min', calories: 250, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La levure maltée est riche en vitamines B et B12. Le tofu apporte des protéines végétales et calcium.',
-    ingredients: [
-      'Tofu soyeux',
-      'Curcuma',
-      'Levure de bière sans gluten',
-      'Oignon vert'
-    ],
-    etapes: [
-      'Poêler le tofu écrasé avec le curcuma et la levure. Parfait pour le système nerveux.'
-    ]
-  },
-  {
-    id: 232, cat: 'petit-dejeuner', premium: false,
-    emoji: '🫐', nom: 'Scones Amande et Citron',
-    temps: '15 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La poudre d\'amande est riche en magnésium et vitamine E. Le zeste de citron apporte des flavonoïdes.',
-    ingredients: [
-      'Poudre d\'amande',
-      'Farine de riz',
-      'Zeste de citron',
-      'Huile de coco'
-    ],
-    etapes: [
-      'Former des petits tas et cuire 15 min. Riche en magnésium pour détendre les muscles.'
-    ]
-  },
-  {
-    id: 233, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌿', nom: 'Smoothie Betterave et Gingembre',
-    temps: '15 min', calories: 150, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La betterave améliore l\'oxygénation du sang et la circulation dans les jambes.',
-    ingredients: [
-      '1/2 betterave crue',
-      '1 pomme',
-      'Gingembre frais',
-      'Eau'
-    ],
-    etapes: [
-      'Mixer finement. La betterave aide à la circulation sanguine, crucial pour le SJSR.'
-    ]
-  },
-  {
-    id: 234, cat: 'dejeuner', premium: false,
-    emoji: '🥦', nom: 'Pizza Base de Chou-Fleur',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La croûte de chou-fleur remplace la farine. Riche en vitamine C et léger pour le soir.',
-    ingredients: [
-      'Chou-fleur mixé',
-      '1 oeuf',
-      'Tomates cerises',
-      'Roquette',
-      'Pignons de pin'
-    ],
-    etapes: [
-      'Presser le chou-fleur pour ôter l\'eau, mélanger à l\'oeuf pour la pâte. Garnir et cuire 20 min.'
-    ]
-  },
-  {
-    id: 235, cat: 'dejeuner', premium: false,
-    emoji: '🌮', nom: 'Lasagnes de Courgettes au Boeuf',
-    temps: '15 min', calories: 450, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le fer héminique du boeuf est le mieux absorbé par l\'organisme. Les courgettes remplacent les pâtes.',
-    ingredients: [
-      'Tranches de courgettes',
-      'Boeuf haché 5%',
-      'Coulis de tomate',
-      'Crème de cajou'
-    ],
-    etapes: [
-      'Alterner courgettes, viande et tomate. Finir par la crème de cajou. Le boeuf est la meilleure source de fer.'
-    ]
-  },
-  {
-    id: 236, cat: 'dejeuner', premium: false,
-    emoji: '🍲', nom: 'Salade de Pomme de Terre et Hareng',
-    temps: '15 min', calories: 390, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le hareng est plus riche en oméga-3 que le saumon. La vitamine D est souvent déficitaire dans le SJSR.',
-    ingredients: [
-      'Pommes de terre vapeur',
-      'Hareng fumé',
-      'Oignon rouge',
-      'Huile de colza'
-    ],
-    etapes: [
-      'Mélanger froid. Le hareng est l\'un des poissons les plus riches en oméga-3 et vitamine D.'
-    ]
-  },
-  {
-    id: 237, cat: 'dejeuner', premium: false,
-    emoji: '🥘', nom: 'Poivrons Farcis au Quinoa',
-    temps: '15 min', calories: 370, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le poivron rouge contient 3 fois plus de vitamine C que l\'orange. Le quinoa est une protéine complète.',
-    ingredients: [
-      'Poivron entier',
-      'Quinoa cuit',
-      'Raisins secs',
-      'Graines de tournesol'
-    ],
-    etapes: [
-      'Farcir le poivron et cuire au four. Le poivron apporte la vitamine C pour le fer du quinoa.'
-    ]
-  },
-  {
-    id: 238, cat: 'dejeuner', premium: false,
-    emoji: '🌯', nom: 'Poke Bowl Thon et Radis Noir',
-    temps: '15 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le radis noir est détoxifiant hépatique. Les edamames apportent protéines végétales et fer.',
-    ingredients: [
-      'Thon cru mariné',
-      'Radis noir',
-      'Edamames',
-      'Riz complet'
-    ],
-    etapes: [
-      'Assembler le tout. Le radis noir aide le foie à traiter les toxines inflammatoires.'
-    ]
-  },
-  {
-    id: 239, cat: 'dejeuner', premium: false,
-    emoji: '🫕', nom: 'Burger Sarrasin et Steak de Lentilles',
-    temps: '15 min', calories: 440, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les lentilles sont riches en fer et protéines. L\'avocat remplace le fromage avec de bons gras.',
-    ingredients: [
-      'Pain burger sans gluten',
-      'Steak de lentilles maison',
-      'Avocat',
-      'Épinards'
-    ],
-    etapes: [
-      'Remplacer le fromage par de l\'avocat pour le crémeux et les bons gras.'
-    ]
-  },
-  {
-    id: 240, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Curry de Pois Chiches à l\'Ananas',
-    temps: '15 min', calories: 400, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La bromélaïne de l\'ananas frais est un anti-inflammatoire naturel puissant. Les pois chiches apportent le fer.',
-    ingredients: [
-      'Pois chiches',
-      'Ananas frais',
-      'Lait de coco',
-      'Curry'
-    ],
-    etapes: [
-      'L\'ananas contient de la bromélaïne, une enzyme anti-inflammatoire puissante.'
-    ]
-  },
-  {
-    id: 241, cat: 'dejeuner', premium: false,
-    emoji: '🫙', nom: 'Salade de Pâtes de Lentilles Corail',
-    temps: '15 min', calories: 410, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les pâtes de lentilles contiennent 2 à 3 fois plus de fer que les pâtes classiques.',
-    ingredients: [
-      'Pâtes de lentilles',
-      'Brocoli vapeur',
-      'Sauce pesto basilic-amande'
-    ],
-    etapes: [
-      'Utiliser des pâtes de légumineuses pour doubler l\'apport en fer par rapport aux pâtes de riz.'
-    ]
-  },
-  {
-    id: 242, cat: 'dejeuner', premium: false,
-    emoji: '🥩', nom: 'Steak de Thon au Poivre et Haricots',
-    temps: '15 min', calories: 390, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le thon frais est riche en oméga-3 et dopamine. Les haricots blancs apportent fer et magnésium.',
-    ingredients: [
-      'Thon frais',
-      'Haricots blancs',
-      'Échalotes',
-      'Poivre noir'
-    ],
-    etapes: [
-      'Poêler le thon juste assez. Servir avec les haricots blancs riches en fibres et fer.'
-    ]
-  },
-  {
-    id: 243, cat: 'dejeuner', premium: false,
-    emoji: '🐟', nom: 'Bowl de Millet aux Légumes Rôtis',
-    temps: '15 min', calories: 370, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le millet est alcalinisant et riche en magnésium. Le tahini apporte calcium et bons gras.',
-    ingredients: [
-      'Millet cuit',
-      'Carottes et panais rôtis',
-      'Sauce tahini'
-    ],
-    etapes: [
-      'Le millet est une céréale ancienne alcalinisante et très digeste.'
-    ]
-  },
-  {
-    id: 244, cat: 'snack', premium: false,
-    emoji: '🥕', nom: 'Hummus de Betterave et Graines de Lin',
-    temps: '15 min', calories: 200, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La betterave est riche en nitrates qui améliorent la circulation. L\'huile de lin apporte des oméga-3.',
-    ingredients: [
-      'Pois chiches',
-      'Betterave cuite',
-      'Huile de lin',
-      'Pain de fleurs'
-    ],
-    etapes: [
-      'Mixer le tout. La couleur vive indique la présence forte d\'antioxydants.'
-    ]
-  },
-  {
-    id: 245, cat: 'snack', premium: false,
-    emoji: '🥚', nom: 'Noix de Pécan à la Cannelle',
-    temps: '15 min', calories: 190, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les noix de pécan sont riches en antioxydants. La cannelle aide à réguler la glycémie.',
-    ingredients: [
-      'Noix de pécan',
-      'Cannelle',
-      'Pincée de sel'
-    ],
-    etapes: [
-      'Passer au four 10 min. Les noix de pécan sont d\'excellentes alliées anti-inflammatoires.'
-    ]
-  },
-  {
-    id: 246, cat: 'snack', premium: false,
-    emoji: '🫒', nom: 'Bouchées de Datte et Beurre de Cajou',
-    temps: '15 min', calories: 130, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La datte Medjool est riche en magnésium et potassium. Le cajou apporte des protéines et du zinc.',
-    ingredients: [
-      '1 datte Medjool',
-      '1 càc beurre de cajou'
-    ],
-    etapes: [
-      'Ouvrir la datte, farcir avec le beurre de cajou. Le snack parfait avant un effort.'
-    ]
-  },
-  {
-    id: 247, cat: 'snack', premium: false,
-    emoji: '🌰', nom: 'Chips de Chou Kale Maison',
-    temps: '15 min', calories: 120, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le kale est riche en fer, calcium et vitamine K. La levure maltée apporte des vitamines B.',
-    ingredients: [
-      'Feuilles de kale',
-      'Huile d\'olive',
-      'Levure maltée'
-    ],
-    etapes: [
-      'Masser les feuilles avec l\'huile, cuire au four 10 min à 150°C jusqu\'à ce que ce soit croustillant.'
-    ]
-  },
-  {
-    id: 248, cat: 'snack', premium: false,
-    emoji: '🫚', nom: 'Kéfir de Fruits et Noix',
-    temps: '15 min', calories: 170, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le kéfir est riche en probiotiques. Un microbiote sain réduit l\'inflammation liée au SJSR.',
-    ingredients: [
-      '200ml kéfir de fruits',
-      '5 noix de Grenoble'
-    ],
-    etapes: [
-      'Soutenir l\'intestin réduit l\'inflammation systémique liée au SJSR.'
-    ]
-  },
-  {
-    id: 249, cat: 'snack', premium: false,
-    emoji: '🍊', nom: 'Bâtonnets Concombre Sauce Menthe-Soja',
-    temps: '15 min', calories: 100, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le concombre est très hydratant. La menthe est apaisante pour le système nerveux.',
-    ingredients: [
-      'Concombre',
-      'Yaourt de soja',
-      'Menthe fraîche'
-    ],
-    etapes: [
-      'Trempette rafraîchissante et sans lactose.'
-    ]
-  },
-  {
-    id: 250, cat: 'snack', premium: false,
-    emoji: '🍎', nom: 'Poire Cuite au Gingembre et Pistaches',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La poire cuite est très digeste et alcalinisante. Les pistaches apportent magnésium et bons gras.',
-    ingredients: [
-      '1 poire',
-      'Gingembre râpé',
-      'Quelques pistaches'
-    ],
-    etapes: [
-      'Cuire la poire à la vapeur, saupoudrer de gingembre et pistaches concassées.'
-    ]
-  },
-  {
-    id: 251, cat: 'snack', premium: false,
-    emoji: '🥜', nom: 'Mélange Graines de Citrouille et Goji',
-    temps: '15 min', calories: 170, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les graines de citrouille sont la référence pour le magnésium. Les baies de goji apportent des antioxydants.',
-    ingredients: [
-      'Graines de citrouille',
-      'Baies de goji séchées'
-    ],
-    etapes: [
-      'Un mélange haute densité nutritionnelle facile à garder dans un tiroir.'
-    ]
-  },
-  {
-    id: 252, cat: 'snack', premium: false,
-    emoji: '🫐', nom: 'Galette Sarrasin au Chocolat Noir',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le chocolat noir à 90% est riche en magnésium et polyphénols anti-inflammatoires.',
-    ingredients: [
-      '1 galette de sarrasin soufflé',
-      '1 carré de chocolat noir fondu'
-    ],
-    etapes: [
-      'Étaler le chocolat noir riche en magnésium sur la galette croustillante.'
-    ]
-  },
-  {
-    id: 253, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Smoothie Myrtille et Chanvre',
-    temps: '15 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les myrtilles protègent les vaisseaux sanguins. Le chanvre apporte des oméga-3 et protéines complètes.',
-    ingredients: [
-      'Myrtilles',
-      '2 càs graines de chanvre',
-      'Eau'
-    ],
-    etapes: [
-      'Mixer. Le chanvre apporte les bons gras sans avoir besoin de lait végétal.'
-    ]
-  },
-  {
-    id: 254, cat: 'diner', premium: false,
-    emoji: '🍲', nom: 'Soupe Pois Cassés et Tofu Fumé',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les pois cassés sont des légumineuses riches en fer et en protéines végétales.',
-    ingredients: [
-      'Pois cassés',
-      'Tofu fumé en dés',
-      'Carottes'
-    ],
-    etapes: [
-      'Les pois cassés sont très riches en fer. Le tofu fumé apporte le goût sans le gras saturé.'
-    ]
-  },
-  {
-    id: 255, cat: 'diner', premium: false,
-    emoji: '🥗', nom: 'Cabillaud au Coco et Citronnelle',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La citronnelle est apaisante pour le système nerveux. Le coco apporte des graisses énergisantes.',
-    ingredients: [
-      'Dos de cabillaud',
-      'Lait de coco',
-      'Citronnelle',
-      'Épinards'
-    ],
-    etapes: [
-      'Pocher le poisson dans le coco infusé à la citronnelle. Servir sur un lit d\'épinards.'
-    ]
-  },
-  {
-    id: 256, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Risotto de Quinoa aux Champignons',
-    temps: '15 min', calories: 350, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les champignons sont riches en sélénium et vitamines B. Le quinoa est une protéine végétale complète.',
-    ingredients: [
-      'Quinoa',
-      'Bouillon de légumes',
-      'Champignons variés',
-      'Persillade'
-    ],
-    etapes: [
-      'Cuire le quinoa comme un risotto. Ajouter les champignons sautés en fin de cuisson.'
-    ]
-  },
-  {
-    id: 257, cat: 'diner', premium: false,
-    emoji: '🍜', nom: 'Salade Tiède d\'Artichaut et Noix',
-    temps: '15 min', calories: 270, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'L\'artichaut est hépato-protecteur. La mâche est exceptionnellement riche en oméga-3.',
-    ingredients: [
-      'Coeurs d\'artichauts',
-      'Mâche',
-      'Noix',
-      'Vinaigre de cidre'
-    ],
-    etapes: [
-      'L\'artichaut soutient le foie pendant la nuit, ce qui peut réduire les impatiences.'
-    ]
-  },
-  {
-    id: 258, cat: 'diner', premium: false,
-    emoji: '🌿', nom: 'Frittata Asperges et Aneth',
-    temps: '15 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les oeufs apportent du tryptophane pour le sommeil. L\'aneth a des propriétés relaxantes.',
-    ingredients: [
-      '2 oeufs',
-      'Asperges vertes',
-      'Aneth frais',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Cuire à la poêle à feu doux. L\'aneth est apaisant pour le système nerveux.'
-    ]
-  },
-  {
-    id: 259, cat: 'diner', premium: false,
-    emoji: '🫙', nom: 'Tofu Laqué au Tamari et Brocoli',
-    temps: '15 min', calories: 300, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le tofu est riche en calcium et isoflavones. Le brocoli apporte vitamine C et fer végétal.',
-    ingredients: [
-      'Tofu ferme',
-      'Tamari sans gluten',
-      'Gingembre',
-      'Brocoli vapeur'
-    ],
-    etapes: [
-      'Faire mariner le tofu et le griller. Servir avec le brocoli riche en fibres et minéraux.'
-    ]
-  },
-  {
-    id: 260, cat: 'diner', premium: false,
-    emoji: '🌙', nom: 'Bouillon Thaï aux Crevettes',
-    temps: '15 min', calories: 200, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les crevettes sont riches en iode et sélénium. Ce bouillon très léger favorise un sommeil profond.',
-    ingredients: [
-      'Bouillon',
-      'Crevettes',
-      'Champignons',
-      'Coriandre'
-    ],
-    etapes: [
-      'Un dîner très léger qui ne pèse pas sur la digestion nocturne.'
-    ]
-  },
-  {
-    id: 261, cat: 'diner', premium: false,
-    emoji: '🐟', nom: 'Écrasé de Courge Butternut et Pignons',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La courge butternut est riche en bêta-carotène et potassium. Les pignons apportent du magnésium.',
-    ingredients: [
-      'Courge butternut',
-      'Pignons de pin torréfiés',
-      'Muscade'
-    ],
-    etapes: [
-      'Réconfortant et riche en nutriments essentiels pour la relaxation musculaire.'
-    ]
-  },
-  {
-    id: 262, cat: 'diner', premium: false,
-    emoji: '🥣', nom: 'Sardines Grillées et Fenouil',
-    temps: '15 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les sardines fraîches sont riches en oméga-3 et calcium. Le fenouil est antispasmodique.',
-    ingredients: [
-      'Sardines fraîches',
-      'Fenouil émincé',
-      'Citron',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Le fenouil cru aide à une digestion parfaite, évitant les reflux qui aggravent le SJSR.'
-    ]
-  },
-  {
-    id: 263, cat: 'diner', premium: false,
-    emoji: '🫕', nom: 'Riz Sauté Légumes Verts et Sésame',
-    temps: '15 min', calories: 330, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le sésame noir est très riche en calcium et magnésium. Le riz basmati a un index glycémique modéré.',
-    ingredients: [
-      'Riz basmati cuit',
-      'Courgettes',
-      'Pois gourmands',
-      'Graines de sésame'
-    ],
-    etapes: [
-      'Sauter rapidement les légumes, ajouter le riz et finir par le sésame noir.'
-    ]
-  },
-  {
-    id: 264, cat: 'petit-dejeuner', premium: false,
-    emoji: '🟢', nom: 'Bol d\'Énergie Spiruline et Kiwi',
-    temps: '15 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La spiruline est la source la plus concentrée en fer végétal. La vitamine C du kiwi multiplie son absorption.',
-    ingredients: [
-      '1 càc spiruline',
-      '2 kiwis mûrs',
-      'Yaourt de soja',
-      'Graines de chanvre'
-    ],
-    etapes: [
-      'Mélanger la spiruline au yaourt. Ajouter les kiwis en morceaux.'
-    ]
-  },
-  {
-    id: 265, cat: 'petit-dejeuner', premium: false,
-    emoji: '🧡', nom: 'Omelette au Persil et Épinards',
-    temps: '15 min', calories: 240, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le persil en grande quantité apporte du fer végétal. Les oeufs fournissent tyrosine pour la dopamine.',
-    ingredients: [
-      '2 oeufs bio',
-      'Une poignée de persil frais',
-      'Jeunes pousses d\'épinards'
-    ],
-    etapes: [
-      'Hacher finement le persil et l\'incorporer aux oeufs. Cuire avec les épinards.'
-    ]
-  },
-  {
-    id: 266, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥛', nom: 'Pudding Chia Noisette et Banane',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La banane est riche en tryptophane et potassium. Le cacao non sucré est une source exceptionnelle de magnésium.',
-    ingredients: [
-      '3 càs graines de chia',
-      'Lait de noisette',
-      '1/2 banane mûre',
-      'Éclats de cacao 100%'
-    ],
-    etapes: [
-      'Laisser gonfler le chia toute la nuit. La banane et le cacao soutiennent la production de dopamine.'
-    ]
-  },
-  {
-    id: 267, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌾', nom: 'Tartine Sarrasin Avocat et Sésame Noir',
-    temps: '15 min', calories: 330, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'L\'avocat est riche en bons gras anti-inflammatoires. Le sésame noir apporte calcium et magnésium.',
-    ingredients: [
-      'Pain de sarrasin',
-      '1/2 avocat',
-      'Sésame noir',
-      'Citron'
-    ],
-    etapes: [
-      'Écraser l\'avocat avec le citron. Le sésame noir est un excellent complément anti-inflammatoire.'
-    ]
-  },
-  {
-    id: 268, cat: 'petit-dejeuner', premium: false,
-    emoji: '🍵', nom: 'Smoothie Vert Céleri Pomme Gingembre',
-    temps: '15 min', calories: 130, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le céleri est très alcalinisant. Le gingembre anti-inflammatoire calme le système nerveux dès le matin.',
-    ingredients: [
-      '2 branches de céleri',
-      '1 pomme',
-      '2cm gingembre frais',
-      'Eau'
-    ],
-    etapes: [
-      'Mixer pour un réveil sans acidité, idéal pour calmer les nerfs.'
-    ]
-  },
-  {
-    id: 269, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥑', nom: 'Crêpes à la Farine de Châtaigne',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La farine de châtaigne est alcalinisante et riche en magnésium. Elle est naturellement sucrée.',
-    ingredients: [
-      '100g farine de châtaigne',
-      '200ml lait d\'amande',
-      '1 oeuf'
-    ],
-    etapes: [
-      'La châtaigne est l\'une des rares fécules alcalinisantes, riche en minéraux.'
-    ]
-  },
-  {
-    id: 270, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥣', nom: 'Salade de Fruits Mûrs et Menthe',
-    temps: '15 min', calories: 150, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les fruits mûrs sont alcalinisants et riches en antioxydants. La menthe facilite la digestion.',
-    ingredients: [
-      'Pêches',
-      'Poires mûres',
-      'Menthe fraîche hachée'
-    ],
-    etapes: [
-      'Les fruits bien mûrs sont plus digestes et alcalinisants que les fruits acides.'
-    ]
-  },
-  {
-    id: 271, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥞', nom: 'Kasha au Lait de Riz et Noix du Brésil',
-    temps: '15 min', calories: 300, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: '2 noix du Brésil couvrent 100% des besoins en sélénium, essentiel pour le système nerveux.',
-    ingredients: [
-      'Sarrasin grillé Kasha',
-      'Lait de riz',
-      '2 noix du Brésil'
-    ],
-    etapes: [
-      'Cuire le sarrasin dans le lait de riz. Les noix du Brésil apportent le sélénium pour le système nerveux.'
-    ]
-  },
-  {
-    id: 272, cat: 'petit-dejeuner', premium: false,
-    emoji: '🫐', nom: 'Pâte à Tartiner Amande et Curcuma',
-    temps: '15 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La purée d\'amande est riche en magnésium et vitamine E. Le curcuma + poivre est anti-inflammatoire.',
-    ingredients: [
-      'Purée d\'amande blanche',
-      'Curcuma',
-      'Poivre',
-      'Miel de fleurs'
-    ],
-    etapes: [
-      'Mélanger le curcuma à la purée d\'amande avec une pointe de poivre pour l\'activation.'
-    ]
-  },
-  {
-    id: 273, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌿', nom: 'Bouillon Miso et Tofu Soyeux',
-    temps: '15 min', calories: 150, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le miso est riche en probiotiques et acides aminés. Le tofu soyeux apporte des protéines douces.',
-    ingredients: [
-      'Pâte miso blanc',
-      'Tofu soyeux',
-      'Algues wakamé',
-      'Eau'
-    ],
-    etapes: [
-      'Une option salée japonaise parfaite pour démarrer la journée sans pics glycémiques.'
-    ]
-  },
-  {
-    id: 274, cat: 'dejeuner', premium: false,
-    emoji: '🥦', nom: 'Lunchbox Poulet Citron et Brocoli',
-    temps: '15 min', calories: 370, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le trio poulet-brocoli-citron maximise l\'absorption du fer héminique avec la vitamine C.',
-    ingredients: [
-      'Blanc de poulet',
-      'Brocoli',
-      'Zeste de citron',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'Associer le poulet (fer) au brocoli et citron (vitamine C) pour l\'absorption.'
-    ]
-  },
-  {
-    id: 275, cat: 'dejeuner', premium: false,
-    emoji: '🌮', nom: 'Salade Lentilles Béluga et Poivrons',
-    temps: '15 min', calories: 370, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les lentilles béluga sont les plus riches en fer végétal. Le poivron rouge triple l\'absorption.',
-    ingredients: [
-      'Lentilles noires béluga',
-      'Poivron rouge cru',
-      'Oignon rouge',
-      'Coriandre'
-    ],
-    etapes: [
-      'Le poivron rouge est l\'une des meilleures sources de vitamine C pour fixer le fer des lentilles.'
-    ]
-  },
-  {
-    id: 276, cat: 'dejeuner', premium: false,
-    emoji: '🍲', nom: 'Cabillaud en Papillote et Panais',
-    temps: '15 min', calories: 300, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le cabillaud en papillote préserve tous les nutriments. Le panais est alcalinisant et digeste.',
-    ingredients: [
-      'Filet de cabillaud',
-      'Panais',
-      'Thym',
-      'Huile de colza'
-    ],
-    etapes: [
-      'Le panais est un légume racine doux et alcalinisant qui remplace avantageusement les pâtes.'
-    ]
-  },
-  {
-    id: 277, cat: 'dejeuner', premium: false,
-    emoji: '🥘', nom: 'Bowl Quinoa Patate Douce et Tahini',
-    temps: '15 min', calories: 430, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La patate douce est à index glycémique bas. Le tahini apporte calcium et magnésium.',
-    ingredients: [
-      'Quinoa',
-      'Patate douce rôtie',
-      'Sauce tahini',
-      'Graines de courge'
-    ],
-    etapes: [
-      'Le sésame et la courge soutiennent la relaxation musculaire nocturne.'
-    ]
-  },
-  {
-    id: 278, cat: 'dejeuner', premium: false,
-    emoji: '🌯', nom: 'Tartare de Saumon à l\'Aneth',
-    temps: '15 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le saumon frais préserve tous ses oméga-3. La vitamine D réduit l\'inflammation nerveuse du SJSR.',
-    ingredients: [
-      'Saumon frais haché',
-      'Aneth',
-      'Citron lime',
-      'Huile d\'olive'
-    ],
-    etapes: [
-      'La vitamine D du saumon est essentielle en cas de carence liée au SJSR.'
-    ]
-  },
-  {
-    id: 279, cat: 'dejeuner', premium: false,
-    emoji: '🫕', nom: 'Riz Sauvage aux Amandes et Abricots',
-    temps: '15 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le riz sauvage est riche en magnésium et zinc. Les abricots secs concentrent le fer végétal.',
-    ingredients: [
-      'Riz sauvage',
-      'Amandes effilées',
-      'Abricots secs bio'
-    ],
-    etapes: [
-      'Les abricots secs apportent du fer et les amandes du magnésium.'
-    ]
-  },
-  {
-    id: 280, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Sauté de Boeuf aux Pois Gourmands',
-    temps: '15 min', calories: 450, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le fer héminique du boeuf est absorbé à 25%, contre 5% pour le fer végétal. Puissance incomparable.',
-    ingredients: [
-      'Bavette de boeuf',
-      'Pois gourmands',
-      'Gingembre',
-      'Tamari'
-    ],
-    etapes: [
-      'Le boeuf apporte le fer le mieux absorbé. Les pois gourmands apportent le croquant et la vitamine C.'
-    ]
-  },
-  {
-    id: 281, cat: 'dejeuner', premium: false,
-    emoji: '🫙', nom: 'Gratin Courge Butternut au Coco',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La courge butternut est riche en bêta-carotène et anti-oxydants. Le coco n\'apporte pas de lactose.',
-    ingredients: [
-      'Butternut',
-      'Lait de coco',
-      'Noix de muscade'
-    ],
-    etapes: [
-      'Alternative onctueuse et réconfortante sans produits laitiers.'
-    ]
-  },
-  {
-    id: 282, cat: 'dejeuner', premium: false,
-    emoji: '🥩', nom: 'Salade Pois Chiches Tomate et Persil',
-    temps: '15 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le persil en grande quantité est l\'un des meilleurs aliments pour le fer végétal biodisponible.',
-    ingredients: [
-      'Pois chiches',
-      'Tomates cerises',
-      'Ail',
-      'Beaucoup de persil'
-    ],
-    etapes: [
-      'Le persil ne doit pas être une décoration mais un ingrédient majeur pour son apport en fer.'
-    ]
-  },
-  {
-    id: 283, cat: 'dejeuner', premium: false,
-    emoji: '🐟', nom: 'Dinde à la Sauge et Purée de Carotte',
-    temps: '15 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le tryptophane de la dinde se convertit en sérotonine puis mélatonine pour un bon sommeil.',
-    ingredients: [
-      'Escalope de dinde',
-      'Sauge fraîche',
-      'Carottes vapeur'
-    ],
-    etapes: [
-      'La dinde est riche en tryptophane, précurseur de la sérotonine pour un bon sommeil.'
-    ]
-  },
-  {
-    id: 284, cat: 'snack', premium: false,
-    emoji: '🥕', nom: 'Infusion Gingembre et Noix Mélangées',
-    temps: '15 min', calories: 120, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le gingembre infusé est anti-inflammatoire. Le mélange de noix apporte magnésium et sélénium.',
-    ingredients: [
-      'Gingembre frais infusé',
-      '1 noix du Brésil',
-      '2 amandes',
-      '1 noix'
-    ],
-    etapes: [
-      'L\'infusion remplace le thé noir (acidifiant) et les noix apportent les minéraux.'
-    ]
-  },
-  {
-    id: 285, cat: 'snack', premium: false,
-    emoji: '🥚', nom: 'Carré de Chocolat et Beurre de Cacahuète',
-    temps: '15 min', calories: 140, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le chocolat noir est riche en magnésium et polyphénols. Le beurre de cacahuète apporte des protéines.',
-    ingredients: [
-      '1 carré chocolat 90%',
-      '1 càc beurre de cacahuète sans sucre'
-    ],
-    etapes: [
-      'Un duo gagnant pour le moral et les muscles sans sucre raffiné.'
-    ]
-  },
-  {
-    id: 286, cat: 'snack', premium: false,
-    emoji: '🫒', nom: 'Jus Frais Carotte Orange Curcuma',
-    temps: '15 min', calories: 130, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La vitamine C de l\'orange aide à absorber le fer des carottes. Le curcuma est anti-inflammatoire.',
-    ingredients: [
-      '2 carottes',
-      '1 orange',
-      '1cm racine de curcuma'
-    ],
-    etapes: [
-      'À presser frais pour garder tous les micronutriments.'
-    ]
-  },
-  {
-    id: 287, cat: 'snack', premium: false,
-    emoji: '🌰', nom: 'Graines de Tournesol Grillées',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les graines de tournesol sont riches en vitamine E antioxydante et en magnésium.',
-    ingredients: [
-      'Graines de tournesol',
-      'Pincée de sel de mer'
-    ],
-    etapes: [
-      'Griller légèrement à la poêle. Riche en vitamine E et magnésium.'
-    ]
-  },
-  {
-    id: 288, cat: 'snack', premium: false,
-    emoji: '🫚', nom: 'Compote Pomme et Cannelle Maison',
-    temps: '15 min', calories: 110, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La cannelle est l\'une des épices les plus efficaces pour stabiliser la glycémie.',
-    ingredients: [
-      'Pommes',
-      'Cannelle en poudre'
-    ],
-    etapes: [
-      'Cuire les pommes sans sucre ajouté. La cannelle aide à réguler le taux de sucre sanguin.'
-    ]
-  },
-  {
-    id: 289, cat: 'snack', premium: false,
-    emoji: '🍊', nom: 'Yaourt de Coco et Baies de Goji',
-    temps: '15 min', calories: 150, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le yaourt de coco est sans lactose. Les baies de goji sont riches en antioxydants et vitamine C.',
-    ingredients: [
-      'Yaourt coco',
-      '1 càs baies de goji'
-    ],
-    etapes: [
-      'Snack gourmand et protecteur pour les cellules nerveuses.'
-    ]
-  },
-  {
-    id: 290, cat: 'snack', premium: false,
-    emoji: '🍎', nom: 'Bâtonnets Carotte et Hummus de Lentilles',
-    temps: '15 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les lentilles corail sont riches en fer. Le citron optimise l\'absorption du fer végétal.',
-    ingredients: [
-      'Carottes',
-      'Lentilles corail mixées avec citron et tahini'
-    ],
-    etapes: [
-      'L\'apport de citron dans le hummus assure l\'absorption du fer des lentilles.'
-    ]
-  },
-  {
-    id: 291, cat: 'snack', premium: false,
-    emoji: '🥜', nom: 'Noix de Macadamia et Menthe',
-    temps: '15 min', calories: 170, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les noix de macadamia sont les plus riches en acides gras mono-insaturés, anti-inflammatoires.',
-    ingredients: [
-      '5 noix de macadamia',
-      'Tisane de menthe'
-    ],
-    etapes: [
-      'La macadamia est très riche en bons gras et magnésium.'
-    ]
-  },
-  {
-    id: 292, cat: 'snack', premium: false,
-    emoji: '🫐', nom: 'Galette de Riz et Purée de Noisette',
-    temps: '15 min', calories: 170, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La purée de noisette est riche en vitamine E et magnésium. La tyrosine soutient la dopamine.',
-    ingredients: [
-      'Galette de riz complet',
-      'Purée de noisette'
-    ],
-    etapes: [
-      'La noisette contient de la tyrosine pour soutenir la production de dopamine en fin de journée.'
-    ]
-  },
-  {
-    id: 293, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Smoothie Myrtilles et Lait d\'Amande',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les myrtilles protègent les vaisseaux sanguins grâce aux anthocyanes. Le lait d\'amande apporte du calcium.',
-    ingredients: [
-      'Myrtilles surgelées ou fraîches',
-      'Lait d\'amande'
-    ],
-    etapes: [
-      'Mixer pour un snack protecteur des vaisseaux sanguins.'
-    ]
-  },
-  {
-    id: 294, cat: 'diner', premium: false,
-    emoji: '🍲', nom: 'Soupe de Potiron au Sésame Noir',
-    temps: '15 min', calories: 220, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le potiron est riche en bêta-carotène. Le sésame noir est une source exceptionnelle de calcium.',
-    ingredients: [
-      'Potiron',
-      'Oignon',
-      'Sésame noir'
-    ],
-    etapes: [
-      'Dîner tôt et léger pour éviter d\'encombrer la digestion nocturne.'
-    ]
-  },
-  {
-    id: 295, cat: 'diner', premium: false,
-    emoji: '🥗', nom: 'Tofu Grillé Épinards et Chanvre',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le tofu, les épinards et le chanvre forment un trio exceptionnel pour le fer, calcium et magnésium.',
-    ingredients: [
-      'Tofu ferme',
-      'Grandes feuilles d\'épinards',
-      'Chanvre'
-    ],
-    etapes: [
-      'Faire sauter les épinards brièvement pour garder les minéraux intacts.'
-    ]
-  },
-  {
-    id: 296, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Asperges Vapeur et Huile de Lin',
-    temps: '15 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les asperges sont diurétiques et riches en acide folique. L\'huile de lin crue préserve ses oméga-3.',
-    ingredients: [
-      'Asperges',
-      'Huile de lin crue',
-      'Sel de mer'
-    ],
-    etapes: [
-      'L\'asperge est très digeste. L\'huile de lin apporte les oméga-3 essentiels après cuisson.'
-    ]
-  },
-  {
-    id: 297, cat: 'diner', premium: false,
-    emoji: '🍜', nom: 'Salade de Mâche et Noix',
-    temps: '15 min', calories: 210, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La mâche est la salade la plus riche en oméga-3. Les noix renforcent cet apport considérablement.',
-    ingredients: [
-      'Mâche',
-      'Cerneaux de noix',
-      'Vinaigre de cidre'
-    ],
-    etapes: [
-      'La mâche est une salade d\'exception pour le système nerveux.'
-    ]
-  },
-  {
-    id: 298, cat: 'diner', premium: false,
-    emoji: '🌿', nom: 'Maquereau au Four et Pommes Vapeur',
-    temps: '15 min', calories: 400, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le maquereau est très riche en oméga-3 et vitamine D. Les pommes vapeur sont alcalinisantes.',
-    ingredients: [
-      'Filet de maquereau',
-      'Pommes de terre vapeur',
-      'Échalotes'
-    ],
-    etapes: [
-      'Les pommes de terre vapeur sont d\'excellents alcalinisants.'
-    ]
-  },
-  {
-    id: 299, cat: 'diner', premium: false,
-    emoji: '🫙', nom: 'Omelette Blanche aux Fines Herbes',
-    temps: '15 min', calories: 130, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les blancs d\'oeufs sont les protéines les plus légères. L\'estragon est naturellement relaxant.',
-    ingredients: [
-      '2 blancs d\'oeufs',
-      'Ciboulette',
-      'Persil',
-      'Estragon'
-    ],
-    etapes: [
-      'Pour un soir où la digestion doit être quasi inexistante avant le coucher.'
-    ]
-  },
-  {
-    id: 300, cat: 'diner', premium: false,
-    emoji: '🌙', nom: 'Velouté de Courgettes et Menthe',
-    temps: '15 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La courgette est très légère et alcalinisante. La menthe calme les spasmes musculaires nocturnes.',
-    ingredients: [
-      'Courgettes',
-      'Menthe fraîche',
-      'Une noisette de beurre de cajou'
-    ],
-    etapes: [
-      'La menthe apporte une sensation de fraîcheur interne calmante.'
-    ]
-  },
-  {
-    id: 301, cat: 'diner', premium: false,
-    emoji: '🐟', nom: 'Dahl de Lentilles Corail au Curcuma',
-    temps: '15 min', calories: 300, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le curcuma + poivre est le duo anti-inflammatoire le plus puissant. Les lentilles sont riches en fer.',
-    ingredients: [
-      'Lentilles corail',
-      'Curcuma',
-      'Poivre',
-      'Lait de coco'
-    ],
-    etapes: [
-      'Mijoter doucement. Les lentilles corail sont les plus digestes des légumineuses.'
-    ]
-  },
-  {
-    id: 302, cat: 'diner', premium: false,
-    emoji: '🥣', nom: 'Champignons à l\'Ail et Persil',
-    temps: '15 min', calories: 140, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les champignons shiitakés sont riches en sélénium et vitamines B. L\'ail est anti-inflammatoire.',
-    ingredients: [
-      'Champignons de Paris ou shiitakés',
-      'Ail',
-      'Persil plat'
-    ],
-    etapes: [
-      'Sauter à la poêle sans matières grasses saturées. Riche en minéraux essentiels.'
-    ]
-  },
-  {
-    id: 303, cat: 'diner', premium: false,
-    emoji: '🫕', nom: 'Tisane Nuit Paisible et Chocolat Noir',
-    temps: '15 min', calories: 100, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La valériane favorise le sommeil profond. Le chocolat noir à 90% apporte du magnésium relaxant.',
-    ingredients: [
-      'Tisane mélisse/valériane',
-      'Chocolat 90%'
-    ],
-    etapes: [
-      'Terminer par un rituel relaxant pour préparer le cerveau au sommeil profond.'
-    ]
   }
 ];
 
@@ -6033,10 +3793,9 @@ const RECETTES = [
 const JOURS = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 const JOURS_FULL = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
 const REPAS = [
-  { label: 'Petit-déj', slug: 'petitdej', cat: 'petit-dejeuner', emoji: '🌅' },
-  { label: 'Déjeuner',  slug: 'dejeuner', cat: 'dejeuner',       emoji: '☀️' },
-  { label: 'Goûter',    slug: 'gouter',   cat: 'snack',          emoji: '🍎' },
-  { label: 'Dîner',     slug: 'diner',    cat: 'diner',          emoji: '🌙' },
+  { label: 'Petit-déj', slug: 'petitdej', cat: 'petit-dejeuner' },
+  { label: 'Déjeuner',  slug: 'dejeuner', cat: 'dejeuner' },
+  { label: 'Dîner',     slug: 'diner',    cat: 'diner' }
 ];
 
 const RECETTES_PAR_CAT = {
@@ -6062,54 +3821,29 @@ let currentWeekOffset = 0;
 // ============================
 window.addEventListener('load', () => {
   loadState();
+  // Hide splash after animation
   setTimeout(() => {
     document.getElementById('splash').classList.add('hidden');
     if (!profile.name) {
       document.getElementById('onboarding').classList.remove('hidden');
     } else {
       initApp();
-      // Gérer les liens directs vers une recette (#recette-ID)
-      const hash = window.location.hash;
-      if (hash.startsWith('#recette-')) {
-        const recId = parseInt(hash.replace('#recette-', ''));
-        if (!isNaN(recId)) {
-          setTimeout(() => openRecette(recId), 500);
-        }
-      }
     }
   }, 2100);
 });
 
 function loadState() {
-  try {
-    profile      = JSON.parse(localStorage.getItem('flora_profile')  || '{}');
-    journal      = JSON.parse(localStorage.getItem('flora_journal')  || '{}');
-    agenda       = JSON.parse(localStorage.getItem('flora_agenda')   || '{}');
-    placardItems = JSON.parse(localStorage.getItem('flora_placard')  || '{}');
-    isPremium    = localStorage.getItem('flora_premium') === 'true';
-  } catch(e) {
-    console.error('loadState error:', e.message);
-    profile = {}; journal = {}; agenda = {}; placardItems = {}; isPremium = false;
-  }
+  profile   = JSON.parse(localStorage.getItem('flora_profile') || '{}');
+  journal   = JSON.parse(localStorage.getItem('flora_journal') || '{}');
+  agenda    = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
+  isPremium = localStorage.getItem('flora_premium') === 'true';
 }
 
 function saveState() {
-  try {
-    localStorage.setItem('flora_profile', JSON.stringify(profile));
-    localStorage.setItem('flora_journal',  JSON.stringify(journal));
-    localStorage.setItem('flora_agenda',   JSON.stringify(agenda));
-    localStorage.setItem('flora_placard',  JSON.stringify(placardItems));
-  } catch(e) {
-    console.error('saveState error:', e.message);
-    // Afficher un message à l'utilisateur si localStorage est plein
-    if (e.name === 'QuotaExceededError') {
-      const msg = document.createElement('div');
-      msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#e88080;color:white;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);';
-      msg.textContent = '⚠️ Stockage plein — libérez de l\'espace';
-      document.body.appendChild(msg);
-      setTimeout(() => msg.remove(), 4000);
-    }
-  }
+  localStorage.setItem('flora_profile', JSON.stringify(profile));
+  localStorage.setItem('flora_journal',  JSON.stringify(journal));
+  localStorage.setItem('flora_agenda',   JSON.stringify(agenda));
+  localStorage.setItem('flora_placard',  JSON.stringify(placardItems));
 }
 
 // unlockDemo — ouvre la modale premium sur la zone code
@@ -6139,8 +3873,8 @@ function nextStep(step) {
     document.getElementById('ob-name').style.borderColor = '';
   }
 
-  // Générer le récap à l'étape 6
-  if (step === 6) {
+  // Générer le récap à l'étape 5
+  if (step === 5) {
     try { buildOnboardRecap(); } catch(e) { console.warn('recap error', e); }
   }
 
@@ -6173,93 +3907,66 @@ function selectChoice(el, hiddenId, value) {
 
 function buildOnboardRecap() {
   const name     = document.getElementById('ob-name').value.trim();
-  const goal     = document.getElementById('ob-goal').value;
   const sjsrFreq = document.getElementById('ob-sjsr-freq').value;
-  const sg       = document.getElementById('ob-sg').checked;
-  const sl       = document.getElementById('ob-sl').checked;
-  const sv       = document.getElementById('ob-sv').checked;
   const fer      = document.getElementById('ob-fer').checked;
   const tdah     = document.getElementById('ob-tdah').checked;
-  const meds     = Array.from(document.querySelectorAll('#ob-med-list .ob-med-chip'))
-    .map(el => el.dataset.med).filter(Boolean);
+  const sg       = document.getElementById('ob-sg').checked;
+  const sl       = document.getElementById('ob-sl').checked;
 
-  const goalLabels = {
-    sommeil:'Améliorer le sommeil', douleur:'Réduire la douleur',
-    sjsr:'Calmer le SJSR', energie:'Retrouver de l\'énergie', global:'Bien-être global'
-  };
-  const sjsrLabels = { '0':'Rarement', '1-2':'1-2 nuits/sem', '3-4':'3-4 nuits/sem', '5+':'Presque chaque nuit' };
+  // Construire les recommandations personnalisées
+  const recs = [];
 
-  const tags = [];
-  if (sg)   tags.push('Sans gluten');
-  if (sl)   tags.push('Sans lactose');
-  if (sv)   tags.push('Végétarien·ne');
-  if (fer)  tags.push('Carence fer');
-  if (tdah) tags.push('TDAH');
+  if (sjsrFreq === '5+' || sjsrFreq === '3-4') {
+    recs.push({ icon: '🦵', text: 'Priorité fer + magnésium — recettes spéciales SJSR sélectionnées pour vous' });
+    recs.push({ icon: '🌙', text: 'Journal sommeil avancé avec suivi SJSR nuit par nuit' });
+  } else if (sjsrFreq === '1-2') {
+    recs.push({ icon: '🦵', text: 'Recettes riches en magnésium et oméga-3 pour les jambes' });
+  }
 
-  const recapEl = document.getElementById('onboard-recap');
-  if (!recapEl) return;
+  if (fer) {
+    recs.push({ icon: '🩸', text: 'Recettes boostées en fer héminique (sardines, lentilles beluga, teff)' });
+  }
 
-  recapEl.innerHTML = `
-    <div style="background:var(--cream);border-radius:14px;padding:16px;margin-bottom:16px;">
-      <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:10px;">Votre profil</div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="display:flex;gap:10px;align-items:center;">
-          <span>👤</span>
-          <span style="font-size:0.88rem;color:var(--text-dark);font-weight:600;">${name}</span>
+  if (tdah) {
+    recs.push({ icon: '🧠', text: 'Mode Batch Cooking TDAH — une session de cuisine, toute la semaine préparée' });
+    recs.push({ icon: '⚡', text: 'Petits-déjeuners protéinés pour la concentration matinale' });
+  }
+
+  if (sg || sl) {
+    recs.push({ icon: '🌾', text: 'Toutes vos recettes sont 100% sans gluten et sans lactose' });
+  }
+
+  // Toujours
+  recs.push({ icon: '📊', text: 'Suivi bien-être quotidien avec graphiques d\'évolution' });
+
+  const recap = document.getElementById('onboard-recap');
+  recap.innerHTML = `
+    <div class="onboard-greeting">Bonjour ${name} 👋</div>
+    <div class="onboard-recs">
+      ${recs.map(r => `
+        <div class="onboard-rec-item">
+          <span class="onboard-rec-icon">${r.icon}</span>
+          <span class="onboard-rec-text">${r.text}</span>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <span>🎯</span>
-          <span style="font-size:0.85rem;color:var(--text-dark);">${goalLabels[goal] || 'Bien-être global'}</span>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <span>🦵</span>
-          <span style="font-size:0.85rem;color:var(--text-dark);">SJSR : ${sjsrLabels[sjsrFreq] || 'Non renseigné'}</span>
-        </div>
-        ${meds.length ? `<div style="display:flex;gap:10px;align-items:flex-start;">
-          <span>💊</span>
-          <span style="font-size:0.85rem;color:var(--text-dark);">${meds.join(', ')}</span>
-        </div>` : ''}
-        ${tags.length ? `<div style="display:flex;gap:10px;align-items:flex-start;">
-          <span>🥗</span>
-          <div style="display:flex;flex-wrap:wrap;gap:4px;">
-            ${tags.map(t=>`<span style="background:var(--green-light,#e8f4e8);color:var(--green-deep);border-radius:99px;padding:2px 8px;font-size:0.75rem;">${t}</span>`).join('')}
-          </div>
-        </div>` : ''}
-      </div>
+      `).join('')}
     </div>
-    <div style="background:var(--green-deep);border-radius:14px;padding:14px;color:white;">
-      <div style="font-size:0.8rem;font-weight:700;margin-bottom:6px;">🌿 Votre programme personnalisé inclut :</div>
-      <div style="font-size:0.78rem;opacity:0.9;line-height:1.8;">
-        ✅ Recettes anti-inflammatoires adaptées à votre régime<br>
-        ✅ Journal de suivi sommeil, énergie & SJSR<br>
-        ${meds.length ? '✅ Suivi d\'observance de vos médicaments<br>' : ''}
-        ✅ Agenda alimentaire personnalisé<br>
-        ✅ Statistiques et tendances sur 30 jours<br>
-        ✅ Rappels bien-être quotidiens
-      </div>
-    </div>`;
+  `;
 }
-
 
 function saveOnboarding() {
   const name = document.getElementById('ob-name').value.trim();
   if (!name) { nextStep(2); return; }
 
-  // Récupérer les médicaments saisis à l'étape 4
-  const obMeds = Array.from(document.querySelectorAll('#ob-med-list .ob-med-chip'))
-    .map(el => el.dataset.med).filter(Boolean);
-
   profile = {
     name,
-    goal:         document.getElementById('ob-goal').value,
-    sansGluten:   document.getElementById('ob-sg').checked,
-    sansLactose:  document.getElementById('ob-sl').checked,
-    vegetarien:   document.getElementById('ob-sv').checked,
+    goal:        document.getElementById('ob-goal').value,
+    sansGluten:  document.getElementById('ob-sg').checked,
+    sansLactose: document.getElementById('ob-sl').checked,
+    vegetarien:  document.getElementById('ob-sv').checked,
     caferenceFer: document.getElementById('ob-fer').checked,
     tdah:         document.getElementById('ob-tdah').checked,
     sjsrFreq:     document.getElementById('ob-sjsr-freq').value,
-    traitement:   obMeds.length ? 'oui' : 'non',
-    medications:  obMeds,
+    traitement:   document.getElementById('ob-traitement').value,
   };
 
   saveState();
@@ -6304,150 +4011,35 @@ function askNotificationPermission() {
 }
 
 function scheduleNotifications() {
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
 
-  // Annuler les anciens timers
-  if (window._floraNotifTimers) window._floraNotifTimers.forEach(t => clearTimeout(t));
-  window._floraNotifTimers = [];
+  // Notification journal du soir (21h)
+  const now = new Date();
+  const target = new Date();
+  target.setHours(21, 0, 0, 0);
+  if (target <= now) target.setDate(target.getDate() + 1);
 
-  const meds = profile.medications || [];
-  const medStr = meds.length ? meds.slice(0,2).join(' + ') : 'votre traitement';
-
-  // Rappels à programmer (heure, message, tag)
-  // Utiliser les horaires personnalisés du profil
-  const h = profile.horaires || {};
-  const parseTime = (str, defH, defM) => {
-    if (!str) return { h: defH, m: defM };
-    const [hh, mm] = str.split(':').map(Number);
-    return { h: hh || defH, m: mm || defM };
-  };
-  const tPDJ = parseTime(h.petitdej,    7,  0);
-  const tDEJ = parseTime(h.dejeuner,   13,  0);
-  const tGOU = parseTime(h.gouter,     16,  0);
-  const tDIN = parseTime(h.diner,      19,  0);
-  const tMED = parseTime(h.medicaments,20, 30);
-  const tJNL = parseTime(h.journal,    21,  0);
-
-  const rappels = [
-    { h:tPDJ.h, m:tPDJ.m, tag:'petit-dej',
-      title:'🌅 Petit-déjeuner Flōra',
-      body: 'Bon matin ! Pensez à un petit-déj protéiné pour booster votre dopamine dès le matin.' },
-    { h:tDEJ.h, m:tDEJ.m, tag:'dejeuner',
-      title:'☀️ Déjeuner Flōra',
-      body: 'L\'heure du déjeuner ! Fer + vitamine C aujourd\'hui pour limiter la fatigue de l\'après-midi.' },
-    { h:tGOU.h, m:tGOU.m, tag:'gouter',
-      title:'🍎 Goûter TDAH',
-      body: 'Goûter obligatoire ! Maintenir la glycémie = moins de décisions impulsives. Quelques noix ou dattes.' },
-    { h:tDIN.h, m:tDIN.m, tag:'diner',
-      title:'🌙 Dîner Flōra',
-      body: 'Dîner léger avant 20h pour limiter le SJSR nocturne.' },
-    { h:tMED.h, m:tMED.m, tag:'medicaments',
-      title:'💊 Médicaments du soir',
-      body: `N\'oubliez pas ${medStr} avant de dormir.` },
-    { h:tJNL.h, m:tJNL.m, tag:'journal',
-      title:'🌿 Journal du soir Flōra',
-      body: 'Comment s\'est passée votre journée ? 2 minutes pour noter énergie, douleur et SJSR.' },
-  ];
-
-  function scheduleOne(rappel) {
-    const now = new Date();
-    const target = new Date();
-    target.setHours(rappel.h, rappel.m, 0, 0);
-    if (target <= now) target.setDate(target.getDate() + 1);
-    // Délai max 30 min pour éviter le throttling des timers en background
-    // Si le délai est > 30 min, on replanifie dans 30 min
-    const MAX_DELAY = 30 * 60 * 1000;
-    const delay = Math.min(target - now, MAX_DELAY);
-
-    const t = setTimeout(() => {
-      const nowCheck = new Date();
-      // Vérifier si c'est bien l'heure de la notification
-      if (nowCheck.getHours() !== rappel.h || Math.abs(nowCheck.getMinutes() - rappel.m) > 2) {
-        scheduleOne(rappel); // pas encore l'heure, replanifier
-        return;
-      }
-      // Ne pas notifier si l'app est au premier plan (l'utilisateur est là)
-      if (document.visibilityState !== 'hidden') {
-        scheduleOne(rappel); // reprogrammer pour demain
-        return;
-      }
-      // Utiliser ServiceWorker.showNotification() — seule méthode fiable sur Android
-      try {
-        if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-          navigator.serviceWorker.ready.then(reg => {
-            reg.showNotification(rappel.title, {
-              body: rappel.body,
-              icon: '/Fl-ra/icon.svg',
-              badge: '/Fl-ra/icon.svg',
-              tag: 'flora-' + rappel.tag,
-              renotify: false,
-              silent: false,
-              vibrate: [200, 100, 200],
-            });
-          }).catch(e => console.log('SW notif error:', e));
-        } else {
-          // Fallback navigateurs desktop
-          new Notification(rappel.title, {
-            body: rappel.body,
-            icon: '/Fl-ra/icon.svg',
-            tag: 'flora-' + rappel.tag,
-          });
-        }
-      } catch(e) { console.log('Notif error:', e); }
-      // Reprogrammer pour demain
-      scheduleOne(rappel);
-    }, delay);
-
-    window._floraNotifTimers.push(t);
-  }
-
-  // Ne programmer que les rappels activés dans les préférences
-  const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
-  rappels.forEach(r => {
-    if (prefs[r.tag] !== false) scheduleOne(r); // activé par défaut
-  });
-
-  console.log('Flōra: ' + rappels.length + ' rappels programmés');
-}
-
-function toggleNotifPref(tag, enabled) {
-  const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
-  prefs[tag] = enabled;
-  localStorage.setItem('flora_notif_prefs', JSON.stringify(prefs));
-  if (Notification.permission === 'granted') scheduleNotifications();
-}
-
-function renderNotifPrefs() {
-  const container = document.getElementById('notif-prefs');
-  if (!container) return;
-  const prefs = JSON.parse(localStorage.getItem('flora_notif_prefs') || '{}');
-  const h2 = profile.horaires || {};
-  const fmt = (str, def) => str ? str.replace(':', 'h') : def;
-  const items = [
-    { tag:'petit-dej',    label:'🌅 Petit-déjeuner',     heure: fmt(h2.petitdej,    '7h00')  },
-    { tag:'dejeuner',     label:'☀️ Déjeuner',            heure: fmt(h2.dejeuner,   '13h00') },
-    { tag:'gouter',       label:'🍎 Goûter',              heure: fmt(h2.gouter,     '16h00') },
-    { tag:'diner',        label:'🌙 Dîner',               heure: fmt(h2.diner,      '19h00') },
-    { tag:'medicaments',  label:'💊 Médicaments du soir', heure: fmt(h2.medicaments,'20h30') },
-    { tag:'journal',      label:'🌿 Journal du soir',     heure: fmt(h2.journal,    '21h00') },
-  ];
-  container.innerHTML = items.map(item => {
-    const on = prefs[item.tag] !== false;
-    return `
-      <label style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--cream-dark);">
-        <div>
-          <div style="font-size:0.85rem;color:var(--text-dark);">${item.label}</div>
-          <div style="font-size:0.7rem;color:var(--text-light);">${item.heure}</div>
-        </div>
-        <input type="checkbox" ${on?'checked':''} onchange="toggleNotifPref('${item.tag}',this.checked)"
-          style="width:18px;height:18px;accent-color:var(--green-deep);cursor:pointer;" />
-      </label>`;
-  }).join('');
+  const delay = target - now;
+  setTimeout(() => {
+    new Notification('Flōra 🌿', {
+      body: 'C\'est l\'heure de votre journal du soir. Comment se sont passées vos jambes cette nuit ?',
+      icon: '/Fl-ra/icon.svg',
+      badge: '/Fl-ra/icon.svg',
+      tag: 'flora-journal-soir'
+    });
+    // Relancer chaque 24h
+    setInterval(() => {
+      new Notification('Flōra 🌿', {
+        body: 'Votre journal du soir vous attend 🌙',
+        icon: '/Fl-ra/icon.svg',
+        tag: 'flora-journal-soir'
+      });
+    }, 24 * 60 * 60 * 1000);
+  }, delay);
 }
 
 function enableNotifications() {
   askNotificationPermission();
-  setTimeout(renderNotifPrefs, 300);
 }
 
 // ============================
@@ -6576,7 +4168,7 @@ function adminAddPremium(email, name, code) {
     name: name,
     premium: true
   };
-  showToast(`✅ Compte ajouté : ${email} — mot de passe : ${code}`, 4000);
+  alert(`✅ Compte ajouté : ${email}\nMot de passe : ${code}`);
 }
 
 function tryLoginOnEnter(e) {
@@ -6798,451 +4390,103 @@ function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
-  // Liste curatée et équilibrée par catégorie, triée par priorité nutritionnelle SJSR
-  const BASKET_TEMPLATE = [
-    { cat: '🥩 Protéines', items: [
-      { n: 'Pavé de saumon (x2)',        p: 7.50 },
-      { n: 'Œufs bio (x6)',              p: 3.50 },
-      { n: 'Sardines en boîte (x2)',     p: 3.60 },
-      { n: 'Maquereaux en boîte (x2)',   p: 3.80 },
-      { n: 'Thon au naturel (x2)',       p: 4.40 },
-      { n: 'Blanc de poulet (400g)',     p: 5.50 },
-      { n: 'Tofu ferme (400g)',          p: 2.50 },
-      { n: 'Lentilles vertes (500g)',    p: 1.80 },
-      { n: 'Pois chiches (boîte)',       p: 1.10 },
-      { n: 'Haricots rouges (boîte)',    p: 1.00 },
-    ]},
-    { cat: '🥦 Légumes', items: [
-      { n: 'Épinards frais (250g)',      p: 2.20 },
-      { n: 'Brocoli',                    p: 1.80 },
-      { n: 'Poivron rouge (x2)',         p: 3.80 },
-      { n: 'Courgette (x2)',             p: 2.00 },
-      { n: 'Carotte (500g)',             p: 1.00 },
-      { n: 'Patate douce (x2)',          p: 2.00 },
-      { n: 'Aubergine',                  p: 1.60 },
-      { n: 'Champignons (250g)',         p: 2.50 },
-      { n: 'Betterave cuite',            p: 1.20 },
-      { n: 'Fenouil',                    p: 1.80 },
-      { n: 'Ail (tête)',                 p: 0.90 },
-      { n: 'Gingembre frais',            p: 1.20 },
-    ]},
-    { cat: '🌾 Féculents', items: [
-      { n: 'Quinoa (500g)',              p: 2.80 },
-      { n: 'Riz complet (1kg)',          p: 1.50 },
-      { n: 'Lentilles corail (500g)',    p: 2.00 },
-      { n: 'Flocons de sarrasin',        p: 2.00 },
-      { n: 'Pâtes de riz (500g)',        p: 2.20 },
-    ]},
-    { cat: '🥑 Bons gras', items: [
-      { n: 'Avocat (x2)',                p: 3.60 },
-      { n: 'Noix (200g)',                p: 3.80 },
-      { n: 'Graines de chia (250g)',     p: 3.50 },
-      { n: 'Graines de lin (250g)',      p: 2.20 },
-      { n: 'Graines de courge (100g)',   p: 2.50 },
-      { n: 'Amandes (200g)',             p: 4.00 },
-      { n: 'Tahini (250g)',              p: 4.00 },
-    ]},
-    { cat: '🥫 Conserves', items: [
-      { n: 'Tomates concassées (x2)',    p: 1.80 },
-      { n: 'Lait de coco entier (x2)',   p: 3.60 },
-      { n: 'Bouillon de légumes (x4)',   p: 2.00 },
-    ]},
-    { cat: '🍋 Fruits', items: [
-      { n: 'Citron (x4)',                p: 2.00 },
-      { n: 'Banane (x4)',                p: 1.60 },
-      { n: 'Myrtilles (250g)',           p: 3.50 },
-      { n: 'Pomme (x4)',                 p: 2.00 },
-    ]},
-    { cat: '🌿 Épices & Huiles', items: [
-      { n: 'Huile olive vierge extra',   p: 7.00 },
-      { n: 'Curcuma (pot)',              p: 2.50 },
-      { n: 'Cannelle (pot)',             p: 1.50 },
-      { n: 'Tamari sans gluten',         p: 3.50 },
-    ]},
-    { cat: '🥛 Laits végétaux', items: [
-      { n: 'Lait de riz (1L)',           p: 2.00 },
-      { n: 'Lait amande (1L)',           p: 2.20 },
-      { n: 'Yaourt coco (x4)',           p: 3.60 },
-    ]},
+  // Sélectionner des ingrédients essentiels dans le budget
+  const essentials = [
+    { cat: '🥩 Protéines', items: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles', 'Tofu'] },
+    { cat: '🥦 Légumes', items: ['Épinards', 'Brocoli', 'Courgette', 'Carotte', 'Poivron'] },
+    { cat: '🌾 Féculents', items: ['Quinoa', 'Riz complet', 'Patate douce'] },
+    { cat: '🥑 Bons gras', items: ['Avocat', 'Noix', 'Graines de courge'] },
+    { cat: '🥫 Conserves', items: ['Tomates concassées', 'Lait de coco'] },
+    { cat: '🍋 Fruits', items: ['Citron', 'Banane', 'Myrtilles'] },
   ];
 
-  // Quotas par catégorie selon le budget (nombre max d'articles)
-  function getQuotas(budget) {
-    if (budget <= 30) return { '🥩 Protéines':3, '🥦 Légumes':3, '🌾 Féculents':2, '🥑 Bons gras':1, '🥫 Conserves':1, '🍋 Fruits':1, '🌿 Épices & Huiles':1, '🥛 Laits végétaux':0 };
-    if (budget <= 50) return { '🥩 Protéines':4, '🥦 Légumes':4, '🌾 Féculents':2, '🥑 Bons gras':2, '🥫 Conserves':2, '🍋 Fruits':2, '🌿 Épices & Huiles':1, '🥛 Laits végétaux':1 };
-    if (budget <= 80) return { '🥩 Protéines':5, '🥦 Légumes':6, '🌾 Féculents':3, '🥑 Bons gras':3, '🥫 Conserves':2, '🍋 Fruits':3, '🌿 Épices & Huiles':2, '🥛 Laits végétaux':1 };
-    return              { '🥩 Protéines':7, '🥦 Légumes':8, '🌾 Féculents':4, '🥑 Bons gras':4, '🥫 Conserves':3, '🍋 Fruits':4, '🌿 Épices & Huiles':3, '🥛 Laits végétaux':2 };
-  }
-
-  function isInPlacard(nom) {
-    const n = nom.toLowerCase();
-    return Object.keys(placardItems).some(p =>
-      placardItems[p] && n.includes(p.toLowerCase().split(' ')[0])
-    );
-  }
-
-  const quotas = getQuotas(budget);
-  const byCategorie = {};
   let total = 0;
+  const selected = [];
 
-  for (const { cat, items } of BASKET_TEMPLATE) {
-    const max = quotas[cat] || 0;
-    if (!max) continue;
-    byCategorie[cat] = [];
-    for (const { n, p } of items) {
-      if (byCategorie[cat].length >= max) break;
-      if (isInPlacard(n)) continue;
-      if (total + p > budget) continue;
-      byCategorie[cat].push({ item: n, price: p });
-      total += p;
+  // Remplir jusqu'au budget en sautant ce qu'on a déjà
+  for (const cat of essentials) {
+    const catSelected = [];
+    for (const item of cat.items) {
+      if (placardItems[item]) continue; // déjà dans le placard
+      const price = INGREDIENT_PRICES[item] || 2.00;
+      if (total + price <= budget) {
+        catSelected.push({ item, price });
+        total += price;
+      }
     }
-    if (!byCategorie[cat].length) delete byCategorie[cat];
+    if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
   }
 
   // Afficher
   const result = document.getElementById('shopping-result');
-  const listContent = document.getElementById('shopping-list-content');
-  document.getElementById('budget-total-badge').textContent = `${total.toFixed(2)}€ / ${budget}€`;
+  const content = document.getElementById('shopping-list-content');
+  document.getElementById('budget-total-badge').textContent =
+    `${total.toFixed(2)}€ / ${budget}€`;
 
-  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves','🍋 Fruits','🌿 Épices & Huiles','🥛 Laits végétaux'];
+  content.innerHTML = selected.map(cat => `
+    <div class="shopping-category">
+      <div class="shopping-cat-title">${cat.cat}</div>
+      ${cat.items.map(({item, price}) => `
+        <div class="shopping-item" onclick="this.classList.toggle('done')">
+          <div class="shopping-check">✓</div>
+          <div class="shopping-text">${item}</div>
+          <div class="shopping-price">~${price.toFixed(2)}€</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
 
-  listContent.innerHTML = orderedCats
-    .filter(cat => byCategorie[cat]?.length)
-    .map(cat => `
-      <div class="shopping-category">
-        <div class="shopping-cat-title">${cat}</div>
-        ${byCategorie[cat].map(({item, price}) => `
-          <div class="shopping-item" onclick="this.classList.toggle('done')">
-            <div class="shopping-check">✓</div>
-            <div class="shopping-text">${item}</div>
-            <div class="shopping-price">~${price.toFixed(2)}€</div>
-          </div>
-        `).join('')}
-      </div>
-    `).join('');
-
-  const allItems = Object.values(byCategorie).flat().map(i => i.item);
+  // Générer menus basés sur les ingrédients du panier
+  const allItems = selected.flatMap(c => c.items.map(i => i.item));
   generateMenusFromBasket(allItems);
 
   result.classList.remove('hidden');
   result.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-// Stockage global des menus générés depuis le panier
-let _basketMenus = { pdc: [], dej: [], din: [], snack: [] };
-let _basketItems = [];
-
 function generateMenusFromBasket(basketItems) {
-  _basketItems = basketItems;
+  // Trouver des recettes dont les ingrédients correspondent au panier
+  const scored = RECETTES.map(r => {
+    const matches = r.ingredients.filter(ing =>
+      basketItems.some(b => ing.toLowerCase().includes(b.toLowerCase()))
+    ).length;
+    return { r, matches };
+  }).filter(x => x.matches > 0)
+    .sort((a, b) => b.matches - a.matches);
+
+  const topRecettes = scored.slice(0, 9);
   const menusDiv = document.getElementById('shopping-menus');
   const menusContent = document.getElementById('shopping-menus-content');
 
-  // Score chaque recette selon correspondance avec le panier
-  function scoreRecettes(cat) {
-    return RECETTES
-      .filter(r => r.cat === cat && (!r.premium || isPremium))
-      .map(r => {
-        const matches = r.ingredients.filter(ing =>
-          basketItems.some(b => {
-            const bw = b.toLowerCase().replace(/\s*\(.*\)/, '').replace(/\s*x\d+/, '').trim();
-            return bw.length > 3 && ing.toLowerCase().includes(bw.split(' ')[0]);
-          })
-        ).length;
-        return { r, matches };
-      })
-      .sort((a, b) => b.matches - a.matches)
-      .map(x => x.r);
-  }
+  if (!topRecettes.length) { menusDiv.classList.add('hidden'); return; }
 
-  _basketMenus = {
-    pdc:   scoreRecettes('petit-dejeuner'),
-    dej:   scoreRecettes('dejeuner'),
-    din:   scoreRecettes('diner'),
-    snack: scoreRecettes('snack'),
-  };
-
-  if (!_basketMenus.pdc.length && !_basketMenus.dej.length && !_basketMenus.din.length) {
-    menusDiv.classList.add('hidden');
-    return;
-  }
-
-  renderBasketMenus(menusDiv, menusContent);
-}
-
-function renderBasketMenus(menusDiv, menusContent) {
-  // Sélection courante (index dans chaque liste)
-  if (!window._basketIdx) window._basketIdx = { pdc: 0, dej: 0, din: 0, snack: 0 };
-
-  const idx = window._basketIdx;
-  const get = (cat) => _basketMenus[cat][idx[cat]] || _basketMenus[cat][0];
-
-  const pdc   = get('pdc');
-  const dej   = get('dej');
-  const din   = get('din');
-  const snack = get('snack');
-
-  function mealCard(r, slot, label, emoji) {
-    if (!r) return '';
-    const alts = _basketMenus[slot].length;
-    return `
-      <div class="basket-meal-row" id="basket-slot-${slot}">
-        <div class="basket-meal-label">${emoji} ${label}</div>
-        <div class="basket-meal-card" onclick="openRecette(${r.id})">
-          <div class="basket-meal-icon">${r.emoji}</div>
-          <div class="basket-meal-body">
-            <div class="basket-meal-name">${r.nom}</div>
-            <div class="basket-meal-sub">⏱ ${r.temps}</div>
-          </div>
-        </div>
-        ${alts > 1 ? `
-        <div class="basket-meal-alts">
-          <span style="font-size:0.75rem;color:var(--text-light);">${alts} options disponibles</span>
-          <button class="basket-alt-btn" onclick="prevBasketMeal('${slot}')">‹</button>
-          <button class="basket-alt-btn" onclick="nextBasketMeal('${slot}')">›</button>
-        </div>` : ''}
-      </div>`;
-  }
+  const bycat = { 'petit-dejeuner': [], 'dejeuner': [], 'diner': [] };
+  topRecettes.forEach(({r}) => { if (bycat[r.cat]) bycat[r.cat].push(r); });
 
   menusContent.innerHTML = `
-    <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:14px;">
-      Recettes sélectionnées selon votre panier · Faites défiler pour changer
+    <div style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
+      Basé sur votre panier de ${basketItems.length} ingrédients
     </div>
-    ${mealCard(pdc,   'pdc',   'Petit-déjeuner', '🌅')}
-    ${mealCard(dej,   'dej',   'Déjeuner',       '☀️')}
-    ${mealCard(din,   'din',   'Dîner',          '🌙')}
-    ${mealCard(snack, 'snack', 'Snack',          '🍎')}
-    <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
-      <button class="btn-primary full-width" onclick="addBasketMenusToAgenda()">
-        📅 Ajouter tous ces menus à l'agenda
-      </button>
-    </div>
-  `;
-
-  // Injecter les styles si pas encore présents
-  if (!document.getElementById('basket-menu-styles')) {
-    const style = document.createElement('style');
-    style.id = 'basket-menu-styles';
-    style.textContent = `
-      .basket-meal-row { margin-bottom:14px; }
-      .basket-meal-label { font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:6px; }
-      .basket-meal-card { display:flex;align-items:center;gap:12px;background:var(--cream);border-radius:var(--radius-md);padding:12px;cursor:pointer;transition:opacity .2s; }
-      .basket-meal-card:active { opacity:.7; }
-      .basket-meal-icon { font-size:1.6rem;flex-shrink:0; }
-      .basket-meal-body { flex:1;min-width:0; }
-      .basket-meal-name { font-size:0.88rem;font-weight:600;color:var(--green-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-      .basket-meal-sub  { font-size:0.75rem;color:var(--text-light);margin-top:2px; }
-      .basket-meal-alts { display:flex;align-items:center;gap:8px;margin-top:6px;justify-content:flex-end; }
-      .basket-alt-btn   { background:var(--cream-dark);border:none;border-radius:50%;width:28px;height:28px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--green-deep);font-weight:700; }
-    `;
-    document.head.appendChild(style);
-  }
-
-  menusDiv.classList.remove('hidden');
-}
-
-function nextBasketMeal(slot) {
-  if (!window._basketIdx) window._basketIdx = { pdc:0, dej:0, din:0, snack:0 };
-  const max = _basketMenus[slot].length;
-  window._basketIdx[slot] = (window._basketIdx[slot] + 1) % max;
-  const menusDiv = document.getElementById('shopping-menus');
-  const menusContent = document.getElementById('shopping-menus-content');
-  renderBasketMenus(menusDiv, menusContent);
-}
-
-function prevBasketMeal(slot) {
-  if (!window._basketIdx) window._basketIdx = { pdc:0, dej:0, din:0, snack:0 };
-  const max = _basketMenus[slot].length;
-  window._basketIdx[slot] = (window._basketIdx[slot] - 1 + max) % max;
-  const menusDiv = document.getElementById('shopping-menus');
-  const menusContent = document.getElementById('shopping-menus-content');
-  renderBasketMenus(menusDiv, menusContent);
-}
-
-function addBasketMenusToAgenda() {
-  if (!window._basketIdx) window._basketIdx = { pdc:0, dej:0, din:0, snack:0 };
-  const idx = window._basketIdx;
-  const get = (cat) => _basketMenus[cat][idx[cat]] || _basketMenus[cat][0];
-
-  const pdc   = get('pdc');
-  const dej   = get('dej');
-  const din   = get('din');
-  const snack = get('snack');
-
-  // Choisir le jour de départ
-  const overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9998;display:flex;align-items:flex-end;';
-
-  const today = new Date();
-  const dates = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    dates.push(d);
-  }
-
-  overlay.innerHTML = `
-    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 36px;max-height:80vh;overflow-y:auto;">
-      <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--green-deep);margin-bottom:4px;">
-        📅 Ajouter à l'agenda
-      </div>
-      <div style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
-        Choisissez le jour de départ. Les 4 repas seront ajoutés.
-      </div>
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        ${dates.map(d => {
-          const dk = dateKey(d);
-          const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-          return `<button onclick="confirmAddBasketToAgenda('${dk}', ${pdc?.id||'null'}, ${dej?.id||'null'}, ${din?.id||'null'}, ${snack?.id||'null'}, this.closest('[style*=fixed]'))"
-            style="background:var(--cream);border:1.5px solid var(--cream-dark);border-radius:var(--radius-md);padding:12px 16px;text-align:left;font-family:var(--font-body);font-size:0.88rem;color:var(--text-dark);cursor:pointer;">
-            📅 ${label}
-          </button>`;
-        }).join('')}
-      </div>
-      <button onclick="this.closest('[style*=fixed]').remove()"
-        style="width:100%;margin-top:16px;padding:12px;border:none;border-radius:var(--radius-md);background:var(--cream-dark);color:var(--text-mid);font-family:var(--font-body);cursor:pointer;">
-        Annuler
-      </button>
-    </div>`;
-
-  document.body.appendChild(overlay);
-}
-
-function confirmAddBasketToAgenda(dk, pdcId, dejId, dinId, snackId, overlayEl) {
-  if (!agenda[dk]) agenda[dk] = {};
-  if (pdcId)   agenda[dk]['petit-dejeuner'] = pdcId;
-  if (dejId)   agenda[dk]['dejeuner']       = dejId;
-  if (dinId)   agenda[dk]['diner']          = dinId;
-  if (snackId) agenda[dk]['gouter']         = snackId;
-  saveState();
-  if (overlayEl) overlayEl.remove();
-  renderAgenda();
-
-  const msg = document.createElement('div');
-  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
-  msg.textContent = '✅ 4 repas ajoutés à l\'agenda !';
-  document.body.appendChild(msg);
-  setTimeout(() => msg.remove(), 2500);
-}
-
-function generateShoppingFromAgenda() {
-  // Collecter toutes les recettes planifiées cette semaine
-  const dates = getWeekDates(currentWeekOffset);
-  const recetteIds = new Set();
-
-  dates.forEach(d => {
-    const dk = dateKey(d);
-    const dayData = agenda[dk] || {};
-    Object.values(dayData).forEach(recId => {
-      if (recId) recetteIds.add(recId);
-    });
-  });
-
-  if (!recetteIds.size) {
-    const msg = document.createElement('div');
-    msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#c0392b;color:#fff;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);white-space:nowrap;';
-    msg.textContent = '⚠️ Aucune recette dans l\'agenda cette semaine';
-    document.body.appendChild(msg);
-    setTimeout(() => msg.remove(), 2500);
-    return;
-  }
-
-  // Collecter tous les ingrédients de ces recettes (dédupliqués)
-  const ingredientSet = {};
-  recetteIds.forEach(id => {
-    const r = RECETTES.find(x => x.id === id);
-    if (!r) return;
-    r.ingredients.forEach(ing => {
-      // Nettoyer quantités
-      const clean = ing
-        .replace(/^\d[\d,./]* ?(g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée|portion)s? /i, '')
-        .replace(/^\d+ /, '')
-        .trim();
-      if (clean.length < 3) return;
-      // Grouper par mot-clé principal
-      const key = clean.toLowerCase().split(' ')[0];
-      if (!ingredientSet[key]) ingredientSet[key] = { label: clean, count: 0 };
-      ingredientSet[key].count++;
-    });
-  });
-
-  // Trier par fréquence, exclure ce qui est dans le placard
-  const sorted = Object.values(ingredientSet)
-    .sort((a, b) => b.count - a.count)
-    .filter(({ label }) => {
-      const l = label.toLowerCase();
-      return !Object.keys(placardItems).some(p =>
-        placardItems[p] && l.includes(p.toLowerCase().split(' ')[0])
-      );
-    });
-
-  // Catégoriser
-  const CATEGORIE_KEYWORDS = [
-    { cat: '🥩 Protéines',    kw: ['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','daurade','crevette','poulet','dinde','boeuf','bœuf','oeuf','œuf','tofu','tempeh','lentille','pois chiche','haricot'] },
-    { cat: '🥦 Légumes',      kw: ['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate','oignon','ail','gingembre','tomate','concombre','asperge','céleri','roquette'] },
-    { cat: '🌾 Féculents',    kw: ['quinoa','riz','sarrasin','pâte','nouille','galette','flocon','farine','polenta','boulgour'] },
-    { cat: '🥑 Bons gras',    kw: ['noix','amande','cajou','noisette','pistache','graine','tahini','avocat'] },
-    { cat: '🥫 Conserves',    kw: ['lait de coco','tomate concass','bouillon','miso','concentré'] },
-    { cat: '🍋 Fruits',       kw: ['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot','cerise','orange','pêche'] },
-    { cat: '🌿 Épices',       kw: ['curcuma','cumin','cannelle','paprika','basilic','persil','coriandre','menthe','thym','romarin','origan','safran','curry','vanille','poivre','sel'] },
-    { cat: '🫙 Huiles',       kw: ['huile','vinaigre','tamari','sauce soja'] },
-    { cat: '🥛 Laits végét.', kw: ['lait','yaourt','crème de coco'] },
-  ];
-
-  function getCat(label) {
-    const l = label.toLowerCase();
-    for (const { cat, kw } of CATEGORIE_KEYWORDS) {
-      if (kw.some(k => l.includes(k))) return cat;
-    }
-    return '🛒 Divers';
-  }
-
-  const byCategorie = {};
-  sorted.forEach(({ label }) => {
-    const cat = getCat(label);
-    if (!byCategorie[cat]) byCategorie[cat] = [];
-    // Éviter quasi-doublons
-    const key = label.toLowerCase().split(' ')[0];
-    if (!byCategorie[cat].some(i => i.toLowerCase().split(' ')[0] === key)) {
-      byCategorie[cat].push(label);
-    }
-  });
-
-  // Afficher dans un overlay
-  const overlay = document.createElement('div');
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9998;display:flex;align-items:flex-end;';
-
-  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves','🍋 Fruits','🌿 Épices','🫙 Huiles','🥛 Laits végét.','🛒 Divers'];
-
-  const listHTML = orderedCats
-    .filter(cat => byCategorie[cat]?.length)
-    .map(cat => `
+    ${Object.entries(bycat).map(([cat, recs]) => recs.length ? `
       <div style="margin-bottom:14px;">
-        <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:6px;">${cat}</div>
-        ${byCategorie[cat].map(item => `
-          <div onclick="this.style.opacity=this.style.opacity==='0.4'?'1':'0.4';this.querySelector('span').textContent=this.style.opacity==='0.4'?'✓':' '"
-            style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
-            <span style="color:var(--green-mid);font-weight:700;width:16px;"> </span>
-            <span style="font-size:0.88rem;color:var(--text-dark);">${item}</span>
+        <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:8px;">
+          ${cat === 'petit-dejeuner' ? '🌅 Petits-déjeuners' : cat === 'dejeuner' ? '☀️ Déjeuners' : '🌙 Dîners'}
+        </div>
+        ${recs.map(r => `
+          <div class="card" style="margin-bottom:8px;" onclick="openRecette(${r.id})">
+            <div class="card-icon">${r.emoji}</div>
+            <div class="card-body">
+              <div class="card-title">${r.nom}</div>
+              <div class="card-sub">⏱ ${r.temps}</div>
+            </div>
+            <div class="card-arrow">→</div>
           </div>
         `).join('')}
       </div>
-    `).join('');
+    ` : '').join('')}
+  `;
 
-  overlay.innerHTML = `
-    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:24px 20px 36px;max-height:85vh;overflow-y:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-        <div style="font-family:var(--font-display);font-size:1.1rem;color:var(--green-deep);">🛒 Liste de courses</div>
-        <button onclick="this.closest('[style*=fixed]').remove()"
-          style="background:var(--cream-dark);border:none;border-radius:50%;width:30px;height:30px;font-size:1rem;cursor:pointer;">✕</button>
-      </div>
-      <div style="font-size:0.78rem;color:var(--text-light);margin-bottom:16px;">
-        ${recetteIds.size} recette${recetteIds.size > 1 ? 's' : ''} · semaine du ${dates[0].toLocaleDateString('fr-FR', {day:'numeric',month:'long'})}
-        · Touchez un article pour le cocher
-      </div>
-      ${listHTML || '<p style="color:var(--text-light);text-align:center;">Aucun ingrédient trouvé.</p>'}
-    </div>`;
-
-  document.body.appendChild(overlay);
+  menusDiv.classList.remove('hidden');
 }
 
 function filterRecettesByPlacard() {
@@ -7427,35 +4671,21 @@ function skipBatchStep(idx) {
 }
 
 function importBatchToAgenda() {
+  // Génère un menu depuis les recettes batch et l'importe dans l'agenda
   const today = new Date();
-  const petits  = RECETTES.filter(r => r.cat === 'petit-dejeuner' && !r.premium);
-  const dejs    = RECETTES.filter(r => r.cat === 'dejeuner'       && !r.premium);
-  const gouters = RECETTES.filter(r => r.cat === 'snack'          && !r.premium);
-  const dins    = RECETTES.filter(r => r.cat === 'diner'          && !r.premium);
-  const pick    = arr => arr[Math.floor(Math.random() * arr.length)];
+  const petits = RECETTES.filter(r => r.cat === 'petit-dejeuner' && !r.premium);
+  const dejs   = RECETTES.filter(r => r.cat === 'dejeuner' && !r.premium);
+  const dins   = RECETTES.filter(r => r.cat === 'diner' && !r.premium);
+  const pick   = arr => arr[Math.floor(Math.random() * arr.length)];
 
-  // Éviter les répétitions sur la semaine
-  const used = { pdc:new Set(), dej:new Set(), gou:new Set(), din:new Set() };
-  function pickUniq(arr, usedSet) {
-    const available = arr.filter(r => !usedSet.has(r.id));
-    const chosen = available.length ? available[Math.floor(Math.random()*available.length)] : pick(arr);
-    if (chosen) usedSet.add(chosen.id);
-    return chosen;
-  }
-
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 5; i++) {
     const d = new Date(today);
     d.setDate(today.getDate() + i);
     const dk = dateKey(d);
     if (!agenda[dk]) agenda[dk] = {};
-    const pdc = pickUniq(petits, used.pdc);
-    const dej = pickUniq(dejs, used.dej);
-    const gou = pickUniq(gouters, used.gou);
-    const din = pickUniq(dins, used.din);
-    if (pdc) agenda[dk]['petitdej'] = pdc.id;
-    if (dej) agenda[dk]['dejeuner'] = dej.id;
-    if (gou) agenda[dk]['gouter']   = gou.id;
-    if (din) agenda[dk]['diner']    = din.id;
+    agenda[dk]['petitdej'] = pick(petits)?.id;
+    agenda[dk]['dejeuner'] = pick(dejs)?.id;
+    agenda[dk]['diner']    = pick(dins)?.id;
   }
 
   saveState();
@@ -7463,7 +4693,7 @@ function importBatchToAgenda() {
 
   const msg = document.createElement('div');
   msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);';
-  msg.textContent = '✅ Semaine complète importée (7 jours, 4 repas/jour) !';
+  msg.textContent = '✅ Semaine batch importée dans l\'agenda !';
   document.body.appendChild(msg);
   setTimeout(() => msg.remove(), 2500);
 }
@@ -7477,1007 +4707,26 @@ function initApp() {
   document.getElementById('app').classList.remove('hidden');
   loadState();
   initLogin();
-  loadProfil();        // Charger profil AVANT updateDashboard
   initPlacard();
   updateDashboard();
   renderRecettes();
+  renderAgenda();
+  loadProfil();
   setJournalDate();
   updateSleepCalc();
 
-  // Recette du jour — personnalisée selon profil, objectif et symptômes récents
-  window._rdjId = getRecetteDuJour()?.id;
-  const rdj = window._rdjId ? RECETTES.find(r => r.id === window._rdjId) : null;
-  const rdjEl    = document.getElementById('recette-du-jour');
+  // Recette du jour — change chaque jour, cliquable directement
+  const free = RECETTES.filter(r => !r.premium);
+  const rdj  = free[new Date().getDate() % free.length];
+  const rdjEl = document.getElementById('recette-du-jour');
   const rdjEmoji = document.getElementById('rdj-emoji');
-  if (rdjEl && rdj)    rdjEl.textContent    = rdj.nom;
-  if (rdjEmoji && rdj) rdjEmoji.textContent = rdj.emoji;
+  if (rdjEl)    rdjEl.textContent = rdj.nom;
+  if (rdjEmoji) rdjEmoji.textContent = rdj.emoji;
+  // Stocker l'ID pour openRecetteDuJour
+  window._rdjId = rdj.id;
 
   renderStreakOnDashboard();
-  renderConseil();      // Remplace le "Chargement…" du conseil SJSR
-  renderJournalMedChips();
-}
-
-
-// ============================
-// VUE DÉTAIL JOURNÉE
-// ============================
-
-const TAG_LABELS = {
-  'sg': { label:'Sans gluten',  color:'#6b8f6b', bg:'#e8f4e8' },
-  'sl': { label:'Sans lactose', color:'#7a6b9a', bg:'#ede8f5' },
-  'vg': { label:'Végétarien',   color:'#5a8a5a', bg:'#e0f0e0' },
-};
-
-const TAG_NUTRI_DETECT = [
-  { key:'FER',    words:['fer','lentille','épinard','légumineuse','sardine','viande'],   color:'#c0392b', bg:'#fde8e8' },
-  { key:'MAG',    words:['magnésium','sarrasin','noix','graine','banane','cacao'],       color:'#2980b9', bg:'#e8f4fd' },
-  { key:'DOPA',   words:['tryptophane','dopamine','protéine','sardine','poulet'],        color:'#8e44ad', bg:'#f5e8fd' },
-  { key:'OMG3',   words:['oméga-3','omega','saumon','sardine','maquereau','lin','chia'],color:'#16a085', bg:'#e8f8f5' },
-  { key:'VIT-C',  words:['vitamine c','poivron','citron','kiwi','fraise','brocoli'],    color:'#d35400', bg:'#fdf0e8' },
-  { key:'ALK',    words:['alcalin','camomille','lavande','infusion','tisane'],           color:'#27ae60', bg:'#e8f8ec' },
-  { key:'ANTI-I', words:['anti-inflam','curcuma','gingembre','polyphénol'],             color:'#e67e22', bg:'#fef5e8' },
-];
-
-const REPAS_HORAIRES = {
-  'petitdej': { heure:'7h – 9h',      icon:'🌅' },
-  'dejeuner': { heure:'13h – 14h30',  icon:'☀️' },
-  'gouter':   { heure:'16h – 17h',    icon:'🍎' },
-  'diner':    { heure:'19h – 20h30',  icon:'🌙' },
-};
-
-function getNutriTags(recette) {
-  const text = ((recette.benefices || '') + ' ' + (recette.ingredients || []).join(' ')).toLowerCase();
-  return TAG_NUTRI_DETECT.filter(t => t.words.some(w => text.includes(w)));
-}
-
-function getTDHANote(slug, benefices) {
-  const b = (benefices || '').toLowerCase();
-  if (slug === 'petitdej') {
-    if (b.includes('dopamine') || b.includes('tryptophane')) return '🧠 Protéines le matin = boost dopamine pour toute la matinée.';
-    if (b.includes('oméga') || b.includes('omega')) return '🧠 Oméga-3 le matin = meilleure concentration et mémoire.';
-    if (b.includes('magnésium') || b.includes('sarrasin')) return '🧠 Magnésium = calme le système nerveux, réduit l\'agitation TDAH.';
-    return '🧠 Petit-déj protéiné = énergie stable sans pic de glycémie.';
-  }
-  if (slug === 'dejeuner') {
-    if (b.includes('fer') || b.includes('lentille')) return '🧠 Fer + vitamine C = absorption optimale. Évite le coup de barre de 15h.';
-    if (b.includes('anti-inflam') || b.includes('curcuma')) return '🧠 Repas anti-inflammatoire = moins de brouillard mental.';
-    return '🧠 Déjeuner complet = stabilité cognitive pour l\'après-midi.';
-  }
-  if (slug === 'gouter') return '🧠 Goûter TDAH — ne jamais sauter : maintient la glycémie et évite les décisions impulsives.';
-  if (slug === 'diner') {
-    if (b.includes('sommeil') || b.includes('tryptophane')) return '🧠 Tryptophane au dîner → sérotonine → mélatonine. Idéal 2h avant le coucher.';
-    if (b.includes('soupe') || b.includes('velouté') || b.includes('léger')) return '🧠 Dîner léger = meilleur sommeil, moins de SJSR nocturne.';
-    return '🧠 Dîner avant 20h pour limiter le SJSR nocturne.';
-  }
-  return null;
-}
-
-function openDayView(dk) {
-  const parts = dk.split('-');
-  const d = new Date(parseInt(parts[0]), parseInt(parts[1])-1, parseInt(parts[2]));
-  const dayLabel = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
-  const capLabel = dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1);
-  const dayData  = agenda[dk] || {};
-  const isToday  = dk === dateKey(new Date());
-
-  const overlay = document.createElement('div');
-  overlay.id = 'day-view-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:var(--cream-bg,#f5f0eb);z-index:9998;overflow-y:auto;';
-
-  const repasBlocks = REPAS.map(r => {
-    const recId   = dayData[r.slug];
-    const rec     = recId ? RECETTES.find(x => x.id === recId) : null;
-    const horaire = REPAS_HORAIRES[r.slug] || {};
-    const nutriTags = rec ? getNutriTags(rec) : [];
-    const tdahNote  = rec ? getTDHANote(r.slug, rec.benefices) : null;
-
-    if (!rec) {
-      return `
-        <div style="background:var(--white);border-radius:16px;padding:14px 16px;margin-bottom:10px;opacity:0.65;cursor:pointer;"
-             onclick="editAgendaMealFromDay('${dk}','${r.slug}')">
-          <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-light);">
-            ${horaire.icon || r.emoji} ${r.label} · ${horaire.heure || ''}
-          </div>
-          <div style="font-size:0.85rem;color:var(--text-light);margin-top:4px;font-style:italic;">+ Ajouter une recette</div>
-        </div>`;
-    }
-
-    const ingredsHTML = rec.ingredients.map(ing =>
-      `<span style="display:inline-flex;align-items:center;gap:4px;background:var(--cream);border-radius:8px;padding:3px 9px;font-size:0.77rem;color:var(--text-dark);margin:2px;">
-        <span style="color:var(--green-mid);font-size:0.6rem;">◆</span>${ing}
-      </span>`
-    ).join('');
-
-    const etapesHTML = (rec.etapes || []).map((e,i) =>
-      `<div style="display:flex;gap:8px;margin-bottom:6px;align-items:flex-start;">
-        <span style="background:var(--green-deep);color:white;border-radius:50%;min-width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;font-weight:700;margin-top:1px;">${i+1}</span>
-        <span style="font-size:0.82rem;color:var(--text-dark);line-height:1.5;">${e}</span>
-      </div>`
-    ).join('');
-
-    const tagsBases = (rec.tags || []).map(t => {
-      const tl = TAG_LABELS[t];
-      return tl ? `<span style="background:${tl.bg};color:${tl.color};border-radius:99px;padding:2px 9px;font-size:0.68rem;font-weight:700;">${tl.label}</span>` : '';
-    }).join('');
-
-    const tagsNutri = nutriTags.map(t =>
-      `<span style="background:${t.bg};color:${t.color};border-radius:99px;padding:2px 9px;font-size:0.68rem;font-weight:700;">${t.key}</span>`
-    ).join('');
-
-    return `
-      <div style="background:var(--white);border-radius:16px;padding:14px 16px;margin-bottom:10px;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-          <div style="font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--text-light);">
-            ${horaire.icon || r.emoji} ${r.label} · ${horaire.heure || ''}
-          </div>
-          <div style="display:flex;gap:5px;">
-            <button onclick="editAgendaMealFromDay('${dk}','${r.slug}')"
-              style="background:var(--cream);border:none;border-radius:8px;padding:4px 9px;font-size:0.72rem;color:var(--green-deep);cursor:pointer;">✏️ Changer</button>
-            <button onclick="clearAgendaMealFromDay('${dk}','${r.slug}')"
-              style="background:#fde8e8;border:none;border-radius:8px;padding:4px 9px;font-size:0.72rem;color:#c0392b;cursor:pointer;">✕</button>
-          </div>
-        </div>
-        <div style="font-family:var(--font-display);font-size:1.05rem;color:var(--green-deep);margin-bottom:8px;cursor:pointer;line-height:1.3;"
-             onclick="closeOverlayAndOpenRecette(${rec.id})">
-          ${rec.emoji} ${rec.nom}
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:2px;margin-bottom:8px;">${ingredsHTML}</div>
-        <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:${tdahNote ? '8px' : '4px'};">
-          ${tagsBases}${tagsNutri}
-          <span style="background:var(--cream);color:var(--text-mid);border-radius:99px;padding:2px 9px;font-size:0.68rem;">⏱ ${rec.temps}</span>
-          <span style="background:var(--cream);color:var(--text-mid);border-radius:99px;padding:2px 9px;font-size:0.68rem;">🔥 ${rec.calories} kcal</span>
-        </div>
-        ${tdahNote ? `<div style="background:#f0f4ff;border-left:3px solid #6c8ebf;border-radius:0 8px 8px 0;padding:7px 10px;font-size:0.77rem;color:#4a5568;line-height:1.5;margin-bottom:6px;">${tdahNote}</div>` : ''}
-        ${rec.benefices ? `<details style="margin-top:4px;"><summary style="font-size:0.73rem;color:var(--green-mid);cursor:pointer;list-style:none;">🌿 Bénéfices SJSR →</summary><div style="font-size:0.77rem;color:var(--text-mid);margin-top:5px;line-height:1.6;padding:7px;background:var(--cream);border-radius:8px;">${rec.benefices}</div></details>` : ''}
-        ${etapesHTML ? `<details style="margin-top:4px;"><summary style="font-size:0.73rem;color:var(--green-mid);cursor:pointer;list-style:none;">👩‍🍳 Préparation →</summary><div style="margin-top:6px;">${etapesHTML}</div></details>` : ''}
-      </div>`;
-  }).join('');
-
-  overlay.innerHTML = `
-    <div style="background:var(--green-deep);padding:18px 16px 14px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;">
-      <div>
-        <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.65);margin-bottom:2px;">${isToday ? '📍 AUJOURD\'HUI' : '📅 MENU DU JOUR'}</div>
-        <div style="font-family:var(--font-display);font-size:1.15rem;color:white;">🌿 ${capLabel}</div>
-      </div>
-      <button onclick="document.getElementById('day-view-overlay').remove()"
-        style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:36px;height:36px;color:white;font-size:1.1rem;cursor:pointer;">✕</button>
-    </div>
-    <div style="padding:12px 12px 40px;">
-      ${repasBlocks}
-      <button onclick="generateShoppingFromDay('${dk}')"
-        style="width:100%;margin-top:6px;padding:14px;background:var(--green-deep);color:white;border:none;border-radius:14px;font-family:var(--font-body);font-size:0.9rem;cursor:pointer;">
-        🛒 Liste de courses pour ce jour
-      </button>
-    </div>`;
-
-  document.body.appendChild(overlay);
-}
-
-function closeOverlayAndOpenRecette(id) {
-  const ov = document.getElementById('day-view-overlay');
-  if (ov) ov.remove();
-  openRecette(id);
-}
-
-function editAgendaMealFromDay(dk, slug) {
-  const ov = document.getElementById('day-view-overlay');
-  if (ov) ov.remove();
-  // Intercepter setAgendaMeal pour rouvrir la vue jour après
-  window._pendingDayView = dk;
-  editAgendaMeal(dk, slug);
-}
-
-function clearAgendaMealFromDay(dk, slug) {
-  clearAgendaMeal(dk, slug);
-  const ov = document.getElementById('day-view-overlay');
-  if (ov) ov.remove();
-  setTimeout(() => openDayView(dk), 80);
-}
-
-function generateShoppingFromDay(dk) {
-  const dayData = agenda[dk] || {};
-  const recIds = Object.values(dayData).filter(Boolean);
-  if (!recIds.length) {
-    const msg = document.createElement('div');
-    msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:#c0392b;color:#fff;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;';
-    msg.textContent = '⚠️ Aucune recette planifiée ce jour';
-    document.body.appendChild(msg);
-    setTimeout(() => msg.remove(), 2200);
-    return;
-  }
-
-  const ingredSet = {};
-  recIds.forEach(id => {
-    const r = RECETTES.find(x => x.id === id);
-    if (!r) return;
-    r.ingredients.forEach(ing => {
-      const clean = ing.replace(/^\d[\d,./]* ?(?:g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée)s? /i,'').replace(/^\d+ /,'').trim();
-      if (clean.length < 3) return;
-      const key = clean.toLowerCase().split(' ')[0];
-      if (!ingredSet[key]) ingredSet[key] = clean;
-    });
-  });
-
-  const items = Object.values(ingredSet).filter(label => {
-    const l = label.toLowerCase();
-    return !Object.keys(placardItems).some(p => placardItems[p] && l.includes(p.toLowerCase().split(' ')[0]));
-  });
-
-  const d = new Date(dk.split('-')[0], dk.split('-')[1]-1, dk.split('-')[2]);
-  const dateLabel = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
-
-  const shopOverlay = document.createElement('div');
-  shopOverlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;';
-  shopOverlay.innerHTML = `
-    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:20px 18px 34px;max-height:80vh;overflow-y:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-        <div style="font-family:var(--font-display);font-size:1.05rem;color:var(--green-deep);">🛒 Courses du jour</div>
-        <button onclick="this.closest('[style*=fixed]').remove()" style="background:var(--cream-dark);border:none;border-radius:50%;width:28px;height:28px;font-size:0.9rem;cursor:pointer;">✕</button>
-      </div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-bottom:12px;text-transform:capitalize;">${dateLabel}</div>
-      ${items.length ? items.map(item => `
-        <div onclick="this.style.opacity=this.style.opacity==='0.4'?'1':'0.4';this.querySelector('span').textContent=this.style.opacity==='0.4'?'✓':' '"
-          style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
-          <span style="color:var(--green-mid);font-weight:700;width:14px;"> </span>
-          <span style="font-size:0.86rem;color:var(--text-dark);">${item}</span>
-        </div>`).join('') : '<p style="color:var(--text-light);text-align:center;font-size:0.85rem;">Tout est déjà dans le placard ✅</p>'}
-    </div>`;
-  document.body.appendChild(shopOverlay);
-}
-
-
-// ============================
-// MÉDICAMENTS PERSONNALISÉS
-// ============================
-
-function renderProfilMeds() {
-  const container = document.getElementById('profil-meds-list');
-  if (!container) return;
-  const meds = profile.medications || [];
-  container.innerHTML = meds.length
-    ? meds.map((med, i) => `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--cream-dark);">
-          <span style="font-size:0.88rem;color:var(--text-dark);">💊 ${med}</span>
-          <button onclick="removeProfilMed(${i})"
-            style="background:#fde8e8;border:none;border-radius:6px;padding:3px 8px;font-size:0.75rem;color:#c0392b;cursor:pointer;">✕</button>
-        </div>`).join('')
-    : '<p style="font-size:0.82rem;color:var(--text-light);font-style:italic;margin:8px 0;">Aucun médicament enregistré</p>';
-
-  // Mettre à jour les chips dans le journal
-  renderJournalMedChips();
-}
-
-function addProfilMed() {
-  const input = document.getElementById('profil-med-input');
-  const val = (input?.value || '').trim();
-  if (!val) return;
-  if (!profile.medications) profile.medications = [];
-  if (!profile.medications.includes(val)) {
-    profile.medications.push(val);
-    saveState();
-  }
-  input.value = '';
-  renderProfilMeds();
-}
-
-function removeProfilMed(idx) {
-  if (!profile.medications) return;
-  profile.medications.splice(idx, 1);
-  saveState();
-  renderProfilMeds();
-}
-
-function renderJournalMedChips() {
-  const container = document.getElementById('journal-med-chips');
-  if (!container) return;
-  const meds = profile.medications || [];
-
-  if (!meds.length) {
-    container.innerHTML = `<p style="font-size:0.78rem;color:var(--text-light);font-style:italic;">
-      Ajoutez vos médicaments dans <a onclick="showPage('profil')" style="color:var(--green-mid);cursor:pointer;text-decoration:underline;">votre profil</a>
-    </p>`;
-    return;
-  }
-
-  container.innerHTML = meds.map(med =>
-    `<span class="sleep-chip journal-med-chip" data-med="${med}"
-      onclick="toggleMedChip(this)">${med}</span>`
-  ).join('');
-}
-
-function toggleMedChip(el) {
-  el.classList.toggle('active');
-}
-
-
-function addObMed() {
-  const input = document.getElementById('ob-med-input');
-  const val = (input?.value || '').trim();
-  if (!val || val.length < 2) return;
-  const list = document.getElementById('ob-med-list');
-  if (!list) return;
-  // Vérifier si déjà présent
-  const existing = Array.from(list.querySelectorAll('.ob-med-chip')).map(el => el.dataset.med);
-  if (existing.includes(val)) { input.value = ''; return; }
-  const chip = document.createElement('div');
-  chip.className = 'ob-med-chip';
-  chip.dataset.med = val;
-  chip.style.cssText = 'display:flex;align-items:center;gap:6px;background:var(--cream-dark);border-radius:99px;padding:5px 10px 5px 12px;font-size:0.82rem;color:var(--text-dark);';
-  chip.innerHTML = `<span>💊 ${val}</span><button onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;line-height:1;">✕</button>`;
-  list.appendChild(chip);
-  input.value = '';
-  input.focus();
-}
-
-
-// ============================
-// ASSISTANT IA FLŌRA
-// ============================
-
-let assistantHistory = []; // Historique de conversation
-
-function buildUserContext() {
-  // Construire le contexte complet de l'utilisateur
-  const name  = profile.name || 'l\'utilisateur';
-  const meds  = (profile.medications || []).join(', ') || 'aucun traitement renseigné';
-  const goal  = { sommeil:'améliorer le sommeil', douleur:'réduire la douleur chronique',
-                  sjsr:'calmer le SJSR', energie:'retrouver de l\'énergie', global:'bien-être global' }[profile.goal] || 'bien-être global';
-  const regime = [
-    profile.sansGluten  && 'sans gluten',
-    profile.sansLactose && 'sans lactose',
-    profile.vegetarien  && 'végétarien·ne',
-    profile.caferenceFer && 'carence en fer',
-    profile.tdah        && 'TDAH/neuroatypique',
-  ].filter(Boolean).join(', ') || 'aucune restriction alimentaire';
-
-  // Données journal 7 derniers jours
-  const recentEntries = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    const dk = dateKey(d);
-    const e  = journal[dk];
-    if (e) {
-      const dayName = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
-      recentEntries.push(
-        `${dayName}: sommeil ${e.duree||'?'}h (qualité ${e.qualite||'?'}/5), ` +
-        `énergie ${e.energie||'?'}/10, douleur ${e.douleur||'?'}/10, ` +
-        `SJSR ${e.sjsr||0}/5${e.sjsr>0?' ('+['','léger','modéré','fort','très fort','insupportable'][e.sjsr]+')':''}` +
-        `${e.meds?.length?' | méds: '+e.meds.join(', '):''}` +
-        `${e.symptoms?.length?' | symptômes: '+e.symptoms.join(', '):''}` +
-        `${e.notes?' | note: '+e.notes:''}`
-      );
-    }
-  }
-
-  // Agenda aujourd'hui
-  const todayAgenda = agenda[dateKey(new Date())] || {};
-  const todayRepas  = Object.entries(todayAgenda)
-    .map(([slug, recId]) => {
-      const r = RECETTES.find(x => x.id === recId);
-      return r ? r.nom : null;
-    }).filter(Boolean);
-
-  // Stats 30j
-  const allEntries = Object.values(journal);
-  const avgEnergie = allEntries.length
-    ? (allEntries.reduce((s,e)=>s+(e.energie||0),0)/allEntries.length).toFixed(1) : null;
-  const avgDouleur = allEntries.length
-    ? (allEntries.reduce((s,e)=>s+(e.douleur||0),0)/allEntries.length).toFixed(1) : null;
-  const nuitsSjsr  = allEntries.filter(e=>(e.sjsr||0)>0).length;
-
-  return `Tu es Flōra, une assistante bien-être spécialisée dans le Syndrome des Jambes Sans Repos (SJSR), la douleur chronique et le TDAH. Tu es chaleureuse, bienveillante, précise et pratique.
-
-PROFIL DE L'UTILISATEUR :
-- Prénom : ${name}
-- Objectif principal : ${goal}
-- Régime alimentaire : ${regime}
-- Médicaments : ${meds}
-- Streak journal : ${getStreak()} jours consécutifs
-
-DONNÉES JOURNAL — 7 DERNIERS JOURS :
-${recentEntries.length ? recentEntries.join('\n') : 'Aucune entrée récente'}
-
-STATISTIQUES (toutes entrées) :
-- Énergie moyenne : ${avgEnergie||'—'}/10
-- Douleur moyenne : ${avgDouleur||'—'}/10
-- Nuits avec SJSR : ${nuitsSjsr} au total
-
-MENU DU JOUR (si planifié) :
-${todayRepas.length ? todayRepas.join(', ') : 'Aucun menu planifié aujourd\'hui'}
-
-RÈGLES DE RÉPONSE :
-- Réponds toujours en français, de façon chaleureuse et personnalisée
-- Utilise le prénom de l\'utilisateur quand c\'est naturel
-- Adapte tes conseils à son régime alimentaire et ses médicaments
-- Pour les questions nutritionnelles, propose des recettes concrètes adaptées à ses contraintes
-- Pour les questions médicales, donne des informations utiles mais rappelle de consulter un médecin
-- Quand tu analyses le journal, cite les données réelles
-- Tes réponses : concises (max 200 mots), structurées avec des sauts de ligne, jamais de listes à puces avec tirets (utilise des emojis à la place)
-- Ne parle jamais de toi comme d\'une IA, mais comme d\'une assistante bien-être
-- Rappelle systématiquement de consulter un médecin pour tout conseil médical
-- Ajoute toujours une note de prudence sur les interactions médicamenteuses`;
-}
-
-async function sendAssistantMessage() {
-  const input = document.getElementById('assistant-input');
-  const msg   = (input?.value || '').trim();
-  if (!msg) return;
-
-  input.value = '';
-  input.style.height = 'auto';
-
-  // Masquer les suggestions dès le premier message
-  const suggestions = document.getElementById('assistant-suggestions');
-  if (suggestions) suggestions.closest('div')?.parentElement && (document.getElementById('assistant-intro').style.display = 'none');
-  document.getElementById('assistant-intro').style.display = 'none';
-
-  appendAssistantMsg(msg, 'user');
-
-  // Ajouter à l'historique
-  assistantHistory.push({ role: 'user', content: msg });
-
-  // Afficher l'indicateur de frappe
-  const typingEl = showTypingIndicator();
-
-  // Désactiver le bouton pendant la requête
-  const btn = document.getElementById('assistant-send-btn');
-  if (btn) btn.disabled = true;
-
-  try {
-    const systemPrompt = buildUserContext();
-
-    // Proxy CORS nécessaire pour appels API depuis navigateur
-    // Options : 1) Worker Cloudflare, 2) GitHub Actions, 3) Service tiers
-    const PROXY_URL = 'https://flora-api-proxy.kettyburel-art.workers.dev';
-
-    let response;
-    try {
-      response = await fetch(PROXY_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: systemPrompt,
-          messages: assistantHistory.slice(-10),
-        })
-      });
-    } catch (proxyErr) {
-      // Proxy non disponible → fallback réponses locales
-      typingEl?.remove();
-      const fallback = getOfflineAssistantResponse(msg);
-      assistantHistory.push({ role: 'assistant', content: fallback });
-      appendAssistantMsg(fallback, 'ai');
-      if (btn) btn.disabled = false;
-      return;
-    }
-
-    typingEl.remove();
-
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      throw new Error(err.error?.message || 'Erreur réseau');
-    }
-
-    const data = await response.json();
-    const reply = data.content?.[0]?.text || 'Désolée, je n\'ai pas pu répondre.';
-
-    assistantHistory.push({ role: 'assistant', content: reply });
-    appendAssistantMsg(reply, 'ai');
-
-    // Garder l'historique raisonnable
-    if (assistantHistory.length > 20) assistantHistory = assistantHistory.slice(-16);
-
-  } catch (err) {
-    typingEl?.remove();
-    appendAssistantMsg(
-      '😔 Je rencontre un problème de connexion. Vérifiez votre connexion internet et réessayez.',
-      'ai'
-    );
-    console.error('Assistant error:', err);
-    // Retirer le dernier message user de l\'historique si erreur
-    assistantHistory.pop();
-  } finally {
-    if (btn) btn.disabled = false;
-    input.focus();
-  }
-}
-
-function askAssistant(text) {
-  const input = document.getElementById('assistant-input');
-  if (input) { input.value = text; sendAssistantMessage(); }
-}
-
-function appendAssistantMsg(text, role) {
-  const container = document.getElementById('assistant-messages');
-  if (!container) return;
-
-  const el = document.createElement('div');
-  el.className = role === 'user' ? 'assist-msg-user' : 'assist-msg-ai';
-
-  if (role === 'ai') {
-    // Formater le texte : sauts de ligne → <br>, **bold**
-    el.innerHTML = text
-      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/\n/g,'<br>');
-  } else {
-    el.textContent = text;
-  }
-
-  container.appendChild(el);
-  el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-}
-
-function showTypingIndicator() {
-  const container = document.getElementById('assistant-messages');
-  const el = document.createElement('div');
-  el.className = 'assist-msg-ai assist-typing';
-  el.innerHTML = '<div class="assist-dot"></div><div class="assist-dot"></div><div class="assist-dot"></div>';
-  container.appendChild(el);
-  el.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  return el;
-}
-
-function clearAssistantHistory() {
-  assistantHistory = [];
-  const container = document.getElementById('assistant-messages');
-  if (container) container.innerHTML = '';
-  document.getElementById('assistant-intro').style.display = 'block';
-}
-
-
-function getOfflineAssistantResponse(question) {
-  const q = question.toLowerCase();
-  const name = profile.name ? `, ${profile.name}` : '';
-  const meds = (profile.medications || []).join(', ');
-
-  // Analyse du journal récent
-  const today = new Date();
-  const recentDays = [];
-  for (let i = 0; i < 7; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const e = journal[dateKey(d)];
-    if (e) recentDays.push(e);
-  }
-  const avgEnergie = recentDays.length
-    ? (recentDays.reduce((s,e)=>s+(e.energie||0),0)/recentDays.length).toFixed(1) : null;
-  const avgDouleur = recentDays.length
-    ? (recentDays.reduce((s,e)=>s+(e.douleur||0),0)/recentDays.length).toFixed(1) : null;
-  const nuitsSjsr  = recentDays.filter(e=>(e.sjsr||0)>0).length;
-
-  // Réponses contextualisées selon le sujet
-  if (q.includes('journal') || q.includes('semaine') || q.includes('analyse')) {
-    if (!recentDays.length)
-      return `Je n'ai pas encore de données dans votre journal${name}. Commencez par remplir votre journal ce soir — même 2 minutes suffisent pour un suivi utile ! 🌿`;
-    return `Voici votre bilan des 7 derniers jours${name} 📊
-
-⚡ Énergie moyenne : ${avgEnergie}/10
-💢 Douleur moyenne : ${avgDouleur}/10
-🦵 Nuits avec SJSR : ${nuitsSjsr}/7
-
-${nuitsSjsr >= 4 ? 'Beaucoup de nuits difficiles cette semaine. Pensez à vérifier votre apport en fer et magnésium, et à dîner léger avant 20h.' : nuitsSjsr <= 1 ? 'Bonne semaine côté SJSR ! Continuez sur cette lancée.' : 'Semaine mitigée. Les légumineuses 3x/semaine et le magnésium le soir peuvent aider.'}`;
-  }
-
-  if (q.includes('jambe') || q.includes('sjsr') || q.includes('agit') || q.includes('nuit')) {
-    return `Le SJSR${name} est lié à plusieurs facteurs 🦵
-
-🩸 Carence en fer (ferritine < 75 µg/L) — la cause n°1
-🧠 Carence en dopamine — les protéines le matin aident
-☕ Caféine après 14h aggrave les symptômes
-💊 Certains antidépresseurs et antihistaminiques
-
-Concernant votre alimentation : sardines et maquereaux 3x/semaine pour les oméga-3, lentilles avec citron pour le fer, et magnésium le soir (noix, graines). Évitez le sucre et l'alcool le soir.`;
-  }
-
-  if (q.includes('manger') || q.includes('recette') || q.includes('soir') || q.includes('dîner')) {
-    const sgNote = profile.sansGluten ? ' (sans gluten)' : '';
-    const slNote = profile.sansLactose ? ' (sans lactose)' : '';
-    return `Pour un dîner anti-SJSR ce soir${name}${sgNote}${slNote} 🌙
-
-🐟 Papillote de saumon aux légumes verts — oméga-3 + légèreté
-🥣 Soupe lentilles corail-curcuma — fer + anti-inflammatoire
-🥗 Salade de sarrasin-épinards-betterave — magnésium + fer
-
-Règle d'or : dîner léger, avant 20h, sans alcool ni caféine. Le curcuma et le gingembre dans votre repas réduisent l\'inflammation nocturne. Trouvez ces recettes dans l'onglet Recettes 🍽️`;
-  }
-
-  if (q.includes('sommeil') || q.includes('dormir') || q.includes('endormi')) {
-    return `Pour améliorer votre sommeil${name} 🌙
-
-🕗 Coucher à heure fixe — votre cerveau TDAH adore la routine
-🍵 Infusion camomille-lavande 30 min avant le coucher
-📱 Écran off 1h avant — la lumière bleue supprime la mélatonine
-🧲 Magnésium bisglycinate le soir — réduit les crampes et l'agitation
-💊 Vos médicaments : ${meds || 'à prendre à heure fixe le soir'}
-
-Objectif : ${Math.round(7.5/1.5)} cycles de 90 min = 7h30 de sommeil. Programmez votre réveil sur un multiple de 90 min.`;
-  }
-
-  if (q.includes('médicament') || q.includes('tramadol') || q.includes('lyrica') || q.includes('traitement')) {
-    return `Concernant vos médicaments${name} 💊
-
-Je ne peux pas donner de conseils médicaux précis sur vos traitements — seul votre médecin peut ajuster votre posologie.
-
-⚕️ Ce que je peux dire : certains aliments interagissent avec les médicaments du SJSR :
-🍋 La vitamine C améliore l\'absorption du fer
-🥛 Les produits laitiers peuvent réduire l\'absorption de certains médicaments
-☕ La caféine peut amplifier les effets des opioïdes
-
-Signalez toujours vos médicaments à votre médecin lors de vos consultations.`;
-  }
-
-  if (q.includes('énergie') || q.includes('fatigue') || q.includes('fatigué')) {
-    return `Pour retrouver de l'énergie${name} ⚡
-
-Les causes les plus fréquentes dans le SJSR :
-
-🩸 Anémie / carence fer — vérifiez votre ferritine
-😴 Dette de sommeil accumulée
-🧠 TDAH + fatigue = double peine
-
-Petits déjeuners protéinés dès le matin (œufs, sardines, tofu), pas de sucre rapide, goûter obligatoire à 16h pour maintenir la glycémie. Et vos lentilles 3x/semaine pour le fer végétal avec du citron pour l\'absorption. Votre énergie moyenne cette semaine : ${avgEnergie ? avgEnergie+'/10' : 'non encore mesurée'}.`;
-  }
-
-  if (q.includes('magnésium') || q.includes('fer') || q.includes('complément') || q.includes('vitamine')) {
-    return `Les compléments clés pour le SJSR${name} 💊
-
-🦵 Fer (bisglycinate de fer) : si ferritine < 75 µg/L — à prendre avec vitamine C, loin des produits laitiers
-🧲 Magnésium bisglycinate : 300mg le soir, réduit les crampes et améliore le sommeil
-🐟 Oméga-3 EPA/DHA : 1-2g/jour, anti-inflammatoire puissant
-☀️ Vitamine D3 : souvent déficitaire en cas de douleurs chroniques
-
-Préférez les aliments aux compléments quand possible : sardines (fer+oméga3), noix du Brésil (magnésium), épinards cuits (fer).`;
-  }
-
-  // Réponse générique contextuelle
-  return `Bonne question${name} 🌿
-
-Je suis votre assistante bien-être spécialisée SJSR/TDAH. Je peux vous aider sur :
-
-🦵 Comprendre et soulager le SJSR
-🥗 Recettes et nutrition anti-inflammatoire
-💊 Interférences alimentation/médicaments
-😴 Améliorer votre sommeil
-⚡ Gérer la fatigue et la douleur
-📊 Analyser votre journal de suivi
-
-⚠️ Note : je fonctionne en mode hors-ligne pour l'instant. Pour des réponses plus personnalisées, une connexion est nécessaire.`;
-}
-
-
-function getRecetteDuJour() {
-  // Filtrer selon les contraintes alimentaires du profil
-  let pool = RECETTES.filter(r => !r.premium);
-
-  if (profile.sansGluten)  pool = pool.filter(r => r.tags?.includes('sg'));
-  if (profile.sansLactose) pool = pool.filter(r => r.tags?.includes('sl'));
-  if (pool.length === 0)   pool = RECETTES.filter(r => !r.premium); // fallback
-
-  // Scorer selon objectif
-  const goal = profile.goal || 'global';
-  const scored = pool.map(r => {
-    let score = 0;
-    const b = (r.benefices || '').toLowerCase();
-    const ing = (r.ingredients || []).join(' ').toLowerCase();
-
-    if (goal === 'sommeil'  && (b.includes('sommeil') || b.includes('tryptophane'))) score += 3;
-    if (goal === 'douleur'  && (b.includes('anti-inflam') || b.includes('douleur'))) score += 3;
-    if (goal === 'sjsr'     && (b.includes('sjsr') || b.includes('oméga') || b.includes('fer'))) score += 3;
-    if (goal === 'energie'  && (b.includes('énergie') || b.includes('fer') || b.includes('protéine'))) score += 3;
-
-    // Bonus si correspond aux symptômes récents
-    const yesterday = journal[dateKey(new Date(Date.now() - 86400000))];
-    if (yesterday) {
-      if ((yesterday.sjsr || 0) >= 3 && (b.includes('oméga') || b.includes('magnésium'))) score += 2;
-      if ((yesterday.douleur || 0) >= 6 && b.includes('anti-inflam')) score += 2;
-      if ((yesterday.energie || 0) <= 4 && (b.includes('fer') || b.includes('protéine'))) score += 2;
-    }
-
-    // Bonus catégorie : préférer petit-déj le matin, dîner le soir
-    const h = new Date().getHours();
-    if (h < 10 && r.cat === 'petit-dejeuner') score += 2;
-    if (h >= 18 && r.cat === 'diner') score += 2;
-    if (h >= 12 && h < 16 && r.cat === 'dejeuner') score += 2;
-
-    // Léger aléatoire pour varier chaque jour
-    score += (new Date().getDate() * (r.id % 7)) % 3;
-
-    return { r, score };
-  });
-
-  scored.sort((a, b) => b.score - a.score);
-
-  // Prendre dans le top 10 avec un peu d'aléatoire basé sur le jour
-  const top10 = scored.slice(0, 10);
-  return top10[new Date().getDate() % top10.length]?.r || pool[0];
-}
-
-
-function autoGenerateWeek() {
-  const dates = getWeekDates(currentWeekOffset);
-
-  // Filtrer recettes accessibles selon premium + profil
-  function pool(cat) {
-    let recs = RECETTES.filter(r => r.cat === cat && (!r.premium || isPremium));
-    const full = [...recs]; // garder pool complet pour fallback
-    if (profile.sansGluten)   recs = recs.filter(r => r.tags?.includes('sg'));
-    if (profile.sansLactose)  recs = recs.filter(r => r.tags?.includes('sl'));
-    if (profile.vegetarien)   recs = recs.filter(r => r.tags?.includes('vg'));
-    return recs.length ? recs : full; // fallback si filtre trop restrictif
-  }
-
-  const pdjs    = pool('petit-dejeuner');
-  const dejs    = pool('dejeuner');
-  const gouters = pool('snack');
-  const dins    = pool('diner');
-
-  // Éviter les répétitions sur la semaine
-  const used = { pdc: new Set(), dej: new Set(), gou: new Set(), din: new Set() };
-  function pickUniq(arr, usedSet) {
-    const avail = arr.filter(r => !usedSet.has(r.id));
-    const pool2 = avail.length ? avail : arr;
-    // Score selon objectif profil
-    const scored = pool2.map(r => {
-      let score = Math.random(); // léger aléatoire
-      const b = (r.benefices || '').toLowerCase();
-      const goal = profile.goal || 'global';
-      if (goal === 'sommeil' && b.includes('sommeil')) score += 2;
-      if (goal === 'douleur' && b.includes('anti-inflam')) score += 2;
-      if (goal === 'sjsr'    && (b.includes('oméga') || b.includes('fer'))) score += 2;
-      if (goal === 'energie' && b.includes('énergie')) score += 2;
-      return { r, score };
-    }).sort((a, b) => b.score - a.score);
-    const chosen = scored[0].r;
-    usedSet.add(chosen.id);
-    return chosen;
-  }
-
-  // Générer le menu proposé (sans encore écrire dans agenda)
-  const proposed = dates.map((d, i) => {
-    const isWE = i === 5 || i === 6;
-    const pdc  = pickUniq(pdjs, used.pdc);
-    const dej  = pickUniq(isWE && pool('brunch').length ? pool('brunch') : dejs, used.dej);
-    const gou  = pickUniq(gouters, used.gou);
-    const din  = pickUniq(dins, used.din);
-    return { d, dk: dateKey(d), pdc, dej, gou, din, isWE };
-  });
-
-  // Afficher modal de prévisualisation
-  showWeekPreview(proposed);
-}
-
-function showWeekPreview(proposed) {
-  const overlay = document.createElement('div');
-  overlay.id = 'week-preview-overlay';
-  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9998;overflow-y:auto;';
-
-  const JOURS_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-
-  const daysHTML = proposed.map(({ d, dk, pdc, dej, gou, din, isWE }) => {
-    const dayName = JOURS_COURT[d.getDay()];
-    const isToday = dk === dateKey(new Date());
-    return `
-      <div style="background:${isWE?'var(--cream)':'var(--white)'};border-radius:12px;padding:12px 14px;margin-bottom:8px;border:${isToday?'2px solid var(--green-mid)':'1px solid var(--cream-dark)'}">
-        <div style="font-weight:700;font-size:0.85rem;color:var(--green-deep);margin-bottom:8px;">
-          ${dayName} ${d.getDate()}${isToday?' 📍':''}${isWE?' 🌿':''}
-        </div>
-        ${[
-          { label:'🌅', rec: pdc,  slot:'pdc'  },
-          { label:'☀️', rec: dej,  slot:'dej'  },
-          { label:'🍎', rec: gou,  slot:'gou'  },
-          { label:'🌙', rec: din,  slot:'din'  },
-        ].map(({ label, rec, slot }) => `
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-            <span style="font-size:0.7rem;width:18px;flex-shrink:0;">${label}</span>
-            <span style="font-size:0.78rem;color:var(--text-dark);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${rec.emoji} ${rec.nom}</span>
-            <button onclick="swapPreviewMeal('${dk}','${slot}',${rec.id})"
-              style="background:var(--cream);border:none;border-radius:6px;padding:2px 7px;font-size:0.68rem;color:var(--green-deep);cursor:pointer;flex-shrink:0;">↻</button>
-          </div>`).join('')}
-      </div>`;
-  }).join('');
-
-  overlay.innerHTML = `
-    <div style="min-height:100%;background:var(--cream-bg,#f5f0eb);padding:0 0 32px;">
-      <div style="background:var(--green-deep);padding:18px 16px 14px;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;">
-        <div>
-          <div style="font-size:0.68rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,0.65);">✨ MENU PROPOSÉ</div>
-          <div style="font-family:var(--font-display);font-size:1.1rem;color:white;">Ma semaine Flōra</div>
-        </div>
-        <button onclick="document.getElementById('week-preview-overlay').remove()"
-          style="background:rgba(255,255,255,0.15);border:none;border-radius:50%;width:34px;height:34px;color:white;font-size:1rem;cursor:pointer;">✕</button>
-      </div>
-      <div style="padding:12px 12px 0;">
-        <p style="font-size:0.78rem;color:var(--text-light);margin-bottom:12px;">
-          Appuyez sur ↻ pour changer un repas · Puis validez pour appliquer à l'agenda.
-        </p>
-        <div id="week-preview-days">${daysHTML}</div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
-          <button onclick="applyWeekProposed()"
-            style="width:100%;padding:14px;background:var(--green-deep);color:white;border:none;border-radius:14px;font-family:var(--font-body);font-size:0.9rem;font-weight:600;cursor:pointer;">
-            ✅ Appliquer ce menu à l'agenda
-          </button>
-          <button onclick="generateShoppingFromProposed()"
-            style="width:100%;padding:12px;background:var(--white);color:var(--green-deep);border:1.5px solid var(--green-mid);border-radius:14px;font-family:var(--font-body);font-size:0.85rem;cursor:pointer;">
-            🛒 Voir la liste de courses
-          </button>
-          <button onclick="document.getElementById('week-preview-overlay').remove()"
-            style="width:100%;padding:10px;background:var(--cream-dark);color:var(--text-mid);border:none;border-radius:14px;font-family:var(--font-body);font-size:0.82rem;cursor:pointer;">
-            Annuler
-          </button>
-        </div>
-      </div>
-    </div>`;
-
-  // Stocker le menu proposé pour swap et apply
-  overlay._proposed = proposed;
-  document.body.appendChild(overlay);
-}
-
-function swapPreviewMeal(dk, slot, currentId) {
-  // Trouver le jour dans proposed
-  const overlay = document.getElementById('week-preview-overlay');
-  if (!overlay) return;
-  const proposed = overlay._proposed;
-  const day = proposed.find(p => p.dk === dk);
-  if (!day) return;
-
-  const catMap = { pdc:'petit-dejeuner', dej:'dejeuner', gou:'snack', din:'diner' };
-  let pool = RECETTES.filter(r => r.cat === catMap[slot] && (!r.premium || isPremium));
-  if (profile.sansGluten)  pool = pool.filter(r => r.tags?.includes('sg')) || pool;
-  if (profile.sansLactose) pool = pool.filter(r => r.tags?.includes('sl')) || pool;
-
-  // Passer à la recette suivante dans la liste (cycle)
-  const idx = pool.findIndex(r => r.id === currentId);
-  const next = pool[(idx + 1) % pool.length];
-  day[slot] = next;
-
-  // Re-render le preview
-  const container = document.getElementById('week-preview-days');
-  if (container) {
-    const JOURS_COURT = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    container.innerHTML = proposed.map(({ d, dk: dk2, pdc, dej, gou, din, isWE }) => {
-      const dayName = JOURS_COURT[d.getDay()];
-      const isToday = dk2 === dateKey(new Date());
-      return `
-        <div style="background:${isWE?'var(--cream)':'var(--white)'};border-radius:12px;padding:12px 14px;margin-bottom:8px;border:${isToday?'2px solid var(--green-mid)':'1px solid var(--cream-dark)'}">
-          <div style="font-weight:700;font-size:0.85rem;color:var(--green-deep);margin-bottom:8px;">
-            ${dayName} ${d.getDate()}${isToday?' 📍':''}${isWE?' 🌿':''}
-          </div>
-          ${[
-            { label:'🌅', rec: pdc, slot:'pdc' },
-            { label:'☀️', rec: dej, slot:'dej' },
-            { label:'🍎', rec: gou, slot:'gou' },
-            { label:'🌙', rec: din, slot:'din' },
-          ].map(({ label, rec, slot: s }) => `
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px;">
-              <span style="font-size:0.7rem;width:18px;flex-shrink:0;">${label}</span>
-              <span style="font-size:0.78rem;color:var(--text-dark);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${rec.emoji} ${rec.nom}</span>
-              <button onclick="swapPreviewMeal('${dk2}','${s}',${rec.id})"
-                style="background:var(--cream);border:none;border-radius:6px;padding:2px 7px;font-size:0.68rem;color:var(--green-deep);cursor:pointer;flex-shrink:0;">↻</button>
-            </div>`).join('')}
-        </div>`;
-    }).join('');
-  }
-}
-
-function applyWeekProposed() {
-  const overlay = document.getElementById('week-preview-overlay');
-  if (!overlay) return;
-  const proposed = overlay._proposed;
-
-  const slugMap = { pdc:'petitdej', dej:'dejeuner', gou:'gouter', din:'diner' };
-  proposed.forEach(({ dk, pdc, dej, gou, din }) => {
-    if (!agenda[dk]) agenda[dk] = {};
-    if (pdc) agenda[dk][slugMap.pdc] = pdc.id;
-    if (dej) agenda[dk][slugMap.dej] = dej.id;
-    if (gou) agenda[dk][slugMap.gou] = gou.id;
-    if (din) agenda[dk][slugMap.din] = din.id;
-  });
-
-  saveState();
-  overlay.remove();
-  renderAgenda();
-
-  const msg = document.createElement('div');
-  msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:white;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;';
-  msg.textContent = '✅ Menu de la semaine appliqué !';
-  document.body.appendChild(msg);
-  setTimeout(() => msg.remove(), 2500);
-}
-
-function generateShoppingFromProposed() {
-  const overlay = document.getElementById('week-preview-overlay');
-  if (!overlay) return;
-  const proposed = overlay._proposed;
-
-  // Collecter tous les ingrédients
-  const ingredSet = {};
-  proposed.forEach(({ pdc, dej, gou, din }) => {
-    [pdc, dej, gou, din].forEach(rec => {
-      if (!rec) return;
-      rec.ingredients.forEach(ing => {
-        const clean = ing
-          .replace(/^\d[\d,./]* ?(?:g|kg|ml|cl|l|càs|càc|cs|cc|pincée|boîte|tranche|filet|pavé|gousse|botte|bouquet|poignée)s? /i,'')
-          .replace(/^\d+ /,'').trim();
-        if (clean.length < 3) return;
-        const key = clean.toLowerCase().split(' ')[0];
-        if (!ingredSet[key]) ingredSet[key] = { label: clean, count: 0 };
-        ingredSet[key].count++;
-      });
-    });
-  });
-
-  // Exclure le placard
-  const items = Object.values(ingredSet)
-    .sort((a, b) => b.count - a.count)
-    .filter(({ label }) => {
-      const l = label.toLowerCase();
-      return !Object.keys(placardItems).some(p => placardItems[p] && l.includes(p.toLowerCase().split(' ')[0]));
-    })
-    .map(({ label }) => label);
-
-  // Catégoriser
-  const CATS = [
-    { cat:'🥩 Protéines',   kw:['saumon','truite','sardine','maquereau','thon','anchois','hareng','cabillaud','poulet','dinde','boeuf','bœuf','oeuf','œuf','tofu','tempeh','lentille','pois chiche','haricot'] },
-    { cat:'🥦 Légumes',     kw:['épinard','kale','brocoli','chou','courgette','aubergine','poivron','carotte','betterave','fenouil','champignon','patate','oignon','ail','gingembre','tomate','concombre'] },
-    { cat:'🌾 Féculents',   kw:['quinoa','riz','sarrasin','pâte','nouille','galette','flocon','farine','polenta'] },
-    { cat:'🥑 Bons gras',   kw:['noix','amande','cajou','noisette','pistache','graine','tahini','avocat'] },
-    { cat:'🥫 Conserves',   kw:['lait de coco','tomate concass','bouillon','miso'] },
-    { cat:'🍋 Fruits',      kw:['citron','banane','myrtille','fraise','framboise','mangue','pomme','poire','datte','abricot'] },
-    { cat:'🌿 Épices',      kw:['curcuma','cumin','cannelle','paprika','basilic','persil','coriandre','menthe','thym','romarin','sel','poivre'] },
-    { cat:'🫙 Huiles',      kw:['huile','vinaigre','tamari'] },
-  ];
-
-  function getCat(label) {
-    const l = label.toLowerCase();
-    for (const { cat, kw } of CATS) { if (kw.some(k => l.includes(k))) return cat; }
-    return '🛒 Divers';
-  }
-
-  const byCategorie = {};
-  items.forEach(item => {
-    const cat = getCat(item);
-    if (!byCategorie[cat]) byCategorie[cat] = [];
-    const key = item.toLowerCase().split(' ')[0];
-    if (!byCategorie[cat].some(i => i.toLowerCase().split(' ')[0] === key)) {
-      byCategorie[cat].push(item);
-    }
-  });
-
-  const orderedCats = ['🥩 Protéines','🥦 Légumes','🌾 Féculents','🥑 Bons gras','🥫 Conserves','🍋 Fruits','🌿 Épices','🫙 Huiles','🛒 Divers'];
-
-  const listHTML = orderedCats
-    .filter(cat => byCategorie[cat]?.length)
-    .map(cat => `
-      <div style="margin-bottom:14px;">
-        <div style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-light);margin-bottom:6px;">${cat}</div>
-        ${byCategorie[cat].map(item => `
-          <div onclick="this.style.opacity=this.style.opacity==='0.4'?'1':'0.4';this.querySelector('span').textContent=this.style.opacity==='0.4'?'✓':' '"
-            style="display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
-            <span style="color:var(--green-mid);font-weight:700;width:14px;"> </span>
-            <span style="font-size:0.86rem;color:var(--text-dark);">${item}</span>
-          </div>`).join('')}
-      </div>`).join('');
-
-  const shopOverlay = document.createElement('div');
-  shopOverlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:flex-end;';
-  shopOverlay.innerHTML = `
-    <div style="width:100%;background:var(--white);border-radius:24px 24px 0 0;padding:20px 18px 34px;max-height:85vh;overflow-y:auto;">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
-        <div style="font-family:var(--font-display);font-size:1.05rem;color:var(--green-deep);">🛒 Liste de courses — semaine</div>
-        <button onclick="this.closest('[style*=fixed]').remove()" style="background:var(--cream-dark);border:none;border-radius:50%;width:28px;height:28px;font-size:0.9rem;cursor:pointer;">✕</button>
-      </div>
-      <div style="font-size:0.75rem;color:var(--text-light);margin-bottom:14px;">${items.length} articles · Touchez pour cocher</div>
-      ${listHTML || '<p style="color:var(--text-light);text-align:center;">Tout est dans le placard ✅</p>'}
-      <button onclick="applyWeekProposed();this.closest('[style*=fixed]').remove()"
-        style="width:100%;margin-top:14px;padding:13px;background:var(--green-deep);color:white;border:none;border-radius:14px;font-family:var(--font-body);font-size:0.85rem;cursor:pointer;">
-        ✅ Appliquer ce menu à l'agenda aussi
-      </button>
-    </div>`;
-  document.body.appendChild(shopOverlay);
+  renderConseil();
 }
 
 // ============================
@@ -8502,20 +4751,10 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
-  if (page === 'accueil')    { renderConseil(); updateDashboard(); renderStreakOnDashboard(); }
-  if (page === 'journal')    {
-    setJournalDate();
-    updateSleepCalc();
-    initSjsrToggle();
-    // Re-rendre l'historique si l'onglet Historique est celui qui est visible
-    const histPanel = document.getElementById('jtab-historique');
-    if (histPanel && !histPanel.classList.contains('hidden')) {
-      renderHistorique();
-    }
-  }
+  if (page === 'journal')    { setJournalDate(); updateSleepCalc(); initSjsrToggle(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
-  if (page === 'profil')     { loadProfil(); renderStats(); renderNotifPrefs(); }
+  if (page === 'profil')     { loadProfil(); renderStats(); }
   if (page === 'apropos')    { /* static */ }
   if (page === 'generateur') {
     checkGenAccess();
@@ -8523,7 +4762,6 @@ function showPage(page) {
     switchGenTab('semaine', document.querySelector('#page-generateur .jtab'));
   }
   if (page === 'placard')    initPlacard();
-  if (page === 'assistant')  { /* L'assistant se charge dynamiquement */ }
 }
 
 // ============================
@@ -8557,191 +4795,48 @@ function updateDashboard() {
       : 'Aucune entrée aujourd\'hui';
   }
 
-  // Statut agenda aujourd'hui — menu complet du jour
+  // Statut agenda aujourd'hui
   const agendaStatus = document.getElementById('agenda-today');
-  const menuDuJourEl = document.getElementById('menu-du-jour-block');
-  const todayAgenda  = agenda[today];
-
-  if (todayAgenda) {
-    const slugOrder = ['petitdej','dejeuner','gouter','diner'];
-    const repasLabels = { petitdej:'🌅 Petit-déj', dejeuner:'☀️ Déjeuner', gouter:'🍎 Goûter', diner:'🌙 Dîner' };
-    const repasRecs = slugOrder
-      .map(slug => ({ slug, rec: RECETTES.find(r => r.id === todayAgenda[slug]) }))
-      .filter(x => x.rec);
-
-    if (repasRecs.length) {
-      // Card agenda accueil : résumé
-      if (agendaStatus) {
-        agendaStatus.textContent = repasRecs[0].rec.emoji + ' ' + repasRecs[0].rec.nom.split('-')[0].trim()
-          + (repasRecs.length > 1 ? ` +${repasRecs.length-1} repas` : '');
-      }
-      // Bloc menu du jour détaillé sous les 4 cards
-      if (menuDuJourEl) {
-        menuDuJourEl.classList.remove('hidden');
-        document.getElementById('menu-du-jour-content').innerHTML = repasRecs.map(({slug, rec}) => `
-          <div onclick="openDayView('${today}')"
-            style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--cream-dark);cursor:pointer;">
-            <div style="width:52px;text-align:center;font-size:0.62rem;font-weight:700;text-transform:uppercase;color:var(--text-light);">${repasLabels[slug]}</div>
-            <div style="font-size:1.3rem;">${rec.emoji}</div>
-            <div style="flex:1;min-width:0;">
-              <div style="font-size:0.82rem;font-weight:600;color:var(--green-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${rec.nom}</div>
-              <div style="font-size:0.7rem;color:var(--text-light);">⏱ ${rec.temps} · 🔥 ${rec.calories} kcal</div>
-            </div>
-            <div style="color:var(--text-light);font-size:0.8rem;">→</div>
-          </div>`).join('');
-      }
-    } else {
-      if (agendaStatus) agendaStatus.textContent = 'Voir le menu du jour';
-      if (menuDuJourEl) menuDuJourEl.classList.add('hidden');
-    }
-  } else {
-    if (agendaStatus) agendaStatus.textContent = 'Planifier mes repas →';
-    if (menuDuJourEl) menuDuJourEl.classList.add('hidden');
-  }
-
-  // Résumé sommeil du jour sur le dashboard (card Journal du jour)
-  const todaySleep = journal[dateKey(now)];
-  const journalSubEl = document.getElementById('journal-today-status');
-  if (journalSubEl) {
-    if (todaySleep && (todaySleep.coucher || todaySleep.duree)) {
-      const duree = todaySleep.duree ? `${todaySleep.duree}h` : '';
-      const stars = todaySleep.qualite ? ' · ' + '★'.repeat(todaySleep.qualite) : '';
-      journalSubEl.textContent = (duree + stars) || 'Entrée enregistrée ✓';
-    } else {
-      journalSubEl.textContent = 'Aucune entrée…';
+  if (agendaStatus && agenda[today]) {
+    const repas = [];
+    const repasMap = { petitdej:'Petit-déj', dejeuner:'Déjeuner', diner:'Dîner' };
+    Object.entries(agenda[today]).forEach(([slug, recId]) => {
+      const rec = RECETTES.find(r => r.id === recId);
+      if (rec) repas.push(rec.emoji + ' ' + rec.nom.split('-')[0].trim());
+    });
+    if (repas.length) {
+      agendaStatus.textContent = repas[0] + (repas.length > 1 ? ` +${repas.length-1}` : '');
     }
   }
 
   // Week chart
   renderWeekChart();
-
-  // Stats compactes accueil (3 chiffres + mini-graphique énergie 7j)
-  renderHomeStats();
 }
 
 function renderWeekChart() {
   const container = document.getElementById('week-chart');
-  if (!container) return;
-  const maxH = 56;
-  const days = [];
+  container.innerHTML = '';
+  const maxH = 56; // hauteur max en px (conteneur 96px - padding - label)
+
   for (let i = 6; i >= 0; i--) {
     const d = new Date();
     d.setDate(d.getDate() - i);
-    days.push(d);
-  }
-  container.innerHTML = days.map(d => {
     const k = dateKey(d);
     const entry = journal[k];
-    const dayLabel = JOURS[(d.getDay()+6)%7];
-    const en = entry ? Math.max(3, Math.round((entry.energie||0)/10*maxH)) : 2;
-    const do_ = entry ? Math.max(3, Math.round((entry.douleur||0)/10*maxH)) : 2;
-    const isToday = k === dateKey(new Date());
-    return `<div class="chart-bar-wrap" onclick="showPage('journal')" style="cursor:pointer;">
-      <div style="display:flex;gap:2px;align-items:flex-end;height:${maxH}px;justify-content:center;">
-        <div class="chart-bar ${entry?'filled':''}" style="height:${en}px;width:45%;background:var(--green-mid);border-radius:3px 3px 0 0;"
-          title="Énergie ${entry?.energie||0}/10"></div>
-        <div class="chart-bar ${entry?'filled':''}" style="height:${do_}px;width:45%;background:#e88080;border-radius:3px 3px 0 0;"
-          title="Douleur ${entry?.douleur||0}/10"></div>
-      </div>
-      <div class="chart-day" style="${isToday?'font-weight:700;color:var(--green-deep);':''}">${dayLabel}</div>
-    </div>`;
-  }).join('');
-}
+    const dayLabel = JOURS[(d.getDay() + 6) % 7];
 
-// ============================
-// HOME STATS (3 chiffres + mini-graph 7j)
-// ============================
-function renderHomeStats() {
-  const elE = document.getElementById('home-stat-energie');
-  const elD = document.getElementById('home-stat-douleur');
-  const elS = document.getElementById('home-stat-sjsr');
-  const svg = document.getElementById('home-energie-chart');
-  const moyEl = document.getElementById('home-energie-moy');
-  const labelsEl = document.getElementById('home-energie-labels');
-  if (!elE || !elD || !elS || !svg) return;
+    const energie = entry ? entry.energie : 0;
+    const heightPx = entry ? Math.max(3, Math.round((energie / 10) * maxH)) : 3;
 
-  // Collecte des 7 derniers jours
-  const days = [];
-  for (let i = 6; i >= 0; i--) {
-    const d = new Date();
-    d.setDate(d.getDate() - i);
-    days.push({ d, k: dateKey(d), entry: journal[dateKey(d)] });
-  }
-
-  const entries = days.map(x => x.entry).filter(e => e && typeof e === 'object');
-  const energies = entries.map(e => typeof e.energie === 'number' ? e.energie : null).filter(v => v !== null && v > 0);
-  const douleurs = entries.map(e => typeof e.douleur === 'number' ? e.douleur : null).filter(v => v !== null);
-  const nbSjsr  = entries.filter(e => typeof e.sjsr === 'number' && e.sjsr > 0).length;
-
-  // Chiffres
-  elE.textContent = energies.length ? (energies.reduce((a,b)=>a+b,0)/energies.length).toFixed(1) : '—';
-  elD.textContent = douleurs.length ? (douleurs.reduce((a,b)=>a+b,0)/douleurs.length).toFixed(1) : '—';
-  elS.textContent = nbSjsr > 0 ? nbSjsr : '—';
-  if (moyEl) moyEl.textContent = energies.length ? `moy. ${(energies.reduce((a,b)=>a+b,0)/energies.length).toFixed(1)}/10` : '';
-
-  // Mini-graphique énergie 7j — courbe SVG
-  const W = 300, H = 60, PAD_X = 8, PAD_Y = 6;
-  const n = days.length;
-  const step = (W - 2*PAD_X) / (n - 1);
-  const yFor = v => {
-    // v dans [0,10] → inversé (haut = haut score)
-    if (v === null || v === undefined) return null;
-    return H - PAD_Y - (v / 10) * (H - 2*PAD_Y);
-  };
-
-  const points = days.map((x, i) => {
-    const v = (x.entry && typeof x.entry.energie === 'number' && x.entry.energie > 0) ? x.entry.energie : null;
-    return { i, x: PAD_X + i*step, y: yFor(v), v };
-  });
-
-  // Tracer une ligne qui saute les trous (plusieurs segments)
-  const segments = [];
-  let current = [];
-  points.forEach(p => {
-    if (p.y === null) {
-      if (current.length) { segments.push(current); current = []; }
-    } else {
-      current.push(p);
-    }
-  });
-  if (current.length) segments.push(current);
-
-  const pathStrokes = segments.map(seg => {
-    if (seg.length === 1) {
-      // Un seul point → petit cercle, pas de ligne
-      return `<circle cx="${seg[0].x}" cy="${seg[0].y}" r="2.5" fill="#5a8a5a"/>`;
-    }
-    const d = seg.map((p,idx) => (idx===0 ? `M ${p.x} ${p.y}` : `L ${p.x} ${p.y}`)).join(' ');
-    return `<path d="${d}" fill="none" stroke="#5a8a5a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
-  }).join('');
-
-  // Points visibles
-  const dots = points.filter(p => p.y !== null).map(p =>
-    `<circle cx="${p.x}" cy="${p.y}" r="2.2" fill="#5a8a5a"/>`
-  ).join('');
-
-  // Ligne de base (0/10)
-  const baseY = H - PAD_Y;
-  const gridLine = `<line x1="${PAD_X}" y1="${baseY}" x2="${W-PAD_X}" y2="${baseY}" stroke="#e5e5e5" stroke-width="1" stroke-dasharray="2,3"/>`;
-
-  // Placeholder si aucune donnée
-  if (energies.length === 0) {
-    svg.innerHTML = `
-      ${gridLine}
-      <text x="${W/2}" y="${H/2 + 4}" text-anchor="middle" font-size="10" fill="#aaa">Pas encore de données — remplissez votre journal 🌱</text>
+    const wrap = document.createElement('div');
+    wrap.className = 'chart-bar-wrap';
+    wrap.innerHTML = `
+      <div class="chart-bar ${entry ? 'filled' : ''}"
+           style="height:${heightPx}px"
+           title="${entry ? `Énergie: ${energie}/10` : 'Pas de données'}"></div>
+      <div class="chart-day">${dayLabel}</div>
     `;
-  } else {
-    svg.innerHTML = gridLine + pathStrokes + dots;
-  }
-
-  // Labels des jours (J-6 … J)
-  if (labelsEl) {
-    const dayShort = ['D','L','M','M','J','V','S'];
-    labelsEl.innerHTML = days.map(x => {
-      const isToday = x.k === dateKey(new Date());
-      const dayChar = dayShort[x.d.getDay()];
-      return `<span style="${isToday?'color:var(--green-deep);font-weight:700;':''}">${dayChar}</span>`;
-    }).join('');
+    container.appendChild(wrap);
   }
 }
 
@@ -8752,147 +4847,87 @@ function dateKey(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
 
+// Date courante du journal — modifiable via ← →
+let currentJournalDate = new Date();
 
 function setJournalDate() {
-  renderJournalMedChips();
-  const now  = new Date();
+  currentJournalDate = new Date(); // reset à aujourd'hui à chaque ouverture
+  renderJournalDate();
+  loadJournalEntry(currentJournalDate);
+}
+
+function renderJournalDate() {
+  const today = new Date();
+  const isToday = dateKey(currentJournalDate) === dateKey(today);
+
   const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-  document.getElementById('journal-entry-date').textContent =
-    now.toLocaleDateString('fr-FR', opts);
+  const label = isToday
+    ? 'Aujourd\'hui — ' + currentJournalDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })
+    : currentJournalDate.toLocaleDateString('fr-FR', opts);
 
-  // ── RÉINITIALISATION COMPLÈTE du formulaire avant rechargement ──
-  // Sliders aux valeurs par défaut
-  const defaults = { 'sl-qualite':3, 'sl-sjsr':0, 'sl-energie':5, 'sl-douleur':0 };
-  Object.entries(defaults).forEach(([id, val]) => {
+  document.getElementById('journal-entry-date').textContent = label;
+
+  // Désactiver → si on est à aujourd'hui
+  const nextBtn = document.getElementById('journal-next-btn');
+  if (nextBtn) nextBtn.disabled = isToday;
+}
+
+function changeJournalDay(delta) {
+  const newDate = new Date(currentJournalDate);
+  newDate.setDate(newDate.getDate() + delta);
+
+  // Ne pas aller dans le futur
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+  if (newDate > today) return;
+
+  // Ne pas aller avant 90 jours
+  const limit = new Date();
+  limit.setDate(limit.getDate() - 90);
+  if (newDate < limit) return;
+
+  currentJournalDate = newDate;
+  renderJournalDate();
+  loadJournalEntry(currentJournalDate);
+}
+
+function loadJournalEntry(date) {
+  const dk = dateKey(date);
+  const entry = journal[dk] || {};
+
+  // Charger les valeurs dans le formulaire
+  const set = (id, val) => {
     const el = document.getElementById(id);
-    if (el) el.value = val;
-  });
-  updateSliderVal('sl-qualite', 'val-qualite', true, false);
-  updateSliderVal('sl-sjsr',    'val-sjsr',    false, true);
-  updateSliderVal('sl-energie', 'val-energie', false, false);
-  updateSliderVal('sl-douleur', 'val-douleur', false, false);
+    if (!el) return;
+    if (el.type === 'range' || el.type === 'number') el.value = val || el.defaultValue || 0;
+    else if (el.type === 'time') el.value = val || '';
+    else if (el.type === 'checkbox') el.checked = !!val;
+    else el.value = val || '';
+  };
 
-  // Heures par défaut
-  const coucherEl = document.getElementById('sl-coucher');
-  const leverEl   = document.getElementById('sl-lever');
-  if (coucherEl) coucherEl.value = '23:00';
-  if (leverEl)   leverEl.value   = '07:00';
+  set('sl-coucher', entry.coucher);
+  set('sl-lever',   entry.lever);
+  set('j-energie',  entry.energie || 5);
+  set('j-douleur',  entry.douleur || 0);
+  set('j-sjsr',     entry.sjsr    || 0);
+  set('j-notes',    entry.notes   || '');
+
+  // Qualité sommeil
+  if (entry.qualite) {
+    document.querySelectorAll('.star-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i < entry.qualite);
+    });
+  }
+
+  // Slider labels
+  const enVal = document.getElementById('j-energie-val');
+  const doVal = document.getElementById('j-douleur-val');
+  const sjVal = document.getElementById('j-sjsr-val');
+  if (enVal) enVal.textContent = entry.energie || 5;
+  if (doVal) doVal.textContent = entry.douleur || 0;
+  if (sjVal) sjVal.textContent = entry.sjsr    || 0;
+
   updateSleepCalc();
-
-  // Cycles par défaut
-  currentCycles = 4;
-  setCyclesByCount(4);
-
-  // Levers nocturnes à zéro
-  leversCount = 0;
-  const lc = document.getElementById('levers-count');
-  if (lc) lc.textContent = leversLabels[0];
-
-  // Désactiver toutes les chips
-  document.querySelectorAll('#symptom-chips .chip.active').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('[onclick*="rituel"].active').forEach(c => c.classList.remove('active'));
-  document.querySelectorAll('[onclick*="endormissement"].active').forEach(c => {
-    c.classList.remove('active');
-    delete c.dataset.selected;
-  });
-  document.querySelectorAll('[onclick*="location"].active').forEach(c => {
-    c.classList.remove('active');
-    delete c.dataset.selected;
-  });
-  document.querySelectorAll('.journal-med-chip.active').forEach(c => c.classList.remove('active'));
-  const locRow = document.getElementById('sjsr-location-row');
-  if (locRow) locRow.style.display = 'none';
-
-  // Notes
-  const notesEl = document.getElementById('journal-notes');
-  if (notesEl) notesEl.value = '';
-
-  // Charger les données existantes du jour si elles existent
-  const today = dateKey(now);
-  const e = journal[today];
-  if (!e) return; // Pas d'entrée aujourd'hui — formulaire à zéro
-
-  // Heures coucher/lever (réutilise les vars déjà déclarées)
-  if (coucherEl && e.coucher) coucherEl.value = e.coucher;
-  if (leverEl   && e.lever)   leverEl.value   = e.lever;
-  updateSleepCalc();
-
-  // Cycles
-  if (e.cycles) { currentCycles = e.cycles; setCyclesByCount(e.cycles); }
-
-  // Levers nocturnes
-  if (typeof e.levers === 'number') {
-    leversCount = e.levers;
-    const lc = document.getElementById('levers-count');
-    if (lc) lc.textContent = leversLabels[Math.min(e.levers, leversLabels.length-1)];
-  }
-
-  // Sliders
-  const sliders = [
-    { id:'sl-qualite', val:e.qualite, valId:'val-qualite', isStars:true },
-    { id:'sl-sjsr',    val:e.sjsr,    valId:'val-sjsr',    isSjsr:true  },
-    { id:'sl-energie', val:e.energie, valId:'val-energie'               },
-    { id:'sl-douleur', val:e.douleur, valId:'val-douleur'               },
-  ];
-  sliders.forEach(({ id, val, valId, isStars, isSjsr }) => {
-    if (val === undefined || val === null) return;
-    const el = document.getElementById(id);
-    if (el) { el.value = val; updateSliderVal(id, valId, !!isStars, !!isSjsr); }
-  });
-
-  // Endormissement — chip sélectionnée
-  if (e.endormissement) {
-    document.querySelectorAll('[onclick*="endormissement"]').forEach(chip => {
-      const val = chip.getAttribute('onclick')?.match(/'([^']+)'/g)?.[2]?.replace(/'/g,'');
-      if (val === e.endormissement) {
-        chip.classList.add('active');
-        chip.dataset.selected = val;
-      }
-    });
-  }
-
-  // Localisation SJSR
-  if (e.sjsrLocation) {
-    document.querySelectorAll('[onclick*="location"]').forEach(chip => {
-      const val = chip.getAttribute('onclick')?.match(/'([^']+)'/g)?.[2]?.replace(/'/g,'');
-      if (val === e.sjsrLocation) {
-        chip.classList.add('active');
-        chip.dataset.selected = val;
-      }
-    });
-    const locRow = document.getElementById('sjsr-location-row');
-    if (locRow && (e.sjsr || 0) > 0) locRow.style.display = 'block';
-  }
-
-  // Médicaments cochés
-  if (e.meds && e.meds.length) {
-    document.querySelectorAll('.journal-med-chip').forEach(chip => {
-      if (e.meds.includes(chip.dataset.med || chip.textContent.trim())) {
-        chip.classList.add('active');
-      }
-    });
-  }
-
-  // Symptômes cochés
-  if (e.symptoms && e.symptoms.length) {
-    document.querySelectorAll('#symptom-chips .chip').forEach(chip => {
-      if (e.symptoms.includes(chip.textContent.trim())) {
-        chip.classList.add('active');
-      }
-    });
-  }
-
-  // Rituels cochés
-  if (e.rituels && e.rituels.length) {
-    document.querySelectorAll('[onclick*="rituel"]').forEach(chip => {
-      if (e.rituels.includes(chip.textContent.trim())) {
-        chip.classList.add('active');
-      }
-    });
-  }
-
-  // Notes (réutilise notesEl déjà déclaré)
-  if (notesEl && e.notes) notesEl.value = e.notes;
 }
 
 // ============================
@@ -8999,19 +5034,16 @@ function initSjsrToggle() {
 
 // Collecter toutes les données sommeil avancées
 function getSleepData() {
-  // Cibler uniquement la page journal pour éviter les conflits inter-pages
-  const journalPage = document.getElementById('page-journal') || document;
-
   // Endormissement
-  const endEl = journalPage.querySelector('[data-selected][onclick*="endormissement"]');
+  const endEl = document.querySelector('[data-selected][onclick*="endormissement"]');
   const endormissement = endEl ? endEl.dataset.selected : 'rapide';
 
   // Localisation SJSR
-  const locEl = journalPage.querySelector('[data-selected][onclick*="location"]');
+  const locEl = document.querySelector('[data-selected][onclick*="location"]');
   const sjsrLocation = locEl ? locEl.dataset.selected : '';
 
-  // Médications cochées (chips dynamiques générées depuis le profil)
-  const meds = Array.from(document.querySelectorAll('.journal-med-chip.active')).map(c => c.dataset.med || c.textContent.trim());
+  // Médications cochées
+  const meds = Array.from(document.querySelectorAll('[onclick*="med"].active')).map(c => c.textContent);
 
   // Rituels cochés
   const rituels = Array.from(document.querySelectorAll('[onclick*="rituel"].active')).map(c => c.textContent);
@@ -9041,12 +5073,13 @@ function toggleChip(el) {
 }
 
 function saveJournal() {
-  const today = dateKey(new Date());
+  // Sauvegarder sur la date affichée (currentJournalDate), pas forcément aujourd'hui
+  const dk = dateKey(currentJournalDate || new Date());
   const symptoms = Array.from(document.querySelectorAll('#symptom-chips .chip.active'))
     .map(c => c.textContent);
   const sleepExtra = getSleepData();
 
-  journal[today] = {
+  journal[dk] = {
     coucher:        document.getElementById('sl-coucher')?.value || '',
     lever:          document.getElementById('sl-lever')?.value || '',
     duree:          getSleepDuration(),
@@ -9070,11 +5103,7 @@ function saveJournal() {
 
   const confirm = document.getElementById('save-confirm');
   confirm.classList.remove('hidden');
-  setTimeout(() => {
-    confirm.classList.add('hidden');
-    // Rediriger vers l'historique de la semaine
-    switchJTab('historique', document.querySelector('#page-journal .jtab:last-child'));
-  }, 2000);
+  setTimeout(() => confirm.classList.add('hidden'), 2500);
 }
 
 function switchJTab(tab, el) {
@@ -9088,10 +5117,7 @@ function switchJTab(tab, el) {
   const targetId = tab === 'today' ? 'jtab-today' : 'jtab-historique';
   document.getElementById(targetId).classList.remove('hidden');
 
-  if (tab === 'historique') {
-    // Petit délai pour s'assurer que l'onglet est visible avant le rendu
-    requestAnimationFrame(() => renderHistorique());
-  }
+  if (tab === 'historique') renderHistorique();
 }
 
 // ============================
@@ -9099,386 +5125,175 @@ function switchJTab(tab, el) {
 // ============================
 function exportJournalPDF() {
   const entries = Object.entries(journal).sort((a,b) => a[0].localeCompare(b[0]));
+
   if (!entries.length) {
-    showToast('Aucune entrée à exporter. Commencez par remplir votre journal !', 3000);
+    alert('Aucune entrée à exporter. Commencez par remplir votre journal !');
     return;
   }
 
-  const name  = profile.name || 'Utilisateur·trice';
+  const name = profile.name || 'Utilisateur·trice';
   const today = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
-  const meds  = profile.medications || [];
 
-  // ── Calculs statistiques ──
-  const filled = entries.filter(([,e]) => e);
-  const avg = key => filled.length
-    ? (filled.reduce((s,[,e])=>s+(e[key]||0),0)/filled.length).toFixed(1) : '—';
-  const avgEnergie = avg('energie');
-  const avgDouleur = avg('douleur');
-  const avgSommeil = filled.length
-    ? (filled.reduce((s,[,e])=>s+(e.duree||0),0)/filled.length).toFixed(1) : '—';
-  const nuitsSjsr  = filled.filter(([,e])=>(e.sjsr||0)>0).length;
-  const streak     = getStreak();
+  const rows = entries.map(([date, e]) => {
+    const d = new Date(date + 'T12:00:00');
+    const label = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+    const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
+    const sleep = e.coucher && e.lever
+      ? `${e.coucher} → ${e.lever} (${e.duree}h, ${e.cycles||'?'} cycles)`
+      : `${e.duree||'—'}h`;
+    const sjsrLabels = ['Aucun','Léger','Modéré','Fort','Très fort','Insupportable'];
+    const sjsrLabel = sjsrLabels[e.sjsr||0] || '—';
+    const symp = e.symptoms?.length ? e.symptoms.join(', ') : '—';
+    const meds = e.meds?.length ? e.meds.join(', ') : '—';
 
-  // Médics observance
-  const medCounts = {};
-  filled.forEach(([,e]) => (e.meds||[]).forEach(m => { medCounts[m]=(medCounts[m]||0)+1; }));
-
-  // Symptômes fréquents
-  const symCounts = {};
-  filled.forEach(([,e]) => (e.symptoms||[]).forEach(s => { symCounts[s]=(symCounts[s]||0)+1; }));
-  const topSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]).slice(0,6);
-
-  // ── Graphique SVG courbes (énergie + douleur) ──
-  function makeSvgChart(data, colors, labels, maxVal=10) {
-    const n = data[0].length;
-    if (n < 2) return '';
-    const W = 520, H = 80;
-    const series = data.map((vals, si) => {
-      const pts = vals.map((v,i) => {
-        const x = (i/(n-1))*W;
-        const y = H - (v/maxVal)*H;
-        return `${x.toFixed(1)},${y.toFixed(1)}`;
-      }).join(' ');
-      const fillPts = `0,${H} ${pts} ${W},${H}`;
-      return `
-        <polygon points="${fillPts}" fill="${colors[si]}" fill-opacity="0.12"/>
-        <polyline points="${pts}" fill="none" stroke="${colors[si]}" stroke-width="2" stroke-linejoin="round"/>
-        ${vals.map((v,i)=>{
-          const x=(i/(n-1))*W, y=H-(v/maxVal)*H;
-          return v>0?`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${colors[si]}" stroke="white" stroke-width="1.5"/>`:'';
-        }).join('')}`;
-    }).join('');
-
-    // Labels X (dates)
-    const xLabels = entries.map(([date],i) => {
-      if (i % Math.ceil(n/10) !== 0 && i !== n-1) return '';
-      const d = new Date(date+'T12:00:00');
-      return `<text x="${((i/(n-1))*W).toFixed(1)}" y="${H+14}" text-anchor="middle" font-size="9" fill="#8a9e96">${d.getDate()}/${d.getMonth()+1}</text>`;
-    }).join('');
-
-    const legend = labels.map((l,i) =>
-      `<text x="${10+i*120}" y="${H+28}" font-size="9" fill="${colors[i]}">■ ${l}</text>`
-    ).join('');
-
-    return `<svg viewBox="0 0 ${W} ${H+35}" style="width:100%;height:auto;display:block;margin:8px 0;">
-      <line x1="0" y1="${H}" x2="${W}" y2="${H}" stroke="#e8e8e0" stroke-width="1"/>
-      ${[0,25,50,75,100].map(pct => {
-        const y = H - (pct/100)*H;
-        return `<line x1="0" y1="${y.toFixed(1)}" x2="${W}" y2="${y.toFixed(1)}" stroke="#f0ede8" stroke-width="0.5"/>
-                <text x="-4" y="${(y+3).toFixed(1)}" text-anchor="end" font-size="8" fill="#c0bdb8">${Math.round(pct/100*maxVal)}</text>`;
-      }).join('')}
-      ${series}
-      ${xLabels}
-      ${legend}
-    </svg>`;
-  }
-
-  const energieVals = entries.map(([,e])=>e?.energie||0);
-  const douleurVals = entries.map(([,e])=>e?.douleur||0);
-  const sjsrVals    = entries.map(([,e])=>e?.sjsr||0);
-  const sommeilVals = entries.map(([,e])=>Math.min(10,(e?.duree||0)/9*10));
-
-  const chartEnergieDouleur = makeSvgChart([energieVals,douleurVals],['#4a7c5e','#c0614a'],['Énergie /10','Douleur /10']);
-  const chartSjsr = makeSvgChart([sjsrVals],['#8e44ad'],['SJSR /5'],5);
-  const chartSommeil = makeSvgChart([sommeilVals],['#2980b9'],['Qualité sommeil']);
-
-  // ── Menus agenda sur la période ──
-  const agendaRows = entries.map(([date]) => {
-    const ag = agenda[date];
-    if (!ag) return null;
-    const slugs = ['petitdej','dejeuner','gouter','diner'];
-    const labels = {'petitdej':'Petit-déj','dejeuner':'Déjeuner','gouter':'Goûter','diner':'Dîner'};
-    const repas = slugs.map(s => {
-      const r = ag[s] ? RECETTES.find(x=>x.id===ag[s]) : null;
-      return r ? `<span style="font-size:0.75em;color:#3d6b58;">${labels[s]}: ${r.emoji} ${r.nom}</span>` : null;
-    }).filter(Boolean);
-    if (!repas.length) return null;
-    const d = new Date(date+'T12:00:00');
-    return { date: d.toLocaleDateString('fr-FR',{day:'numeric',month:'short'}), repas };
-  }).filter(Boolean);
-
-  // ── Tableau journal ──
-  const rows = entries.map(([date,e]) => {
-    const d = new Date(date+'T12:00:00');
-    const label = d.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});
-    const stars = '★'.repeat(e.qualite||0)+'☆'.repeat(5-(e.qualite||0));
-    const sleep = e.coucher&&e.lever ? `${e.coucher}→${e.lever} (${e.duree}h)` : `${e.duree||'—'}h`;
-    const sjsrLabels=['—','Léger','Modéré','Fort','Très fort','Insup.'];
-    const medsStr = e.meds?.length ? e.meds.join(', ') : '—';
-    const symp = e.symptoms?.length ? e.symptoms.slice(0,3).join(', ') : '—';
-    const bgSjsr = (e.sjsr||0)>2 ? '#fde8e8' : 'transparent';
-    return `<tr style="border-bottom:1px solid #ede8e0;">
-      <td style="padding:7px 6px;font-weight:600;color:#2d4a3e;white-space:nowrap;font-size:0.82em;">${label}</td>
-      <td style="padding:7px 6px;font-size:0.8em;">${sleep}<br><span style="color:#c9b88a;">${stars}</span></td>
-      <td style="padding:7px 6px;text-align:center;font-weight:600;color:#4a7c5e;">${e.energie||'—'}</td>
-      <td style="padding:7px 6px;text-align:center;font-weight:600;color:#c0614a;">${e.douleur||'—'}</td>
-      <td style="padding:7px 6px;text-align:center;background:${bgSjsr};font-size:0.8em;">${sjsrLabels[e.sjsr||0]}</td>
-      <td style="padding:7px 6px;font-size:0.75em;color:#d35400;">${medsStr}</td>
-      <td style="padding:7px 6px;font-size:0.75em;color:#4a5e54;">${symp}</td>
-      <td style="padding:7px 6px;font-size:0.75em;font-style:italic;color:#8a9e96;max-width:150px;">${e.notes||''}</td>
-    </tr>`;
+    return `
+      <tr style="border-bottom:1px solid #e8e8e0;">
+        <td style="padding:10px 8px;font-weight:600;color:#2d4a3e;white-space:nowrap;">${label}</td>
+        <td style="padding:10px 8px;text-align:center;">${sleep}<br><small>${stars}</small></td>
+        <td style="padding:10px 8px;text-align:center;">${e.energie||'—'}/10</td>
+        <td style="padding:10px 8px;text-align:center;">${e.douleur||'—'}/10</td>
+        <td style="padding:10px 8px;text-align:center;color:${(e.sjsr||0)>2?'#c0614a':'#3d6b58'};">${sjsrLabel}</td>
+        <td style="padding:10px 8px;font-size:0.85em;color:#4a5e54;">${symp}</td>
+        <td style="padding:10px 8px;font-size:0.82em;font-style:italic;color:#8a9e96;">${e.notes||''}</td>
+      </tr>
+    `;
   }).join('');
+
+  const avgEnergie = entries.length
+    ? (entries.reduce((s,[,e])=>s+(e.energie||0),0)/entries.length).toFixed(1) : '—';
+  const avgDouleur = entries.length
+    ? (entries.reduce((s,[,e])=>s+(e.douleur||0),0)/entries.length).toFixed(1) : '—';
+  const nuitsSjsr = entries.filter(([,e])=>(e.sjsr||0)>0).length;
+  const streak = getStreak();
 
   const html = `<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/>
-  <title>Rapport Flōra — ${name}</title>
+  <title>Journal Flōra — ${name}</title>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: 'Georgia', serif; color: #1e2d26; background: #fff; padding: 32px 40px; font-size:14px; }
-    h1 { font-size:1.8rem; color:#2d4a3e; margin-bottom:2px; }
-    h2 { font-size:1.1rem; color:#2d4a3e; margin:24px 0 10px; padding-bottom:4px; border-bottom:2px solid #e8e3dc; }
-    h3 { font-size:0.85rem; color:#8a9e96; font-weight:normal; margin-bottom:16px; }
-    .summary { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin:16px 0 24px; }
-    .sum-card { background:#f7f3ee; border-radius:10px; padding:12px; text-align:center; }
-    .sum-val { font-size:1.5rem; font-weight:700; color:#2d4a3e; }
-    .sum-label { font-size:0.7rem; color:#8a9e96; margin-top:3px; line-height:1.3; }
-    .chart-section { margin-bottom:20px; }
-    .chart-title { font-size:0.78rem; font-weight:700; color:#4a7c5e; margin-bottom:4px; text-transform:uppercase; letter-spacing:.05em; }
-    table { width:100%; border-collapse:collapse; font-size:0.82rem; margin-top:8px; }
-    thead tr { background:#2d4a3e; color:#fff; }
-    thead th { padding:8px 6px; text-align:left; font-weight:600; font-size:0.75rem; }
-    tbody tr:nth-child(even) { background:#f9f7f4; }
-    .meds-grid { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; }
-    .med-item { background:#fef5e8; border-radius:8px; padding:8px 12px; font-size:0.82rem; }
-    .med-bar { background:#ede8e0; border-radius:99px; height:6px; margin-top:4px; overflow:hidden; }
-    .med-fill { background:#d35400; height:100%; border-radius:99px; }
-    .sym-chip { display:inline-block; background:#f0ede8; border-radius:99px; padding:3px 10px; font-size:0.75rem; color:#4a5e54; margin:3px; }
-    .agenda-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:8px 0; }
-    .agenda-day { background:#f7f3ee; border-radius:8px; padding:8px 10px; font-size:0.75rem; }
-    .agenda-day-title { font-weight:700; color:#2d4a3e; margin-bottom:4px; }
-    .footer { margin-top:28px; text-align:center; font-size:0.72rem; color:#8a9e96; border-top:1px solid #ede8e0; padding-top:14px; }
-    .disclaimer { background:#f7f3ee; border-radius:8px; padding:12px; font-size:0.75rem; color:#6a7e74; margin-top:16px; line-height:1.6; }
+    body { font-family: Georgia, serif; color: #1e2d26; background: #fff; padding: 40px; }
+    h1 { font-size: 2rem; color: #2d4a3e; margin-bottom: 4px; }
+    .subtitle { color: #8a9e96; font-size: 0.9rem; margin-bottom: 32px; }
+    .summary { display: flex; gap: 24px; margin-bottom: 32px; }
+    .sum-card { background: #f7f3ee; border-radius: 12px; padding: 16px 20px; flex: 1; text-align: center; }
+    .sum-val { font-size: 1.8rem; font-weight: 700; color: #2d4a3e; }
+    .sum-label { font-size: 0.78rem; color: #8a9e96; margin-top: 4px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    thead tr { background: #2d4a3e; color: #fff; }
+    thead th { padding: 10px 8px; text-align: left; font-weight: 600; font-size: 0.8rem; }
+    tbody tr:nth-child(even) { background: #f7f3ee; }
+    .footer { margin-top: 32px; text-align: center; font-size: 0.78rem; color: #8a9e96; border-top: 1px solid #ede8e0; padding-top: 16px; }
     @media print {
-      body { padding:16px 20px; }
-      .no-print { display:none; }
-      h2 { page-break-before: auto; }
-      table { page-break-inside: auto; }
-      tr { page-break-inside: avoid; }
+      body { padding: 20px; }
+      .no-print { display: none; }
     }
   </style>
 </head>
 <body>
+  <h1>Flōra 🌿 — Journal de bien-être</h1>
+  <div class="subtitle">
+    ${name} · Exporté le ${today} · ${entries.length} entrée${entries.length>1?'s':''}
+  </div>
 
-  <h1>Flōra 🌿 — Rapport de suivi bien-être</h1>
-  <h3>${name} · ${entries.length} entrée${entries.length>1?'s':''} · Exporté le ${today}</h3>
-
-  <!-- Résumé -->
   <div class="summary">
-    <div class="sum-card"><div class="sum-val">${avgEnergie}</div><div class="sum-label">Énergie moy. /10</div></div>
-    <div class="sum-card"><div class="sum-val" style="color:#c0614a;">${avgDouleur}</div><div class="sum-label">Douleur moy. /10</div></div>
-    <div class="sum-card"><div class="sum-val" style="color:#8e44ad;">${nuitsSjsr}</div><div class="sum-label">Nuits SJSR (total)</div></div>
-    <div class="sum-card"><div class="sum-val" style="color:#2980b9;">${avgSommeil}h</div><div class="sum-label">Sommeil moy./nuit</div></div>
-    <div class="sum-card"><div class="sum-val">${streak}j</div><div class="sum-label">Streak actuel</div></div>
+    <div class="sum-card">
+      <div class="sum-val">${avgEnergie}</div>
+      <div class="sum-label">Énergie moyenne /10</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-val">${avgDouleur}</div>
+      <div class="sum-label">Douleur moyenne /10</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-val">${nuitsSjsr}</div>
+      <div class="sum-label">Nuits SJSR</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-val">${streak}</div>
+      <div class="sum-label">Jours consécutifs</div>
+    </div>
   </div>
 
-  <!-- Graphiques -->
-  <h2>📊 Évolution sur la période</h2>
-  <div class="chart-section">
-    <div class="chart-title">⚡ Énergie & 🔥 Douleur</div>
-    ${chartEnergieDouleur}
-  </div>
-  <div class="chart-section">
-    <div class="chart-title">🦵 Intensité SJSR</div>
-    ${chartSjsr}
-  </div>
-  <div class="chart-section">
-    <div class="chart-title">🌙 Qualité de sommeil</div>
-    ${chartSommeil}
-  </div>
-
-  ${meds.length ? `
-  <!-- Médicaments & Observance -->
-  <h2>💊 Traitements & Observance</h2>
-  <div class="meds-grid">
-    ${meds.map(med => {
-      const count = medCounts[med] || 0;
-      const pct = filled.length ? Math.round(count/filled.length*100) : 0;
-      return `<div class="med-item">
-        <div style="font-weight:600;color:#2d4a3e;">${med}</div>
-        <div style="font-size:0.7rem;color:#8a9e96;margin:2px 0;">${count} / ${filled.length} jours (${pct}%)</div>
-        <div class="med-bar"><div class="med-fill" style="width:${pct}%;"></div></div>
-      </div>`;
-    }).join('')}
-  </div>` : ''}
-
-  ${topSyms.length ? `
-  <!-- Symptômes -->
-  <h2>🩺 Symptômes les plus fréquents</h2>
-  <div>${topSyms.map(([s,n])=>`<span class="sym-chip">${s} <strong>${n}x</strong></span>`).join('')}</div>` : ''}
-
-  ${agendaRows.length ? `
-  <!-- Repas planifiés -->
-  <h2>🍽️ Repas planifiés sur la période</h2>
-  <div class="agenda-grid">
-    ${agendaRows.slice(0,30).map(({date,repas})=>`
-      <div class="agenda-day">
-        <div class="agenda-day-title">${date}</div>
-        ${repas.join('<br>')}
-      </div>`).join('')}
-  </div>` : ''}
-
-  <!-- Tableau journal -->
-  <h2>📋 Journal détaillé</h2>
   <table>
     <thead>
       <tr>
-        <th>Date</th><th>Sommeil</th><th>Énergie</th><th>Douleur</th>
-        <th>SJSR</th><th>Médicaments</th><th>Symptômes</th><th>Notes</th>
+        <th>Date</th>
+        <th>Sommeil</th>
+        <th>Énergie</th>
+        <th>Douleur</th>
+        <th>SJSR</th>
+        <th>Symptômes</th>
+        <th>Notes</th>
       </tr>
     </thead>
     <tbody>${rows}</tbody>
   </table>
 
-  <div class="disclaimer">
-    ⚕️ <strong>Note médicale :</strong> Ce rapport est généré automatiquement par l'application Flōra à partir de vos données personnelles de suivi. Il ne constitue pas un avis médical. Partagez-le avec votre médecin ou neurologue pour un suivi personnalisé de votre SJSR.
-  </div>
-
   <div class="footer">
     Flōra — Application bien-être SJSR/TDAH anti-inflammatoire · kettyburel-art.github.io/Fl-ra/<br>
-    Rapport généré le ${today} pour ${name}
+    Document généré automatiquement · À partager avec votre médecin si besoin
   </div>
 
-  <script>window.onload = () => { document.title = 'Rapport Flōra — ${name} — ${today}'; window.print(); }</script>
+  <script>window.onload = () => window.print();</script>
 </body>
 </html>`;
 
-  const blob = new Blob([html], { type:'text/html;charset=utf-8' });
+  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
   const url  = URL.createObjectURL(blob);
   const win  = window.open(url, '_blank');
   if (!win) {
+    // Fallback si popup bloqué
     const a = document.createElement('a');
     a.href = url;
-    a.download = `flora-rapport-${dateKey(new Date())}.html`;
+    a.download = `flora-journal-${dateKey(new Date())}.html`;
     a.click();
   }
-  setTimeout(() => URL.revokeObjectURL(url), 8000);
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 function renderHistorique() {
   const container = document.getElementById('historique-list');
-  if (!container) {
-    console.warn('renderHistorique: container #historique-list absent');
-    return;
-  }
-
-  // DIAGNOSTIC : lire directement le localStorage pour vérifier la synchro
-  let raw = {};
-  try {
-    raw = JSON.parse(localStorage.getItem('flora_journal') || '{}');
-  } catch(e) {
-    container.innerHTML = '<p style="text-align:center;color:#c0392b;margin-top:32px;">⚠️ Données corrompues en stockage.</p>';
-    console.error('flora_journal JSON parse error:', e);
-    return;
-  }
-
-  // Si la var globale journal est désynchronisée, la resynchroniser
-  if (typeof journal !== 'object' || journal === null || Object.keys(journal).length !== Object.keys(raw).length) {
-    console.warn('journal en mémoire désynchronisé — resync depuis localStorage');
-    journal = raw;
-  }
-
-  let entries;
-  try {
-    entries = Object.entries(journal)
-      .filter(([k, v]) => k && /^\d{4}-\d{2}-\d{2}$/.test(k) && v && typeof v === 'object')
-      .sort((a, b) => b[0].localeCompare(a[0]));
-  } catch(err) {
-    console.error('renderHistorique filter error:', err);
-    container.innerHTML = '<p style="text-align:center;color:#c0392b;margin-top:32px;">⚠️ Erreur de lecture — recharge la page.</p>';
-    return;
-  }
+  const entries   = Object.entries(journal).sort((a, b) => b[0].localeCompare(a[0]));
 
   if (!entries.length) {
-    const totalKeys = Object.keys(journal).length;
-    container.innerHTML = `
-      <p style="text-align:center;color:var(--text-light);margin-top:32px;">
-        Aucune entrée pour l'instant. 🌱
-      </p>
-      ${totalKeys > 0 ? `<p style="text-align:center;color:#c0392b;font-size:0.75rem;margin-top:8px;">
-        (${totalKeys} clé(s) trouvée(s) mais format invalide — debug : ${Object.keys(journal).slice(0,3).join(', ')})
-      </p>` : ''}
-    `;
+    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Aucune entrée pour l\'instant.</p>';
     return;
   }
 
-  try {
   container.innerHTML = entries.map(([date, e]) => {
     const d     = new Date(date + 'T12:00:00');
     const label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-    const capLabel = label.charAt(0).toUpperCase() + label.slice(1);
-    const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
-    const leversStr = typeof e.levers === 'number' && e.levers > 0
-      ? ` · ${['','1 lever','2 levers','3 levers','4+ levers'][Math.min(e.levers,4)]}`
-      : '';
-    const endStr = e.endormissement && e.endormissement !== 'rapide'
-      ? ` · endorm. ${e.endormissement}` : '';
-    const durStr = (e.duree && e.duree > 0) ? e.duree+'h' : '';
+    const stars = '★'.repeat(e.qualite) + '☆'.repeat(5 - e.qualite);
     const sleepLabel = e.coucher && e.lever
-      ? `${e.coucher}→${e.lever}${durStr?' · '+durStr:''} · ${e.cycles||'?'} cycles${leversStr}${endStr}`
-      : durStr ? `${durStr} de sommeil${leversStr}` : '—';
-    const medsHTML = e.meds && e.meds.length
-      ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;">
-          ${e.meds.map(m => `<span style="background:#fef5e8;color:#d35400;border-radius:99px;padding:2px 8px;font-size:0.68rem;font-weight:600;">💊 ${m}</span>`).join('')}
-         </div>` : '';
-    const symptomsHTML = e.symptoms && e.symptoms.length
-      ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
-          ${e.symptoms.slice(0,4).map(s => `<span style="background:var(--cream);color:var(--text-mid);border-radius:99px;padding:2px 8px;font-size:0.68rem;">${s}</span>`).join('')}
-         </div>` : '';
-    const rituelsHTML = e.rituels && e.rituels.length
-      ? `<div style="font-size:0.7rem;color:var(--text-light);margin-top:4px;">🌿 ${e.rituels.join(' · ')}</div>` : '';
-    // Barre énergie/douleur visuelle
-    const barEn = Math.round((e.energie||0)/10*100);
-    const barDo = Math.round((e.douleur||0)/10*100);
+      ? `${e.coucher}→${e.lever} (${e.duree}h, ${e.cycles || '?'} cycles)`
+      : `${e.duree}h`;
     return `
-      <div class="hist-entry" onclick="openDayView('${date}')" style="cursor:pointer;">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-          <div class="hist-date" style="margin:0;">${capLabel}</div>
-          <div style="font-size:0.8rem;">${stars}</div>
+      <div class="hist-entry">
+        <div class="hist-date">${label}</div>
+        <div class="hist-stats">
+          <span class="hist-stat">🌙 ${sleepLabel} ${stars}</span>
+          <span class="hist-stat">⚡ ${e.energie}/10</span>
+          <span class="hist-stat">💢 douleur ${e.douleur}/10</span>
+          ${e.sjsr > 0 ? `<span class="hist-stat">🦵 SJSR ${e.sjsr}/5</span>` : ''}
+          ${e.symptoms && e.symptoms.length ? `<span class="hist-stat">🔹 ${e.symptoms.slice(0,2).join(', ')}</span>` : ''}
         </div>
-        <div style="font-size:0.78rem;color:var(--text-mid);margin-bottom:8px;">🌙 ${sleepLabel}
-          ${e.sjsr > 0 ? `· 🦵 SJSR ${e.sjsr}/5` : ''}
-        </div>
-        <div style="display:flex;gap:10px;margin-bottom:6px;">
-          <div style="flex:1;">
-            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-light);margin-bottom:2px;">
-              <span>⚡ Énergie</span><span>${e.energie||0}/10</span>
-            </div>
-            <div style="background:var(--cream);border-radius:99px;height:5px;">
-              <div style="background:var(--green-mid);height:100%;border-radius:99px;width:${barEn}%;"></div>
-            </div>
-          </div>
-          <div style="flex:1;">
-            <div style="display:flex;justify-content:space-between;font-size:0.65rem;color:var(--text-light);margin-bottom:2px;">
-              <span>💢 Douleur</span><span>${e.douleur||0}/10</span>
-            </div>
-            <div style="background:var(--cream);border-radius:99px;height:5px;">
-              <div style="background:#e88080;height:100%;border-radius:99px;width:${barDo}%;"></div>
-            </div>
-          </div>
-        </div>
-        ${medsHTML}
-        ${symptomsHTML}
-        ${rituelsHTML}
-        ${e.notes ? `<div style="font-size:0.78rem;color:var(--text-mid);margin-top:6px;font-style:italic;border-left:2px solid var(--cream-dark);padding-left:8px;">${escapeHTML(e.notes)}</div>` : ''}
+        ${e.notes ? `<div style="font-size:0.8rem;color:var(--text-mid);margin-top:8px;font-style:italic;">"${e.notes}"</div>` : ''}
       </div>`;
   }).join('');
-  } catch(err) {
-    console.error('renderHistorique error:', err);
-    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Erreur d\'affichage — vos données sont sauvegardées. 💾</p>';
-  }
 }
+
+// ============================
+// RECETTES
+// ============================
 function renderRecettes() {
   const search = (document.getElementById('recette-search')?.value || '').toLowerCase();
   const grid   = document.getElementById('recettes-grid');
 
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
-    if (search) {
-      const haystack = (r.nom + ' ' + (r.ingredients || []).join(' ') + ' ' + (r.benefices || '')).toLowerCase();
-      if (!haystack.includes(search)) return false;
-    }
+    if (search && !r.nom.toLowerCase().includes(search)) return false;
     if (window._placardFilter && window._placardFilter.length) {
       const match = r.ingredients.some(ing =>
         window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
@@ -9696,11 +5511,9 @@ function closeModal() {
 function shareRecette(id) {
   const r = RECETTES.find(x => x.id === id);
   if (!r) return;
-  // URL directe vers la recette (fragment #recette-ID)
-  const recetteUrl = `https://kettyburel-art.github.io/Fl-ra/#recette-${r.id}`;
-  const text = `🌿 ${r.emoji} ${r.nom}\n⏱ ${r.temps} · ${r.calories} kcal\n\n${r.benefices}\n\nIngrédients :\n${r.ingredients.map(i=>'• '+i).join('\n')}\n\n👉 Voir la recette dans Flōra : ${recetteUrl}`;
+  const text = `🌿 ${r.emoji} ${r.nom}\n⏱ ${r.temps} · ${r.calories} kcal\n\n${r.benefices}\n\nIngrédients :\n${r.ingredients.map(i=>'• '+i).join('\n')}\n\n👉 Flōra : https://kettyburel-art.github.io/Fl-ra/`;
   if (navigator.share) {
-    navigator.share({ title: `Flōra — ${r.nom}`, text, url: recetteUrl }).catch(()=>{});
+    navigator.share({ title: `Flōra — ${r.nom}`, text, url: 'https://kettyburel-art.github.io/Fl-ra/' }).catch(()=>{});
   } else {
     navigator.clipboard?.writeText(text).then(() => {
       const msg = document.createElement('div');
@@ -9729,197 +5542,98 @@ function renderStats() {
   const statsEl = document.getElementById('stats-container');
   if (!statsEl) return;
 
-  const days = isPremium ? 30 : 7;
+  const days = 30;
   const today = new Date();
   const entries = [];
   for (let i = days - 1; i >= 0; i--) {
     const d = new Date(today);
     d.setDate(today.getDate() - i);
-    const dk = dateKey(d);
-    entries.push({ dk, data: journal[dk] || null, d });
+    entries.push({ date: dateKey(d), data: journal[dateKey(d)] || null, d });
   }
 
   const filled = entries.filter(e => e.data);
-  const avg = (key) => filled.length
-    ? Math.round(filled.reduce((s,e) => s+(e.data[key]||0),0)/filled.length*10)/10 : 0;
-  const avgEnergie = avg('energie');
-  const avgDouleur = avg('douleur');
-  const nuitsSjsr  = filled.filter(e => (e.data.sjsr||0) > 0).length;
-  const bestNuit   = filled.reduce((best,e) => (e.data.qualite||0)>(best?.data?.qualite||0)?e:best, null);
-  const streak     = getStreak();
+  const avgEnergie = filled.length
+    ? Math.round(filled.reduce((s, e) => s + (e.data.energie || 0), 0) / filled.length * 10) / 10 : 0;
+  const avgDouleur = filled.length
+    ? Math.round(filled.reduce((s, e) => s + (e.data.douleur || 0), 0) / filled.length * 10) / 10 : 0;
+  const nuitsSjsr = filled.filter(e => e.data.sjsr > 0).length;
 
-  // Médicaments les plus pris
-  const medCounts = {};
-  filled.forEach(e => (e.data.meds||[]).forEach(m => { medCounts[m]=(medCounts[m]||0)+1; }));
-  const topMeds = Object.entries(medCounts).sort((a,b)=>b[1]-a[1]).slice(0,4);
-
-  // Symptômes les plus fréquents
-  const symCounts = {};
-  filled.forEach(e => (e.data.symptoms||[]).forEach(s => { symCounts[s]=(symCounts[s]||0)+1; }));
-  const topSyms = Object.entries(symCounts).sort((a,b)=>b[1]-a[1]).slice(0,4);
-
-  // ── Graphique SVG courbes ──
-  function svgCurve(values, color, maxVal=10, h=60, w=null) {
-    const n = values.length;
-    if (n < 2) return '';
-    const svgW = w || Math.min(320, n * 14);
-    const pts = values.map((v,i) => {
-      const x = (i/(n-1)) * svgW;
-      const y = h - (v/maxVal)*h;
-      return `${x.toFixed(1)},${y.toFixed(1)}`;
-    }).join(' ');
-    // Spline approximée via polyline + aire remplie
-    const fillPts = `0,${h} ${pts} ${svgW},${h}`;
-    return `<svg viewBox="0 0 ${svgW} ${h}" style="width:100%;height:${h}px;overflow:visible;">
-      <defs>
-        <linearGradient id="grad-${color.replace('#','')}" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="${color}" stop-opacity="0.25"/>
-          <stop offset="100%" stop-color="${color}" stop-opacity="0.02"/>
-        </linearGradient>
-      </defs>
-      <polygon points="${fillPts}" fill="url(#grad-${color.replace('#','')})" />
-      <polyline points="${pts}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-      ${values.map((v,i) => {
-        const x = (i/(n-1))*svgW;
-        const y = h-(v/maxVal)*h;
-        return v > 0 ? `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="${color}" stroke="white" stroke-width="1.5"/>` : '';
-      }).join('')}
-    </svg>`;
-  }
-
-  const energieVals = entries.map(e => e.data?.energie || 0);
-  const douleurVals = entries.map(e => e.data?.douleur  || 0);
-  const sjsrVals    = entries.map(e => e.data?.sjsr     || 0);
-  const sommeilVals = entries.map(e => Math.min(10, (e.data?.duree || 0) / 9 * 10));
-
-  // Labels X (jours)
-  const dayLabels = entries.map((e,i) => {
-    if (days <= 7) return e.d.toLocaleDateString('fr-FR',{weekday:'short'}).slice(0,3);
-    if (i % 5 === 0 || i === days-1) return e.d.getDate().toString();
-    return '';
-  });
-
-  const xAxis = `<div style="display:flex;justify-content:space-between;margin-top:2px;">
-    ${dayLabels.map(l=>`<span style="font-size:0.6rem;color:var(--text-light);min-width:14px;text-align:center;">${l}</span>`).join('')}
-  </div>`;
+  const visible = isPremium ? entries : entries.slice(-7);
 
   statsEl.innerHTML = `
-    <!-- Résumé cartes -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;">
-      <div style="background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;">
-        <div style="font-size:1.6rem;font-weight:700;color:var(--green-mid);">${avgEnergie||'—'}</div>
-        <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">Énergie moy.<br>/10</div>
+    <div class="stats-summary-grid">
+      <div class="stats-summary-card">
+        <div class="stats-summary-val">${avgEnergie || '—'}</div>
+        <div class="stats-summary-label">Énergie moy.<br>/10</div>
       </div>
-      <div style="background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;">
-        <div style="font-size:1.6rem;font-weight:700;color:#c0392b;">${avgDouleur||'—'}</div>
-        <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">Douleur moy.<br>/10</div>
+      <div class="stats-summary-card">
+        <div class="stats-summary-val">${avgDouleur || '—'}</div>
+        <div class="stats-summary-label">Douleur moy.<br>/10</div>
       </div>
-      <div style="background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;">
-        <div style="font-size:1.6rem;font-weight:700;color:#8e44ad;">${nuitsSjsr}</div>
-        <div style="font-size:0.65rem;color:var(--text-light);margin-top:2px;">Nuits SJSR<br>${days}j</div>
+      <div class="stats-summary-card">
+        <div class="stats-summary-val">${nuitsSjsr}</div>
+        <div class="stats-summary-label">Nuits SJSR<br>${isPremium ? '30j' : '7j'}</div>
       </div>
     </div>
 
-    <!-- Courbe Énergie -->
-    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">⚡ Énergie — ${days}j</div>
-        <div style="font-size:0.72rem;color:var(--green-mid);font-weight:600;">moy. ${avgEnergie}/10</div>
+    <div class="stats-section" style="margin-top:16px;">
+      <div class="stats-section-title">⚡ Énergie & Douleur — ${isPremium ? '30 derniers jours' : '7 derniers jours'}</div>
+      <div class="stats-chart-wrap">
+        <div class="stats-chart-bars">
+          ${visible.map(e => {
+            const en  = e.data ? Math.round((e.data.energie || 0) / 10 * 70) : 0;
+            const do_ = e.data ? Math.round((e.data.douleur  || 0) / 10 * 70) : 0;
+            const day = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
+            return `<div class="stats-bar-wrap">
+              <div style="display:flex;gap:2px;align-items:flex-end;height:70px;justify-content:center;">
+                <div class="stats-bar energie" style="height:${en}px;width:45%;"></div>
+                <div class="stats-bar douleur" style="height:${do_}px;width:45%;"></div>
+              </div>
+              <div class="stats-day-label">${day}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="stats-legend">
+          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--green-mid)"></div> Énergie</div>
+          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--red-soft)"></div> Douleur</div>
+        </div>
       </div>
-      ${svgCurve(energieVals, '#4a7c5e')}
-      ${xAxis}
     </div>
 
-    <!-- Courbe Douleur -->
-    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">🔥 Douleur — ${days}j</div>
-        <div style="font-size:0.72rem;color:#c0392b;font-weight:600;">moy. ${avgDouleur}/10</div>
+    <div class="stats-section">
+      <div class="stats-section-title">🦵 Nuits SJSR</div>
+      <div class="stats-chart-wrap">
+        <div class="stats-chart-bars">
+          ${visible.map(e => {
+            const sjsr = e.data ? Math.round((e.data.sjsr || 0) / 5 * 70) : 0;
+            const day  = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
+            return `<div class="stats-bar-wrap">
+              <div style="height:70px;display:flex;align-items:flex-end;justify-content:center;">
+                <div class="stats-bar sjsr" style="height:${sjsr}px;width:80%;"></div>
+              </div>
+              <div class="stats-day-label">${day}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-light);margin-top:6px;">0 = aucun · 5 = insupportable</div>
       </div>
-      ${svgCurve(douleurVals, '#c0392b')}
-      ${xAxis}
     </div>
-
-    <!-- Courbe SJSR -->
-    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">🦵 SJSR — ${days}j</div>
-        <div style="font-size:0.72rem;color:#8e44ad;font-weight:600;">${nuitsSjsr} nuit${nuitsSjsr>1?'s':''} concernée${nuitsSjsr>1?'s':''}</div>
-      </div>
-      ${svgCurve(sjsrVals, '#8e44ad', 5)}
-      ${xAxis}
-      <div style="font-size:0.65rem;color:var(--text-light);margin-top:4px;">0 = aucun · 5 = insupportable</div>
-    </div>
-
-    <!-- Courbe Sommeil -->
-    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);">🌙 Sommeil — ${days}j</div>
-        <div style="font-size:0.72rem;color:#2980b9;font-weight:600;">${filled.length ? Math.round(filled.reduce((s,e)=>s+(e.data.duree||0),0)/filled.length*10)/10 : '—'}h/nuit</div>
-      </div>
-      ${svgCurve(sommeilVals, '#2980b9')}
-      ${xAxis}
-      <div style="font-size:0.65rem;color:var(--text-light);margin-top:4px;">Basé sur les heures de coucher/lever</div>
-    </div>
-
-    <!-- Médicaments pris -->
-    ${topMeds.length ? `
-    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);margin-bottom:10px;">💊 Médicaments — observance ${days}j</div>
-      ${topMeds.map(([med,count]) => `
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">
-          <span style="font-size:0.8rem;color:var(--text-dark);min-width:90px;">${med}</span>
-          <div style="flex:1;background:var(--cream);border-radius:99px;height:8px;overflow:hidden;">
-            <div style="background:var(--green-mid);height:100%;border-radius:99px;width:${Math.round(count/filled.length*100)}%;transition:width .5s;"></div>
-          </div>
-          <span style="font-size:0.72rem;color:var(--text-light);min-width:40px;text-align:right;">${count}/${filled.length}j</span>
-        </div>`).join('')}
-    </div>` : ''}
-
-    <!-- Symptômes fréquents -->
-    ${topSyms.length ? `
-    <div style="background:var(--white);border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="font-size:0.78rem;font-weight:700;color:var(--green-deep);margin-bottom:10px;">🩺 Symptômes fréquents — ${days}j</div>
-      <div style="display:flex;flex-wrap:wrap;gap:6px;">
-        ${topSyms.map(([sym,count]) =>
-          `<div style="background:var(--cream);border-radius:99px;padding:4px 12px;font-size:0.75rem;color:var(--text-dark);">
-            ${sym} <span style="color:var(--text-light);">${count}x</span>
-          </div>`).join('')}
-      </div>
-    </div>` : ''}
-
-    <!-- Meilleure nuit -->
-    ${bestNuit ? `
-    <div style="background:linear-gradient(135deg,var(--green-deep),var(--green-mid));border-radius:14px;padding:14px;margin-bottom:10px;">
-      <div style="font-size:0.72rem;color:rgba(255,255,255,0.7);margin-bottom:4px;">⭐ Meilleure nuit — ${days}j</div>
-      <div style="font-size:0.9rem;font-weight:700;color:white;text-transform:capitalize;">
-        ${bestNuit.d.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
-      </div>
-      <div style="font-size:0.78rem;color:rgba(255,255,255,0.85);margin-top:4px;">
-        ${bestNuit.data.qualite}/5 étoiles · ${bestNuit.data.duree||'?'}h · Énergie ${bestNuit.data.energie||'?'}/10
-      </div>
-    </div>` : ''}
-
-    <!-- Message si pas de données -->
-    ${filled.length === 0 ? `
-    <div style="text-align:center;padding:32px 16px;color:var(--text-light);">
-      <div style="font-size:2rem;margin-bottom:8px;">📊</div>
-      <p style="font-size:0.85rem;">Commencez à remplir votre journal pour voir vos statistiques.</p>
-    </div>` : ''}
 
     ${!isPremium ? `
-    <div style="background:var(--cream);border-radius:14px;padding:16px;text-align:center;margin-top:8px;">
-      <div style="font-size:1.4rem;margin-bottom:6px;">📈</div>
-      <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:12px;">Débloquez l'historique <strong>30 jours</strong> et les corrélations avancées.</p>
+    <div class="stats-premium-wall">
+      <div style="font-size:1.8rem;">📊</div>
+      <p>Débloquez l'historique complet sur <strong>30 jours</strong>, les tendances et l'export PDF.</p>
       <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank"
-         style="display:block;background:var(--green-deep);color:white;border-radius:99px;padding:10px;text-decoration:none;font-size:0.85rem;">
+         class="btn-premium" style="display:block;text-align:center;text-decoration:none;">
         ⭐ Passer à Premium — 4,99€/mois
       </a>
     </div>` : ''}
   `;
 }
 
-
+// ============================
+// CONSEILS SJSR ROTATIFS
+// ============================
 const CONSEILS_SJSR = [
   { icon: '🩸', text: 'Associez toujours vos sources de fer à de la vitamine C (citron, poivron) pour multiplier par 3 leur absorption.' },
   { icon: '🦵', text: 'Le magnésium bisglycinate pris le soir réduit significativement les impatiences nocturnes. Privilégiez les eaux riches en magnésium.' },
@@ -9938,13 +5652,17 @@ const CONSEILS_SJSR = [
 let conseilIdx = new Date().getDate() % CONSEILS_SJSR.length;
 
 function renderConseil() {
-  if (!CONSEILS_SJSR || !CONSEILS_SJSR.length) return;
   const c = CONSEILS_SJSR[conseilIdx];
-  if (!c) return;
   const iconEl = document.getElementById('conseil-icon');
   const textEl = document.getElementById('conseil-text');
   if (iconEl) iconEl.textContent = c.icon;
-  if (textEl) textEl.textContent = c.text; // Direct, sans animation opacity
+  if (textEl) {
+    textEl.style.opacity = '0';
+    setTimeout(() => {
+      textEl.textContent = c.text;
+      textEl.style.opacity = '1';
+    }, 150);
+  }
 }
 
 function nextConseil() {
@@ -9959,15 +5677,11 @@ function openRecetteDuJour() {
 
 
 function getStreak() {
-  if (!journal || Object.keys(journal).length === 0) return 0;
   const today = new Date();
   let streak = 0;
   let d = new Date(today);
-  // Ne compter le jour en cours que s'il a une vraie entrée
   while (true) {
-    const entry = journal[dateKey(d)];
-    const hasRealData = entry && (entry.coucher || entry.energie || entry.sjsr !== undefined);
-    if (hasRealData) { streak++; d.setDate(d.getDate() - 1); }
+    if (journal[dateKey(d)]) { streak++; d.setDate(d.getDate() - 1); }
     else break;
   }
   return streak;
@@ -9980,30 +5694,6 @@ function getStreakMessage(n) {
   if (n < 14)  return 'Une semaine complète 🎉';
   if (n < 30)  return 'Régulière et déterminée 💚';
   return 'Un mois de suivi — extraordinaire 🏆';
-}
-
-// ============================
-// DEBUG — à retirer après diagnostic
-// ============================
-function debugJournal() {
-  const raw = localStorage.getItem('flora_journal') || '{}';
-  let parsed;
-  try {
-    parsed = JSON.parse(raw);
-  } catch(e) {
-    alert('⚠️ PARSE ERROR: ' + e.message);
-    return;
-  }
-  const keys = Object.keys(parsed);
-  const sample = keys.length ? JSON.stringify(parsed[keys[0]], null, 2).slice(0, 400) : '(vide)';
-  alert(
-    '=== DEBUG JOURNAL ===\n\n' +
-    'Nombre de clés : ' + keys.length + '\n\n' +
-    'Clés : ' + keys.join(', ') + '\n\n' +
-    'journal (var mémoire) : ' + Object.keys(journal || {}).length + ' clé(s)\n\n' +
-    'Streak calculé : ' + getStreak() + '\n\n' +
-    'Première entrée :\n' + sample
-  );
 }
 
 function renderStreakOnDashboard() {
@@ -10101,33 +5791,20 @@ function getWeekDates(offset = 0) {
 }
 
 function renderAgenda() {
-  const grid = document.getElementById('agenda-grid');
-  const weekLabel = document.getElementById('week-label');
-  if (!grid || !weekLabel) return;
-
   const dates = getWeekDates(currentWeekOffset);
   const today = dateKey(new Date());
 
+  // Week label
   const startLabel = dates[0].toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
   const endLabel   = dates[6].toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  weekLabel.textContent = `${startLabel} – ${endLabel}`;
+  document.getElementById('week-label').textContent = `${startLabel} – ${endLabel}`;
 
-  // Détecter si la semaine est vide pour afficher la bannière
-  const weekIsEmpty = dates.every(d => {
-    const k = dateKey(d);
-    const day = agenda[k] || {};
-    return !Object.values(day).some(Boolean);
-  });
-  const banner = document.getElementById('agenda-autogen-banner');
-  if (banner) banner.classList.toggle('hidden', !weekIsEmpty);
-
+  const grid = document.getElementById('agenda-grid');
   grid.innerHTML = dates.map((d, i) => {
-    if (!(d instanceof Date) || isNaN(d.getTime())) return '';
     const k       = dateKey(d);
     const isToday = k === today;
     const dayData = agenda[k] || {};
     const dayName = JOURS_FULL[i];
-    const isWE    = i === 5 || i === 6;
 
     const repasHTML = REPAS.map(r => {
       const slug  = r.slug;
@@ -10135,17 +5812,17 @@ function renderAgenda() {
       const rec   = recId ? RECETTES.find(x => x.id === recId) : null;
       return `
         <div class="agenda-meal" onclick="editAgendaMeal('${k}','${slug}')">
-          <div class="meal-label">${r.emoji || ''} ${r.label}</div>
+          <div class="meal-label">${r.label}</div>
           <div class="meal-content ${rec ? '' : 'meal-empty'}">${rec ? rec.emoji + ' ' + rec.nom : '+ Ajouter'}</div>
           ${rec ? `<button class="meal-edit-btn" onclick="event.stopPropagation();clearAgendaMeal('${k}','${slug}')">✕</button>` : ''}
         </div>`;
     }).join('');
 
     return `
-      <div class="agenda-day${isWE ? ' agenda-day-we' : ''}">
-        <div class="agenda-day-header ${isToday ? 'today-header' : ''}" onclick="openDayView('${k}')" style="cursor:pointer;">
+      <div class="agenda-day">
+        <div class="agenda-day-header ${isToday ? 'today-header' : ''}">
           <span>${dayName} ${d.getDate()}</span>
-          <span style="font-size:0.7rem;opacity:0.8;">${isToday ? 'Aujourd\'hui 📍' : '→ Détail'}</span>
+          ${isToday ? '<span style="font-size:0.7rem;opacity:0.8;">Aujourd\'hui</span>' : ''}
         </div>
         <div class="agenda-meals">${repasHTML}</div>
       </div>`;
@@ -10155,103 +5832,6 @@ function renderAgenda() {
 function changeWeek(dir) {
   currentWeekOffset += dir;
   renderAgenda();
-}
-
-let currentAgendaView = 'semaine';
-let currentMonthOffset = 0;
-
-function switchAgendaView(view, el) {
-  currentAgendaView = view;
-  document.querySelectorAll('#page-agenda .jtab').forEach(t => t.classList.remove('active'));
-  if (el) el.classList.add('active');
-  document.getElementById('agenda-view-semaine').classList.toggle('hidden', view !== 'semaine');
-  document.getElementById('agenda-view-mois').classList.toggle('hidden', view !== 'mois');
-  if (view === 'mois') renderAgendaMensuel();
-  else renderAgenda();
-}
-
-function changeAgendaMonth(dir) {
-  currentMonthOffset += dir;
-  renderAgendaMensuel();
-}
-
-function renderAgendaMensuel() {
-  const now = new Date();
-  const targetDate = new Date(now.getFullYear(), now.getMonth() + currentMonthOffset, 1);
-  const year  = targetDate.getFullYear();
-  const month = targetDate.getMonth();
-  const today = dateKey(new Date());
-
-  const monthName = targetDate.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
-  document.getElementById('month-label').textContent = monthName.charAt(0).toUpperCase() + monthName.slice(1);
-
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const grid = document.getElementById('agenda-month-grid');
-
-  // Construire les jours du mois
-  let html = '<div style="display:flex;flex-direction:column;gap:10px;">';
-
-  // Déterminer si on commence par la 2ème semaine (si on est après le 13)
-  // La vue commence toujours au 1er mais scroll vers aujourd'hui
-  for (let day = 1; day <= daysInMonth; day++) {
-    const d = new Date(year, month, day);
-    const dk = dateKey(d);
-    const isToday = dk === today;
-    const dayData = agenda[dk] || {};
-    const dow = d.getDay(); // 0=dim
-    const dowNames = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
-    const dowName = dowNames[dow];
-    const isWE = dow === 0 || dow === 6;
-
-    // Repas planifiés ce jour
-    const repasPlanned = REPAS.map(r => {
-      const recId = dayData[r.slug];
-      const rec = recId ? RECETTES.find(x => x.id === recId) : null;
-      return rec ? `<span style="font-size:0.75rem;background:var(--cream);border-radius:6px;padding:2px 6px;white-space:nowrap;">${rec.emoji} ${rec.nom.length > 18 ? rec.nom.slice(0,18)+'…' : rec.nom}</span>` : null;
-    }).filter(Boolean);
-
-    html += `
-      <div id="month-day-${dk}"
-        onclick="openDayView('${dk}')"
-        style="background:${isToday ? 'var(--green-deep)' : isWE ? 'var(--cream)' : 'var(--white)'};
-               border:1.5px solid ${isToday ? 'var(--green-deep)' : 'var(--cream-dark)'};
-               border-radius:var(--radius-md);padding:10px 12px;cursor:pointer;transition:opacity .2s;"
-      >
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${repasPlanned.length ? '8px' : '0'};">
-          <div style="font-weight:700;font-size:0.9rem;color:${isToday ? 'var(--white)' : isWE ? 'var(--green-mid)' : 'var(--green-deep)'};">
-            ${dowName} ${day}${isToday ? ' 📍' : ''}
-          </div>
-          <div style="font-size:0.72rem;color:${isToday ? 'rgba(255,255,255,0.7)' : 'var(--text-light)'};">
-            ${repasPlanned.length ? repasPlanned.length + ' repas' : '+ Ajouter'}
-          </div>
-        </div>
-        ${repasPlanned.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;">${repasPlanned.join('')}</div>` : ''}
-      </div>`;
-  }
-
-  html += '</div>';
-  grid.innerHTML = html;
-
-  // Scroll vers aujourd'hui si on est dans le bon mois
-  if (month === now.getMonth() && year === now.getFullYear()) {
-    setTimeout(() => {
-      const todayEl = document.getElementById(`month-day-${today}`);
-      if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 150);
-  }
-}
-
-function jumpToWeekDay(dk) {
-  // Basculer en vue semaine et naviguer vers la semaine contenant ce jour
-  const target = new Date(dk.slice(0,4), dk.slice(4,6)-1, dk.slice(6,8));
-  const now = new Date();
-  const nowMonday = new Date(now);
-  nowMonday.setDate(now.getDate() - (now.getDay()+6)%7);
-  const targetMonday = new Date(target);
-  targetMonday.setDate(target.getDate() - (target.getDay()+6)%7);
-  const diffDays = Math.round((targetMonday - nowMonday) / (1000*60*60*24));
-  currentWeekOffset = Math.round(diffDays / 7);
-  switchAgendaView('semaine', document.getElementById('agenda-tab-semaine'));
 }
 
 function editAgendaMeal(dk, slug) {
@@ -10297,12 +5877,6 @@ function setAgendaMeal(dk, repas, recId) {
   saveState();
   closeModal();
   renderAgenda();
-  // Si on vient de la vue jour, la rouvrir
-  if (window._pendingDayView) {
-    const pendingDk = window._pendingDayView;
-    window._pendingDayView = null;
-    setTimeout(() => openDayView(pendingDk), 150);
-  }
 }
 
 function clearAgendaMeal(dk, repas) {
@@ -10337,13 +5911,13 @@ function switchGenTab(tab, el) {
 // Plan mensuel Avril 2026
 const PLAN_MENSUEL_AVRIL = [
   // Semaine 1 — Focus Fer & SJSR
-  { j:1,  pdc:1,  dej:4,  din:75, snack:129, theme:'🩸 Boost Fer' },
-  { j:2,  pdc:2,  dej:5,  din:76, snack:80,  theme:'🌿 Anti-inflam' },
-  { j:3,  pdc:3,  dej:29, din:9,  snack:81,  theme:'🧠 Focus TDAH' },
-  { j:4,  pdc:4,  dej:54, din:33, snack:82,  theme:'🦵 Jambes légères' },
-  { j:5,  pdc:5,  dej:55, din:34, snack:18,  theme:'⚡ Énergie' },
-  { j:6,  pdc:25, dej:39, din:112,snack:16,  theme:'🥂 Week-end' },
-  { j:7,  pdc:26, dej:40, din:113,snack:17,  theme:'🛌 Sommeil' },
+  { j:1,  pdc:1,  dej:51, din:75, snack:129, theme:'🩸 Boost Fer' },
+  { j:2,  pdc:2,  dej:52, din:76, snack:80,  theme:'🌿 Anti-inflam' },
+  { j:3,  pdc:3,  dej:53, din:77, snack:81,  theme:'🧠 Focus TDAH' },
+  { j:4,  pdc:4,  dej:54, din:78, snack:82,  theme:'🦵 Jambes légères' },
+  { j:5,  pdc:5,  dej:55, din:79, snack:83,  theme:'⚡ Énergie' },
+  { j:6,  pdc:6,  dej:56, din:112,snack:84,  theme:'🥂 Week-end' },
+  { j:7,  pdc:7,  dej:57, din:113,snack:85,  theme:'🛌 Sommeil' },
   // Semaine 2 — Focus Magnésium
   { j:8,  pdc:8,  dej:58, din:114,snack:86,  theme:'💊 Magnésium' },
   { j:9,  pdc:9,  dej:59, din:115,snack:87,  theme:'🌙 Nuit calme' },
@@ -10570,7 +6144,7 @@ function generateMenu() {
 
   // Filtre par priorité
   const filterPriority = (arr) => {
-    if (priorite === 'energie')   return arr.filter(r => r.calories > 300).length > 2 ? arr.filter(r => r.calories > 300) : arr;
+    if (priorite === 'energie')   return arr.filter(r => r.tags?.includes('fer') || r.calories > 350) || arr;
     if (priorite === 'sommeil')   return arr.filter(r => r.benefices?.toLowerCase().includes('sommeil')) || arr;
     if (priorite === 'digestion') return arr.filter(r => r.tags?.includes('vg')) || arr;
     return arr; // anti-inflammatoire = tout
@@ -10679,54 +6253,17 @@ function loadProfil() {
   document.getElementById('p-sl').checked    = !!profile.sansLactose;
   document.getElementById('p-sv').checked    = !!profile.vegetarien;
 
-  // Charger les horaires personnalisés
-  const horaires = profile.horaires || {};
-  const defaultH = { petitdej:'07:00', dejeuner:'13:00', gouter:'16:00', diner:'19:00', medicaments:'20:30', journal:'21:00' };
-  Object.entries(defaultH).forEach(([key, def]) => {
-    const el = document.getElementById('p-h-' + key);
-    if (el) el.value = horaires[key] || def;
-  });
-
-  // Charger les médicaments personnalisés
-  renderProfilMeds();
-
   const initials = (profile.name || '?').charAt(0).toUpperCase();
   document.getElementById('avatar-initials').textContent   = initials;
   document.getElementById('profil-display-name').textContent = profile.name || 'Mon profil';
 
   const badge = document.getElementById('profil-plan-badge');
-  if (badge) {
-    if (isPremium) {
-      badge.textContent = '👑 Abonné·e Premium';
-      badge.className = 'profil-badge premium';
-    } else {
-      badge.textContent = 'Version gratuite';
-      badge.className = 'profil-badge';
-    }
-  }
-
-  // Mettre à jour l'affichage du plan card selon statut premium
-  const planName = document.querySelector('#plan-card .plan-name');
-  if (planName) {
-    planName.textContent = isPremium ? 'Flōra Premium ⭐' : 'Flōra Gratuit';
-  }
-
-  // Afficher/masquer les features locked
-  document.querySelectorAll('.pf-locked').forEach(el => {
-    if (isPremium) {
-      el.style.opacity = '1';
-      el.textContent = el.textContent.replace('🔒 ', '✅ ');
-    }
-  });
-
-  // Bouton premium
-  const btnPrem = document.querySelector('.btn-premium');
-  if (btnPrem) {
-    if (isPremium) {
-      btnPrem.textContent = '✅ Accès Premium actif';
-      btnPrem.style.background = 'var(--green-deep)';
-      btnPrem.onclick = null;
-    }
+  if (isPremium) {
+    badge.textContent = '⭐ Abonné·e Premium';
+    badge.className = 'profil-badge premium';
+  } else {
+    badge.textContent = 'Version gratuite';
+    badge.className = 'profil-badge';
   }
 }
 
@@ -10734,18 +6271,6 @@ function saveProfil(btn) {
   profile.name        = document.getElementById('p-name').value.trim();
   profile.goal        = document.getElementById('p-goal').value;
   profile.sansGluten  = document.getElementById('p-sg').checked;
-
-  // Sauvegarder les horaires personnalisés
-  profile.horaires = {
-    petitdej:    document.getElementById('p-h-petitdej')?.value    || '07:00',
-    dejeuner:    document.getElementById('p-h-dejeuner')?.value    || '13:00',
-    gouter:      document.getElementById('p-h-gouter')?.value      || '16:00',
-    diner:       document.getElementById('p-h-diner')?.value       || '19:00',
-    medicaments: document.getElementById('p-h-medicaments')?.value || '20:30',
-    journal:     document.getElementById('p-h-journal')?.value     || '21:00',
-  };
-
-  // Les médicaments sont sauvegardés directement par addProfilMed/removeProfilMed
   profile.sansLactose = document.getElementById('p-sl').checked;
   profile.vegetarien  = document.getElementById('p-sv').checked;
 
@@ -10783,71 +6308,38 @@ function activatePremiumDemo() {
   closePremium();
 }
 
-// Codes premium valides — format FLORA-XXXXXX
-// Générés automatiquement à l'activation Stripe ou ajoutés manuellement
-const PREMIUM_CODES_VALID = [
-  // Codes de démonstration / beta
-  'FLORA-BETA26',
-  'FLORA-SJSR26',
-  'FLORA-BIENETRE',
-  'FLORA-KETTY26',
-  // Codes Stripe post-paiement — ajouter ici après chaque abonnement confirmé
-  // Format recommandé : FLORA-XXXXXX (6 caractères alphanumériques)
-];
-
-function generatePremiumCode() {
-  // Génère un code unique au format FLORA-XXXXXX
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // sans I,O,0,1 pour éviter confusions
-  let code = 'FLORA-';
-  for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-  return code;
-}
-
 function checkCode() {
-  const input   = document.getElementById('promo-code');
-  const code    = (input?.value || '').trim().toUpperCase();
+  const code = document.getElementById('promo-code').value.trim().toUpperCase();
   const errorEl   = document.getElementById('code-error');
   const successEl = document.getElementById('code-success');
 
+  // Réinitialiser les messages
   errorEl?.classList.add('hidden');
   successEl?.classList.add('hidden');
 
-  if (!code) {
-    if (errorEl) { errorEl.textContent = 'Entrez votre code.'; errorEl.classList.remove('hidden'); }
-    return;
-  }
+  // Codes fixes de démo/test
+  const FIXED_CODES = ['FLORA2025', 'SJSR2025', 'BIENETRE'];
 
-  // Vérifier dans la liste des codes valides
-  const isValid = PREMIUM_CODES_VALID.includes(code) || /^FLORA-[A-Z0-9]{6,8}$/.test(code);
+  // Format dynamique post-paiement Stripe : FLORA-XXXXXXXX (8+ chars après le tiret)
+  const isDynamicCode = /^FLORA-[A-Z0-9]{6,}$/.test(code);
 
-  // Vérifier les codes déjà utilisés (stockés localement)
-  const usedCodes = JSON.parse(localStorage.getItem('flora_used_codes') || '[]');
-  const alreadyUsed = usedCodes.includes(code);
-
-  if (isValid && !alreadyUsed) {
-    // Marquer le code comme utilisé sur cet appareil
-    usedCodes.push(code);
-    localStorage.setItem('flora_used_codes', JSON.stringify(usedCodes));
-    // Activer premium
+  if (FIXED_CODES.includes(code) || isDynamicCode) {
     activatePremium();
-    if (input) input.value = '';
-    if (successEl) { successEl.textContent = '✅ Premium activé ! Bienvenue 🌿'; successEl.classList.remove('hidden'); }
-    setTimeout(() => closePremium(), 2000);
-  } else if (alreadyUsed) {
-    if (errorEl) { errorEl.textContent = '❌ Ce code a déjà été utilisé.'; errorEl.classList.remove('hidden'); }
-    if (input) input.style.borderColor = 'var(--red-soft)';
-    setTimeout(() => { if (input) input.style.borderColor = ''; errorEl?.classList.add('hidden'); }, 3000);
+    successEl?.classList.remove('hidden');
+    setTimeout(() => closePremium(), 1800);
   } else {
-    if (errorEl) { errorEl.textContent = '❌ Code invalide. Vérifiez votre email.'; errorEl.classList.remove('hidden'); }
-    if (input) input.style.borderColor = 'var(--red-soft)';
-    setTimeout(() => { if (input) input.style.borderColor = ''; errorEl?.classList.add('hidden'); }, 3000);
+    document.getElementById('promo-code').style.borderColor = 'var(--red-soft)';
+    errorEl?.classList.remove('hidden');
+    setTimeout(() => {
+      document.getElementById('promo-code').style.borderColor = '';
+      errorEl?.classList.add('hidden');
+    }, 3000);
   }
 }
 
 function activatePremium() {
   isPremium = true;
   localStorage.setItem('flora_premium', 'true');
-  loadProfil(); // Rafraîchir l'UI du profil
   loadProfil();
   renderRecettes();
 }
