@@ -441,6 +441,14 @@
           <span class="chip" onclick="filterCat('diner', this)">🌙 Dîners</span>
           <span class="chip" onclick="filterCat('snack', this)">🍎 Snacks</span>
         </div>
+        <!-- Filtres nutritionnels -->
+        <div class="filter-chips" id="nutri-filters" style="margin-top:6px;">
+          <span class="chip" onclick="filterNutri('fer', this)">🩸 Fer</span>
+          <span class="chip" onclick="filterNutri('omega3', this)">🐟 Oméga-3</span>
+          <span class="chip" onclick="filterNutri('magnesium', this)">💊 Magnésium</span>
+          <span class="chip" onclick="filterNutri('rapide', this)">⚡ < 20 min</span>
+          <span class="chip" onclick="filterNutri('', this)">✕ Aucun</span>
+        </div>
 
         <!-- Badge filtre placard actif -->
         <div id="placard-filter-badge" style="display:none;background:var(--green-pale);color:var(--green-deep);border-radius:var(--radius-md);padding:8px 14px;font-size:0.8rem;font-weight:600;margin-bottom:12px;display:none;cursor:pointer;" onclick="window._placardFilter=null;renderRecettes();">

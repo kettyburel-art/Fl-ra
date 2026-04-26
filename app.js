@@ -3807,6 +3807,71 @@ const RECETTES_PAR_CAT = {
 };
 
 // ============================
+// DONNÉES NUTRITIONNELLES
+// Badges par recette : fer, omega3, magnesium, vitC, proteines, antioxydants
+// Niveaux : '+' bon · '++' très bon · '+++' exceptionnel
+// ============================
+const NUTRI_MAP = {
+  // Petits-déjeuners
+  1:  { fer:'++', omega3:'+++', magnesium:'+',  conseil:'Préparez 3 bocaux le dimanche pour toute la semaine.', portion:'1 bocal', temps_actif:'5 min' },
+  2:  { fer:'+',  magnesium:'++', vitC:'+',     conseil:'La cannelle régule la glycémie — parfait contre les fringales TDAH.', portion:'1 bol', temps_actif:'10 min' },
+  3:  { proteines:'++', fer:'+', omega3:'++',   conseil:'L\'avocat s\'oxyde vite — préparez juste avant de servir.', portion:'2 toasts', temps_actif:'10 min' },
+  4:  { omega3:'+++', fer:'++', vitC:'+',       conseil:'Le citron sur le saumon démarre la digestion des protéines.', portion:'1 assiette', temps_actif:'10 min' },
+  5:  { fer:'++', proteines:'+', vitC:'++',     conseil:'Le basilic frais ajoute de la dopamine — à ne pas cuire.', portion:'1 bol', temps_actif:'15 min' },
+  6:  { fer:'+++', magnesium:'++', proteines:'+', conseil:'Le poivre noir multiplie par 20 l\'absorption du curcuma.', portion:'1 bol', temps_actif:'10 min' },
+  7:  { omega3:'++', proteines:'+++', fer:'+',  conseil:'Dessalez bien la morue — 12h minimum, 3 changements d\'eau.', portion:'1 assiette', temps_actif:'20 min' },
+  8:  { omega3:'+++', vitC:'++', magnesium:'+', conseil:'La papillote en papier sulfurisé préserve tous les oméga-3.', portion:'1 papillote', temps_actif:'5 min' },
+  9:  { vitC:'+', magnesium:'+', antioxydants:'++', conseil:'Mixez longuement pour une texture soyeuse parfaite.', portion:'1 grand bol', temps_actif:'10 min' },
+  10: { fer:'+++', proteines:'++', magnesium:'+', conseil:'L\'agneau est l\'une des viandes les plus riches en fer héminique.', portion:'1 assiette', temps_actif:'20 min' },
+  11: { magnesium:'+++', fer:'++', antioxydants:'++', conseil:'Roulez dans du cacao cru pour un coating antioxydant extra.', portion:'3 boules', temps_actif:'15 min' },
+  12: { antioxydants:'++', vitC:'+',            conseil:'Le thym frais est antibactérien — ajoutez-le à la sortie du four.', portion:'1 ramequin', temps_actif:'5 min' },
+  13: { magnesium:'++', antioxydants:'+++',     conseil:'Le piment de Cayenne libère des endorphines naturelles.', portion:'1 verrine', temps_actif:'10 min' },
+  14: { magnesium:'+', proteines:'+',           conseil:'La pêche doit être très mûre pour le moelleux parfait.', portion:'6 parts', temps_actif:'15 min' },
+  15: { fer:'+', magnesium:'++', antioxydants:'++', conseil:'Conservez au frigo dans du papier sulfurisé — 1 semaine.', portion:'8 barres', temps_actif:'15 min' },
+  16: { omega3:'+', magnesium:'+', proteines:'+', conseil:'Portionnez en petits sachets le dimanche — prêt toute la semaine.', portion:'1 portion', temps_actif:'5 min' },
+  17: { magnesium:'++', fer:'+',               conseil:'Le tahini apporte du calcium — idéal si sans lactose.', portion:'6 barres', temps_actif:'20 min' },
+  18: { magnesium:'+', antioxydants:'+',        conseil:'Laissez durcir au frigo 30 min avant de déguster.', portion:'12 pièces', temps_actif:'10 min' },
+  19: { antioxydants:'+++', magnesium:'++',     conseil:'La spiruline dans le matcha double l\'apport en fer.', portion:'12 truffes', temps_actif:'20 min' },
+  20: { magnesium:'+', antioxydants:'++',       conseil:'Remplacez les raisins par des cranberries pour plus d\'antioxydants.', portion:'12 cookies', temps_actif:'15 min' },
+  // Déjeuners
+  51: { fer:'+++', omega3:'++', proteines:'++', conseil:'Les lentilles beluga gardent leur forme — ne pas trop cuire.', portion:'1 assiette', temps_actif:'15 min' },
+  52: { omega3:'+++', proteines:'+++', vitC:'+', conseil:'La peau du saumon concentre les oméga-3 — mangez-la !', portion:'1 assiette', temps_actif:'15 min' },
+  53: { fer:'++', proteines:'+', vitC:'++',     conseil:'Le poivron rouge cru garde 3× plus de vitamine C que cuit.', portion:'1 grand bol', temps_actif:'10 min' },
+  54: { fer:'+++', omega3:'+', proteines:'+++', conseil:'Le cabillaud est le poisson le plus maigre — riche en protéines pures.', portion:'1 assiette', temps_actif:'20 min' },
+  55: { proteines:'++', magnesium:'+', vitC:'+', conseil:'Le tofu ferme tient mieux à la cuisson que le tofu soyeux.', portion:'1 bol', temps_actif:'20 min' },
+  // Dîners — quelques essentiels
+  75: { omega3:'+++', proteines:'++', magnesium:'+', conseil:'Servez le tartare bien froid — posez le bol 10 min au congélateur.', portion:'1 assiette', temps_actif:'15 min' },
+  76: { vitC:'+++', fer:'+', antioxydants:'++', conseil:'Le poivron rouge est le légume le plus riche en vitamine C — 3× une orange.', portion:'1 assiette', temps_actif:'15 min' },
+  77: { omega3:'+++', proteines:'++', vitC:'+', conseil:'La papillote garde tous les oméga-3 intacts — ne jamais frire le saumon.', portion:'1 papillote', temps_actif:'5 min' },
+  // Snacks Premium
+  161: { antioxydants:'+++', magnesium:'+',     conseil:'Le matcha grade cérémonie ne doit jamais être préparé avec de l\'eau bouillante.', portion:'1 grand verre', temps_actif:'5 min' },
+  // Brunch
+  139: { magnesium:'+++', fer:'++', antioxydants:'++', conseil:'Laissez reposer la pâte 10 min — le sarrasin absorbe le liquide et épaissit.', portion:'6 pancakes', temps_actif:'15 min' },
+  140: { omega3:'+++', proteines:'++', fer:'+', conseil:'L\'œuf poché parfait : eau frémissante (pas bouillante) + trait de vinaigre.', portion:'2 toasts', temps_actif:'10 min' },
+  141: { vitC:'+++', fer:'+', antioxydants:'++', conseil:'Craquez 4 œufs directement dans la sauce chaude sans mélanger.', portion:'2 personnes', temps_actif:'15 min' },
+  142: { antioxydants:'+++', omega3:'+', magnesium:'+', conseil:'La texture doit être épaisse comme de la crème glacée — ajoutez moins de lait.', portion:'1 grand bol', temps_actif:'10 min' },
+  // Premium hors du commun
+  154: { fer:'+++', proteines:'+++', omega3:'+', conseil:'Les encornets doivent être parfaitement secs avant cuisson — l\'humidité empêche la coloration.', portion:'1 assiette', temps_actif:'15 min' },
+  155: { fer:'+++', omega3:'+++', antioxydants:'++', conseil:'L\'huile de lin ne supporte pas la chaleur — ajoutez-la toujours froide.', portion:'1 assiette', temps_actif:'20 min' },
+  156: { omega3:'+++', proteines:'++', vitC:'++', conseil:'Le maquereau doit être ultra-frais — achetez-le le matin même.', portion:'1 assiette', temps_actif:'15 min' },
+  157: { fer:'++', magnesium:'++', omega3:'+',   conseil:'Le safran infusé dans l\'eau chaude libère mieux sa couleur et ses arômes.', portion:'2 assiettes', temps_actif:'20 min' },
+  160: { omega3:'+++', proteines:'+++', antioxydants:'++', conseil:'Qualité sushi obligatoire — achetez chez un poissonnier de confiance.', portion:'1 assiette', temps_actif:'10 min' },
+  162: { antioxydants:'+++', vitC:'++', magnesium:'+', conseil:'Les asperges cuisent vite — 12 min max pour garder la couleur verte.', portion:'2 bols', temps_actif:'15 min' },
+  163: { magnesium:'+++', antioxydants:'++', vitC:'+', conseil:'Le kasha (sarrasin torréfié) est plus digeste que le sarrasin cru.', portion:'2 assiettes', temps_actif:'15 min' },
+};
+
+// Enrichir chaque recette avec ses données nutritionnelles
+RECETTES.forEach(r => {
+  const n = NUTRI_MAP[r.id];
+  if (n) {
+    r.nutri      = { fer: n.fer, omega3: n.omega3, magnesium: n.magnesium, vitC: n.vitC, proteines: n.proteines, antioxydants: n.antioxydants };
+    r.conseil    = n.conseil;
+    r.portion    = n.portion;
+    r.temps_actif = n.temps_actif;
+  }
+});
+
+// ============================
 // STATE
 // ============================
 let profile       = {};
@@ -4920,9 +4985,9 @@ function loadJournalEntry(date) {
   }
 
   // Slider labels
-  const enVal = document.getElementById('j-energie-val');
-  const doVal = document.getElementById('j-douleur-val');
-  const sjVal = document.getElementById('j-sjsr-val');
+  const enVal = document.getElementById('val-energie');
+  const doVal = document.getElementById('val-douleur');
+  const sjVal = document.getElementById('val-sjsr');
   if (enVal) enVal.textContent = entry.energie || 5;
   if (doVal) doVal.textContent = entry.douleur || 0;
   if (sjVal) sjVal.textContent = entry.sjsr    || 0;
@@ -5294,6 +5359,15 @@ function renderRecettes() {
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
     if (search && !r.nom.toLowerCase().includes(search)) return false;
+    // Filtre nutritionnel
+    if (currentNutriFilter) {
+      if (currentNutriFilter === 'rapide') {
+        const mins = parseInt((r.temps_actif || r.temps || '99').replace(/\D/g,'')) || 99;
+        if (mins >= 20) return false;
+      } else {
+        if (!r.nutri || !r.nutri[currentNutriFilter]) return false;
+      }
+    }
     if (window._placardFilter && window._placardFilter.length) {
       const match = r.ingredients.some(ing =>
         window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
@@ -5453,47 +5527,115 @@ function openRecette(id) {
   const r = RECETTES.find(x => x.id === id);
   if (!r) return;
 
-  // Si Premium verrouillé → aperçu
-  if (r.premium && !isPremium) {
-    openRecettePreview(id);
-    return;
-  }
+  if (r.premium && !isPremium) { openRecettePreview(id); return; }
 
   const modal   = document.getElementById('recette-modal');
   const content = document.getElementById('modal-content');
 
-  const tags = [];
-  if (r.tags.includes('sg')) tags.push('Sans gluten');
-  if (r.tags.includes('sl')) tags.push('Sans lactose');
-  if (r.tags.includes('vg')) tags.push('Végétarien');
+  // Tags
+  const tagLabels = [];
+  if (r.tags.includes('sg')) tagLabels.push({ label:'Sans gluten', color:'var(--green-pale)', text:'var(--green-deep)' });
+  if (r.tags.includes('sl')) tagLabels.push({ label:'Sans lactose', color:'#e8f4f8', text:'#2a6478' });
+  if (r.tags.includes('vg')) tagLabels.push({ label:'Végétarien', color:'#f0f9e8', text:'#3a6b1a' });
+
+  // Badges nutritionnels
+  const nutriIcons = {
+    fer:          { icon:'🩸', label:'Fer',       color:'#fde8e8', text:'#8b1a1a' },
+    omega3:       { icon:'🐟', label:'Oméga-3',   color:'#e8f0fd', text:'#1a3d8b' },
+    magnesium:    { icon:'💊', label:'Magnésium', color:'#f0e8fd', text:'#5a1a8b' },
+    vitC:         { icon:'🍋', label:'Vit. C',    color:'#fdf8e8', text:'#7a5c00' },
+    proteines:    { icon:'💪', label:'Protéines', color:'#e8fdf0', text:'#1a6b3a' },
+    antioxydants: { icon:'🫐', label:'Antioxyd.', color:'#f5e8fd', text:'#6b1a6b' },
+  };
+
+  const nutriBadges = r.nutri
+    ? Object.entries(r.nutri)
+        .filter(([k, v]) => v)
+        .map(([k, v]) => {
+          const n = nutriIcons[k];
+          if (!n) return '';
+          const stars = v === '+++' ? '●●●' : v === '++' ? '●●○' : '●○○';
+          return `<div class="nutri-badge" style="background:${n.color};color:${n.text};">
+            ${n.icon} ${n.label} <span class="nutri-stars">${stars}</span>
+          </div>`;
+        }).join('')
+    : '';
+
+  // Étapes numérotées
+  const etapesHTML = r.etapes.map((e, i) => `
+    <div class="recipe-step-item">
+      <div class="step-number">${i + 1}</div>
+      <div class="step-text">${e}</div>
+    </div>
+  `).join('');
 
   content.innerHTML = `
+    <!-- En-tête -->
     <div class="modal-recipe-header">
       <div class="modal-recipe-emoji">${r.emoji}</div>
       <div class="modal-recipe-title">${r.nom}</div>
+
+      <!-- Méta rapide -->
       <div class="recipe-meta-row">
         <span class="chip active">⏱ ${r.temps}</span>
+        ${r.temps_actif ? `<span class="chip">✋ ${r.temps_actif} actif</span>` : ''}
         <span class="chip">${r.calories} kcal</span>
         <span class="chip">${r.diff}</span>
-        ${tags.map(t => `<span class="chip">${t}</span>`).join('')}
+        ${r.portion ? `<span class="chip">🍽 ${r.portion}</span>` : ''}
+      </div>
+
+      <!-- Tags alimentaires -->
+      <div class="recipe-tags-row">
+        ${tagLabels.map(t => `<span class="recipe-tag-pill" style="background:${t.color};color:${t.text};">${t.label}</span>`).join('')}
+        ${r.premium ? '<span class="recipe-tag-pill" style="background:var(--gold);color:#fff;">⭐ Premium</span>' : ''}
       </div>
     </div>
 
-    <div class="recipe-benefits">🌿 ${r.benefices}</div>
+    <!-- Bénéfices santé -->
+    <div class="recipe-benefits">
+      <div class="recipe-benefits-icon">🌿</div>
+      <div>${r.benefices}</div>
+    </div>
 
-    <div class="recipe-section-title">Ingrédients (1 personne)</div>
+    <!-- Badges nutritionnels -->
+    ${nutriBadges ? `
+    <div class="nutri-badges-grid">${nutriBadges}</div>
+    ` : ''}
+
+    <!-- Ingrédients -->
+    <div class="recipe-section-title">
+      <span>🛒 Ingrédients</span>
+      <span class="recipe-section-sub">${r.portion || '1 personne'}</span>
+    </div>
     <ul class="recipe-ingredient-list">
-      ${r.ingredients.map(i => `<li>${i}</li>`).join('')}
+      ${r.ingredients.map(i => `
+        <li>
+          <span class="ingredient-dot">·</span>
+          <span>${i}</span>
+        </li>`).join('')}
     </ul>
 
-    <div class="recipe-section-title">Préparation</div>
-    <ol class="recipe-steps">
-      ${r.etapes.map(e => `<li>${e}</li>`).join('')}
-    </ol>
+    <!-- Préparation -->
+    <div class="recipe-section-title">
+      <span>👩‍🍳 Préparation</span>
+      ${r.temps_actif ? `<span class="recipe-section-sub">~${r.temps_actif}</span>` : ''}
+    </div>
+    <div class="recipe-steps-list">${etapesHTML}</div>
 
-    <div style="margin-top:20px;display:flex;gap:8px;">
+    <!-- Conseil chef -->
+    ${r.conseil ? `
+    <div class="recipe-conseil">
+      <div class="recipe-conseil-icon">💡</div>
+      <div>
+        <strong>Conseil</strong><br>
+        <span>${r.conseil}</span>
+      </div>
+    </div>` : ''}
+
+    <!-- Actions -->
+    <div class="recipe-actions">
       <button class="btn-primary" style="flex:1;" onclick="addToAgenda(${r.id})">
-        📅 Ajouter à l'agenda
+        📅 Agenda
       </button>
       <button class="btn-primary" style="padding:14px 16px;background:var(--green-mid);" onclick="shareRecette(${r.id})" title="Partager">
         📤
@@ -5527,6 +5669,15 @@ function shareRecette(id) {
 
 
 function filterRecettes() { renderRecettes(); }
+
+let currentNutriFilter = '';
+
+function filterNutri(nutri, el) {
+  currentNutriFilter = nutri;
+  document.querySelectorAll('#nutri-filters .chip').forEach(c => c.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderRecettes();
+}
 
 function filterCat(cat, el) {
   currentCatFilter = cat;
