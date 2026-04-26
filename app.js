@@ -5783,171 +5783,8 @@ function renderStats() {
 }
 
 // ============================
-// COMPLÉMENTS ALIMENTAIRES
+// CONSEILS SJSR ROTATIFS
 // ============================
-const COMPLEMENTS = [
-  {
-    id: 1, nom: 'Fer bisglycinate', emoji: '🩸',
-    priorite: 'haute', evidence: '+++',
-    posologie: '25-50 mg/jour le soir, à jeun ou avec vitamine C',
-    benefices: 'Premier traitement du SJSR léger à modéré quand la ferritine est < 75 µg/L. Réduit significativement les impatiences nocturnes en 8-12 semaines.',
-    interactions: 'Ne pas prendre avec le café, le thé ou le calcium. Espacer de 2h des autres compléments.',
-    aliments: ['Lentilles beluga', 'Sardines', 'Bœuf haché', 'Spiruline', 'Teff'],
-    bilan: 'Ferritine + NFS avant de commencer',
-    premium: false
-  },
-  {
-    id: 2, nom: 'Magnésium bisglycinate', emoji: '💊',
-    priorite: 'haute', evidence: '+++',
-    posologie: '300-400 mg/jour le soir au coucher',
-    benefices: 'Réduit les crampes nocturnes et les impatiences. Améliore la qualité du sommeil profond. La forme bisglycinate est la mieux absorbée et la plus douce pour l\'intestin.',
-    interactions: 'Peut diminuer l\'absorption des antibiotiques et des médicaments thyroïdiens. Espacer de 2h.',
-    aliments: ['Chocolat noir 85%', 'Amandes', 'Graines de courge', 'Sarrasin', 'Épinards'],
-    bilan: 'Magnésémie (peu fiable — clinique prime)',
-    premium: false
-  },
-  {
-    id: 3, nom: 'Oméga-3 EPA/DHA', emoji: '🐟',
-    priorite: 'haute', evidence: '+++',
-    posologie: '2-3g EPA+DHA/jour avec un repas gras',
-    benefices: 'Anti-inflammatoire puissant. Réduit la neuroinflammation liée au SJSR et au TDAH. Améliore la conduction nerveuse. Effets visibles après 6-8 semaines.',
-    interactions: 'Effet anticoagulant — signaler à votre médecin si traitement anticoagulant.',
-    aliments: ['Saumon', 'Maquereau', 'Sardines', 'Hareng', 'Graines de lin moulues'],
-    bilan: 'Bilan lipidique (optionnel)',
-    premium: false
-  },
-  {
-    id: 4, nom: 'Vitamine D3 + K2', emoji: '☀️',
-    priorite: 'haute', evidence: '++',
-    posologie: '2000-4000 UI D3 + 100 µg K2 MK7/jour avec un repas gras',
-    benefices: 'Carence très fréquente en France. Régule l\'immunité et l\'inflammation. La D3 sans K2 peut favoriser les dépôts calcaires — toujours les combiner.',
-    interactions: 'Peut interagir avec les anticoagulants. Dose à adapter selon bilan.',
-    aliments: ['Saumon', 'Sardines', 'Œufs', 'Champignons exposés au soleil'],
-    bilan: '25-OH Vitamine D — dosage remboursé si carence suspectée',
-    premium: false
-  },
-  {
-    id: 5, nom: 'Vitamine C liposomale', emoji: '🍋',
-    priorite: 'moyenne', evidence: '++',
-    posologie: '500-1000 mg/jour avec le repas riche en fer',
-    benefices: 'Multiplie par 3 l\'absorption du fer végétal. Antioxydant. La forme liposomale est 5× mieux absorbée que l\'acide ascorbique classique.',
-    interactions: 'Doses élevées peuvent provoquer des troubles digestifs chez certaines personnes.',
-    aliments: ['Poivron rouge', 'Kiwi', 'Agrumes', 'Persil frais', 'Brocoli'],
-    bilan: 'Aucun nécessaire',
-    premium: false
-  },
-  {
-    id: 6, nom: 'Zinc picolinate', emoji: '⚡',
-    priorite: 'moyenne', evidence: '++',
-    posologie: '15-25 mg/jour le soir, 2h après le repas',
-    benefices: 'Le zinc régule la dopamine — neurotransmetteur clé dans le SJSR et le TDAH. Améliore le sommeil et la récupération. Souvent déficient chez les personnes ayant une alimentation végétarienne.',
-    interactions: 'La prise simultanée avec le fer réduit l\'absorption des deux. Espacer de 2h.',
-    aliments: ['Huîtres', 'Bœuf', 'Graines de courge', 'Noix de cajou', 'Pois chiches'],
-    bilan: 'Zincémie (peu fiable — clinique prime)',
-    premium: true
-  },
-  {
-    id: 7, nom: 'L-théanine', emoji: '🍵',
-    priorite: 'moyenne', evidence: '+',
-    posologie: '100-200 mg le soir, 30-60 min avant le coucher',
-    benefices: 'Acide aminé du thé vert. Favorise l\'endormissement sans sédation. Réduit l\'anxiété et améliore la qualité des ondes alpha (état calme et concentré). Particulièrement intéressant pour le TDAH.',
-    interactions: 'Synergique avec la caféine (améliorent ensemble la concentration). Pas d\'interactions médicamenteuses connues.',
-    aliments: ['Thé vert', 'Matcha'],
-    bilan: 'Aucun nécessaire',
-    premium: true
-  },
-  {
-    id: 8, nom: 'Spiruline', emoji: '🌿',
-    priorite: 'moyenne', evidence: '+',
-    posologie: '3-5g/jour avec un repas, en cure de 3 mois',
-    benefices: 'Source végétale concentrée en fer, protéines et B12 (forme peu assimilable pour la B12 — ne remplace pas un complément). Antioxydante. Energisante. Peut réduire la fatigue chronique.',
-    interactions: 'Déconseillée en cas de phénylcétonurie. Commencer par petites doses pour habituer l\'intestin.',
-    aliments: ['Spiruline en poudre dans smoothies', 'Nems crus spiruline (recette Premium)'],
-    bilan: 'Aucun nécessaire',
-    premium: true
-  },
-];
-
-function switchRecettesTab(tab, el) {
-  document.getElementById('recettes-tab-content').classList.add('hidden');
-  document.getElementById('complements-tab-content').classList.add('hidden');
-  document.getElementById(tab + '-tab-content').classList.remove('hidden');
-
-  document.querySelectorAll('#page-recettes .jtab').forEach(function(b) { b.classList.remove('active'); });
-  if (el) el.classList.add('active');
-
-  if (tab === 'complements') renderComplements();
-}
-
-function renderComplements() {
-  const container = document.getElementById('complements-list');
-  if (!container) return;
-
-  const evidenceLabel = { '+++': '✅ Preuves solides', '++': '🟡 Bonnes preuves', '+': '🔵 Preuves préliminaires' };
-  const prioriteLabel = { 'haute': '🔴 Priorité haute', 'moyenne': '🟡 Priorité moyenne' };
-
-  container.innerHTML = COMPLEMENTS.map(c => {
-    const locked = c.premium && !isPremium;
-    return `
-      <div class="complement-fiche ${locked ? 'complement-locked' : ''}">
-        <div class="complement-header" onclick="toggleComplement(${c.id})">
-          <div class="complement-emoji">${c.emoji}</div>
-          <div class="complement-title">
-            <strong>${c.nom}</strong>
-            <div class="complement-badges">
-              <span class="complement-badge evidence">${evidenceLabel[c.evidence]}</span>
-              <span class="complement-badge priorite">${prioriteLabel[c.priorite]}</span>
-              ${c.premium ? '<span class="complement-badge premium">⭐ Premium</span>' : ''}
-            </div>
-          </div>
-          <div class="complement-toggle" id="toggle-${c.id}">+</div>
-        </div>
-
-        <div class="complement-body hidden" id="body-${c.id}">
-          ${locked ? `
-            <div class="complement-premium-wall" onclick="showPremium()">
-              🔒 Fiche complète — Premium 4,99€/mois
-            </div>
-          ` : `
-            <div class="complement-section">
-              <div class="complement-label">💊 Posologie</div>
-              <div class="complement-text">${c.posologie}</div>
-            </div>
-            <div class="complement-section">
-              <div class="complement-label">🌿 Bénéfices</div>
-              <div class="complement-text">${c.benefices}</div>
-            </div>
-            <div class="complement-section">
-              <div class="complement-label">⚠️ Interactions</div>
-              <div class="complement-text">${c.interactions}</div>
-            </div>
-            <div class="complement-section">
-              <div class="complement-label">🥗 Aliments sources</div>
-              <div class="complement-tags">
-                ${c.aliments.map(a => `<span class="complement-aliment">${a}</span>`).join('')}
-              </div>
-            </div>
-            <div class="complement-section">
-              <div class="complement-label">🔬 Bilan recommandé</div>
-              <div class="complement-text">${c.bilan}</div>
-            </div>
-          `}
-        </div>
-      </div>
-    `;
-  }).join('');
-}
-
-function toggleComplement(id) {
-  const body = document.getElementById('body-' + id);
-  const toggle = document.getElementById('toggle-' + id);
-  if (!body) return;
-  const isHidden = body.classList.contains('hidden');
-  body.classList.toggle('hidden', !isHidden);
-  if (toggle) toggle.textContent = isHidden ? '−' : '+';
-}
-
-
 const CONSEILS_SJSR = [
   { icon: '🩸', text: 'Associez toujours vos sources de fer à de la vitamine C (citron, poivron) pour multiplier par 3 leur absorption.' },
   { icon: '🦵', text: 'Le magnésium bisglycinate pris le soir réduit significativement les impatiences nocturnes. Privilégiez les eaux riches en magnésium.' },
@@ -6341,12 +6178,12 @@ function renderPlanMoisSpec(moisIdx) {
 
     return `
       <div class="plan-jour${locked?' plan-jour-locked':''}${isToday?' plan-jour-today':''}${isPast?' plan-jour-past':''}">
-        <div class="plan-jour-header">
+        <div class="plan-jour-header" ${!locked ? `onclick="openJourDetail(${moisIdx},${jour.j})" style="cursor:pointer;"` : ''}>
           <div class="plan-jour-date">
             <strong>${dayName} ${jour.j}${isToday?' 📍':''}</strong>
             <span class="plan-jour-theme">${jour.theme}</span>
           </div>
-          ${locked?'<span class="plan-lock">⭐ Premium</span>':''}
+          ${locked?'<span class="plan-lock">⭐ Premium</span>':'<span style="font-size:0.75rem;color:var(--text-light);">→ détail</span>'}
         </div>
         ${locked?`
           <div class="plan-locked-msg" onclick="showPremium()">
@@ -6373,6 +6210,128 @@ function renderPlanMoisSpec(moisIdx) {
       if (todayEl) todayEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 200);
   }
+}
+
+// ============================
+// VUE JOUR — Style Sérénité
+// ============================
+function openJourDetail(moisIdx, jourNum) {
+  const plan    = moisIdx === 3 ? PLAN_MENSUEL_AVRIL : moisIdx === 4 ? PLAN_MENSUEL_MAI : PLAN_MENSUEL_JUIN;
+  const jour    = plan.find(j => j.j === jourNum);
+  if (!jour) return;
+
+  const getR    = id => RECETTES.find(r => r.id === id);
+  const annee   = 2026;
+  const date    = new Date(annee, moisIdx, jourNum);
+  const jours   = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const moisNom = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
+  const dayName = jours[date.getDay()];
+  const isWE    = date.getDay() === 0 || date.getDay() === 6;
+
+  const pdc   = getR(jour.pdc);
+  const dej   = getR(jour.dej);
+  const din   = getR(jour.din);
+  const snack = getR(jour.snack);
+
+  // Badges nutri colorés
+  const NUTRI_COLORS = {
+    fer:          { bg:'#fde8e8', text:'#b03020', icon:'🩸', label:'FER' },
+    omega3:       { bg:'#e8f0fe', text:'#1a56a0', icon:'🐟', label:'ΩΩ3' },
+    magnesium:    { bg:'#e8f5e9', text:'#2e7d32', icon:'💊', label:'MAG' },
+    vitC:         { bg:'#fff3e0', text:'#e65100', icon:'🍋', label:'VIT C' },
+    proteines:    { bg:'#f3e5f5', text:'#6a1b9a', icon:'💪', label:'PROT' },
+    antioxydants: { bg:'#fce4ec', text:'#880e4f', icon:'🌸', label:'AOX' },
+  };
+
+  function nutriBadges(r) {
+    if (!r?.nutri) return '';
+    return Object.entries(r.nutri)
+      .filter(([, v]) => v)
+      .map(([k, v]) => {
+        const c = NUTRI_COLORS[k];
+        if (!c) return '';
+        const stars = v === '+++' ? '●●●' : v === '++' ? '●●' : '●';
+        return `<span class="jd-badge" style="background:${c.bg};color:${c.text}">${c.label} ${stars}</span>`;
+      }).join('');
+  }
+
+  function repasCard(r, { emoji, label, heures, contexte }) {
+    if (!r) return '';
+    const conseil = r.conseil ? `<div class="jd-conseil">🌿 ${r.conseil}</div>` : '';
+    const benfice = r.benefices ? `<div class="jd-benefice">${r.benefices.split('.')[0]}.</div>` : '';
+    return `
+      <div class="jd-card" onclick="openRecette(${r.id})">
+        <div class="jd-card-header">
+          <div class="jd-card-icon">${emoji}</div>
+          <div class="jd-card-meta">
+            <div class="jd-card-label">${label}${contexte ? ' · <span class="jd-contexte">' + contexte + '</span>' : ''}</div>
+            <div class="jd-card-heures">${heures}</div>
+          </div>
+        </div>
+        <div class="jd-card-nom">${r.emoji} ${r.nom}</div>
+        <div class="jd-badges-row">${nutriBadges(r)}</div>
+        ${conseil}
+      </div>`;
+  }
+
+  const pdcEmoji = isWE ? '🥂' : '☀️';
+  const pdcLabel = isWE ? 'BRUNCH · WEEK-END' : 'PETIT-DÉJEUNER';
+  const pdcHeure = isWE ? '9h – 11h' : '7h30 – 8h30';
+
+  const html = `
+    <div class="jd-wrap">
+      <div class="jd-top">
+        <div class="jd-date">${dayName.toUpperCase()} ${jourNum} ${moisNom[moisIdx].toUpperCase()}</div>
+        <div class="jd-theme-pill">${jour.theme}</div>
+      </div>
+
+      ${repasCard(pdc, { emoji: pdcEmoji, label: pdcLabel, heures: pdcHeure, contexte: '' })}
+      ${repasCard(dej, { emoji: '☀️', label: 'DÉJEUNER', heures: '12h30 – 13h30', contexte: isWE ? 'Maison' : 'Bureau' })}
+
+      ${snack ? `
+        <div class="jd-card jd-card-snack" onclick="openRecette(${snack.id})">
+          <div class="jd-card-header">
+            <div class="jd-card-icon">🍎</div>
+            <div class="jd-card-meta">
+              <div class="jd-card-label">GOÛTER · <span class="jd-contexte">16h – 17h</span></div>
+            </div>
+          </div>
+          <div class="jd-card-nom">${snack.emoji} ${snack.nom}</div>
+          <div class="jd-badges-row">${nutriBadges(snack)}</div>
+        </div>` : ''}
+
+      ${repasCard(din, { emoji: '🌙', label: 'DÎNER · SOMMEIL 🌿', heures: '19h – 20h max', contexte: '' })}
+
+      <div class="jd-card jd-card-soiree">
+        <div class="jd-card-header">
+          <div class="jd-card-icon">📺</div>
+          <div class="jd-card-meta">
+            <div class="jd-card-label">SOIRÉE · <span class="jd-contexte">20h – 21h</span></div>
+          </div>
+        </div>
+        <div class="jd-card-nom" style="font-style:italic;color:var(--text-mid);">Chocolat 85% · Infusion hibiscus · Repos 🌸</div>
+        <div class="jd-badges-row">
+          <span class="jd-badge" style="background:#fce4ec;color:#880e4f">ALK</span>
+          <span class="jd-badge" style="background:#e8f5e9;color:#2e7d32">FUN</span>
+        </div>
+      </div>
+
+      <div class="jd-footer">
+        <div style="font-size:0.75rem;color:var(--text-light);text-align:center;">
+          Touchez un repas pour voir la recette complète
+        </div>
+      </div>
+    </div>`;
+
+  // Ouvrir dans le modal recette existant
+  const modal = document.getElementById('recette-modal');
+  const modalCard = modal?.querySelector('.modal-card');
+  if (!modal || !modalCard) return;
+
+  modalCard.innerHTML = `
+    <button class="modal-close" onclick="closeRecette()">✕</button>
+    ${html}`;
+  modal.classList.remove('hidden');
 }
 
 function renderBrunchList() {
