@@ -1,6 +1,404 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#2d4a3e" />
+<meta name="description" content="Flōra — Bien-être anti-inflammatoire, journal et nutrition personnalisés" />
+
+<!-- ✅ FIX: CSP de base (bloquer XSS) -->
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://buy.stripe.com https://plausible.io https://api.anthropic.com; frame-src https://js.stripe.com;" />
+
+<title>Flōra</title>
+<link rel="manifest" href="manifest.json" />
+
+<!-- ✅ FIX BUG 2: apple-touch-icon doit être PNG, pas SVG (iOS ne supporte pas SVG ici) -->
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
+
+<!-- ✅ FIX BUG 4: preconnect gstatic manquant + crossorigin obligatoire -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+
+<!-- Analytics — Plausible (RGPD, sans cookies, sans bandeau) -->
+<script defer data-domain="kettyburel-art.github.io" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-inner">
+    <div class="splash-logo">Flōra</div>
+    <p class="splash-sub">Votre allié bien-être au quotidien</p>
+    <div class="splash-loader"></div>
+  </div>
+</div>
+
+<!-- ONBOARDING -->
+<div id="onboarding" class="hidden">
+  <div class="onboard-wrap">
+    <!-- Étape 1 — Bienvenue -->
+    <div class="onboard-step active" data-step="1">
+      <div class="onboard-progress"><div class="onboard-progress-fill" style="width:20%"></div></div>
+      <div class="onboard-art">🌿</div>
+      <h2>Bienvenue dans Flōra</h2>
+      <p>Une application pensée pour les personnes vivant avec le SJSR, la douleur chronique et les inflammations.</p>
+      <p style="font-size:0.82rem;color:var(--text-light);margin-top:8px;">Nous allons personnaliser votre expérience en 4 questions. Moins d'une minute.</p>
+      <button class="btn-primary" onclick="nextStep(2)">Commencer →</button>
+    </div>
+
+    <!-- Étape 2 — Prénom + objectif -->
+    <div class="onboard-step" data-step="2">
+      <div class="onboard-progress"><div class="onboard-progress-fill" style="width:40%"></div></div>
+      <div class="onboard-art">✨</div>
+      <h2>Parlez-nous de vous</h2>
+      <input class="field" type="text" id="ob-name" placeholder="Votre prénom" autocomplete="given-name" />
+      <select class="field" id="ob-goal">
+        <option value="">Mon objectif principal…</option>
+        <option value="sommeil">Améliorer mon sommeil</option>
+        <option value="douleur">Réduire la douleur chronique</option>
+        <option value="sjsr">Calmer les jambes sans repos</option>
+        <option value="energie">Retrouver de l'énergie</option>
+        <option value="global">Bien-être global</option>
+      </select>
+      <button class="btn-primary" onclick="nextStep(3)">Continuer →</button>
+    </div>
+
+    <!-- Étape 3 — SJSR spécifique -->
+    <div class="onboard-step" data-step="3">
+      <div class="onboard-progress"><div class="onboard-progress-fill" style="width:60%"></div></div>
+      <div class="onboard-art">🦵</div>
+      <h2>Votre SJSR</h2>
+      <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">Combien de nuits difficiles par semaine en moyenne ?</p>
+      <div class="onboard-choices">
+        <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','0')">Aucune ou rarement</button>
+        <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','1-2')">1 à 2 nuits</button>
+        <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','3-4')">3 à 4 nuits</button>
+        <button class="onboard-choice" onclick="selectChoice(this,'ob-sjsr-freq','5+')">Presque toutes les nuits</button>
+      </div>
+      <input type="hidden" id="ob-sjsr-freq" value="" />
+      <p style="font-size:0.85rem;color:var(--text-mid);margin:16px 0 10px;">Prenez-vous un traitement pour le SJSR ?</p>
+      <div class="onboard-choices onboard-choices-2col">
+        <button class="onboard-choice" onclick="selectChoice(this,'ob-traitement','oui')">Oui</button>
+        <button class="onboard-choice" onclick="selectChoice(this,'ob-traitement','non')">Non</button>
+      </div>
+      <input type="hidden" id="ob-traitement" value="" />
+      <button class="btn-primary" style="margin-top:16px;" onclick="nextStep(4)">Continuer →</button>
+    </div>
+
+    <!-- Étape 4 — Alimentation -->
+    <div class="onboard-step" data-step="4">
+      <div class="onboard-progress"><div class="onboard-progress-fill" style="width:80%"></div></div>
+      <div class="onboard-art">🥗</div>
+      <h2>Votre alimentation</h2>
+      <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:16px;">Cochez ce qui vous correspond :</p>
+      <div class="onboard-checks">
+        <label class="onboard-check-item">
+          <input type="checkbox" id="ob-sg" />
+          <span class="onboard-check-box"></span>
+          <span>Sans gluten</span>
+        </label>
+        <label class="onboard-check-item">
+          <input type="checkbox" id="ob-sl" />
+          <span class="onboard-check-box"></span>
+          <span>Sans lactose</span>
+        </label>
+        <label class="onboard-check-item">
+          <input type="checkbox" id="ob-sv" />
+          <span class="onboard-check-box"></span>
+          <span>Végétarien·ne</span>
+        </label>
+        <label class="onboard-check-item">
+          <input type="checkbox" id="ob-fer" />
+          <span class="onboard-check-box"></span>
+          <span>Carence en fer connue</span>
+        </label>
+        <label class="onboard-check-item">
+          <input type="checkbox" id="ob-tdah" />
+          <span class="onboard-check-box"></span>
+          <span>TDAH / neuroatypique</span>
+        </label>
+      </div>
+      <button class="btn-primary" style="margin-top:20px;" onclick="nextStep(5)">Continuer →</button>
+    </div>
+
+    <!-- Étape 5 — Récapitulatif personnalisé -->
+    <div class="onboard-step" data-step="5">
+      <div class="onboard-progress"><div class="onboard-progress-fill" style="width:100%"></div></div>
+      <div class="onboard-art">🎯</div>
+      <h2>Votre programme Flōra</h2>
+      <div id="onboard-recap" class="onboard-recap"></div>
+      <button class="btn-primary" onclick="saveOnboarding()">Commencer mon programme 🌱</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app" class="hidden">
+  <header id="app-header">
+    <div class="header-left">
+      <span class="app-logo">Flōra</span>
+    </div>
+    <div class="header-right">
+      <span id="header-greeting"></span>
+      <button class="icon-btn" id="header-login-btn" onclick="showLogin()" title="Se connecter">🔑</button>
+      <button class="icon-btn" onclick="showPage('profil')" title="Profil">👤</button>
+    </div>
+  </header>
+
+  <!-- MODAL CONNEXION -->
+  <div id="login-modal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeLogin()"></div>
+    <div class="modal-card" style="padding:28px 24px 36px;">
+      <button class="modal-close" onclick="closeLogin()">✕</button>
+      <div style="font-family:var(--font-display);font-size:1.3rem;color:var(--green-deep);margin-bottom:6px;">
+        🔑 Connexion
+      </div>
+      <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:20px;">
+        Abonné·e Premium ou Administratrice ? Connectez-vous ici.
+      </p>
+      <div class="settings-row" style="flex-direction:column;gap:8px;align-items:stretch;">
+        <!-- ✅ FIX BUG 9: tryLoginOnEnter gère la touche Entrée -->
+        <input type="email" class="field" id="login-email"
+          placeholder="Votre email" autocomplete="email"
+          onkeydown="tryLoginOnEnter(event)" />
+        <input type="password" class="field" id="login-password"
+          placeholder="Votre mot de passe / code Flōra"
+          onkeydown="tryLoginOnEnter(event)" />
+      </div>
+      <div id="login-error" class="hidden" style="color:var(--red-soft);font-size:0.82rem;margin:8px 0;"></div>
+      <button class="btn-primary full-width" style="margin-top:14px;" onclick="doLogin()">
+        Se connecter
+      </button>
+      <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:14px;">
+        Votre code de connexion est celui reçu par email après abonnement Stripe.<br>
+        <!-- ✅ FIX BUG 1: target="_blank" (sans backslash) + rel="noopener noreferrer" -->
+        Pour s'abonner → <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank" rel="noopener noreferrer" style="color:var(--green-mid);">4,99€/mois</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- PAGES -->
+  <main id="main-content">
+    <section id="page-accueil" class="page active">
+      <!-- Hero -->
+      <div class="page-hero">
+        <div class="hero-text">
+          <h1 id="dash-greeting">Bonjour !</h1>
+          <p id="dash-date"></p>
+        </div>
+        <div class="hero-badge" id="streak-badge">🔥 <span id="streak-count">0</span>j</div>
+      </div>
+
+      <!-- Streak animé -->
+      <div class="streak-big" id="streak-big">
+        <div class="streak-flame">🔥</div>
+        <div class="streak-info">
+          <div class="streak-count-big">0 <span style="font-size:1rem;opacity:.7">jour</span></div>
+          <div class="streak-label">de suivi consécutif</div>
+          <div class="streak-message">Commencez votre suivi aujourd'hui 🌱</div>
+        </div>
+      </div>
+
+      <!-- 4 cards -->
+      <div class="card-grid">
+        <div class="card card-journal" onclick="showPage('journal')">
+          <div class="card-icon">🌙</div>
+          <div class="card-body">
+            <div class="card-title">Journal du jour</div>
+            <div class="card-sub" id="journal-today-status">Aucune entrée aujourd'hui</div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+        <div class="card card-recette" id="card-recette-jour" onclick="openRecetteDuJour()">
+          <div class="card-icon" id="rdj-emoji">🥗</div>
+          <div class="card-body">
+            <div class="card-title">Recette du jour</div>
+            <div class="card-sub" id="recette-du-jour">Chargement…</div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+        <div class="card card-agenda" onclick="showPage('agenda')">
+          <div class="card-icon">📅</div>
+          <div class="card-body">
+            <div class="card-title">Mon agenda</div>
+            <div class="card-sub" id="agenda-today">Voir le menu du jour</div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+        <div class="card card-generateur" onclick="showPage('generateur')">
+          <div class="card-icon">✨</div>
+          <div class="card-body">
+            <div class="card-title">Générateur</div>
+            <div class="card-sub">Créer un menu semaine</div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
+
+      <!-- Conseil SJSR rotatif -->
+      <div class="conseil-sjsr" id="conseil-sjsr" onclick="nextConseil()">
+        <div class="conseil-icon" id="conseil-icon">🦵</div>
+        <div class="conseil-text" id="conseil-text">Chargement…</div>
+        <div class="conseil-next">Suivant →</div>
+      </div>
+
+      <!-- Synthèse bien-être -->
+      <div class="section-title">Ma semaine</div>
+      <div class="wellbeing-chart" id="week-chart"></div>
+    </section>
+
+    <section id="page-journal" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Journal</h2>
+      </div>
+      <div class="journal-tabs">
+        <button class="jtab active" onclick="switchJTab('today', this)">Aujourd'hui</button>
+        <button class="jtab" onclick="switchJTab('historique', this)">Historique</button>
+      </div>
+
+      <div id="jtab-today">
+        <!-- Navigation date -->
+        <div class="journal-date-nav">
+          <button class="date-nav-btn" onclick="changeJournalDay(-1)">←</button>
+          <div class="journal-date" id="journal-entry-date"></div>
+          <!-- ✅ FIX BUG 7: ce bouton sera désactivé par updateNextDayBtn() dans app.js -->
+          <button class="date-nav-btn" onclick="changeJournalDay(1)" id="journal-next-btn">→</button>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">🌙 Sommeil</div>
+          <!-- Heure coucher / lever -->
+          <div class="sleep-time-row">
+            <div class="sleep-time-block">
+              <div class="sleep-time-label">🛏 Coucher</div>
+              <input type="time" class="sleep-time-input" id="sl-coucher" value="23:00" oninput="updateSleepCalc()" />
+            </div>
+            <div class="sleep-time-arrow">→</div>
+            <div class="sleep-time-block">
+              <div class="sleep-time-label">☀️ Lever</div>
+              <input type="time" class="sleep-time-input" id="sl-lever" value="07:00" oninput="updateSleepCalc()" />
+            </div>
+            <div class="sleep-duration-badge" id="sleep-duration-badge">8h00</div>
+          </div>
+
+          <!-- Cycles de sommeil -->
+          <!-- ✅ FIX BUG 8: les cycles 1-4 actifs par défaut — app.js doit appeler setCycles(4) au init -->
+          <div class="sleep-cycles-row">
+            <div class="sleep-cycles-label">🔄 Cycles cette nuit <span style="font-size:0.7rem;color:var(--text-light)">(1 cycle ≈ 90 min)</span></div>
+            <div class="sleep-cycles-btns" id="sleep-cycles-btns">
+              <button class="cycle-btn active" onclick="setCycles(1,this)">1</button>
+              <button class="cycle-btn active" onclick="setCycles(2,this)">2</button>
+              <button class="cycle-btn active" onclick="setCycles(3,this)">3</button>
+              <button class="cycle-btn active" onclick="setCycles(4,this)">4</button>
+              <button class="cycle-btn" onclick="setCycles(5,this)">5</button>
+              <button class="cycle-btn" onclick="setCycles(6,this)">6</button>
+            </div>
+            <span class="sleep-cycles-info" id="cycles-info">~6h de sommeil réel</span>
+          </div>
+
+          <!-- Interruptions nocturnes -->
+          <div class="sleep-detail-row">
+            <div class="sleep-detail-label">🚶 Levers nocturnes</div>
+            <div class="sleep-counter-row">
+              <button class="counter-btn" onclick="changeCounter('levers',-1)">−</button>
+              <span class="counter-val" id="levers-count">0</span>
+              <button class="counter-btn" onclick="changeCounter('levers',1)">+</button>
+              <span class="counter-info" id="levers-info">Aucun lever</span>
+            </div>
+          </div>
+
+          <!-- Heure d'endormissement -->
+          <div class="sleep-detail-row">
+            <div class="sleep-detail-label">⏱ Temps pour s'endormir</div>
+            <div class="sleep-chips-row">
+              <span class="sleep-chip active" onclick="selectSleepChip(this,'endormissement','rapide')">Rapide &lt;15min</span>
+              <span class="sleep-chip" onclick="selectSleepChip(this,'endormissement','moyen')">15-30min</span>
+              <span class="sleep-chip" onclick="selectSleepChip(this,'endormissement','long')">30-60min</span>
+              <span class="sleep-chip" onclick="selectSleepChip(this,'endormissement','tres-long')">+1h</span>
+            </div>
+          </div>
+
+          <!-- SJSR cette nuit -->
+          <div class="sleep-detail-row">
+            <div class="sleep-detail-label">🦵 SJSR cette nuit</div>
+            <div class="slider-row" style="margin:0">
+              <input type="range" min="0" max="5" step="1" value="0" id="sl-sjsr" oninput="updateSliderVal('sl-sjsr','val-sjsr',false,true)" />
+              <span class="slider-val" id="val-sjsr">Aucun</span>
+            </div>
+          </div>
+
+          <!-- Localisation SJSR -->
+          <div class="sleep-detail-row" id="sjsr-location-row" style="display:none">
+            <div class="sleep-detail-label">📍 Localisation</div>
+            <div class="sleep-chips-row">
+              <span class="sleep-chip" onclick="selectSleepChip(this,'location','jambes')">Jambes</span>
+              <span class="sleep-chip" onclick="selectSleepChip(this,'location','bras')">Bras</span>
+              <span class="sleep-chip" onclick="selectSleepChip(this,'location','tout-le-corps')">Corps entier</span>
+            </div>
+          </div>
+
+          <!-- Qualité globale -->
+          <div class="sleep-detail-row">
+            <div class="sleep-detail-label">⭐ Qualité globale</div>
+            <div class="slider-row" style="margin:0">
+              <input type="range" min="1" max="5" step="1" value="3" id="sl-qualite" oninput="updateSliderVal('sl-qualite','val-qualite',true)" />
+              <span class="slider-val" id="val-qualite">★★★☆☆</span>
+            </div>
+          </div>
+
+          <!-- Médication du soir -->
+          <div class="sleep-detail-row">
+            <div class="sleep-detail-label">💊 Médication prise ce soir</div>
+            <div class="sleep-chips-row">
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Tramadol</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Lyrica</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Fer</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Magnésium</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Autre</span>
+            </div>
+          </div>
+
+          <!-- Infusion du soir -->
+          <div class="sleep-detail-row">
+            <div class="sleep-detail-label">🍵 Rituel soir</div>
+            <div class="sleep-chips-row">
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Infusion</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Lait d'or</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Étirements</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Lecture</span>
+              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Méditation</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">💪 Énergie & Douleur</div>
+          <div class="slider-row">
+            <label>Énergie</label>
+            <input type="range" min="1" max="10" step="1" value="5" id="sl-energie" oninput="updateSliderVal('sl-energie','val-energie')" />
+            <span class="slider-val" id="val-energie">5/10</span>
+          </div>
+          <div class="slider-row">
+            <label>Douleur</label>
+            <input type="range" min="0" max="10" step="1" value="0" id="sl-douleur" oninput="updateSliderVal('sl-douleur','val-douleur')" />
+            <span class="slider-val" id="val-douleur">0/10</span>
+          </div>
+        </div>
+
+        <div class="journal-block">
+          <div class="jblock-title">🌡️ Symptômes</div>
+          <div class="symptom-chips" id="symptom-chips">
+            <span class="chip" onclick="toggleChip(this)">Fatigue</span>
+            <span class="chip" onclick="toggleChip(this)">Anxiété</span>
+            <span class="chip" onclick="toggleChip(this)">Brouillard mental</span>
+            <span class="chip" onclick="toggleChip(this)">Maux de tête</span>
+            <span class="chip" onclick="toggleChip(this)">Douleurs articulaires<!DOCTYPE html>
+<html lang="fr">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#2d4a3e" />
