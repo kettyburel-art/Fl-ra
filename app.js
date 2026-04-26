@@ -3880,6 +3880,8 @@ let agenda        = {};
 let isPremium     = false;
 let currentCatFilter = '';
 let currentWeekOffset = 0;
+let placardItems  = {}; // ✅ FIX: déclaré ici pour être disponible dans saveState()
+let _placardFilter = null; // ✅ FIX: variable propre au lieu de _placardFilter
 
 // ============================
 // INIT
@@ -3898,10 +3900,11 @@ window.addEventListener('load', () => {
 });
 
 function loadState() {
-  profile   = JSON.parse(localStorage.getItem('flora_profile') || '{}');
-  journal   = JSON.parse(localStorage.getItem('flora_journal') || '{}');
-  agenda    = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
-  isPremium = localStorage.getItem('flora_premium') === 'true';
+  profile      = JSON.parse(localStorage.getItem('flora_profile') || '{}');
+  journal      = JSON.parse(localStorage.getItem('flora_journal') || '{}');
+  agenda       = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
+  placardItems = JSON.parse(localStorage.getItem('flora_placard') || '{}'); // FIX: manquait
+  isPremium    = localStorage.getItem('flora_premium') === 'true';
 }
 
 function saveState() {
@@ -4412,7 +4415,7 @@ const INGREDIENT_PRICES = {
   'Algues wakamé séchées': 4.50,
 };
 
-let placardItems = {};
+// placardItems déclaré plus haut dans STATE pour être disponible dans saveState()
 let currentBudget = 80;
 let batchPlan = [];
 let batchCurrentStep = 0;
@@ -4554,6 +4557,13 @@ function generateMenusFromBasket(basketItems) {
   menusDiv.classList.remove('hidden');
 }
 
+function clearPlacardFilter() {
+  _placardFilter = null;
+  const badge = document.getElementById('placard-filter-badge');
+  if (badge) badge.style.display = 'none';
+  renderRecettes();
+}
+
 function filterRecettesByPlacard() {
   const checkedItems = Object.keys(placardItems).filter(k => placardItems[k]);
   if (!checkedItems.length) {
@@ -4570,7 +4580,7 @@ function filterRecettesByPlacard() {
 
   showPage('recettes');
   // Stocker le filtre placard pour renderRecettes
-  window._placardFilter = checkedItems;
+  _placardFilter = checkedItems;
   renderRecettes();
 
   setTimeout(() => {
@@ -5375,9 +5385,9 @@ function renderRecettes() {
         if (!r.nutri || !r.nutri[currentNutriFilter]) return false;
       }
     }
-    if (window._placardFilter && window._placardFilter.length) {
+    if (_placardFilter && _placardFilter.length) {
       const match = r.ingredients.some(ing =>
-        window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
+        _placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
       );
       if (!match) return false;
     }
@@ -5387,7 +5397,7 @@ function renderRecettes() {
   // Badge filtre placard
   const placardBadge = document.getElementById('placard-filter-badge');
   if (placardBadge) {
-    if (window._placardFilter && window._placardFilter.length) {
+    if (_placardFilter && _placardFilter.length) {
       placardBadge.textContent = `🗄️ Filtre placard actif (${recettes.length} recettes)`;
       placardBadge.style.display = 'block';
     } else {
@@ -5435,8 +5445,8 @@ function renderRecettes() {
       <div style="grid-column:1/-1;text-align:center;padding:32px;">
         <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
         <div style="color:var(--text-light);font-size:0.88rem;">Aucune recette trouvée.</div>
-        ${window._placardFilter?.length ? `
-          <button onclick="window._placardFilter=null;renderRecettes();"
+        ${_placardFilter?.length ? `
+          <button onclick="_placardFilter=null;renderRecettes();"
             style="margin-top:12px;padding:8px 16px;border:none;border-radius:99px;background:var(--green-pale);color:var(--green-deep);font-size:0.82rem;cursor:pointer;">
             Effacer le filtre placard
           </button>` : ''}
