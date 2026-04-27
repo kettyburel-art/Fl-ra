@@ -86,6 +86,46 @@
     .drawer-meal-empty-text{font-size:0.88rem;color:#8a9e96;font-style:italic}
     .drawer-meal-clear{position:absolute;top:8px;right:8px;background:none;border:none;color:#8a9e96;font-size:0.85rem;cursor:pointer;padding:4px 8px}
 
+        /* === DRAWER STYLE SÉRÉNITÉ === */
+    .serenite-drawer{background:#fdf6f0;border-radius:24px;padding:0;box-shadow:0 -4px 20px rgba(45,74,62,0.15);overflow:hidden;margin-top:16px}
+    .serenite-drawer-header{position:relative;padding:16px 18px 12px;background:#fdf6f0;border-bottom:1px solid rgba(160,115,92,0.1)}
+    .serenite-drawer-handle{width:40px;height:4px;background:rgba(160,115,92,0.3);border-radius:99px;margin:0 auto 14px}
+    .serenite-drawer-titles{padding-right:40px}
+    .serenite-day-label{font-size:0.7rem;font-weight:600;color:#a0735c;letter-spacing:0.08em;margin-bottom:4px}
+    .serenite-drawer-title{font-family:'Playfair Display',Georgia,serif;font-size:1.5rem;color:#2d4a3e;font-weight:600;line-height:1.2}
+    .serenite-drawer-close{position:absolute;top:16px;right:16px;background:rgba(160,115,92,0.1);border:none;border-radius:50%;width:34px;height:34px;font-size:0.9rem;cursor:pointer;color:#4a5e54;display:flex;align-items:center;justify-content:center}
+
+    .rappel-tdah{margin:14px 18px 0;padding:12px 14px;background:#f0e8f5;border-radius:14px;display:flex;gap:12px;align-items:center}
+    .rappel-icon{font-size:1.4rem;flex-shrink:0}
+    .rappel-content{flex:1;min-width:0}
+    .rappel-label{font-size:0.78rem;color:#7a4e8a;font-weight:600;margin-bottom:2px}
+    .rappel-text{font-size:0.88rem;color:#5a3070;font-weight:500;line-height:1.3}
+
+    .meals-list{padding:14px 18px 20px;display:flex;flex-direction:column;gap:14px}
+
+    .meal-card{background:#fff;border-radius:18px;padding:16px;box-shadow:0 2px 8px rgba(45,74,62,0.06)}
+    .meal-card-empty{cursor:pointer;border:2px dashed rgba(160,115,92,0.2);background:#fdfcfa;box-shadow:none}
+    .meal-card-empty:hover{border-color:#3d6b58;background:#fdf6f0}
+
+    .meal-card-header{display:flex;align-items:center;gap:12px;margin-bottom:12px;position:relative}
+    .meal-icon-circle{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+    .meal-card-title{font-size:0.78rem;font-weight:700;color:#8a7e74;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:2px}
+    .meal-card-time{font-size:0.85rem;color:#a0735c;font-weight:500}
+    .meal-clear-btn{background:rgba(160,115,92,0.08);border:none;border-radius:50%;width:28px;height:28px;font-size:0.78rem;cursor:pointer;color:#8a7e74;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+    .meal-empty-cta{padding:14px;text-align:center;color:#a0735c;font-style:italic;font-size:0.92rem}
+
+    .meal-recipe-name{font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;color:#2d4a3e;font-weight:600;line-height:1.3;margin-bottom:14px;cursor:pointer}
+    .meal-recipe-name:hover{color:#a0735c}
+
+    .meal-ingredients{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .ingredient-chip{background:#f5efe8;color:#5a4a40;padding:7px 12px;border-radius:10px;font-size:0.82rem;font-weight:500;line-height:1.2;display:inline-block}
+
+    .meal-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .meal-tag{padding:4px 10px;border-radius:6px;font-size:0.7rem;font-weight:700;letter-spacing:0.06em}
+
+    .meal-benefice{background:#f8f5f0;border-left:3px solid #c8a98a;padding:10px 12px;border-radius:8px;font-size:0.85rem;color:#5a4e44;line-height:1.5;font-style:italic}
+
     /* === ANCIENS STYLES JOURNAL (sliders, mood, etc.) === */
     .slider-douleur-j{width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
     .slider-douleur-j::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
@@ -6533,38 +6573,131 @@ function renderAgendaDayDrawer(dk) {
   const isToday = dk === dateKey(new Date());
   const dayData = agenda[dk] || {};
 
-  const repasHTML = REPAS.map(function(r) {
-    const recId = dayData[r.slug];
-    const rec = recId ? RECETTES.find(function(x) { return x.id === recId; }) : null;
+  // Horaires par défaut pour chaque type de repas
+  const horaires = {
+    petitdej: '7h – 8h',
+    dejeuner: '12h – 13h30',
+    diner: '19h – 20h'
+  };
 
-    if (rec) {
-      return '<div class="drawer-meal" onclick="openRecette(' + rec.id + ')">' +
-        '<div class="drawer-meal-label">' + r.label + '</div>' +
-        '<div class="drawer-meal-content">' +
-          '<span class="drawer-meal-emoji">' + rec.emoji + '</span>' +
-          '<span class="drawer-meal-name">' + rec.nom + '</span>' +
-        '</div>' +
-        '<button class="drawer-meal-clear" onclick="event.stopPropagation();clearAgendaMeal(\''+dk+'\',\''+r.slug+'\')">✕</button>' +
-      '</div>';
-    } else {
-      return '<div class="drawer-meal drawer-meal-empty" onclick="editAgendaMeal(\''+dk+'\',\''+r.slug+'\')">' +
-        '<div class="drawer-meal-label">' + r.label + '</div>' +
-        '<div class="drawer-meal-empty-text">+ Ajouter une recette</div>' +
-      '</div>';
+  // Définition des repas avec icônes colorées (style Sérénité)
+  const repasConfig = [
+    { slug: 'petitdej', label: 'PETIT-DÉJEUNER', icon: '☀️', bg: '#fff4d6', cat: 'petit-dejeuner' },
+    { slug: 'dejeuner', label: 'DÉJEUNER', icon: '🥗', bg: '#e8f5d9', cat: 'dejeuner' },
+    { slug: 'diner', label: 'DÎNER · SOMMEIL', icon: '🌙', bg: '#fef8c8', cat: 'diner' }
+  ];
+
+  // Mapping des tags vers labels visuels
+  const tagLabels = {
+    'sg': { l: 'SG', c: '#3d6b58', bg: '#e8f5d9' },
+    'sl': { l: 'SL', c: '#3d6b58', bg: '#e8f5d9' },
+    'vg': { l: 'VG', c: '#3d6b58', bg: '#e8f5d9' },
+    'fer': { l: 'FER', c: '#c2547a', bg: '#fdf0f8' },
+    'mag': { l: 'MAG', c: '#3d6b58', bg: '#e8f5d9' },
+    'omega3': { l: 'Ω3', c: '#3d6b58', bg: '#e8f5d9' },
+    'dopa': { l: 'DOPA', c: '#d97706', bg: '#fef3c7' }
+  };
+
+  // Générer le résumé titres pour le rappel TDAH
+  const titlesResume = repasConfig
+    .map(r => {
+      const recId = dayData[r.slug];
+      if (!recId) return null;
+      const rec = RECETTES.find(x => x.id === recId);
+      return rec ? rec.nom.split(/[·,-]/)[0].trim() : null;
+    })
+    .filter(Boolean)
+    .join(' · ');
+
+  // Construire le HTML pour chaque repas
+  const repasHTML = repasConfig.map(r => {
+    const recId = dayData[r.slug];
+    const rec = recId ? RECETTES.find(x => x.id === recId) : null;
+
+    // Cas: aucune recette assignée
+    if (!rec) {
+      return `
+        <div class="meal-card meal-card-empty" onclick="editAgendaMeal('${dk}','${r.slug}')">
+          <div class="meal-card-header">
+            <div class="meal-icon-circle" style="background:${r.bg};">${r.icon}</div>
+            <div>
+              <div class="meal-card-title">${r.label}</div>
+              <div class="meal-card-time">${horaires[r.slug]}</div>
+            </div>
+          </div>
+          <div class="meal-empty-cta">+ Ajouter une recette</div>
+        </div>
+      `;
     }
+
+    // Cas: recette présente — affichage complet
+    const ingredientsHTML = (rec.ingredients || [])
+      .map(ing => `<span class="ingredient-chip">◆ ${ing}</span>`)
+      .join('');
+
+    const tagsArr = (rec.tags || []).map(t => tagLabels[t]).filter(Boolean);
+    const tagsHTML = tagsArr.length
+      ? `<div class="meal-tags">${tagsArr.map(t =>
+          `<span class="meal-tag" style="color:${t.c};background:${t.bg};">${t.l}</span>`
+        ).join('')}</div>`
+      : '';
+
+    const benefice = rec.benefices
+      ? `<div class="meal-benefice">🌿🌿 ${rec.benefices}</div>`
+      : '';
+
+    return `
+      <div class="meal-card">
+        <div class="meal-card-header">
+          <div class="meal-icon-circle" style="background:${r.bg};">${r.icon}</div>
+          <div style="flex:1;">
+            <div class="meal-card-title">${r.label}</div>
+            <div class="meal-card-time">${horaires[r.slug]} · <span style="color:#a0735c;">⏱ ${rec.temps}</span></div>
+          </div>
+          <button class="meal-clear-btn" onclick="event.stopPropagation();clearAgendaMeal('${dk}','${r.slug}');">✕</button>
+        </div>
+
+        <div class="meal-recipe-name" onclick="openRecette(${rec.id})">${rec.nom}</div>
+
+        ${ingredientsHTML ? `<div class="meal-ingredients">${ingredientsHTML}</div>` : ''}
+
+        ${tagsHTML}
+
+        ${benefice}
+      </div>
+    `;
   }).join('');
 
   drawer.classList.remove('hidden');
-  drawer.innerHTML = '<div class="drawer-card">' +
-    '<div class="drawer-header">' +
-      '<div>' +
-        '<div class="drawer-day">' + dayLbl + (isToday ? ' · <span style="color:var(--green-mid);font-weight:600;">Aujourd\'hui</span>' : '') + '</div>' +
-        '<div class="drawer-sub">Menu du jour</div>' +
-      '</div>' +
-      '<button class="drawer-close" onclick="closeAgendaDayDrawer()">✕</button>' +
-    '</div>' +
-    '<div class="drawer-meals">' + repasHTML + '</div>' +
-  '</div>';
+  drawer.innerHTML = `
+    <div class="serenite-drawer">
+      <!-- Header drawer -->
+      <div class="serenite-drawer-header">
+        <div class="serenite-drawer-handle"></div>
+        <div class="serenite-drawer-titles">
+          <div class="serenite-day-label">${dayLbl.toUpperCase()}${isToday ? ' · AUJOURD\'HUI' : ''}</div>
+          <div class="serenite-drawer-title">🌿 Bon repas</div>
+        </div>
+        <button class="serenite-drawer-close" onclick="closeAgendaDayDrawer()">✕</button>
+      </div>
+
+      ${titlesResume ? `
+        <!-- Rappel TDAH -->
+        <div class="rappel-tdah">
+          <div class="rappel-icon">🧠</div>
+          <div class="rappel-content">
+            <div class="rappel-label">Rappel TDAH</div>
+            <div class="rappel-text">${titlesResume}</div>
+          </div>
+        </div>
+      ` : ''}
+
+      <!-- Cards repas -->
+      <div class="meals-list">
+        ${repasHTML}
+      </div>
+    </div>
+  `;
 }
 
 function closeAgendaDayDrawer() {
