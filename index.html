@@ -354,13 +354,24 @@
           <h2>Agenda alimentaire</h2>
         </div>
 
-        <div class="week-nav">
-          <button onclick="changeWeek(-1)">‹</button>
-          <span id="week-label"></span>
-          <button onclick="changeWeek(1)">›</button>
+        <!-- Toggle Mois / Semaine -->
+        <div class="agenda-view-toggle">
+          <button class="agenda-toggle-btn active" onclick="setAgendaView('month', this)">📅 Mois</button>
+          <button class="agenda-toggle-btn" onclick="setAgendaView('week', this)">📋 Semaine</button>
         </div>
 
-        <div id="agenda-grid" class="agenda-grid"></div>
+        <!-- Navigation -->
+        <div class="agenda-month-nav">
+          <button class="agenda-nav-btn" onclick="changeAgendaPeriod(-1)">‹</button>
+          <span class="agenda-period-label" id="agenda-period-label"></span>
+          <button class="agenda-nav-btn" onclick="changeAgendaPeriod(1)">›</button>
+        </div>
+
+        <!-- Container -->
+        <div id="agenda-content"></div>
+
+        <!-- Drawer jour sélectionné -->
+        <div id="agenda-day-drawer" class="hidden"></div>
       </section>
 
       <section id="page-generateur" class="page hidden">

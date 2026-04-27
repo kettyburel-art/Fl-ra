@@ -6,6 +6,99 @@
 'use strict';
 
 // ============================
+// INJECT FLŌRA STYLES (Journal + Agenda + Fix overflow)
+// ============================
+(function injectFloraStyles() {
+  if (document.getElementById('flora-injected-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'flora-injected-styles';
+  style.textContent = `
+    /* === FIX OVERFLOW PAGE === */
+    body, html { overflow-x: hidden; max-width: 100vw; }
+    #app, #main-content { max-width: 100vw; overflow-x: hidden; box-sizing: border-box; }
+    .page { max-width: 100%; box-sizing: border-box; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .card-grid .card { min-width: 0; box-sizing: border-box; }
+    .card-title, .card-sub {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* === JOURNAL === */
+    .journal-date-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px}
+    .date-nav-btn{background:#fff;border:1.5px solid #ede8e0;border-radius:50%;width:38px;height:38px;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#4a5e54}
+    .date-nav-btn:disabled{opacity:.3;cursor:not-allowed}
+    .journal-date{text-align:center;font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:#4a5e54;font-style:italic;flex:1}
+    .field{width:100%;padding:10px 12px;border:1.5px solid #ede8e0;border-radius:14px;font-size:0.95rem;font-family:'DM Sans',sans-serif;background:#fff;outline:none;box-sizing:border-box}
+
+    /* === AGENDA TOGGLE === */
+    .agenda-view-toggle{display:flex;gap:8px;margin-bottom:16px;background:#f7f3ee;padding:5px;border-radius:99px}
+    .agenda-toggle-btn{flex:1;padding:9px 10px;border:none;background:transparent;font-size:0.85rem;color:#4a5e54;cursor:pointer;border-radius:99px;font-family:'DM Sans',sans-serif;font-weight:500;transition:all 0.18s}
+    .agenda-toggle-btn.active{background:#2d4a3e;color:#fff;font-weight:600;box-shadow:0 2px 8px rgba(45,74,62,0.2)}
+
+    /* === AGENDA NAV === */
+    .agenda-month-nav{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:14px;padding:10px 14px;margin-bottom:16px;box-shadow:0 2px 8px rgba(45,74,62,0.08);gap:8px}
+    .agenda-nav-btn{background:#f7f3ee;border:none;border-radius:50%;width:36px;height:36px;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#2d4a3e;flex-shrink:0}
+    .agenda-period-label{flex:1;text-align:center;font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;color:#2d4a3e;font-style:italic;text-transform:capitalize}
+
+    /* === CALENDRIER MENSUEL === */
+    .cal-headers{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:8px;padding:0 4px}
+    .cal-header-cell{text-align:center;font-size:0.7rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.05em;padding:4px 0}
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;padding:0 4px}
+    .cal-cell{aspect-ratio:1/1;background:#fff;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;position:relative;box-shadow:0 1px 3px rgba(45,74,62,0.06);transition:all 0.18s;min-width:0;padding:4px;box-sizing:border-box}
+    .cal-cell:hover{transform:scale(1.05);box-shadow:0 2px 8px rgba(45,74,62,0.15)}
+    .cal-cell-empty{background:transparent;box-shadow:none;cursor:default;pointer-events:none}
+    .cal-day-num{font-family:'Playfair Display',Georgia,serif;font-size:0.95rem;font-weight:600;color:#1e2d26;line-height:1}
+    .cal-cell.cal-today{background:#2d4a3e}
+    .cal-cell.cal-today .cal-day-num{color:#fff}
+    .cal-cell.cal-selected{background:#a0735c;transform:scale(1.05)}
+    .cal-cell.cal-selected .cal-day-num{color:#fff}
+    .cal-cell.cal-has-meals:not(.cal-today):not(.cal-selected){background:#f7f3ee}
+    .cal-dots{display:flex;gap:3px;margin-top:3px}
+    .cal-dot{width:5px;height:5px;border-radius:50%;display:inline-block}
+    .cal-dot-meal{background:#3d6b58}
+    .cal-dot-journal{background:#f0b429}
+    .cal-cell.cal-today .cal-dot,.cal-cell.cal-selected .cal-dot{background:#fff}
+
+    /* === DRAWER JOUR === */
+    #agenda-day-drawer{margin-top:20px}
+    #agenda-day-drawer.hidden{display:none}
+    .drawer-card{background:#fff;border-radius:22px;padding:18px;box-shadow:0 4px 16px rgba(45,74,62,0.12);border:2px solid #c8e6d4}
+    .drawer-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid #ede8e0}
+    .drawer-day{font-family:'Playfair Display',Georgia,serif;font-size:1.15rem;font-weight:600;color:#2d4a3e;text-transform:capitalize}
+    .drawer-sub{font-size:0.78rem;color:#8a9e96;margin-top:2px}
+    .drawer-close{background:#f7f3ee;border:none;border-radius:50%;width:32px;height:32px;font-size:0.9rem;cursor:pointer;color:#4a5e54;flex-shrink:0}
+    .drawer-meals{display:flex;flex-direction:column;gap:10px}
+    .drawer-meal{background:#f7f3ee;border-radius:14px;padding:12px 14px;cursor:pointer;position:relative;transition:all 0.18s}
+    .drawer-meal:hover{background:#c8e6d4}
+    .drawer-meal-empty{border:2px dashed #ede8e0;background:#fff}
+    .drawer-meal-empty:hover{border-color:#3d6b58;background:#f7f3ee}
+    .drawer-meal-label{font-size:0.7rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+    .drawer-meal-content{display:flex;align-items:center;gap:10px}
+    .drawer-meal-emoji{font-size:1.3rem}
+    .drawer-meal-name{font-size:0.92rem;color:#1e2d26;font-weight:500}
+    .drawer-meal-empty-text{font-size:0.88rem;color:#8a9e96;font-style:italic}
+    .drawer-meal-clear{position:absolute;top:8px;right:8px;background:none;border:none;color:#8a9e96;font-size:0.85rem;cursor:pointer;padding:4px 8px}
+
+    /* === ANCIENS STYLES JOURNAL (sliders, mood, etc.) === */
+    .slider-douleur-j{width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
+    .slider-douleur-j::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+    .slider-douleur-j::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer}
+  `;
+  document.head.appendChild(style);
+})();
+
+// ============================
+// (anciens styles)
+// ============================
+
+// ============================
 // DATA — Recettes
 // ============================
 const RECETTES = [
@@ -6285,56 +6378,239 @@ function quickAddToAgenda(dk, slug, recId, overlayEl) {
 // ============================
 // AGENDA
 // ============================
-function getWeekDates(offset = 0) {
+// ============================
+// AGENDA — VUE CALENDRIER MENSUEL
+// ============================
+let _agendaView = 'month'; // 'month' | 'week'
+let _agendaMonthOffset = 0; // décalage mois courant
+let _agendaSelectedDay = null; // dateKey du jour sélectionné
+
+// JOURS_FULL déjà déclaré plus haut
+const MOIS_LONG = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+function getWeekDates(offset) {
+  offset = offset || 0;
   const now   = new Date();
-  const dow   = (now.getDay() + 6) % 7; // 0=lundi
+  const dow   = (now.getDay() + 6) % 7;
   const start = new Date(now);
   start.setDate(now.getDate() - dow + offset * 7);
-
-  return Array.from({ length: 7 }, (_, i) => {
+  return Array.from({ length: 7 }, function(_, i) {
     const d = new Date(start);
     d.setDate(start.getDate() + i);
     return d;
   });
 }
 
+function setAgendaView(view, btn) {
+  _agendaView = view;
+  _agendaMonthOffset = 0;
+  _agendaSelectedDay = null;
+
+  document.querySelectorAll('.agenda-toggle-btn').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+
+  // Cacher drawer
+  const drawer = document.getElementById('agenda-day-drawer');
+  if (drawer) drawer.classList.add('hidden');
+
+  renderAgenda();
+}
+
+function changeAgendaPeriod(dir) {
+  if (_agendaView === 'month') {
+    _agendaMonthOffset += dir;
+  } else {
+    currentWeekOffset += dir;
+  }
+  _agendaSelectedDay = null;
+  const drawer = document.getElementById('agenda-day-drawer');
+  if (drawer) drawer.classList.add('hidden');
+  renderAgenda();
+}
+
 function renderAgenda() {
+  if (_agendaView === 'month') {
+    renderAgendaMonth();
+  } else {
+    renderAgendaWeek();
+  }
+}
+
+function renderAgendaMonth() {
+  const today = new Date();
+  const targetMonth = new Date(today.getFullYear(), today.getMonth() + _agendaMonthOffset, 1);
+  const year = targetMonth.getFullYear();
+  const month = targetMonth.getMonth();
+  const todayKey = dateKey(today);
+
+  // Label
+  const label = MOIS_LONG[month] + ' ' + year;
+  const lblEl = document.getElementById('agenda-period-label');
+  if (lblEl) lblEl.textContent = label;
+
+  // Calculer les jours du mois
+  const firstDay = new Date(year, month, 1);
+  const lastDay = new Date(year, month + 1, 0);
+  const nbDays = lastDay.getDate();
+  // 0 = lundi (ISO)
+  const firstDow = (firstDay.getDay() + 6) % 7;
+
+  // Construire la grille
+  let cellsHTML = '';
+
+  // En-têtes jours
+  cellsHTML += '<div class="cal-headers">';
+  ['L','M','M','J','V','S','D'].forEach(function(j) {
+    cellsHTML += '<div class="cal-header-cell">' + j + '</div>';
+  });
+  cellsHTML += '</div>';
+
+  // Grille des jours
+  cellsHTML += '<div class="cal-grid">';
+
+  // Cases vides avant le 1er
+  for (let i = 0; i < firstDow; i++) {
+    cellsHTML += '<div class="cal-cell cal-cell-empty"></div>';
+  }
+
+  // Jours du mois
+  for (let day = 1; day <= nbDays; day++) {
+    const d = new Date(year, month, day);
+    const k = dateKey(d);
+    const isToday = k === todayKey;
+    const isSelected = k === _agendaSelectedDay;
+    const dayData = agenda[k] || {};
+    const hasMeals = Object.keys(dayData).length > 0;
+    const hasJournal = !!journal[k];
+
+    let dotsHTML = '';
+    if (hasMeals) dotsHTML += '<span class="cal-dot cal-dot-meal"></span>';
+    if (hasJournal) dotsHTML += '<span class="cal-dot cal-dot-journal"></span>';
+
+    cellsHTML += '<div class="cal-cell ' +
+      (isToday ? 'cal-today ' : '') +
+      (isSelected ? 'cal-selected ' : '') +
+      (hasMeals ? 'cal-has-meals ' : '') +
+      '" onclick="selectAgendaDay(\''+k+'\')">' +
+      '<span class="cal-day-num">' + day + '</span>' +
+      (dotsHTML ? '<div class="cal-dots">' + dotsHTML + '</div>' : '') +
+    '</div>';
+  }
+
+  cellsHTML += '</div>';
+
+  document.getElementById('agenda-content').innerHTML = cellsHTML;
+
+  // Si un jour est sélectionné, afficher le drawer
+  if (_agendaSelectedDay) {
+    renderAgendaDayDrawer(_agendaSelectedDay);
+  }
+}
+
+function selectAgendaDay(dk) {
+  _agendaSelectedDay = (_agendaSelectedDay === dk) ? null : dk;
+  renderAgendaMonth();
+
+  if (_agendaSelectedDay) {
+    setTimeout(function() {
+      const drawer = document.getElementById('agenda-day-drawer');
+      if (drawer) drawer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 50);
+  } else {
+    const drawer = document.getElementById('agenda-day-drawer');
+    if (drawer) drawer.classList.add('hidden');
+  }
+}
+
+function renderAgendaDayDrawer(dk) {
+  const drawer = document.getElementById('agenda-day-drawer');
+  if (!drawer) return;
+
+  const d = new Date(dk + 'T12:00:00');
+  const dayLbl = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  const isToday = dk === dateKey(new Date());
+  const dayData = agenda[dk] || {};
+
+  const repasHTML = REPAS.map(function(r) {
+    const recId = dayData[r.slug];
+    const rec = recId ? RECETTES.find(function(x) { return x.id === recId; }) : null;
+
+    if (rec) {
+      return '<div class="drawer-meal" onclick="openRecette(' + rec.id + ')">' +
+        '<div class="drawer-meal-label">' + r.label + '</div>' +
+        '<div class="drawer-meal-content">' +
+          '<span class="drawer-meal-emoji">' + rec.emoji + '</span>' +
+          '<span class="drawer-meal-name">' + rec.nom + '</span>' +
+        '</div>' +
+        '<button class="drawer-meal-clear" onclick="event.stopPropagation();clearAgendaMeal(\''+dk+'\',\''+r.slug+'\')">✕</button>' +
+      '</div>';
+    } else {
+      return '<div class="drawer-meal drawer-meal-empty" onclick="editAgendaMeal(\''+dk+'\',\''+r.slug+'\')">' +
+        '<div class="drawer-meal-label">' + r.label + '</div>' +
+        '<div class="drawer-meal-empty-text">+ Ajouter une recette</div>' +
+      '</div>';
+    }
+  }).join('');
+
+  drawer.classList.remove('hidden');
+  drawer.innerHTML = '<div class="drawer-card">' +
+    '<div class="drawer-header">' +
+      '<div>' +
+        '<div class="drawer-day">' + dayLbl + (isToday ? ' · <span style="color:var(--green-mid);font-weight:600;">Aujourd\'hui</span>' : '') + '</div>' +
+        '<div class="drawer-sub">Menu du jour</div>' +
+      '</div>' +
+      '<button class="drawer-close" onclick="closeAgendaDayDrawer()">✕</button>' +
+    '</div>' +
+    '<div class="drawer-meals">' + repasHTML + '</div>' +
+  '</div>';
+}
+
+function closeAgendaDayDrawer() {
+  _agendaSelectedDay = null;
+  const drawer = document.getElementById('agenda-day-drawer');
+  if (drawer) drawer.classList.add('hidden');
+  renderAgendaMonth();
+}
+
+function renderAgendaWeek() {
   const dates = getWeekDates(currentWeekOffset);
   const today = dateKey(new Date());
 
-  // Week label
   const startLabel = dates[0].toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' });
   const endLabel   = dates[6].toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  document.getElementById('week-label').textContent = `${startLabel} – ${endLabel}`;
 
-  const grid = document.getElementById('agenda-grid');
-  grid.innerHTML = dates.map((d, i) => {
-    const k       = dateKey(d);
+  const lblEl = document.getElementById('agenda-period-label');
+  if (lblEl) lblEl.textContent = startLabel + ' – ' + endLabel;
+
+  const html = dates.map(function(d, i) {
+    const k = dateKey(d);
     const isToday = k === today;
     const dayData = agenda[k] || {};
     const dayName = JOURS_FULL[i];
 
-    const repasHTML = REPAS.map(r => {
-      const slug  = r.slug;
+    const repasHTML = REPAS.map(function(r) {
+      const slug = r.slug;
       const recId = dayData[slug];
-      const rec   = recId ? RECETTES.find(x => x.id === recId) : null;
-      return `
-        <div class="agenda-meal" onclick="editAgendaMeal('${k}','${slug}')">
-          <div class="meal-label">${r.label}</div>
-          <div class="meal-content ${rec ? '' : 'meal-empty'}">${rec ? rec.emoji + ' ' + rec.nom : '+ Ajouter'}</div>
-          ${rec ? `<button class="meal-edit-btn" onclick="event.stopPropagation();clearAgendaMeal('${k}','${slug}')">✕</button>` : ''}
-        </div>`;
+      const rec = recId ? RECETTES.find(function(x) { return x.id === recId; }) : null;
+      return '<div class="agenda-meal" onclick="editAgendaMeal(\''+k+'\',\''+slug+'\')">' +
+        '<div class="meal-label">' + r.label + '</div>' +
+        '<div class="meal-content ' + (rec ? '' : 'meal-empty') + '">' + (rec ? rec.emoji + ' ' + rec.nom : '+ Ajouter') + '</div>' +
+        (rec ? '<button class="meal-edit-btn" onclick="event.stopPropagation();clearAgendaMeal(\''+k+'\',\''+slug+'\')">✕</button>' : '') +
+      '</div>';
     }).join('');
 
-    return `
-      <div class="agenda-day">
-        <div class="agenda-day-header ${isToday ? 'today-header' : ''}">
-          <span>${dayName} ${d.getDate()}</span>
-          ${isToday ? '<span style="font-size:0.7rem;opacity:0.8;">Aujourd\'hui</span>' : ''}
-        </div>
-        <div class="agenda-meals">${repasHTML}</div>
-      </div>`;
+    return '<div class="agenda-day">' +
+      '<div class="agenda-day-header ' + (isToday ? 'today-header' : '') + '">' +
+        '<span>' + dayName + ' ' + d.getDate() + '</span>' +
+        (isToday ? '<span style="font-size:0.7rem;opacity:0.8;">Aujourd\'hui</span>' : '') +
+      '</div>' +
+      '<div class="agenda-meals">' + repasHTML + '</div>' +
+    '</div>';
   }).join('');
+
+  document.getElementById('agenda-content').innerHTML = html;
 }
 
 function changeWeek(dir) {
