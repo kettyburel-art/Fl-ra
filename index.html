@@ -519,9 +519,15 @@
         </button>
         <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
 
-        <!-- Statistiques bien-être -->
-        <div class="section-title" style="margin-top:24px;">📊 Mes statistiques</div>
-        <div id="stats-container"></div>
+        <!-- Lien vers les stats du journal -->
+        <div style="margin-top:20px;padding:14px 16px;background:#f7f3ee;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showPage('journal');setTimeout(function(){var b=document.querySelector('#page-journal .jtab:nth-child(2)');if(b)b.click();},100)">
+          <span style="font-size:1.4rem;">📊</span>
+          <div style="flex:1;">
+            <div style="font-weight:600;color:#2d4a3e;font-size:0.95rem;">Mes statistiques</div>
+            <div style="font-size:0.78rem;color:#8a9e96;">Sommeil, douleurs, bien-être →</div>
+          </div>
+          <span style="color:#8a9e96;">›</span>
+        </div>
       </section>
 
       <section id="page-apropos" class="page hidden">

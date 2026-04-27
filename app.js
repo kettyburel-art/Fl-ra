@@ -4951,7 +4951,7 @@ function showPage(page) {
   if (page === 'journal')    { setJournalDate(); loadJournalEntry(); renderJournalToday(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
-  if (page === 'profil')     { loadProfil(); renderStats(); }
+  if (page === 'profil')     { loadProfil(); }
   if (page === 'apropos')    { /* static */ }
   if (page === 'batch')      { /* batch s'initialise via generateBatch() */ }
   if (page === 'generateur') {
