@@ -6,84 +6,6 @@
 'use strict';
 
 // ============================
-// INJECT JOURNAL STYLES
-// ============================
-(function injectJournalStyles() {
-  const style = document.createElement('style');
-  style.id = 'flora-journal-styles';
-  style.textContent = `
-    .journal-date-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;gap:12px}
-    .date-nav-btn{background:#fff;border:1.5px solid #ede8e0;border-radius:50%;width:38px;height:38px;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0;color:#4a5e54}
-    .date-nav-btn:disabled{opacity:.3;cursor:not-allowed}
-    .journal-date{text-align:center;font-family:'Playfair Display',Georgia,serif;font-size:1rem;color:#4a5e54;font-style:italic;flex:1}
-    .jblock-sub{font-size:.78rem;color:#8a9e96;margin:-8px 0 12px;font-style:italic}
-    .cycle-block{background:#f7f3ee;border:1.5px solid #ede8e0;border-radius:14px;padding:14px 16px;margin-bottom:10px}
-    .cycle-block-header{font-size:.82rem;font-weight:600;color:#2d4a3e;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
-    .cycle-remove-btn{background:none;border:none;color:#8a9e96;font-size:1rem;cursor:pointer;padding:0 4px;line-height:1}
-    .cycle-time-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .cycle-time-field label{font-size:.7rem;color:#8a9e96;font-weight:600;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px}
-    .cycle-time-field select{width:100%;padding:10px 12px;border:1.5px solid #ede8e0;border-radius:14px;font-size:1rem;font-weight:600;color:#2d4a3e;background:#fff;cursor:pointer;outline:none;font-family:'DM Sans',sans-serif}
-    .cycle-duration{text-align:center;font-size:.9rem;color:#3d6b58;font-weight:700;margin-top:10px;font-family:'Playfair Display',Georgia,serif}
-    .btn-add-cycle{width:100%;border:2px dashed #ede8e0;background:transparent;color:#8a9e96;border-radius:14px;padding:12px;font-size:.88rem;cursor:pointer;margin:4px 0 16px;transition:all .2s;font-family:'DM Sans',sans-serif;display:block}
-    .sleep-totals-row{background:#f7f3ee;border-radius:14px;overflow:hidden;margin-top:4px;border:1px solid #ede8e0}
-    .sleep-total-item{display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #ede8e0;font-size:.83rem}
-    .sleep-total-item:last-child{border-bottom:none}
-    .sleep-total-icon{font-size:1rem;width:22px;flex-shrink:0}
-    .sleep-total-label{flex:1;color:#4a5e54}
-    .sleep-total-val{font-weight:700;color:#1e2d26;font-size:.9rem}
-    .sleep-total-val.green{color:#3d6b58;font-family:'Playfair Display',Georgia,serif}
-    .sleep-detail-row{margin-top:14px;padding-top:14px;border-top:1px solid #ede8e0}
-    .sleep-detail-label{font-size:.8rem;font-weight:600;color:#4a5e54;margin-bottom:8px}
-    .sleep-counter-row{display:flex;align-items:center;gap:12px}
-    .counter-btn{width:36px;height:36px;border-radius:50%;background:#ede8e0;border:none;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .18s}
-    .counter-val{font-size:1.1rem;font-weight:700;color:#2d4a3e;min-width:28px;text-align:center}
-    .stars-row{display:flex;gap:10px;justify-content:center;margin:12px 0 6px}
-    .star{font-size:2rem;cursor:pointer;color:#ede8e0;transition:color .15s,transform .15s;user-select:none;line-height:1}
-    .star.active{color:#f0b429}
-    .stars-labels{display:flex;justify-content:space-between;font-size:.7rem;color:#8a9e96;margin-top:4px;padding:0 4px}
-    .mood-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-    .mood-btn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 6px;background:#f7f3ee;border:2px solid #ede8e0;border-radius:14px;cursor:pointer;font-size:1.5rem;transition:all .18s}
-    .mood-btn span{font-size:.7rem;color:#4a5e54;font-weight:500;font-family:'DM Sans',sans-serif}
-    .mood-btn.selected{border-color:#3d6b58;background:#c8e6d4}
-    .mood-btn.selected span{color:#2d4a3e;font-weight:600}
-    .sieste-info{font-size:.8rem;color:#8a9e96;font-style:italic;margin-top:6px}
-    .douleur-section{padding:14px 0;border-bottom:1px solid #ede8e0}
-    .douleur-section:last-child{border-bottom:none}
-    .douleur-header{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
-    .douleur-icon{font-size:1.2rem;margin-top:2px;flex-shrink:0}
-    .douleur-label{font-weight:600;font-size:.88rem;color:#1e2d26}
-    .douleur-sub{font-size:.68rem;color:#8a9e96;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
-    .douleur-val{text-align:center;font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;font-weight:600;margin:8px 0}
-    .douleur-val.green{color:#3d6b58}
-    .douleur-val.orange{color:#d97706}
-    .douleur-val.red{color:#c0614a}
-    .slider-douleur{width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
-    .slider-douleur::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
-    .slider-labels{display:flex;justify-content:space-between;font-size:.68rem;color:#8a9e96;margin-top:5px}
-    .sleep-chips-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
-    .sleep-chip{padding:6px 14px;border-radius:99px;background:#f7f3ee;border:1.5px solid #ede8e0;font-size:.82rem;color:#4a5e54;cursor:pointer;transition:all .15s;user-select:none}
-    .sleep-chip.active{background:#2d4a3e;border-color:#2d4a3e;color:#fff}
-    .stats-tabs-row{display:flex;gap:8px;margin-bottom:16px}
-    .stats-period-btn{flex:1;padding:9px 4px;border:1.5px solid #ede8e0;border-radius:14px;background:#fff;font-size:.82rem;color:#4a5e54;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-    .stats-period-btn.active{background:#2d4a3e;color:#fff;border-color:#2d4a3e;font-weight:600}
-    .stats-block{background:#fff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(45,74,62,.12);border:1px solid transparent}
-    .stats-block-title{font-size:.72rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
-    .stats-kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
-    .stats-kpi{background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center}
-    .stats-kpi-val{font-family:'Playfair Display',Georgia,serif;font-size:1.25rem;font-weight:600;color:#2d4a3e;line-height:1.1}
-    .stats-kpi-label{font-size:.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:.04em;margin-top:4px;line-height:1.3}
-    .stats-kpi-wide{background:#f7f3ee;border-radius:14px;padding:10px 16px;text-align:center}
-    .stats-block.douleur{border-color:rgba(192,97,74,.15)}
-    .stats-block.douleur .stats-kpi{background:#fef6f4}
-    .stats-block.douleur .stats-kpi-val{color:#c0614a}
-    .stats-block.douleur .stats-kpi-wide{background:#fef6f4}
-    .stats-block.wellbeing .stats-kpi-val{color:#3d6b58}
-  `;
-  document.head.appendChild(style);
-})();
-
-
-// ============================
 // DATA — Recettes
 // ============================
 const RECETTES = [
@@ -3958,8 +3880,6 @@ let agenda        = {};
 let isPremium     = false;
 let currentCatFilter = '';
 let currentWeekOffset = 0;
-let placardItems  = {}; // ✅ FIX: déclaré ici pour être disponible dans saveState()
-let _placardFilter = null; // ✅ FIX: variable propre au lieu de _placardFilter
 
 // ============================
 // INIT
@@ -3978,11 +3898,10 @@ window.addEventListener('load', () => {
 });
 
 function loadState() {
-  profile      = JSON.parse(localStorage.getItem('flora_profile') || '{}');
-  journal      = JSON.parse(localStorage.getItem('flora_journal') || '{}');
-  agenda       = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
-  placardItems = JSON.parse(localStorage.getItem('flora_placard') || '{}'); // FIX: manquait
-  isPremium    = localStorage.getItem('flora_premium') === 'true';
+  profile   = JSON.parse(localStorage.getItem('flora_profile') || '{}');
+  journal   = JSON.parse(localStorage.getItem('flora_journal') || '{}');
+  agenda    = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
+  isPremium = localStorage.getItem('flora_premium') === 'true';
 }
 
 function saveState() {
@@ -4493,7 +4412,7 @@ const INGREDIENT_PRICES = {
   'Algues wakamé séchées': 4.50,
 };
 
-// placardItems déclaré plus haut dans STATE pour être disponible dans saveState()
+let placardItems = {};
 let currentBudget = 80;
 let batchPlan = [];
 let batchCurrentStep = 0;
@@ -4635,13 +4554,6 @@ function generateMenusFromBasket(basketItems) {
   menusDiv.classList.remove('hidden');
 }
 
-function clearPlacardFilter() {
-  _placardFilter = null;
-  const badge = document.getElementById('placard-filter-badge');
-  if (badge) badge.style.display = 'none';
-  renderRecettes();
-}
-
 function filterRecettesByPlacard() {
   const checkedItems = Object.keys(placardItems).filter(k => placardItems[k]);
   if (!checkedItems.length) {
@@ -4658,7 +4570,7 @@ function filterRecettesByPlacard() {
 
   showPage('recettes');
   // Stocker le filtre placard pour renderRecettes
-  _placardFilter = checkedItems;
+  window._placardFilter = checkedItems;
   renderRecettes();
 
   setTimeout(() => {
@@ -4866,7 +4778,6 @@ function initApp() {
   renderAgenda();
   loadProfil();
   setJournalDate();
-  // updateSleepCalc remplacée par le nouveau système de cycles
 
   // Recette du jour — change chaque jour, cliquable directement
   const free = RECETTES.filter(r => !r.premium);
@@ -4904,11 +4815,7 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
-  if (page === 'journal') {
-    setJournalDate();
-    initSleepCyclesUI();
-    loadJournalEntry();
-  }
+  if (page === 'journal')    { setJournalDate(); loadJournalEntry(); renderJournalToday(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
   if (page === 'profil')     { loadProfil(); renderStats(); }
@@ -5008,285 +4915,632 @@ function dateKey(d) {
 // Date courante du journal — modifiable via ← →
 let currentJournalDate = new Date();
 
-function setJournalDate() {
-  currentJournalDate = new Date(); // reset à aujourd'hui à chaque ouverture
-  renderJournalDate();
-  loadJournalEntry(currentJournalDate);
+// ============================
+// JOURNAL SJSR — VERSION SÉRÉNITÉ
+// ============================
+
+// État du journal (currentJournalDate déjà déclaré plus haut)
+let _journalCycles = [];
+let _journalLevers = 0;
+let _journalQualite = 0;
+let _journalMood = null;
+let _journalSieste = 0;
+let _journalDouleurs = { reveil: 0, jour: 0, nuit: 0 };
+let _journalMeds = [];
+let _journalRituels = [];
+let _journalNotes = '';
+let _statsPeriod = 14;
+
+// Couleurs et thème
+const J_COLORS = {
+  green: '#3d6b58',
+  greenDeep: '#2d4a3e',
+  greenPale: '#c8e6d4',
+  cream: '#f7f3ee',
+  creamDark: '#ede8e0',
+  white: '#ffffff',
+  textDark: '#1e2d26',
+  textMid: '#4a5e54',
+  textLight: '#8a9e96',
+  gold: '#f0b429',
+  red: '#c0614a',
+  orange: '#d97706'
+};
+
+// Helper: formater minutes en heure
+function fmtMin(min) {
+  if (!min || min === 0) return '—';
+  const h = Math.floor(min / 60);
+  const m = Math.round(min % 60);
+  if (m === 0) return h + 'h';
+  return h + 'h' + String(m).padStart(2, '0');
 }
 
-function renderJournalDate() {
+// Helper: générer options time
+function timeOpts(selected) {
+  let html = '';
+  for (let h = 0; h < 24; h++) {
+    for (let m = 0; m < 60; m += 15) {
+      const v = String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0');
+      const lbl = String(h).padStart(2,'0') + 'h' + String(m).padStart(2,'0');
+      html += '<option value="' + v + '"' + (v === selected ? ' selected' : '') + '>' + lbl + '</option>';
+    }
+  }
+  return html;
+}
+
+// Calculer durée d'un cycle
+function cycleDuration(couche, leve) {
+  const [h1, m1] = couche.split(':').map(Number);
+  const [h2, m2] = leve.split(':').map(Number);
+  let total = (h2 * 60 + m2) - (h1 * 60 + m1);
+  if (total < 0) total += 24 * 60;
+  return total;
+}
+
+// Date format
+function setJournalDate() {
   const today = new Date();
   const isToday = dateKey(currentJournalDate) === dateKey(today);
-
-  const opts = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
-  const label = isToday
+  const lbl = isToday
     ? 'Aujourd\'hui — ' + currentJournalDate.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long' })
-    : currentJournalDate.toLocaleDateString('fr-FR', opts);
-
-  document.getElementById('journal-entry-date').textContent = label;
-
-  // Désactiver → si on est à aujourd'hui
-  const nextBtn = document.getElementById('journal-next-btn');
-  if (nextBtn) nextBtn.disabled = isToday;
+    : currentJournalDate.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const el = document.getElementById('journal-entry-date');
+  if (el) el.textContent = lbl;
+  const next = document.getElementById('journal-next-btn');
+  if (next) {
+    next.disabled = isToday;
+    next.style.opacity = isToday ? '0.3' : '1';
+  }
 }
 
 function changeJournalDay(delta) {
   const newDate = new Date(currentJournalDate);
   newDate.setDate(newDate.getDate() + delta);
-
-  // Ne pas aller dans le futur
   const today = new Date();
   today.setHours(23, 59, 59, 999);
   if (newDate > today) return;
-
-  // Ne pas aller avant 90 jours
   const limit = new Date();
   limit.setDate(limit.getDate() - 90);
   if (newDate < limit) return;
-
   currentJournalDate = newDate;
-  renderJournalDate();
-  loadJournalEntry(currentJournalDate);
+  setJournalDate();
+  loadJournalEntry();
+  renderJournalToday();
 }
 
-function loadJournalEntry(date) {
-  const dk = dateKey(date);
-  const entry = journal[dk] || {};
+// Charger une entrée existante
+function loadJournalEntry() {
+  const dk = dateKey(currentJournalDate);
+  const entry = journal[dk];
 
-  // Charger les valeurs dans le formulaire
-  const set = (id, val) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    if (el.type === 'range' || el.type === 'number') el.value = val || el.defaultValue || 0;
-    else if (el.type === 'time') el.value = val || '';
-    else if (el.type === 'checkbox') el.checked = !!val;
-    else el.value = val || '';
-  };
-
-  set('sl-coucher',   entry.coucher);
-  set('sl-lever',     entry.lever);
-  set('sl-energie',   entry.energie || 5);
-  set('sl-douleur',   entry.douleur || 0);
-  set('sl-sjsr',      entry.sjsr    || 0);
-  set('journal-notes', entry.notes  || '');
-
-  // Qualité sommeil — range input sl-qualite
-  const qualiteEl = document.getElementById('sl-qualite');
-  if (qualiteEl && entry.qualite) {
-    qualiteEl.value = entry.qualite;
-    // Mettre à jour le label étoiles
-    const stars = ['★☆☆☆☆','★★☆☆☆','★★★☆☆','★★★★☆','★★★★★'];
-    const valQual = document.getElementById('val-qualite');
-    if (valQual) valQual.textContent = stars[(entry.qualite || 3) - 1] || '★★★☆☆';
-  }
-
-  // Slider labels — synchroniser avec les valeurs rechargées
-  const enVal = document.getElementById('val-energie');
-  const doVal = document.getElementById('val-douleur');
-  const sjVal = document.getElementById('val-sjsr');
-  if (enVal) enVal.textContent = (entry.energie || 5) + '/10';
-  if (doVal) doVal.textContent = (entry.douleur || 0) + '/10';
-  if (sjVal) {
-    const sjsrLabels = ['Aucun','Léger','Modéré','Fort','Très fort','Insupportable'];
-    sjVal.textContent = sjsrLabels[entry.sjsr || 0] || '0';
-  }
-
-  updateSleepCalc();
-}
-
-// ============================
-// JOURNAL — SOMMEIL AVANCÉ
-// ============================
-let currentCycles = 4; // défaut 4 cycles = ~6h
-
-function updateSleepCalc() {
-  const coucher = document.getElementById('sl-coucher').value;
-  const lever   = document.getElementById('sl-lever').value;
-  if (!coucher || !lever) return;
-
-  // Calcul durée
-  const [hC, mC] = coucher.split(':').map(Number);
-  const [hL, mL] = lever.split(':').map(Number);
-  let totalMin = (hL * 60 + mL) - (hC * 60 + mC);
-  if (totalMin < 0) totalMin += 24 * 60; // nuit qui passe minuit
-
-  const h = Math.floor(totalMin / 60);
-  const m = totalMin % 60;
-  const label = m > 0 ? `${h}h${String(m).padStart(2,'0')}` : `${h}h00`;
-  document.getElementById('sleep-duration-badge').textContent = label;
-
-  // Suggérer nb cycles (1 cycle ≈ 90 min)
-  const cyclesSuggeres = Math.round(totalMin / 90);
-  const clamped = Math.max(1, Math.min(6, cyclesSuggeres));
-  setCyclesByCount(clamped);
-}
-
-function setCycles(n, el) {
-  currentCycles = n;
-  document.querySelectorAll('.cycle-btn').forEach((btn, i) => {
-    btn.classList.toggle('active', i < n);
-  });
-  updateCyclesInfo();
-}
-
-function setCyclesByCount(n) {
-  currentCycles = n;
-  document.querySelectorAll('.cycle-btn').forEach((btn, i) => {
-    btn.classList.toggle('active', i < n);
-  });
-  updateCyclesInfo();
-}
-
-function updateCyclesInfo() {
-  const min = currentCycles * 90;
-  const h = Math.floor(min / 60);
-  const m = min % 60;
-  const label = m > 0 ? `${h}h${m}` : `${h}h`;
-  const info = document.getElementById('cycles-info');
-  if (info) info.textContent = `~${label} de sommeil réel (${currentCycles} cycle${currentCycles > 1 ? 's' : ''})`;
-}
-
-function getSleepDuration() {
-  const coucher = document.getElementById('sl-coucher')?.value;
-  const lever   = document.getElementById('sl-lever')?.value;
-  if (!coucher || !lever) return 0;
-  const [hC, mC] = coucher.split(':').map(Number);
-  const [hL, mL] = lever.split(':').map(Number);
-  let totalMin = (hL * 60 + mL) - (hC * 60 + mC);
-  if (totalMin < 0) totalMin += 24 * 60;
-  return Math.round(totalMin / 60 * 10) / 10; // en heures, 1 décimale
-}
-
-// Compteur levers nocturnes
-let leversCount = 0;
-const leversLabels = ['Aucun lever','1 lever','2 levers','3 levers','4 levers ou plus'];
-
-function changeCounter(type, delta) {
-  if (type === 'levers') {
-    leversCount = Math.max(0, Math.min(4, leversCount + delta));
-    document.getElementById('levers-count').textContent = leversCount;
-    document.getElementById('levers-info').textContent = leversLabels[leversCount] || leversCount + ' levers';
-  }
-}
-
-// Chips sommeil — sélection exclusive (radio)
-function selectSleepChip(el, group, value) {
-  el.closest('.sleep-chips-row').querySelectorAll('.sleep-chip').forEach(c => {
-    c.classList.remove('active');
-    delete c.dataset.selected;
-  });
-  el.classList.add('active');
-  el.dataset.selected = value;
-}
-
-// Chips sommeil — sélection multiple (toggle)
-function toggleSleepChip(el) {
-  el.classList.toggle('active');
-}
-
-// Afficher/masquer localisation SJSR selon intensité
-const origSjsrInput = document.getElementById ? null : null;
-function initSjsrToggle() {
-  const sjsrSlider = document.getElementById('sl-sjsr');
-  if (sjsrSlider) {
-    sjsrSlider.addEventListener('input', function() {
-      const locRow = document.getElementById('sjsr-location-row');
-      if (locRow) locRow.style.display = parseInt(this.value) > 0 ? 'block' : 'none';
-    });
-  }
-}
-
-// Collecter toutes les données sommeil avancées
-function getSleepData() {
-  // Endormissement
-  const endEl = document.querySelector('[data-selected][onclick*="endormissement"]');
-  const endormissement = endEl ? endEl.dataset.selected : 'rapide';
-
-  // Localisation SJSR
-  const locEl = document.querySelector('[data-selected][onclick*="location"]');
-  const sjsrLocation = locEl ? locEl.dataset.selected : '';
-
-  // Médications cochées
-  const meds = Array.from(document.querySelectorAll('[onclick*="med"].active')).map(c => c.textContent);
-
-  // Rituels cochés
-  const rituels = Array.from(document.querySelectorAll('[onclick*="rituel"].active')).map(c => c.textContent);
-
-  return { levers: leversCount, endormissement, sjsrLocation, meds, rituels };
-}
-
-function updateSliderVal(sliderId, valId, isStars = false, isSjsr = false) {
-  const val = parseFloat(document.getElementById(sliderId).value);
-  const el  = document.getElementById(valId);
-
-  if (isStars) {
-    const stars = ['★☆☆☆☆','★★☆☆☆','★★★☆☆','★★★★☆','★★★★★'];
-    el.textContent = stars[val - 1] || '';
-  } else if (isSjsr) {
-    const labels = ['Aucun', 'Léger', 'Modéré', 'Fort', 'Très fort', 'Insupportable'];
-    el.textContent = labels[val] || val;
-  } else if (sliderId === 'sl-duree') {
-    el.textContent = val + 'h';
+  if (entry && entry.cycles2) {
+    _journalCycles = JSON.parse(JSON.stringify(entry.cycles2));
+    _journalLevers = entry.levers2 || 0;
+    _journalQualite = entry.qualite2 || 0;
+    _journalMood = entry.mood || null;
+    _journalSieste = entry.sieste || 0;
+    _journalDouleurs = entry.douleurs || { reveil: 0, jour: 0, nuit: 0 };
+    _journalMeds = entry.meds2 || [];
+    _journalRituels = entry.rituels2 || [];
+    _journalNotes = entry.notes2 || '';
   } else {
-    el.textContent = val + '/10';
+    _journalCycles = [{ couche: '23:00', leve: '07:00' }];
+    _journalLevers = 0;
+    _journalQualite = 0;
+    _journalMood = null;
+    _journalSieste = 0;
+    _journalDouleurs = { reveil: 0, jour: 0, nuit: 0 };
+    _journalMeds = [];
+    _journalRituels = [];
+    _journalNotes = '';
   }
 }
 
-function toggleChip(el) {
-  el.classList.toggle('active');
+// Rendre l'UI complète du journal
+function renderJournalToday() {
+  const container = document.getElementById('journal-today-container');
+  if (!container) return;
+
+  const cyclesHTML = _journalCycles.map((c, i) => {
+    const dur = fmtMin(cycleDuration(c.couche, c.leve));
+    return (
+      '<div style="background:#f7f3ee;border:1.5px solid #ede8e0;border-radius:14px;padding:14px 16px;margin-bottom:10px;">' +
+        '<div style="font-size:0.82rem;font-weight:600;color:#2d4a3e;margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;">' +
+          '<span>🌙 Cycle ' + (i+1) + '</span>' +
+          (_journalCycles.length > 1 ? '<button onclick="removeJCycle(' + i + ')" style="background:none;border:none;color:#8a9e96;font-size:1rem;cursor:pointer;padding:0 4px;line-height:1;">✕</button>' : '') +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">' +
+          '<div>' +
+            '<label style="font-size:0.7rem;color:#8a9e96;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:5px;">Couché</label>' +
+            '<select onchange="updateJCycle(' + i + ',\'couche\',this.value)" style="width:100%;padding:10px 12px;border:1.5px solid #ede8e0;border-radius:14px;font-size:1rem;font-weight:600;color:#2d4a3e;background:#fff;cursor:pointer;outline:none;font-family:DM Sans,sans-serif;">' + timeOpts(c.couche) + '</select>' +
+          '</div>' +
+          '<div>' +
+            '<label style="font-size:0.7rem;color:#8a9e96;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:5px;">Levé</label>' +
+            '<select onchange="updateJCycle(' + i + ',\'leve\',this.value)" style="width:100%;padding:10px 12px;border:1.5px solid #ede8e0;border-radius:14px;font-size:1rem;font-weight:600;color:#2d4a3e;background:#fff;cursor:pointer;outline:none;font-family:DM Sans,sans-serif;">' + timeOpts(c.leve) + '</select>' +
+          '</div>' +
+        '</div>' +
+        '<div style="text-align:center;font-size:0.95rem;color:#3d6b58;font-weight:700;margin-top:10px;font-family:Playfair Display,serif;">⏱ ' + dur + '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  // Totaux
+  let totalSleep = 0;
+  let bedStart = null, bedEnd = null;
+  _journalCycles.forEach(c => {
+    totalSleep += cycleDuration(c.couche, c.leve);
+    const [h1, m1] = c.couche.split(':').map(Number);
+    const [h2, m2] = c.leve.split(':').map(Number);
+    const start = h1 * 60 + m1;
+    const end = h2 * 60 + m2;
+    if (bedStart === null || start < bedStart) bedStart = start;
+    if (bedEnd === null || end > bedEnd) bedEnd = end;
+  });
+  let bedTime = bedEnd - bedStart;
+  if (bedTime < 0) bedTime += 24 * 60;
+  const bedTimeStr = _journalCycles.length > 1 ? fmtMin(bedTime) : '—';
+
+  // Étoiles
+  const starsHTML = [1,2,3,4,5].map(n => {
+    const active = n <= _journalQualite;
+    return '<span onclick="setJStars(' + n + ')" style="font-size:2.2rem;cursor:pointer;color:' + (active ? '#f0b429' : '#ede8e0') + ';user-select:none;line-height:1;transition:color 0.15s;">★</span>';
+  }).join('');
+
+  // Humeur
+  const moods = [
+    { v:'epuisee', e:'😫', l:'Épuisée' },
+    { v:'fatiguee', e:'😔', l:'Fatiguée' },
+    { v:'correcte', e:'😐', l:'Correcte' },
+    { v:'bien', e:'🙂', l:'Bien' },
+    { v:'reposee', e:'😊', l:'Reposée' },
+    { v:'excellente', e:'🤩', l:'Excellente' }
+  ];
+  const moodsHTML = moods.map(m => {
+    const sel = _journalMood === m.v;
+    return '<button onclick="setJMood(\'' + m.v + '\')" style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 6px;background:' + (sel ? '#c8e6d4' : '#f7f3ee') + ';border:2px solid ' + (sel ? '#3d6b58' : '#ede8e0') + ';border-radius:14px;cursor:pointer;font-size:1.5rem;transition:all 0.18s;">' +
+      m.e +
+      '<span style="font-size:0.7rem;color:' + (sel ? '#2d4a3e' : '#4a5e54') + ';font-weight:' + (sel ? '600' : '500') + ';font-family:DM Sans,sans-serif;">' + m.l + '</span>' +
+    '</button>';
+  }).join('');
+
+  // Sieste options
+  const siesteOpts = [
+    { v:0, l:'Pas de sieste' },
+    { v:15, l:'15 min' },
+    { v:20, l:'20 min' },
+    { v:30, l:'30 min' },
+    { v:45, l:'45 min' },
+    { v:60, l:'1h' },
+    { v:90, l:'1h30' },
+    { v:120, l:'2h' }
+  ].map(o => '<option value="' + o.v + '"' + (o.v === _journalSieste ? ' selected' : '') + '>' + o.l + '</option>').join('');
+
+  let siesteInfo = 'Pas de sieste aujourd\'hui';
+  if (_journalSieste > 0) {
+    siesteInfo = _journalSieste < 60 ? 'Sieste de ' + _journalSieste + ' min' : 'Sieste de ' + Math.floor(_journalSieste/60) + 'h' + (_journalSieste%60 ? _journalSieste%60+'min' : '');
+  }
+
+  // Douleurs
+  function douleurLabel(v) {
+    if (v === 0) return { label: 'Aucune douleur', color: '#3d6b58' };
+    if (v <= 3) return { label: 'Légère', color: '#3d6b58' };
+    if (v <= 6) return { label: 'Modérée', color: '#d97706' };
+    if (v <= 8) return { label: 'Intense', color: '#d97706' };
+    return { label: 'Insupportable', color: '#c0614a' };
+  }
+
+  const douleursDef = [
+    { key:'reveil', icon:'🌅', label:'Douleurs au réveil', sub:'Jambes / Impatiences au saut du lit' },
+    { key:'jour', icon:'☀️', label:'Douleurs dans la journée', sub:'Impatiences · Tension · Fatigue musculaire' },
+    { key:'nuit', icon:'🌙', label:'Douleurs pendant la nuit', sub:'SJSR nocturne · Levers forcés · Jambes' }
+  ];
+
+  const douleursHTML = douleursDef.map((d, i) => {
+    const v = _journalDouleurs[d.key] || 0;
+    const dl = douleurLabel(v);
+    const isLast = i === douleursDef.length - 1;
+    return '<div style="padding:14px 0;' + (isLast ? '' : 'border-bottom:1px solid #ede8e0;') + '">' +
+      '<div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;">' +
+        '<span style="font-size:1.2rem;margin-top:2px;flex-shrink:0;">' + d.icon + '</span>' +
+        '<div>' +
+          '<div style="font-weight:600;font-size:0.88rem;color:#1e2d26;">' + d.label + '</div>' +
+          '<div style="font-size:0.68rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:2px;">' + d.sub + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:center;font-family:Playfair Display,serif;font-size:1.1rem;font-weight:600;margin:8px 0;color:' + dl.color + ';">' + v + ' — ' + dl.label + '</div>' +
+      '<input type="range" min="0" max="10" step="1" value="' + v + '" oninput="updateJDouleur(\'' + d.key + '\',this.value)" style="width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;" class="slider-douleur-j">' +
+      '<div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#8a9e96;margin-top:5px;">' +
+        '<span>0 · Aucune</span><span>5 · Modérée</span><span>10 · Insupportable</span>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+
+  // Médication & Rituels
+  const medsList = ['Tramadol','Lyrica','Fer','Magnésium','Autre'];
+  const medsHTML = medsList.map(m => {
+    const active = _journalMeds.includes(m);
+    return '<span onclick="toggleJMed(\'' + m + '\')" style="padding:6px 14px;border-radius:99px;background:' + (active ? '#2d4a3e' : '#f7f3ee') + ';border:1.5px solid ' + (active ? '#2d4a3e' : '#ede8e0') + ';font-size:0.82rem;color:' + (active ? '#fff' : '#4a5e54') + ';cursor:pointer;user-select:none;">' + m + '</span>';
+  }).join('');
+
+  const rituelsList = ['Infusion','Lait d\'or','Étirements','Lecture','Méditation'];
+  const rituelsHTML = rituelsList.map(r => {
+    const active = _journalRituels.includes(r);
+    return '<span onclick="toggleJRituel(\'' + r + '\')" style="padding:6px 14px;border-radius:99px;background:' + (active ? '#2d4a3e' : '#f7f3ee') + ';border:1.5px solid ' + (active ? '#2d4a3e' : '#ede8e0') + ';font-size:0.82rem;color:' + (active ? '#fff' : '#4a5e54') + ';cursor:pointer;user-select:none;">' + r + '</span>';
+  }).join('');
+
+  // Construire le HTML final
+  container.innerHTML = (
+    // CYCLES
+    '<div class="journal-block">' +
+      '<div class="jblock-title">🌙 Cycles de sommeil</div>' +
+      '<p style="font-size:0.78rem;color:#8a9e96;margin:-8px 0 12px;font-style:italic;">Ajoutez autant de cycles que nécessaire</p>' +
+      cyclesHTML +
+      '<button onclick="addJCycle()" style="width:100%;border:2px dashed #ede8e0;background:transparent;color:#8a9e96;border-radius:14px;padding:12px;font-size:0.88rem;cursor:pointer;margin:4px 0 16px;font-family:DM Sans,sans-serif;">+ Ajouter un cycle</button>' +
+      // Totaux
+      '<div style="background:#f7f3ee;border-radius:14px;overflow:hidden;border:1px solid #ede8e0;">' +
+        '<div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #ede8e0;font-size:0.83rem;">' +
+          '<span style="font-size:1rem;width:22px;">😴</span>' +
+          '<span style="flex:1;color:#4a5e54;">Sommeil total cumulé</span>' +
+          '<span style="font-weight:700;color:#3d6b58;font-family:Playfair Display,serif;font-size:0.95rem;">' + fmtMin(totalSleep) + '</span>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;padding:9px 14px;border-bottom:1px solid #ede8e0;font-size:0.83rem;">' +
+          '<span style="font-size:1rem;width:22px;">🛏</span>' +
+          '<span style="flex:1;color:#4a5e54;">Temps total au lit</span>' +
+          '<span style="font-weight:700;color:#1e2d26;font-size:0.9rem;">' + bedTimeStr + '</span>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:8px;padding:9px 14px;font-size:0.83rem;">' +
+          '<span style="font-size:1rem;width:22px;">🚶</span>' +
+          '<span style="flex:1;color:#4a5e54;">Nombre de levers</span>' +
+          '<span style="font-weight:700;color:#1e2d26;font-size:0.9rem;">' + _journalLevers + 'x</span>' +
+        '</div>' +
+      '</div>' +
+      // Levers nocturnes
+      '<div style="margin-top:14px;padding-top:14px;border-top:1px solid #ede8e0;">' +
+        '<div style="font-size:0.8rem;font-weight:600;color:#4a5e54;margin-bottom:8px;">🚶 Levers nocturnes</div>' +
+        '<div style="display:flex;align-items:center;gap:12px;">' +
+          '<button onclick="changeJLevers(-1)" style="width:36px;height:36px;border-radius:50%;background:#ede8e0;border:none;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">−</button>' +
+          '<span style="font-size:1.1rem;font-weight:700;color:#2d4a3e;min-width:28px;text-align:center;">' + _journalLevers + '</span>' +
+          '<button onclick="changeJLevers(1)" style="width:36px;height:36px;border-radius:50%;background:#ede8e0;border:none;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;">+</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    // QUALITÉ
+    '<div class="journal-block">' +
+      '<div class="jblock-title">⭐ Qualité globale de la nuit</div>' +
+      '<div style="display:flex;gap:10px;justify-content:center;margin:12px 0 6px;">' + starsHTML + '</div>' +
+      '<div style="display:flex;justify-content:space-between;font-size:0.72rem;color:#8a9e96;margin-top:4px;padding:0 4px;">' +
+        '<span>Très mauvaise</span><span>Moyenne</span><span>Excellente</span>' +
+      '</div>' +
+    '</div>' +
+
+    // HUMEUR
+    '<div class="journal-block">' +
+      '<div class="jblock-title">🌅 Comment je me sens au réveil</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;">' + moodsHTML + '</div>' +
+    '</div>' +
+
+    // SIESTE
+    '<div class="journal-block">' +
+      '<div class="jblock-title">☀️ Sieste <span style="font-size:0.75rem;color:#8a9e96;font-weight:400;">(week-end & vacances)</span></div>' +
+      '<select onchange="updateJSieste(this.value)" class="field">' + siesteOpts + '</select>' +
+      '<div style="font-size:0.8rem;color:#8a9e96;font-style:italic;margin-top:6px;">' + siesteInfo + '</div>' +
+    '</div>' +
+
+    // DOULEURS
+    '<div class="journal-block">' +
+      '<div class="jblock-title">🦵 Douleurs SJSR</div>' +
+      douleursHTML +
+    '</div>' +
+
+    // NOTES
+    '<div class="journal-block">' +
+      '<div class="jblock-title">📝 Notes — Symptômes · Déclencheurs · Observations</div>' +
+      '<textarea id="journal-notes-new" rows="3" class="field" placeholder="Ex: Impatiences vers 23h · Levée 3 fois · Crampes · Dîner tardif · Stress…" oninput="_journalNotes=this.value">' + _journalNotes + '</textarea>' +
+    '</div>' +
+
+    // MÉDICATION
+    '<div class="journal-block">' +
+      '<div class="jblock-title">💊 Médication du soir</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">' + medsHTML + '</div>' +
+    '</div>' +
+
+    // RITUELS
+    '<div class="journal-block">' +
+      '<div class="jblock-title">🍵 Rituel du soir</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px;">' + rituelsHTML + '</div>' +
+    '</div>' +
+
+    // BOUTON SAUVEGARDE
+    '<button class="btn-primary full-width" onclick="saveJournal()">Enregistrer 💾</button>' +
+    '<div class="save-confirm hidden" id="save-confirm">✅ Entrée sauvegardée !</div>'
+  );
+
+  // Apply slider-douleur thumb style
+  document.querySelectorAll('.slider-douleur-j').forEach(s => {
+    if (!s.dataset.styled) {
+      s.dataset.styled = '1';
+    }
+  });
 }
 
-function saveJournal() {
-  // Sauvegarder sur la date affichée (currentJournalDate), pas forcément aujourd'hui
-  const dk = dateKey(currentJournalDate || new Date());
-  const symptoms = Array.from(document.querySelectorAll('#symptom-chips .chip.active'))
-    .map(c => c.textContent);
-  const sleepExtra = getSleepData();
+// === Handlers ===
+function addJCycle() {
+  const last = _journalCycles[_journalCycles.length - 1];
+  _journalCycles.push({ couche: last.leve, leve: last.leve });
+  renderJournalToday();
+}
 
-  journal[dk] = {
-    coucher:        document.getElementById('sl-coucher')?.value || '',
-    lever:          document.getElementById('sl-lever')?.value || '',
-    duree:          getSleepDuration(),
-    cycles:         currentCycles,
-    levers:         sleepExtra.levers,
-    endormissement: sleepExtra.endormissement,
-    sjsrLocation:   sleepExtra.sjsrLocation,
-    meds:           sleepExtra.meds,
-    rituels:        sleepExtra.rituels,
-    qualite:        parseInt(document.getElementById('sl-qualite').value),
-    sjsr:           parseInt(document.getElementById('sl-sjsr').value),
-    energie:        parseInt(document.getElementById('sl-energie').value),
-    douleur:        parseInt(document.getElementById('sl-douleur').value),
-    symptoms,
-    notes:          document.getElementById('journal-notes').value,
-    ts:             Date.now()
-  };
+function removeJCycle(i) {
+  if (_journalCycles.length <= 1) return;
+  _journalCycles.splice(i, 1);
+  renderJournalToday();
+}
+
+function updateJCycle(i, field, val) {
+  _journalCycles[i][field] = val;
+  renderJournalToday();
+}
+
+function changeJLevers(delta) {
+  _journalLevers = Math.max(0, _journalLevers + delta);
+  renderJournalToday();
+}
+
+function setJStars(n) {
+  _journalQualite = n;
+  renderJournalToday();
+}
+
+function setJMood(v) {
+  _journalMood = v;
+  renderJournalToday();
+}
+
+function updateJSieste(v) {
+  _journalSieste = parseInt(v) || 0;
+  renderJournalToday();
+}
+
+function updateJDouleur(key, val) {
+  _journalDouleurs[key] = parseInt(val) || 0;
+  // Mettre à jour seulement le label sans tout re-render (perte de focus slider)
+  const labels = document.querySelectorAll('#journal-today-container input[type=range]');
+  // En fait on re-render minimaliste — le slider reste utilisable
+  renderJournalToday();
+}
+
+function toggleJMed(m) {
+  const idx = _journalMeds.indexOf(m);
+  if (idx >= 0) _journalMeds.splice(idx, 1);
+  else _journalMeds.push(m);
+  renderJournalToday();
+}
+
+function toggleJRituel(r) {
+  const idx = _journalRituels.indexOf(r);
+  if (idx >= 0) _journalRituels.splice(idx, 1);
+  else _journalRituels.push(r);
+  renderJournalToday();
+}
+
+// Sauvegarde
+function saveJournal() {
+  const dk = dateKey(currentJournalDate);
+  let totalSleep = 0;
+  _journalCycles.forEach(c => {
+    totalSleep += cycleDuration(c.couche, c.leve);
+  });
+
+  // Récupérer notes depuis input
+  const notesEl = document.getElementById('journal-notes-new');
+  if (notesEl) _journalNotes = notesEl.value;
+
+  journal[dk] = Object.assign(journal[dk] || {}, {
+    cycles2: _journalCycles,
+    levers2: _journalLevers,
+    qualite2: _journalQualite,
+    mood: _journalMood,
+    sieste: _journalSieste,
+    douleurs: _journalDouleurs,
+    meds2: _journalMeds,
+    rituels2: _journalRituels,
+    notes2: _journalNotes,
+    totalSleep: totalSleep,
+    // Compatibilité avec l'ancien format pour stats/streak
+    duree: totalSleep / 60,
+    qualite: _journalQualite,
+    sjsr: Math.round(((_journalDouleurs.reveil || 0) + (_journalDouleurs.jour || 0) + (_journalDouleurs.nuit || 0)) / 3 / 2),
+    energie: 5,
+    douleur: Math.max(_journalDouleurs.reveil || 0, _journalDouleurs.jour || 0, _journalDouleurs.nuit || 0),
+    notes: _journalNotes,
+    ts: Date.now()
+  });
 
   saveState();
   updateDashboard();
 
-  const confirm = document.getElementById('save-confirm');
-  confirm.classList.remove('hidden');
-  setTimeout(() => confirm.classList.add('hidden'), 2500);
+  const c = document.getElementById('save-confirm');
+  if (c) {
+    c.classList.remove('hidden');
+    setTimeout(() => c.classList.add('hidden'), 2500);
+  }
 }
 
-function switchJTab(tab, el) {
-  document.querySelectorAll('.jtab').forEach(function(t) { t.classList.remove('active'); });
-  if (el) el.classList.add('active');
+// Tabs
+function switchJTab(tab, btn) {
+  ['today','stats','historique'].forEach(t => {
+    const el = document.getElementById('jtab-' + t);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById('jtab-' + tab);
+  if (target) target.classList.remove('hidden');
 
-  document.getElementById('jtab-today').classList.add('hidden');
-  document.getElementById('jtab-historique').classList.add('hidden');
+  document.querySelectorAll('#page-journal .jtab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 
-  // Sans template literal — robuste WebView
-  const targetId = tab === 'today' ? 'jtab-today' : 'jtab-historique';
-  document.getElementById(targetId).classList.remove('hidden');
-
+  if (tab === 'today') {
+    setJournalDate();
+    loadJournalEntry();
+    renderJournalToday();
+  }
+  if (tab === 'stats') renderJournalStats();
   if (tab === 'historique') renderHistorique();
 }
 
-// ============================
-// EXPORT PDF JOURNAL
-// ============================
+// Statistiques
+function renderJournalStats() {
+  const container = document.getElementById('stats-journal-container');
+  if (!container) return;
+
+  const days = _statsPeriod === 'compare' ? 30 : _statsPeriod;
+  const today = new Date();
+  const entries = [];
+  for (let i = days - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const dk = dateKey(d);
+    if (journal[dk]) entries.push(journal[dk]);
+  }
+
+  const tabsHTML = (
+    '<div style="display:flex;gap:8px;margin-bottom:16px;">' +
+      ['14','30','compare'].map((p, i) => {
+        const labels = ['14 nuits','Mensuel','Comparatif'];
+        const val = p === 'compare' ? 'compare' : parseInt(p);
+        const active = _statsPeriod === val;
+        return '<button onclick="setJStatsPeriod(\'' + p + '\')" style="flex:1;padding:9px 4px;border:1.5px solid #ede8e0;border-radius:14px;background:' + (active ? '#2d4a3e' : '#fff') + ';font-size:0.82rem;color:' + (active ? '#fff' : '#4a5e54') + ';cursor:pointer;font-family:DM Sans,sans-serif;font-weight:' + (active ? '600' : '400') + ';">' + labels[i] + '</button>';
+      }).join('') +
+    '</div>'
+  );
+
+  if (entries.length === 0) {
+    container.innerHTML = tabsHTML + '<div class="journal-block" style="text-align:center;color:#8a9e96;padding:32px 16px;">' +
+      '<div style="font-size:2rem;">🌙</div>' +
+      '<p>Aucune entrée sur cette période.<br>Commencez à remplir votre journal !</p>' +
+    '</div>';
+    return;
+  }
+
+  const n = entries.length;
+  // Sommeil
+  const totalSleeps = entries.map(e => e.totalSleep || (e.duree ? e.duree * 60 : 0));
+  const avgSleep = totalSleeps.reduce((a,b) => a+b, 0) / n;
+  const bestNight = Math.max.apply(null, totalSleeps);
+  const goodNights = totalSleeps.filter(t => t >= 420).length;
+
+  const avgQualite = entries.reduce((s,e) => s + (e.qualite2 || e.qualite || 0), 0) / n;
+  const avgLevers = entries.reduce((s,e) => s + (e.levers2 || e.levers || 0), 0) / n;
+  const avgSieste = entries.reduce((s,e) => s + (e.sieste || 0), 0) / n;
+
+  // Douleurs
+  const avgDR = entries.reduce((s,e) => s + ((e.douleurs && e.douleurs.reveil) || 0), 0) / n;
+  const avgDJ = entries.reduce((s,e) => s + ((e.douleurs && e.douleurs.jour) || 0), 0) / n;
+  const avgDN = entries.reduce((s,e) => s + ((e.douleurs && e.douleurs.nuit) || 0), 0) / n;
+  const avgDG = (avgDR + avgDJ + avgDN) / 3;
+
+  // Humeur
+  const moodEmoji = { epuisee:'😫', fatiguee:'😔', correcte:'😐', bien:'🙂', reposee:'😊', excellente:'🤩' };
+  const moods = entries.map(e => e.mood).filter(Boolean);
+  const moodCount = {};
+  moods.forEach(m => moodCount[m] = (moodCount[m] || 0) + 1);
+  const sortedMoods = Object.entries(moodCount).sort((a,b) => b[1] - a[1]);
+  const topMood = sortedMoods.length ? moodEmoji[sortedMoods[0][0]] : '—';
+
+  const fmtH = m => {
+    if (!m) return '—';
+    const h = Math.floor(m / 60);
+    const min = Math.round(m % 60);
+    if (min === 0) return h + 'h';
+    return h + '.' + Math.round(min/6) + 'h';
+  };
+
+  const stars = avg => {
+    if (!avg) return '—';
+    const r = Math.round(avg);
+    return '★'.repeat(r) + '☆'.repeat(5 - r);
+  };
+
+  container.innerHTML = tabsHTML +
+
+    // Sommeil
+    '<div style="background:#fff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(45,74,62,0.12);">' +
+      '<div style="font-size:0.72rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px;">😴 Sommeil</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">' +
+        '<div style="background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#2d4a3e;">' + fmtH(avgSleep) + '</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">DURÉE<br>MOYENNE</div>' +
+        '</div>' +
+        '<div style="background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1rem;font-weight:600;color:#f0b429;">' + stars(avgQualite) + '</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">QUALITÉ ⭐</div>' +
+        '</div>' +
+        '<div style="background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#2d4a3e;">' + avgLevers.toFixed(1) + 'x</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">LEVERS /<br>NUIT</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="background:#f7f3ee;border-radius:14px;padding:10px 16px;text-align:center;">' +
+        '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#2d4a3e;">' + Math.round(avgSieste) + ' min</div>' +
+        '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">SIESTE MOY. 💤</div>' +
+      '</div>' +
+    '</div>' +
+
+    // Douleurs
+    '<div style="background:#fff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(45,74,62,0.12);border:1px solid rgba(192,97,74,0.15);">' +
+      '<div style="font-size:0.72rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px;">🦵 Douleurs SJSR</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px;">' +
+        '<div style="background:#fef6f4;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#c0614a;">' + avgDR.toFixed(1) + '/10</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">🌅 AU<br>RÉVEIL</div>' +
+        '</div>' +
+        '<div style="background:#fef6f4;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#c0614a;">' + avgDJ.toFixed(1) + '/10</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">☀️ EN<br>JOURNÉE</div>' +
+        '</div>' +
+        '<div style="background:#fef6f4;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#c0614a;">' + avgDN.toFixed(1) + '/10</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">🌙 LA<br>NUIT</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="background:#fef6f4;border-radius:14px;padding:10px 16px;text-align:center;">' +
+        '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#c0614a;">' + avgDG.toFixed(1) + '/10</div>' +
+        '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">📊 MOYENNE GLOBALE</div>' +
+      '</div>' +
+    '</div>' +
+
+    // Bien-être
+    '<div style="background:#fff;border-radius:22px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(45,74,62,0.12);">' +
+      '<div style="font-size:0.72rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:12px;">✨ RESSENTI & BIEN-ÊTRE</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">' +
+        '<div style="background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#3d6b58;">' + fmtH(bestNight) + '</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">MEILLEURE<br>NUIT</div>' +
+        '</div>' +
+        '<div style="background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.25rem;font-weight:600;color:#3d6b58;">' + goodNights + '</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">NUITS<br>≥ 7H ✅</div>' +
+        '</div>' +
+        '<div style="background:#f7f3ee;border-radius:14px;padding:12px 8px;text-align:center;">' +
+          '<div style="font-family:Playfair Display,serif;font-size:1.6rem;font-weight:600;">' + topMood + '</div>' +
+          '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:4px;">HUMEUR<br>RÉVEIL</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>' +
+
+    '<div style="font-size:0.75rem;color:#8a9e96;text-align:center;padding:8px 0;">' +
+      n + ' entrée' + (n > 1 ? 's' : '') + ' sur ' + days + ' jours' +
+    '</div>';
+}
+
+function setJStatsPeriod(p) {
+  _statsPeriod = p === 'compare' ? 'compare' : parseInt(p);
+  renderJournalStats();
+}
+
+
+
 function exportJournalPDF() {
   const entries = Object.entries(journal).sort((a,b) => a[0].localeCompare(b[0]));
 
@@ -5417,6 +5671,7 @@ function exportJournalPDF() {
   setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
+
 function renderHistorique() {
   const container = document.getElementById('historique-list');
   const entries   = Object.entries(journal).sort((a, b) => b[0].localeCompare(a[0]));
@@ -5467,9 +5722,9 @@ function renderRecettes() {
         if (!r.nutri || !r.nutri[currentNutriFilter]) return false;
       }
     }
-    if (_placardFilter && _placardFilter.length) {
+    if (window._placardFilter && window._placardFilter.length) {
       const match = r.ingredients.some(ing =>
-        _placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
+        window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
       );
       if (!match) return false;
     }
@@ -5479,7 +5734,7 @@ function renderRecettes() {
   // Badge filtre placard
   const placardBadge = document.getElementById('placard-filter-badge');
   if (placardBadge) {
-    if (_placardFilter && _placardFilter.length) {
+    if (window._placardFilter && window._placardFilter.length) {
       placardBadge.textContent = `🗄️ Filtre placard actif (${recettes.length} recettes)`;
       placardBadge.style.display = 'block';
     } else {
@@ -5527,8 +5782,8 @@ function renderRecettes() {
       <div style="grid-column:1/-1;text-align:center;padding:32px;">
         <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
         <div style="color:var(--text-light);font-size:0.88rem;">Aucune recette trouvée.</div>
-        ${_placardFilter?.length ? `
-          <button onclick="_placardFilter=null;renderRecettes();"
+        ${window._placardFilter?.length ? `
+          <button onclick="window._placardFilter=null;renderRecettes();"
             style="margin-top:12px;padding:8px 16px;border:none;border-radius:99px;background:var(--green-pale);color:var(--green-deep);font-size:0.82rem;cursor:pointer;">
             Effacer le filtre placard
           </button>` : ''}
@@ -6610,506 +6865,6 @@ function activatePremium() {
 // ============================
 // SERVICE WORKER
 // ============================
-
-
-// ===== JOURNAL SJSR AMÉLIORÉ =====
-// ========================================
-// FLŌRA — JOURNAL SJSR AMÉLIORÉ
-// Coller ces fonctions dans app.js
-// en remplacement des anciennes fonctions journal
-// ========================================
-
-// --- Génération des options time (select) ---
-function generateTimeOptions() {
-  const opts = [];
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      const hh = String(h).padStart(2,'0');
-      const mm = String(m).padStart(2,'0');
-      opts.push(`<option value="${hh}:${mm}">${hh}h${mm}</option>`);
-    }
-  }
-  return opts.join('');
-}
-
-// --- Cycles de sommeil ---
-let sleepCycles = []; // [{ couche: '23:00', leve: '07:00' }]
-let currentLevers = 0;
-let currentStarsQualite = 0;
-let currentMoodReveil = null;
-let statsPeriod = 14;
-
-function initSleepCyclesUI() {
-  sleepCycles = [];
-  // Charger depuis l'entrée en cours si elle existe
-  const dk = window.currentJournalDate || dateKey(new Date());
-  const entry = journal[dk];
-  if (entry && entry.sleepCycles && entry.sleepCycles.length) {
-    sleepCycles = entry.sleepCycles;
-  } else {
-    sleepCycles = [{ couche: '23:00', leve: '07:00' }];
-  }
-  renderSleepCycles();
-}
-
-function renderSleepCycles() {
-  const list = document.getElementById('sleep-cycles-list');
-  if (!list) return;
-
-  const timeOpts = generateTimeOptions();
-
-  list.innerHTML = sleepCycles.map((c, i) => {
-    const dur = calcCycleDuration(c.couche, c.leve);
-    return `
-    <div class="cycle-block" id="cycle-block-${i}">
-      <div class="cycle-block-header">
-        <span>🌙 Cycle ${i+1}</span>
-        ${sleepCycles.length > 1 ? `<button class="cycle-remove-btn" onclick="removeSleepCycle(${i})">✕</button>` : ''}
-      </div>
-      <div class="cycle-time-row">
-        <div class="cycle-time-field">
-          <label>Couché</label>
-          <select onchange="updateCycle(${i},'couche',this.value)">
-            ${generateTimeOptionsSelected(c.couche)}
-          </select>
-        </div>
-        <div class="cycle-time-field">
-          <label>Levé</label>
-          <select onchange="updateCycle(${i},'leve',this.value)">
-            ${generateTimeOptionsSelected(c.leve)}
-          </select>
-        </div>
-      </div>
-      <div class="cycle-duration">⏱ ${dur}</div>
-    </div>`;
-  }).join('');
-
-  updateSleepTotals();
-}
-
-function generateTimeOptionsSelected(selected) {
-  const opts = [];
-  for (let h = 0; h < 24; h++) {
-    for (let m = 0; m < 60; m += 15) {
-      const hh = String(h).padStart(2,'0');
-      const mm = String(m).padStart(2,'0');
-      const val = `${hh}:${mm}`;
-      opts.push(`<option value="${val}" ${val === selected ? 'selected' : ''}>${hh}h${mm}</option>`);
-    }
-  }
-  return opts.join('');
-}
-
-function updateCycle(idx, field, val) {
-  sleepCycles[idx][field] = val;
-  // Recalcul durée du cycle
-  const dur = calcCycleDuration(sleepCycles[idx].couche, sleepCycles[idx].leve);
-  const durEl = document.querySelector(`#cycle-block-${idx} .cycle-duration`);
-  if (durEl) durEl.textContent = `⏱ ${dur}`;
-  updateSleepTotals();
-}
-
-function addSleepCycle() {
-  // Le nouveau cycle commence là où le précédent se termine
-  const last = sleepCycles[sleepCycles.length - 1];
-  sleepCycles.push({ couche: last.leve, leve: last.leve });
-  renderSleepCycles();
-}
-
-function removeSleepCycle(idx) {
-  if (sleepCycles.length <= 1) return;
-  sleepCycles.splice(idx, 1);
-  renderSleepCycles();
-}
-
-function calcCycleDuration(couche, leve) {
-  const [h1, m1] = couche.split(':').map(Number);
-  const [h2, m2] = leve.split(':').map(Number);
-  let total = (h2 * 60 + m2) - (h1 * 60 + m1);
-  if (total < 0) total += 24 * 60;
-  const h = Math.floor(total / 60);
-  const m = total % 60;
-  return m > 0 ? `${h}h${String(m).padStart(2,'0')}` : `${h}h`;
-}
-
-function updateSleepTotals() {
-  let totalSleep = 0;
-  let bedStart = null, bedEnd = null;
-
-  sleepCycles.forEach(c => {
-    const [h1, m1] = c.couche.split(':').map(Number);
-    const [h2, m2] = c.leve.split(':').map(Number);
-    let dur = (h2 * 60 + m2) - (h1 * 60 + m1);
-    if (dur < 0) dur += 24 * 60;
-    totalSleep += dur;
-
-    // Calculer temps au lit (premier coucher au dernier lever)
-    if (bedStart === null || h1 * 60 + m1 < bedStart) bedStart = h1 * 60 + m1;
-    if (bedEnd === null || h2 * 60 + m2 > bedEnd) bedEnd = h2 * 60 + m2;
-  });
-
-  const formatMin = (m) => {
-    const h = Math.floor(m / 60);
-    const min = m % 60;
-    return min > 0 ? `${h}h${String(min).padStart(2,'0')}` : `${h}h`;
-  };
-
-  const totalEl = document.getElementById('total-sleep-val');
-  const bedEl = document.getElementById('total-bed-val');
-  const leversEl = document.getElementById('levers-count-new');
-
-  if (totalEl) totalEl.textContent = formatMin(totalSleep);
-
-  if (bedEl) {
-    if (bedStart !== null && bedEnd !== null) {
-      let bedTime = bedEnd - bedStart;
-      if (bedTime < 0) bedTime += 24 * 60;
-      bedEl.textContent = sleepCycles.length > 1 ? formatMin(bedTime) : '—';
-    } else {
-      bedEl.textContent = '—';
-    }
-  }
-
-  if (leversEl) leversEl.textContent = `${currentLevers}x`;
-}
-
-// --- Étoiles qualité ---
-function setStars(val) {
-  currentStarsQualite = val;
-  document.querySelectorAll('#stars-qualite .star').forEach((s, i) => {
-    s.classList.toggle('active', i < val);
-  });
-}
-
-// --- Humeur réveil ---
-function selectMood(el, type, val) {
-  document.querySelectorAll(`#mood-${type} .mood-btn`).forEach(b => b.classList.remove('selected'));
-  el.classList.add('selected');
-  currentMoodReveil = val;
-}
-
-// --- Sieste ---
-function updateSiesteDisplay() {
-  const val = parseInt(document.getElementById('sieste-select')?.value || '0');
-  const info = document.getElementById('sieste-info');
-  if (!info) return;
-  if (val === 0) {
-    info.textContent = 'Pas de sieste aujourd\'hui';
-  } else if (val < 60) {
-    info.textContent = `Sieste de ${val} min`;
-  } else {
-    info.textContent = `Sieste de ${Math.floor(val/60)}h${val%60 ? val%60+'min' : ''}`;
-  }
-}
-
-// --- Douleurs 3 moments ---
-function updateDouleur(moment) {
-  const val = parseInt(document.getElementById(`sl-douleur-${moment}`)?.value || '0');
-  const el = document.getElementById(`val-douleur-${moment}`);
-  if (!el) return;
-
-  let label, cls;
-  if (val === 0) { label = 'Aucune douleur'; cls = 'green'; }
-  else if (val <= 3) { label = 'Légère'; cls = 'green'; }
-  else if (val <= 6) { label = 'Modérée'; cls = 'orange'; }
-  else if (val <= 8) { label = 'Intense'; cls = 'orange'; }
-  else { label = 'Insupportable'; cls = 'red'; }
-
-  el.textContent = `${val} — ${label}`;
-  el.className = `douleur-val ${cls}`;
-}
-
-// --- Levers nocturnes ---
-function changeCounter(type, delta) {
-  if (type === 'levers') {
-    currentLevers = Math.max(0, currentLevers + delta);
-    const el = document.getElementById('levers-count');
-    if (el) el.textContent = currentLevers;
-    updateSleepTotals();
-  }
-}
-
-// --- Statistiques journal ---
-let _statsPeriod = 14;
-
-function setStatsPeriod(period, btn) {
-  _statsPeriod = period;
-  document.querySelectorAll('.stats-period-btn').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  renderJournalStats();
-}
-
-function renderJournalStats() {
-  const container = document.getElementById('stats-journal-content');
-  if (!container) return;
-
-  const isCompare = _statsPeriod === 'compare';
-  const days = isCompare ? 30 : _statsPeriod;
-  const today = new Date();
-
-  const entries = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const dk = dateKey(d);
-    entries.push({ dk, data: journal[dk] || null, d });
-  }
-
-  const filled = entries.filter(e => e.data);
-  const n = filled.length;
-
-  if (n === 0) {
-    container.innerHTML = `<div class="journal-block" style="text-align:center;color:var(--text-light);padding:32px 16px;">
-      <div style="font-size:2rem;">🌙</div>
-      <p>Aucune entrée sur cette période.<br>Commencez à remplir votre journal !</p>
-    </div>`;
-    return;
-  }
-
-  // Calculs sommeil
-  const avgSleep = n ? filled.reduce((s,e) => {
-    if (!e.data.sleepCycles) return s + (e.data.sleepDuration || 0);
-    const total = e.data.sleepCycles.reduce((t, c) => {
-      const [h1,m1] = c.couche.split(':').map(Number);
-      const [h2,m2] = c.leve.split(':').map(Number);
-      let d = (h2*60+m2)-(h1*60+m1);
-      if (d<0) d+=1440;
-      return t+d;
-    }, 0);
-    return s + total;
-  }, 0) / n : 0;
-
-  const avgQualite = n ? filled.reduce((s,e) => s + (e.data.qualite || 0), 0) / n : 0;
-  const avgLevers = n ? filled.reduce((s,e) => s + (e.data.levers || 0), 0) / n : 0;
-  const avgSieste = n ? filled.reduce((s,e) => s + (e.data.sieste || 0), 0) / n : 0;
-
-  // Douleurs
-  const avgDouleurReveil = n ? filled.reduce((s,e) => s+(e.data.douleurReveil||0),0)/n : 0;
-  const avgDouleurJour   = n ? filled.reduce((s,e) => s+(e.data.douleurJour||0),0)/n : 0;
-  const avgDouleurNuit   = n ? filled.reduce((s,e) => s+(e.data.douleurNuit||0),0)/n : 0;
-  const avgDouleurGlobal = (avgDouleurReveil+avgDouleurJour+avgDouleurNuit)/3;
-
-  // Bien-être
-  const bestNight = filled.reduce((best, e) => {
-    if (!e.data.sleepCycles) return best;
-    const total = e.data.sleepCycles.reduce((t,c) => {
-      const [h1,m1]=c.couche.split(':').map(Number);
-      const [h2,m2]=c.leve.split(':').map(Number);
-      let d=(h2*60+m2)-(h1*60+m1);if(d<0)d+=1440;return t+d;
-    },0);
-    return total > best ? total : best;
-  }, 0);
-
-  const goodNights = filled.filter(e => {
-    if (!e.data.sleepCycles) return false;
-    const total = e.data.sleepCycles.reduce((t,c) => {
-      const [h1,m1]=c.couche.split(':').map(Number);
-      const [h2,m2]=c.leve.split(':').map(Number);
-      let d=(h2*60+m2)-(h1*60+m1);if(d<0)d+=1440;return t+d;
-    },0);
-    return total >= 420; // 7h
-  }).length;
-
-  const fmt = (m) => {
-    if (!m) return '—';
-    const h=Math.floor(m/60), min=Math.round(m%60);
-    return min>0?`${h}.${Math.round(min/6)}h`:`${h}h`;
-  };
-
-  const starStr = (avg) => {
-    if (!avg) return '—';
-    return '★'.repeat(Math.round(avg)) + '☆'.repeat(5-Math.round(avg));
-  };
-
-  // Humeurs fréquentes
-  const moods = filled.map(e=>e.data.moodReveil).filter(Boolean);
-  const moodEmoji = { epuisee:'😫', fatiguee:'😔', correcte:'😐', bien:'🙂', reposee:'😊', excellente:'🤩' };
-  const moodCount = moods.reduce((acc,m)=>{ acc[m]=(acc[m]||0)+1; return acc; }, {});
-  const topMood = Object.entries(moodCount).sort((a,b)=>b[1]-a[1])[0];
-
-  container.innerHTML = `
-    <div class="stats-block">
-      <div class="stats-block-title">😴 Sommeil</div>
-      <div class="stats-kpi-grid">
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${fmt(avgSleep)}</div>
-          <div class="stats-kpi-label">Durée<br>moyenne</div>
-        </div>
-        <div class="stats-kpi">
-          <div class="stats-kpi-val" style="font-size:0.9rem;">${starStr(avgQualite)}</div>
-          <div class="stats-kpi-label">Qualité ⭐</div>
-        </div>
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${avgLevers.toFixed(1)}x</div>
-          <div class="stats-kpi-label">Levers /<br>nuit</div>
-        </div>
-      </div>
-      <div class="stats-kpi-wide">
-        <div class="stats-kpi-val">${Math.round(avgSieste)} min</div>
-        <div class="stats-kpi-label">Sieste moy. 💤</div>
-      </div>
-    </div>
-
-    <div class="stats-block douleur">
-      <div class="stats-block-title">🦵 Douleurs SJSR</div>
-      <div class="stats-kpi-grid">
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${avgDouleurReveil.toFixed(1)}/10</div>
-          <div class="stats-kpi-label">🌅 Au<br>réveil</div>
-        </div>
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${avgDouleurJour.toFixed(1)}/10</div>
-          <div class="stats-kpi-label">☀️ En<br>journée</div>
-        </div>
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${avgDouleurNuit.toFixed(1)}/10</div>
-          <div class="stats-kpi-label">🌙 La<br>nuit</div>
-        </div>
-      </div>
-      <div class="stats-kpi-wide">
-        <div class="stats-kpi-val" style="color:#c2547a;">${avgDouleurGlobal.toFixed(1)}/10</div>
-        <div class="stats-kpi-label">📊 Moyenne globale</div>
-      </div>
-    </div>
-
-    <div class="stats-block wellbeing">
-      <div class="stats-block-title">✨ Ressenti & Bien-être</div>
-      <div class="stats-kpi-grid">
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${fmt(bestNight)}</div>
-          <div class="stats-kpi-label">Meilleure<br>nuit</div>
-        </div>
-        <div class="stats-kpi">
-          <div class="stats-kpi-val">${goodNights}</div>
-          <div class="stats-kpi-label">Nuits<br>≥ 7h ✅</div>
-        </div>
-        <div class="stats-kpi">
-          <div class="stats-kpi-val" style="font-size:1.4rem;">${topMood ? moodEmoji[topMood[0]] : '—'}</div>
-          <div class="stats-kpi-label">Humeur<br>réveil</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="font-size:0.75rem;color:var(--text-light);text-align:center;padding:8px 0;">
-      ${n} entrée${n>1?'s':''} sur ${days} jours
-    </div>`;
-}
-
-// --- Surcharge de switchJTab pour inclure stats ---
-const _origSwitchJTab = typeof switchJTab === 'function' ? switchJTab : null;
-function switchJTab(tab, btn) {
-  ['today','stats','historique'].forEach(t => {
-    const el = document.getElementById(`jtab-${t}`);
-    if (el) el.classList.add('hidden');
-  });
-  const target = document.getElementById(`jtab-${tab}`);
-  if (target) target.classList.remove('hidden');
-
-  document.querySelectorAll('#page-journal .jtab').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-
-  if (tab === 'today') {
-    setJournalDate();
-    initSleepCyclesUI();
-    loadJournalEntry();
-  }
-  if (tab === 'stats') renderJournalStats();
-  if (tab === 'historique') renderHistorique();
-}
-
-// --- Surcharge saveJournal ---
-function saveJournal() {
-  const dk = window.currentJournalDate || dateKey(new Date());
-
-  journal[dk] = {
-    sleepCycles: sleepCycles,
-    levers: currentLevers,
-    qualite: currentStarsQualite,
-    moodReveil: currentMoodReveil,
-    sieste: parseInt(document.getElementById('sieste-select')?.value || '0'),
-    douleurReveil: parseInt(document.getElementById('sl-douleur-reveil')?.value || '0'),
-    douleurJour:   parseInt(document.getElementById('sl-douleur-jour')?.value || '0'),
-    douleurNuit:   parseInt(document.getElementById('sl-douleur-nuit')?.value || '0'),
-    notes: document.getElementById('journal-notes')?.value || '',
-    med: Array.from(document.querySelectorAll('.sleep-chip.active[data-group="med"]')).map(el => el.textContent),
-    rituel: Array.from(document.querySelectorAll('.sleep-chip.active[data-group="rituel"]')).map(el => el.textContent),
-    ts: Date.now()
-  };
-
-  saveState();
-  updateDashboard();
-
-  const confirm = document.getElementById('save-confirm');
-  if (confirm) {
-    confirm.classList.remove('hidden');
-    setTimeout(() => confirm.classList.add('hidden'), 2500);
-  }
-}
-
-// --- Charger une entrée existante ---
-function loadJournalEntry() {
-  const dk = window.currentJournalDate || dateKey(new Date());
-  const entry = journal[dk];
-
-  // Reset UI
-  currentLevers = 0;
-  currentStarsQualite = 0;
-  currentMoodReveil = null;
-
-  if (!entry) {
-    sleepCycles = [{ couche: '23:00', leve: '07:00' }];
-    renderSleepCycles();
-    setStars(0);
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('selected'));
-    ['reveil','jour','nuit'].forEach(m => {
-      const sl = document.getElementById(`sl-douleur-${m}`);
-      if (sl) { sl.value = 0; updateDouleur(m); }
-    });
-    const sel = document.getElementById('sieste-select');
-    if (sel) { sel.value = '0'; updateSiesteDisplay(); }
-    const notes = document.getElementById('journal-notes');
-    if (notes) notes.value = '';
-    const leversEl = document.getElementById('levers-count');
-    if (leversEl) leversEl.textContent = '0';
-    return;
-  }
-
-  // Charger les données
-  if (entry.sleepCycles) {
-    sleepCycles = entry.sleepCycles;
-    renderSleepCycles();
-  }
-
-  currentLevers = entry.levers || 0;
-  const leversEl = document.getElementById('levers-count');
-  if (leversEl) leversEl.textContent = currentLevers;
-  updateSleepTotals();
-
-  if (entry.qualite) setStars(entry.qualite);
-
-  if (entry.moodReveil) {
-    currentMoodReveil = entry.moodReveil;
-    const btn = document.querySelector(`#mood-reveil [data-val="${entry.moodReveil}"]`);
-    if (btn) btn.classList.add('selected');
-  }
-
-  const sel = document.getElementById('sieste-select');
-  if (sel) { sel.value = entry.sieste || '0'; updateSiesteDisplay(); }
-
-  ['reveil','jour','nuit'].forEach(m => {
-    const sl = document.getElementById(`sl-douleur-${m}`);
-    const key = `douleur${m.charAt(0).toUpperCase()+m.slice(1)}`;
-    if (sl) { sl.value = entry[key] || 0; updateDouleur(m); }
-  });
-
-  const notes = document.getElementById('journal-notes');
-  if (notes) notes.value = entry.notes || '';
-}
-
-// --- Hook showPage pour initialiser le journal ---
-const _origShowPage = typeof showPage === 'function' ? showPage : null;
-
-
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }

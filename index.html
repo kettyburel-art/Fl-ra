@@ -9,7 +9,7 @@
 <title>Flōra</title>
 <link rel="manifest" href="manifest.json" />
 
-<link rel="apple-touch-icon" href="icon.svg" />
+<link rel="apple-touch-icon" href="icons/icon-180.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -154,7 +154,7 @@
         Abonné·e Premium ou Administratrice ? Connectez-vous ici.
       </p>
       <div class="settings-row" style="flex-direction:column;gap:8px;align-items:stretch;">
-        <input type="email" class="field" id="login-email"
+                <input type="email" class="field" id="login-email"
           placeholder="Votre email" autocomplete="email"
           onkeydown="tryLoginOnEnter(event)" />
         <input type="password" class="field" id="login-password"
@@ -167,8 +167,7 @@
       </button>
       <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:14px;">
         Votre code de connexion est celui reçu par email après abonnement Stripe.<br>
-        <!-- ✅ FIX BUG 1: target="_blank" (sans backslash) + rel="noopener noreferrer" -->
-        Pour s'abonner → <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank" rel="noopener noreferrer" style="color:var(--green-mid);">4,99€/mois</a>
+                Pour s'abonner → <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank" rel="noopener noreferrer" style="color:var(--green-mid);">4,99€/mois</a>
       </p>
     </div>
   </div>
@@ -261,196 +260,31 @@
           <button class="jtab" onclick="switchJTab('historique', this)">Historique</button>
         </div>
 
-        <!-- ===== TAB AUJOURD'HUI ===== -->
+        <!-- TAB AUJOURD'HUI -->
         <div id="jtab-today">
-
-          <!-- Navigation date -->
           <div class="journal-date-nav">
             <button class="date-nav-btn" onclick="changeJournalDay(-1)">‹</button>
             <div class="journal-date" id="journal-entry-date"></div>
             <button class="date-nav-btn" onclick="changeJournalDay(1)" id="journal-next-btn">›</button>
           </div>
 
-          <!-- CYCLES DE SOMMEIL -->
-          <div class="journal-block">
-            <div class="jblock-title">🌙 Cycles de sommeil</div>
-            <p class="jblock-sub">Ajoutez autant de cycles que nécessaire</p>
-            <div id="sleep-cycles-list"></div>
-            <button class="btn-add-cycle" onclick="addSleepCycle()">+ Ajouter un cycle</button>
-            <div class="sleep-totals-row">
-              <div class="sleep-total-item">
-                <span class="sleep-total-icon">😴</span>
-                <span class="sleep-total-label">Sommeil total cumulé</span>
-                <span class="sleep-total-val green" id="total-sleep-val">—</span>
-              </div>
-              <div class="sleep-total-item">
-                <span class="sleep-total-icon">🛏</span>
-                <span class="sleep-total-label">Temps total au lit</span>
-                <span class="sleep-total-val" id="total-bed-val">—</span>
-              </div>
-              <div class="sleep-total-item">
-                <span class="sleep-total-icon">🚶</span>
-                <span class="sleep-total-label">Nombre de levers</span>
-                <span class="sleep-total-val" id="levers-count-new">0x</span>
-              </div>
-            </div>
-            <!-- Levers nocturnes -->
-            <div class="sleep-detail-row" style="margin-top:8px;">
-              <div class="sleep-detail-label">🚶 Levers nocturnes</div>
-              <div class="sleep-counter-row">
-                <button class="counter-btn" onclick="changeCounter('levers',-1)">−</button>
-                <span class="counter-val" id="levers-count">0</span>
-                <button class="counter-btn" onclick="changeCounter('levers',1)">+</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- QUALITÉ DE LA NUIT -->
-          <div class="journal-block">
-            <div class="jblock-title">⭐ Qualité globale de la nuit</div>
-            <div class="stars-row" id="stars-qualite">
-              <span class="star" onclick="setStars(1)" data-val="1">★</span>
-              <span class="star" onclick="setStars(2)" data-val="2">★</span>
-              <span class="star" onclick="setStars(3)" data-val="3">★</span>
-              <span class="star" onclick="setStars(4)" data-val="4">★</span>
-              <span class="star" onclick="setStars(5)" data-val="5">★</span>
-            </div>
-            <div class="stars-labels">
-              <span>Très mauvaise</span><span>Moyenne</span><span>Excellente</span>
-            </div>
-          </div>
-
-          <!-- RESSENTI AU RÉVEIL -->
-          <div class="journal-block">
-            <div class="jblock-title">🌅 Comment je me sens au réveil final</div>
-            <div class="mood-grid" id="mood-reveil">
-              <button class="mood-btn" onclick="selectMood(this,'reveil','epuisee')" data-val="epuisee">😫<span>Épuisée</span></button>
-              <button class="mood-btn" onclick="selectMood(this,'reveil','fatiguee')" data-val="fatiguee">😔<span>Fatiguée</span></button>
-              <button class="mood-btn" onclick="selectMood(this,'reveil','correcte')" data-val="correcte">😐<span>Correcte</span></button>
-              <button class="mood-btn" onclick="selectMood(this,'reveil','bien')" data-val="bien">🙂<span>Bien</span></button>
-              <button class="mood-btn" onclick="selectMood(this,'reveil','reposee')" data-val="reposee">😊<span>Reposée</span></button>
-              <button class="mood-btn" onclick="selectMood(this,'reveil','excellente')" data-val="excellente">🤩<span>Excellente</span></button>
-            </div>
-          </div>
-
-          <!-- SIESTE -->
-          <div class="journal-block">
-            <div class="jblock-title">☀️ Sieste <span style="font-size:0.75rem;color:var(--text-light);font-weight:400;">(week-end & vacances)</span></div>
-            <select class="field" id="sieste-select" onchange="updateSiesteDisplay()">
-              <option value="0">Pas de sieste</option>
-              <option value="15">15 min</option>
-              <option value="20">20 min</option>
-              <option value="30">30 min</option>
-              <option value="45">45 min</option>
-              <option value="60">1h</option>
-              <option value="90">1h30</option>
-              <option value="120">2h</option>
-            </select>
-            <div class="sieste-info" id="sieste-info">Pas de sieste aujourd'hui</div>
-          </div>
-
-          <!-- DOULEURS SJSR — 3 moments -->
-          <div class="journal-block">
-            <div class="jblock-title">🦵 Douleurs SJSR</div>
-
-            <div class="douleur-section">
-              <div class="douleur-header">
-                <span class="douleur-icon">🌅</span>
-                <div>
-                  <div class="douleur-label">Douleurs au réveil</div>
-                  <div class="douleur-sub">Jambes / Impatiences au saut du lit</div>
-                </div>
-              </div>
-              <div class="douleur-val green" id="val-douleur-reveil">0 — Aucune douleur</div>
-              <input type="range" min="0" max="10" step="1" value="0" class="slider-douleur" id="sl-douleur-reveil"
-                oninput="updateDouleur('reveil')" />
-              <div class="slider-labels"><span>0 · Aucune</span><span>5 · Modérée</span><span>10 · Insupportable</span></div>
-            </div>
-
-            <div class="douleur-section">
-              <div class="douleur-header">
-                <span class="douleur-icon">☀️</span>
-                <div>
-                  <div class="douleur-label">Douleurs dans la journée</div>
-                  <div class="douleur-sub">Impatiences · Tension · Fatigue musculaire</div>
-                </div>
-              </div>
-              <div class="douleur-val green" id="val-douleur-jour">0 — Aucune douleur</div>
-              <input type="range" min="0" max="10" step="1" value="0" class="slider-douleur" id="sl-douleur-jour"
-                oninput="updateDouleur('jour')" />
-              <div class="slider-labels"><span>0 · Aucune</span><span>5 · Modérée</span><span>10 · Insupportable</span></div>
-            </div>
-
-            <div class="douleur-section">
-              <div class="douleur-header">
-                <span class="douleur-icon">🌙</span>
-                <div>
-                  <div class="douleur-label">Douleurs pendant la nuit</div>
-                  <div class="douleur-sub">SJSR nocturne · Levers forcés · Jambes</div>
-                </div>
-              </div>
-              <div class="douleur-val green" id="val-douleur-nuit">0 — Aucune douleur</div>
-              <input type="range" min="0" max="10" step="1" value="0" class="slider-douleur" id="sl-douleur-nuit"
-                oninput="updateDouleur('nuit')" />
-              <div class="slider-labels"><span>0 · Aucune</span><span>5 · Modérée</span><span>10 · Insupportable</span></div>
-            </div>
-          </div>
-
-          <!-- NOTES LIBRES -->
-          <div class="journal-block">
-            <div class="jblock-title">📝 Notes — Symptômes · Déclencheurs · Observations</div>
-            <textarea class="field" id="journal-notes" rows="3"
-              placeholder="Ex: Impatiences vers 23h · Levée 3 fois · Crampes · Dîner tardif · Stress…"></textarea>
-          </div>
-
-          <!-- MÉDICATION & RITUELS -->
-          <div class="journal-block">
-            <div class="jblock-title">💊 Médication du soir</div>
-            <div class="sleep-chips-row">
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Tramadol</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Lyrica</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Fer</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Magnésium</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'med')">Autre</span>
-            </div>
-          </div>
-
-          <div class="journal-block">
-            <div class="jblock-title">🍵 Rituel du soir</div>
-            <div class="sleep-chips-row">
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Infusion</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Lait d'or</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Étirements</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Lecture</span>
-              <span class="sleep-chip" onclick="toggleSleepChip(this,'rituel')">Méditation</span>
-            </div>
-          </div>
-
-          <button class="btn-primary full-width" onclick="saveJournal()">Enregistrer 💾</button>
-          <div class="save-confirm hidden" id="save-confirm">✅ Entrée sauvegardée !</div>
+          <!-- Le journal est entièrement généré par renderJournalToday() -->
+          <div id="journal-today-container"></div>
         </div>
 
-        <!-- ===== TAB STATISTIQUES ===== -->
+        <!-- TAB STATISTIQUES -->
         <div id="jtab-stats" class="hidden">
-          <div class="stats-tabs-row">
-            <button class="stats-period-btn active" onclick="setStatsPeriod(14,this)">14 nuits</button>
-            <button class="stats-period-btn" onclick="setStatsPeriod(30,this)">Mensuel</button>
-            <button class="stats-period-btn" onclick="setStatsPeriod('compare',this)">Comparatif</button>
-          </div>
-          <div id="stats-journal-content"></div>
+          <div id="stats-journal-container"></div>
         </div>
 
-        <!-- ===== TAB HISTORIQUE ===== -->
+        <!-- TAB HISTORIQUE -->
         <div id="jtab-historique" class="hidden">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
             <div style="font-size:0.8rem;color:var(--text-light);">Votre historique complet</div>
-            <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">
-              📄 Exporter PDF
-            </button>
+            <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">📄 Exporter PDF</button>
           </div>
           <div id="historique-list"></div>
         </div>
-
       </section>
 
       <section id="page-recettes" class="page hidden">
