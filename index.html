@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="flora_modals.css" />
 
 <!-- Analytics — Plausible (RGPD, sans cookies, sans bandeau) -->
 <script defer data-domain="kettyburel-art.github.io" src="https://plausible.io/js/script.js"></script>
@@ -337,12 +338,57 @@
           <div class="journal-block">
             <div class="jblock-title">💊 Compléments alimentaires SJSR/TDAH</div>
             <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
-              Basé sur les dernières recherches cliniques. Consultez toujours votre médecin avant toute supplémentation.
+              Sélection raisonnée pour SJSR, TDAH et inflammation. Consultez toujours votre médecin avant toute supplémentation.
             </p>
           </div>
 
-          <!-- Fiches compléments -->
-          <div id="complements-list"></div>
+          <!-- Bandeau d'info / accès paramétrage médicaments -->
+          <div class="comp-meds-banner" id="comp-meds-banner">
+            <div class="comp-meds-banner-icon">💊</div>
+            <div class="comp-meds-banner-content">
+              <div class="comp-meds-banner-label" id="comp-meds-banner-label">
+                Personnalisez les alertes d'interaction
+              </div>
+              <div class="comp-meds-banner-sub" id="comp-meds-banner-sub">
+                Indiquez vos médicaments pour voir les interactions possibles
+              </div>
+            </div>
+            <button class="comp-meds-banner-btn" onclick="openMedicationsEditFromProfile()">
+              Configurer
+            </button>
+          </div>
+
+          <!-- Légende des niveaux de preuve -->
+          <details class="comp-legend">
+            <summary class="comp-legend-summary">
+              Comprendre les niveaux de preuve
+            </summary>
+            <div class="comp-legend-content">
+              <div class="comp-legend-row">
+                <span class="comp-tier" style="background:rgba(61,107,88,0.15);color:#3d6b58;">A</span>
+                <div><strong>Preuves solides</strong> — méta-analyses, recommandations officielles</div>
+              </div>
+              <div class="comp-legend-row">
+                <span class="comp-tier" style="background:rgba(212,168,67,0.15);color:#b88820;">B</span>
+                <div><strong>Preuves modérées</strong> — essais contrôlés, recommandations conditionnelles</div>
+              </div>
+              <div class="comp-legend-row">
+                <span class="comp-tier" style="background:rgba(160,115,92,0.15);color:#a0735c;">C</span>
+                <div><strong>Preuves préliminaires</strong> — études limitées ou usage traditionnel</div>
+              </div>
+            </div>
+          </details>
+
+          <!-- Liste des compléments (générée dynamiquement) -->
+          <div id="complements-list" class="comp-list-container"></div>
+
+          <!-- Disclaimer pied de page -->
+          <div class="comp-page-disclaimer">
+            <strong>Important.</strong> Cette section fournit des informations générales 
+            à but éducatif. Aucune supplémentation ne doit être démarrée sans avis 
+            de votre médecin ou pharmacien, particulièrement en cas de traitement en cours, 
+            de grossesse, d'allaitement ou de maladie chronique.
+          </div>
 
         </div><!-- fin complements-tab-content -->
 
@@ -789,6 +835,8 @@
     </div>
   </div>
 
+  <script src="flora_complements.js"></script>
+  <script src="flora_interactions.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

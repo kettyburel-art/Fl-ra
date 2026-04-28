@@ -7476,7 +7476,15 @@ function switchRecettesTab(tab, btn) {
   if (btn) btn.classList.add('active');
 
   if (tab === 'complements') {
-    renderComplements();
+    // Nouveau système (depuis flora_interactions.js) — fallback sur l'ancien si non chargé
+    if (typeof renderComplementsList === 'function') {
+      renderComplementsList('complements-list');
+      if (typeof updateComplementsBanner === 'function') {
+        updateComplementsBanner();
+      }
+    } else {
+      renderComplements();
+    }
   }
 }
 

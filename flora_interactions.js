@@ -527,7 +527,7 @@ function closeComplementFiche() {
 // ============================
 // REMPLACE ta fonction de rendu actuelle de la liste compléments (probablement renderComp ou similaire)
 
-function renderComplementsList(containerId = 'comp-list') {
+function renderComplementsList(containerId = 'complements-list') {
   const container = document.getElementById(containerId);
   if (!container) return;
   
@@ -581,8 +581,11 @@ function renderComplementsList(containerId = 'comp-list') {
 function openMedicationsEditFromProfile() {
   openMedicationsModal(() => {
     // Re-render la liste des compléments si on est dessus
-    if (document.getElementById('comp-list')) {
-      renderComplementsList();
+    if (document.getElementById('complements-list')) {
+      renderComplementsList('complements-list');
+      if (typeof updateComplementsBanner === 'function') {
+        updateComplementsBanner();
+      }
     }
     // Petit feedback
     showFloraToast('Médicaments mis à jour');
@@ -606,4 +609,26 @@ function showFloraToast(message) {
     toast.classList.remove('flora-toast-visible');
     setTimeout(() => toast.remove(), 300);
   }, 2500);
+}
+
+// ============================
+// Mise à jour du bandeau d'info sur la page Compléments
+// ============================
+function updateComplementsBanner() {
+  const meds = getUserMedications();
+  const label = document.getElementById('comp-meds-banner-label');
+  const sub = document.getElementById('comp-meds-banner-sub');
+  if (!label || !sub) return;
+  
+  if (!meds) {
+    label.textContent = 'Personnalisez les alertes d\'interaction';
+    sub.textContent = 'Indiquez vos médicaments pour voir les interactions possibles';
+  } else if (meds.meds.length === 0 || meds.meds.includes('none')) {
+    label.textContent = 'Aucun traitement renseigné';
+    sub.textContent = 'Modifiable à tout moment depuis ce bouton';
+  } else {
+    const count = meds.meds.filter(m => m !== 'none').length;
+    label.textContent = `${count} traitement${count > 1 ? 's' : ''} renseigné${count > 1 ? 's' : ''}`;
+    sub.textContent = 'Les interactions sont signalées sur les fiches concernées';
+  }
 }
