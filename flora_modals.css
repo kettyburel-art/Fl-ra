@@ -794,3 +794,31 @@ button.comp-card:focus-visible {
   color: #6c8278;
   font-style: italic;
 }
+
+/* === MESSAGE LISTE COURSES VIDE === */
+.shopping-empty {
+  text-align: center;
+  padding: 30px 20px;
+  background: linear-gradient(135deg, #c8e6d4, #f7f3ee);
+  border-radius: 16px;
+  margin-bottom: 14px;
+}
+
+.shopping-empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+}
+
+.shopping-empty-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 6px;
+}
+
+.shopping-empty-sub {
+  font-size: 0.88rem;
+  color: #4a5e54;
+  line-height: 1.4;
+}

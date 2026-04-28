@@ -4626,8 +4626,22 @@ function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
+  // Helper : vérifier si un essentiel est déjà dans le placard
+  // Match flou : "Sardines" matche "Sardines fraîches", "Sardines en boîte", etc.
+  const isInPlacard = (essentialName) => {
+    const keyword = essentialName.toLowerCase();
+    // 1. Match exact
+    if (placardItems[essentialName]) return true;
+    // 2. Match flou : n'importe quelle clé cochée du placard contient le mot-clé
+    for (const key in placardItems) {
+      if (placardItems[key] && key.toLowerCase().includes(keyword)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   // Liste hiérarchisée : essentiels d'abord, puis variété, puis superaliments selon budget
-  // Chaque catégorie a un ordre de priorité (essentiels en premier)
   const essentials = [
     { 
       cat: '🥩 Protéines', 
@@ -4679,13 +4693,18 @@ function generateShoppingList() {
     },
   ];
 
+  // Plafond du nombre d'articles selon budget — pour vraie différenciation
+  // (en plus du plafond budgétaire)
+  const maxItemsByBudget = budget < 40 ? 6
+                         : budget < 60 ? 10
+                         : budget < 90 ? 16
+                         : 24;
+
   let total = 0;
+  let itemCount = 0;
   const selected = [];
 
-  // Stratégie selon budget :
-  // < 60€ : essentiels seulement
-  // 60-90€ : essentiels + bonus
-  // > 90€ : essentiels + bonus + premium
+  // Stratégie selon budget
   const tiers = budget < 60 ? ['priority'] 
               : budget < 90 ? ['priority', 'bonus']
               : ['priority', 'bonus', 'premium'];
@@ -4695,16 +4714,23 @@ function generateShoppingList() {
     
     for (const tier of tiers) {
       for (const item of cat[tier] || []) {
-        if (placardItems[item]) continue; // déjà dans le placard
+        // Vérifier qu'on n'a pas atteint le plafond d'articles
+        if (itemCount >= maxItemsByBudget) break;
+        // Vérifier que l'article n'est pas déjà dans le placard (match flou)
+        if (isInPlacard(item)) continue;
+        // Vérifier que le prix tient dans le budget
         const price = INGREDIENT_PRICES[item] || 2.00;
-        if (total + price <= budget) {
-          catSelected.push({ item, price });
-          total += price;
-        }
+        if (total + price > budget) continue;
+        
+        catSelected.push({ item, price });
+        total += price;
+        itemCount++;
       }
+      if (itemCount >= maxItemsByBudget) break;
     }
     
     if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
+    if (itemCount >= maxItemsByBudget) break;
   }
 
   // Afficher
@@ -4713,31 +4739,40 @@ function generateShoppingList() {
   document.getElementById('budget-total-badge').textContent =
     `${total.toFixed(2)}€ / ${budget}€`;
 
-  // Compteur d'articles
-  const totalItems = selected.reduce((acc, c) => acc + c.items.length, 0);
-  
-  content.innerHTML = `
-    <div class="shopping-meta">
-      <span class="shopping-meta-count">${totalItems} article${totalItems > 1 ? 's' : ''}</span>
-      <span class="shopping-meta-budget">Budget : ${budget}€/semaine</span>
-    </div>
-    ${selected.map(cat => `
-      <div class="shopping-category">
-        <div class="shopping-cat-title">${cat.cat}</div>
-        ${cat.items.map(({item, price}) => `
-          <div class="shopping-item" onclick="this.classList.toggle('done')">
-            <div class="shopping-check">✓</div>
-            <div class="shopping-text">${item}</div>
-            <div class="shopping-price">~${price.toFixed(2)}€</div>
-          </div>
-        `).join('')}
+  // Si rien à acheter : message dédié
+  if (itemCount === 0) {
+    content.innerHTML = `
+      <div class="shopping-empty">
+        <div class="shopping-empty-icon">✨</div>
+        <div class="shopping-empty-title">Vous avez déjà tout !</div>
+        <div class="shopping-empty-sub">Tous les essentiels que je propose sont déjà dans votre placard. Bravo !</div>
       </div>
-    `).join('')}
-  `;
+    `;
+  } else {
+    content.innerHTML = `
+      <div class="shopping-meta">
+        <span class="shopping-meta-count">${itemCount} article${itemCount > 1 ? 's' : ''} à acheter</span>
+        <span class="shopping-meta-budget">Budget : ${budget}€/sem.</span>
+      </div>
+      ${selected.map(cat => `
+        <div class="shopping-category">
+          <div class="shopping-cat-title">${cat.cat}</div>
+          ${cat.items.map(({item, price}) => `
+            <div class="shopping-item" onclick="this.classList.toggle('done')">
+              <div class="shopping-check">✓</div>
+              <div class="shopping-text">${item}</div>
+              <div class="shopping-price">~${price.toFixed(2)}€</div>
+            </div>
+          `).join('')}
+        </div>
+      `).join('')}
+    `;
+  }
 
-  // Générer menus basés sur les ingrédients du panier
+  // Générer menus basés sur les ingrédients du panier + placard
   const allItems = selected.flatMap(c => c.items.map(i => i.item));
-  generateMenusFromBasket(allItems);
+  const placardCheckedItems = Object.keys(placardItems).filter(k => placardItems[k]);
+  generateMenusFromBasket([...allItems, ...placardCheckedItems]);
 
   result.classList.remove('hidden');
   result.scrollIntoView({ behavior: 'smooth', block: 'start' });
