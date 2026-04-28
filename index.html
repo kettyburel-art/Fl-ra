@@ -325,8 +325,10 @@
         </div>
 
         <!-- Badge filtre placard actif -->
-        <div id="placard-filter-badge" style="display:none;background:var(--green-pale);color:var(--green-deep);border-radius:var(--radius-md);padding:8px 14px;font-size:0.8rem;font-weight:600;margin-bottom:12px;cursor:pointer;" onclick="window._placardFilter=null;renderRecettes();">
-          🗄️ Filtre placard actif — Toucher pour effacer
+        <div id="placard-filter-badge" class="placard-active-badge" style="display:none;" onclick="window._placardFilter=null;renderRecettes();">
+          <span class="placard-badge-icon">🗄️</span>
+          <span class="placard-badge-text">Filtre placard actif</span>
+          <span class="placard-badge-close">✕</span>
         </div>
 
         <div id="recettes-grid" class="recettes-grid"></div>

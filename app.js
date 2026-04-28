@@ -4726,22 +4726,27 @@ function filterRecettesByPlacard() {
     return;
   }
 
-  // Filtrer les recettes par ingrédients du placard
-  const matching = RECETTES.filter(r =>
-    r.ingredients.some(ing =>
+  // Filtrer les recettes : au moins 50% des ingrédients dans le placard
+  const matching = RECETTES.filter(r => {
+    const total = r.ingredients.length;
+    const matched = r.ingredients.filter(ing =>
       checkedItems.some(item => ing.toLowerCase().includes(item.toLowerCase()))
-    )
-  );
+    ).length;
+    return total > 0 && (matched / total) >= 0.5;
+  });
 
-  showPage('recettes');
-  // Stocker le filtre placard pour renderRecettes
+  // IMPORTANT : définir le filtre AVANT showPage pour qu'il soit pris en compte
+  // au premier render automatique de showPage
   window._placardFilter = checkedItems;
+  
+  showPage('recettes');
+  // Forcer un second render pour s'assurer que le filtre est bien appliqué
   renderRecettes();
 
   setTimeout(() => {
     const msg = document.createElement('div');
     msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:10px 18px;border-radius:99px;font-size:0.82rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;';
-    msg.textContent = `🗄️ ${matching.length} recettes avec votre placard`;
+    msg.textContent = `🗄️ ${matching.length} recette${matching.length > 1 ? 's' : ''} avec votre placard`;
     document.body.appendChild(msg);
     setTimeout(() => msg.remove(), 3000);
   }, 200);
@@ -5889,10 +5894,14 @@ function renderRecettes() {
       }
     }
     if (window._placardFilter && window._placardFilter.length) {
-      const match = r.ingredients.some(ing =>
+      // Compter combien d'ingrédients de la recette sont dans le placard
+      const totalIngredients = r.ingredients.length;
+      const matchedIngredients = r.ingredients.filter(ing =>
         window._placardFilter.some(item => ing.toLowerCase().includes(item.toLowerCase()))
-      );
-      if (!match) return false;
+      ).length;
+      // Exiger au moins 50% des ingrédients dans le placard (recettes vraiment réalisables)
+      const matchRatio = totalIngredients > 0 ? matchedIngredients / totalIngredients : 0;
+      if (matchRatio < 0.5) return false;
     }
     return true;
   });
@@ -5901,8 +5910,11 @@ function renderRecettes() {
   const placardBadge = document.getElementById('placard-filter-badge');
   if (placardBadge) {
     if (window._placardFilter && window._placardFilter.length) {
-      placardBadge.textContent = `🗄️ Filtre placard actif (${recettes.length} recettes)`;
-      placardBadge.style.display = 'block';
+      const textEl = placardBadge.querySelector('.placard-badge-text');
+      if (textEl) {
+        textEl.textContent = `Filtre placard — ${recettes.length} recette${recettes.length > 1 ? 's' : ''}`;
+      }
+      placardBadge.style.display = 'flex';
     } else {
       placardBadge.style.display = 'none';
     }

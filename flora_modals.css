@@ -727,3 +727,48 @@ button.comp-card:focus-visible {
   color: #5a4a30;
   line-height: 1.5;
 }
+
+/* === BADGE FILTRE PLACARD ACTIF === */
+.placard-active-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #c8e6d4, #d4ecdc);
+  color: #2d4a3e;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 14px;
+  cursor: pointer;
+  border: 1.5px solid #3d6b58;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.placard-active-badge:hover {
+  background: linear-gradient(135deg, #b8d9c5, #c4e0cf);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(45, 74, 62, 0.15);
+}
+
+.placard-badge-icon {
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+.placard-badge-text {
+  flex: 1;
+}
+
+.placard-badge-close {
+  background: rgba(45, 74, 62, 0.15);
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
