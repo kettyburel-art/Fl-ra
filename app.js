@@ -7450,14 +7450,26 @@ const COMPLEMENTS_SJSR = [
 ];
 
 function switchRecettesTab(tab, btn) {
-  const tabs = ['recettes','complements'];
-  tabs.forEach(function(t) {
+  console.log('[Flōra] switchRecettesTab called:', tab);
+  // Cacher tous les contenus
+  ['recettes','complements'].forEach(function(t) {
     const el = document.getElementById(t + '-tab-content');
-    if (el) el.classList.add('hidden');
+    if (el) {
+      el.classList.add('hidden');
+      el.style.display = 'none'; // double protection
+    }
   });
+  // Afficher le bon
   const target = document.getElementById(tab + '-tab-content');
-  if (target) target.classList.remove('hidden');
+  if (target) {
+    target.classList.remove('hidden');
+    target.style.display = ''; // reset le display inline
+    console.log('[Flōra] Showing tab:', tab);
+  } else {
+    console.error('[Flōra] Tab content not found:', tab + '-tab-content');
+  }
 
+  // Update boutons actifs
   document.querySelectorAll('#page-recettes .jtab').forEach(function(b) {
     b.classList.remove('active');
   });
@@ -7530,6 +7542,35 @@ function toggleComp(id) {
   if (el) el.classList.toggle('expanded');
 }
 
+
+
+// Fix tabs Recettes/Compléments — bind explicite au DOMContentLoaded
+(function() {
+  function bindRecettesTabs() {
+    const tabs = document.querySelectorAll('#page-recettes .journal-tabs .jtab');
+    if (!tabs.length) {
+      console.warn('[Flōra] Onglets recettes non trouvés');
+      return;
+    }
+    tabs.forEach(function(tab, idx) {
+      const tabType = idx === 0 ? 'recettes' : 'complements';
+      tab.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (typeof switchRecettesTab === 'function') {
+          switchRecettesTab(tabType, this);
+        }
+      });
+    });
+    console.log('[Flōra] Tabs recettes bindés:', tabs.length);
+  }
+  
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindRecettesTabs);
+  } else {
+    bindRecettesTabs();
+  }
+})();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
