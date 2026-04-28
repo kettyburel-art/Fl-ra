@@ -4610,40 +4610,100 @@ function togglePlacardItem(item, el) {
 
 function setBudget(amount) {
   currentBudget = amount;
-  document.getElementById('budget-input').value = amount;
+  const input = document.getElementById('budget-input');
+  if (input) input.value = amount;
   document.querySelectorAll('.budget-chip').forEach(c => {
     c.classList.toggle('active', parseInt(c.textContent) === amount);
   });
+  // Régénérer automatiquement la liste si elle est déjà visible
+  const result = document.getElementById('shopping-result');
+  if (result && !result.classList.contains('hidden')) {
+    generateShoppingList();
+  }
 }
 
 function generateShoppingList() {
   const budget = parseInt(document.getElementById('budget-input').value) || 80;
   currentBudget = budget;
 
-  // Sélectionner des ingrédients essentiels dans le budget
+  // Liste hiérarchisée : essentiels d'abord, puis variété, puis superaliments selon budget
+  // Chaque catégorie a un ordre de priorité (essentiels en premier)
   const essentials = [
-    { cat: '🥩 Protéines', items: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles', 'Tofu'] },
-    { cat: '🥦 Légumes', items: ['Épinards', 'Brocoli', 'Courgette', 'Carotte', 'Poivron'] },
-    { cat: '🌾 Féculents', items: ['Quinoa', 'Riz complet', 'Patate douce'] },
-    { cat: '🥑 Bons gras', items: ['Avocat', 'Noix', 'Graines de courge'] },
-    { cat: '🥫 Conserves', items: ['Tomates concassées', 'Lait de coco'] },
-    { cat: '🍋 Fruits', items: ['Citron', 'Banane', 'Myrtilles'] },
+    { 
+      cat: '🥩 Protéines', 
+      priority: ['Œufs bio', 'Sardines', 'Pois chiches', 'Lentilles'],
+      bonus: ['Tofu', 'Saumon frais', 'Filet de poulet bio', 'Maquereaux'],
+      premium: ['Boeuf haché bio', 'Agneau', 'Crevettes']
+    },
+    { 
+      cat: '🥦 Légumes', 
+      priority: ['Épinards', 'Brocoli', 'Courgette', 'Carotte'],
+      bonus: ['Poivron', 'Aubergine', 'Patate douce', 'Champignons'],
+      premium: ['Asperges', 'Artichaut', 'Endives']
+    },
+    { 
+      cat: '🌾 Féculents', 
+      priority: ['Riz complet', 'Quinoa'],
+      bonus: ['Patate douce', 'Sarrasin', 'Pâtes sans gluten'],
+      premium: ['Millet', 'Amarante']
+    },
+    { 
+      cat: '🥑 Bons gras', 
+      priority: ['Avocat', 'Noix', 'Graines de courge'],
+      bonus: ['Amandes', 'Graines de chia', 'Graines de lin'],
+      premium: ['Noix de macadamia', 'Pignons de pin']
+    },
+    { 
+      cat: '🥫 Conserves', 
+      priority: ['Tomates concassées', 'Lait de coco'],
+      bonus: ['Haricots rouges', 'Olives'],
+      premium: ['Cœurs d\'artichaut', 'Tahini']
+    },
+    { 
+      cat: '🍋 Fruits', 
+      priority: ['Citron', 'Banane'],
+      bonus: ['Myrtilles', 'Pomme', 'Orange'],
+      premium: ['Grenade', 'Mangue', 'Framboises']
+    },
+    { 
+      cat: '🌿 Frais & herbes', 
+      priority: [],
+      bonus: ['Persil plat', 'Coriandre fraîche', 'Basilic frais'],
+      premium: ['Aneth', 'Estragon', 'Cerfeuil']
+    },
+    { 
+      cat: '🌱 Superaliments', 
+      priority: [],
+      bonus: [],
+      premium: ['Spiruline en poudre', 'Protéines de chanvre', 'Algues wakamé séchées']
+    },
   ];
 
   let total = 0;
   const selected = [];
 
-  // Remplir jusqu'au budget en sautant ce qu'on a déjà
+  // Stratégie selon budget :
+  // < 60€ : essentiels seulement
+  // 60-90€ : essentiels + bonus
+  // > 90€ : essentiels + bonus + premium
+  const tiers = budget < 60 ? ['priority'] 
+              : budget < 90 ? ['priority', 'bonus']
+              : ['priority', 'bonus', 'premium'];
+
   for (const cat of essentials) {
     const catSelected = [];
-    for (const item of cat.items) {
-      if (placardItems[item]) continue; // déjà dans le placard
-      const price = INGREDIENT_PRICES[item] || 2.00;
-      if (total + price <= budget) {
-        catSelected.push({ item, price });
-        total += price;
+    
+    for (const tier of tiers) {
+      for (const item of cat[tier] || []) {
+        if (placardItems[item]) continue; // déjà dans le placard
+        const price = INGREDIENT_PRICES[item] || 2.00;
+        if (total + price <= budget) {
+          catSelected.push({ item, price });
+          total += price;
+        }
       }
     }
+    
     if (catSelected.length) selected.push({ cat: cat.cat, items: catSelected });
   }
 
@@ -4653,18 +4713,27 @@ function generateShoppingList() {
   document.getElementById('budget-total-badge').textContent =
     `${total.toFixed(2)}€ / ${budget}€`;
 
-  content.innerHTML = selected.map(cat => `
-    <div class="shopping-category">
-      <div class="shopping-cat-title">${cat.cat}</div>
-      ${cat.items.map(({item, price}) => `
-        <div class="shopping-item" onclick="this.classList.toggle('done')">
-          <div class="shopping-check">✓</div>
-          <div class="shopping-text">${item}</div>
-          <div class="shopping-price">~${price.toFixed(2)}€</div>
-        </div>
-      `).join('')}
+  // Compteur d'articles
+  const totalItems = selected.reduce((acc, c) => acc + c.items.length, 0);
+  
+  content.innerHTML = `
+    <div class="shopping-meta">
+      <span class="shopping-meta-count">${totalItems} article${totalItems > 1 ? 's' : ''}</span>
+      <span class="shopping-meta-budget">Budget : ${budget}€/semaine</span>
     </div>
-  `).join('');
+    ${selected.map(cat => `
+      <div class="shopping-category">
+        <div class="shopping-cat-title">${cat.cat}</div>
+        ${cat.items.map(({item, price}) => `
+          <div class="shopping-item" onclick="this.classList.toggle('done')">
+            <div class="shopping-check">✓</div>
+            <div class="shopping-text">${item}</div>
+            <div class="shopping-price">~${price.toFixed(2)}€</div>
+          </div>
+        `).join('')}
+      </div>
+    `).join('')}
+  `;
 
   // Générer menus basés sur les ingrédients du panier
   const allItems = selected.flatMap(c => c.items.map(i => i.item));

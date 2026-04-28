@@ -772,3 +772,25 @@ button.comp-card:focus-visible {
   font-size: 0.7rem;
   flex-shrink: 0;
 }
+
+/* === META LISTE DE COURSES === */
+.shopping-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  background: rgba(45, 74, 62, 0.05);
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 0.78rem;
+}
+
+.shopping-meta-count {
+  font-weight: 600;
+  color: #2d4a3e;
+}
+
+.shopping-meta-budget {
+  color: #6c8278;
+  font-style: italic;
+}
