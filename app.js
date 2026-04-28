@@ -126,6 +126,23 @@
 
     .meal-benefice{background:#f8f5f0;border-left:3px solid #c8a98a;padding:10px 12px;border-radius:8px;font-size:0.85rem;color:#5a4e44;line-height:1.5;font-style:italic}
 
+        /* === COMPLÉMENTS === */
+    .comp-card{background:#fff;border-radius:16px;padding:14px 16px;margin-bottom:10px;box-shadow:0 2px 6px rgba(45,74,62,0.06);cursor:pointer;transition:all 0.2s}
+    .comp-card:hover{box-shadow:0 3px 10px rgba(45,74,62,0.12)}
+    .comp-header{display:flex;align-items:center;gap:12px}
+    .comp-icon-circle{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0}
+    .comp-name{font-family:'Playfair Display',Georgia,serif;font-size:1.05rem;font-weight:600;color:#2d4a3e;line-height:1.2;margin-bottom:3px}
+    .comp-benefit{font-size:0.82rem;color:#4a5e54;line-height:1.35}
+    .comp-arrow{color:#a0735c;font-size:1.2rem;transition:transform 0.2s;flex-shrink:0}
+    .comp-card.expanded .comp-arrow{transform:rotate(90deg)}
+    .comp-details{max-height:0;overflow:hidden;transition:max-height 0.3s ease;margin-top:0}
+    .comp-card.expanded .comp-details{max-height:500px;margin-top:14px;padding-top:14px;border-top:1px solid #ede8e0}
+    .comp-detail-row{display:flex;flex-direction:column;gap:2px;padding:8px 0;border-bottom:1px solid #f5efe8}
+    .comp-detail-row:last-child{border-bottom:none}
+    .comp-detail-label{font-size:0.7rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.05em}
+    .comp-detail-val{font-size:0.85rem;color:#1e2d26;line-height:1.4}
+    .comp-science{margin-top:10px;background:#f7f3ee;border-radius:10px;padding:10px 12px;font-size:0.78rem;color:#5a4e44;font-style:italic;line-height:1.4}
+
     /* === ANCIENS STYLES JOURNAL (sliders, mood, etc.) === */
     .slider-douleur-j{width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
     .slider-douleur-j::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
@@ -4031,17 +4048,32 @@ window.addEventListener('load', () => {
 });
 
 function loadState() {
-  profile   = JSON.parse(localStorage.getItem('flora_profile') || '{}');
-  journal   = JSON.parse(localStorage.getItem('flora_journal') || '{}');
-  agenda    = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
-  isPremium = localStorage.getItem('flora_premium') === 'true';
+  try {
+    profile      = JSON.parse(localStorage.getItem('flora_profile') || '{}');
+    journal      = JSON.parse(localStorage.getItem('flora_journal') || '{}');
+    agenda       = JSON.parse(localStorage.getItem('flora_agenda')  || '{}');
+    placardItems = JSON.parse(localStorage.getItem('flora_placard') || '{}');
+    isPremium    = localStorage.getItem('flora_premium') === 'true';
+  } catch(e) {
+    console.warn('[Flōra] Erreur loadState:', e);
+    profile = {}; journal = {}; agenda = {}; placardItems = {};
+  }
 }
 
 function saveState() {
-  localStorage.setItem('flora_profile', JSON.stringify(profile));
-  localStorage.setItem('flora_journal',  JSON.stringify(journal));
-  localStorage.setItem('flora_agenda',   JSON.stringify(agenda));
-  localStorage.setItem('flora_placard',  JSON.stringify(placardItems));
+  // Sauvegarder le journal en PRIORITÉ pour qu'une erreur ailleurs ne le casse pas
+  try {
+    localStorage.setItem('flora_journal', JSON.stringify(journal || {}));
+  } catch(e) { console.error('[Flōra] Erreur save journal:', e); }
+  try {
+    localStorage.setItem('flora_profile', JSON.stringify(profile || {}));
+  } catch(e) { console.error('[Flōra] Erreur save profile:', e); }
+  try {
+    localStorage.setItem('flora_agenda', JSON.stringify(agenda || {}));
+  } catch(e) { console.error('[Flōra] Erreur save agenda:', e); }
+  try {
+    localStorage.setItem('flora_placard', JSON.stringify(placardItems || {}));
+  } catch(e) { console.error('[Flōra] Erreur save placard:', e); }
 }
 
 // unlockDemo — ouvre la modale premium sur la zone code
@@ -4948,6 +4980,7 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
+  if (page === 'accueil')    { updateDashboard(); }
   if (page === 'journal')    { setJournalDate(); loadJournalEntry(); renderJournalToday(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
@@ -7274,6 +7307,230 @@ function activatePremium() {
 // ============================
 // SERVICE WORKER
 // ============================
+
+// ============================
+// COMPLÉMENTS ALIMENTAIRES SJSR/TDAH
+// ============================
+const COMPLEMENTS_SJSR = [
+  // ===== TIER 1 — EVIDENCE FORTE =====
+  {
+    nom: 'Magnésium bisglycinate',
+    icon: '💊',
+    tier: 1,
+    benefit: 'Réduit significativement les impatiences nocturnes et améliore la qualité du sommeil',
+    dosage: '300–400 mg/jour, le soir 30 min avant le coucher',
+    duree: '4 à 8 semaines pour effet optimal',
+    interactions: 'Espacer de 2h des comprimés thyroïdiens',
+    forme: 'Bisglycinate (mieux assimilé) ou citrate',
+    science: 'Études cliniques 2018-2023 — réduction 40% des symptômes SJSR',
+    color: '#3d6b58',
+    bg: '#e8f5d9'
+  },
+  {
+    nom: 'Fer (bisglycinate)',
+    icon: '🩸',
+    tier: 1,
+    benefit: 'Indispensable si ferritine < 75 ng/mL — corrige la cause principale du SJSR',
+    dosage: '14–28 mg/jour selon prescription, à jeun avec vitamine C',
+    duree: '3 à 6 mois minimum, contrôle ferritine à 3 mois',
+    interactions: 'Éviter avec thé/café/calcium (espacer 2h). Vitamine C multiplie l\'absorption x3',
+    forme: 'Bisglycinate de fer (mieux toléré digestivement)',
+    science: 'Recommandation IRLSSG — cible ferritine > 100 ng/mL',
+    color: '#c2547a',
+    bg: '#fdf0f8'
+  },
+  {
+    nom: 'Vitamine D3',
+    icon: '☀️',
+    tier: 1,
+    benefit: 'Carence très fréquente dans le SJSR — supplémentation réduit la sévérité',
+    dosage: '2000–4000 UI/jour selon dosage sanguin',
+    duree: 'Continue (cible 50–80 ng/mL)',
+    interactions: 'Synergique avec magnésium et K2',
+    forme: 'D3 (cholécalciférol) en gouttes huileuses',
+    science: 'Méta-analyses 2020 — corrélation forte SJSR/déficit vitD',
+    color: '#d97706',
+    bg: '#fef3c7'
+  },
+  {
+    nom: 'Oméga-3 (EPA/DHA)',
+    icon: '🐟',
+    tier: 1,
+    benefit: 'Anti-inflammatoire puissant, réduit douleurs neurogènes, soutien dopaminergique',
+    dosage: '1000–2000 mg EPA+DHA/jour pendant les repas',
+    duree: '8 à 12 semaines pour effet anti-inflammatoire',
+    interactions: 'Anticoagulants — demander avis médical',
+    forme: 'Huile de poisson sauvage (TG ou rTG), label IFOS',
+    science: 'Études 2021 — modulation positive de la dopamine',
+    color: '#3d6b58',
+    bg: '#e8f5d9'
+  },
+
+  // ===== TIER 2 — EVIDENCE MODÉRÉE =====
+  {
+    nom: 'L-Tyrosine',
+    icon: '🧠',
+    tier: 2,
+    benefit: 'Précurseur de la dopamine — utile en TDAH et fatigue mentale',
+    dosage: '500–1000 mg le matin à jeun',
+    duree: 'Cures de 4 à 6 semaines',
+    interactions: 'Ne pas associer à L-DOPA, IMAO. Éviter le soir (énergie)',
+    forme: 'L-Tyrosine pure en gélules',
+    science: 'Études TDAH 2019 — soutien attention et motivation',
+    color: '#7a4e8a',
+    bg: '#f0e8f5'
+  },
+  {
+    nom: 'Méthylfolate (B9 active)',
+    icon: '🌿',
+    tier: 2,
+    benefit: 'Forme active de la B9 — cofacteur synthèse dopamine/sérotonine',
+    dosage: '400–800 µg/jour le matin',
+    duree: 'Continue',
+    interactions: 'Couplé idéalement avec B12 méthylcobalamine',
+    forme: '5-MTHF (méthylfolate) — pas d\'acide folique synthétique',
+    science: 'Particulièrement utile chez porteurs de mutation MTHFR',
+    color: '#3d6b58',
+    bg: '#e8f5d9'
+  },
+  {
+    nom: 'Zinc',
+    icon: '🌾',
+    tier: 2,
+    benefit: 'Cofacteur de la dopamine et du système immunitaire',
+    dosage: '15–25 mg/jour avec un repas',
+    duree: 'Cures de 2 à 3 mois',
+    interactions: 'Espacer du fer et du calcium (compétition d\'absorption)',
+    forme: 'Bisglycinate ou picolinate de zinc',
+    science: 'Carence corrélée avec sévérité SJSR et TDAH',
+    color: '#a0735c',
+    bg: '#f5e8db'
+  },
+  {
+    nom: 'Mélatonine',
+    icon: '🌙',
+    tier: 2,
+    benefit: 'Régule le rythme veille-sommeil — utile si endormissement difficile',
+    dosage: '0.5–2 mg, 30–60 min avant coucher',
+    duree: 'Cures courtes (max 3 mois) puis pause',
+    interactions: 'Anti-dépresseurs, anticoagulants — avis médical',
+    forme: 'LP (libération prolongée) si réveils nocturnes',
+    science: 'Étude 2022 — amélioration latence d\'endormissement',
+    color: '#7a4e8a',
+    bg: '#f0e8f5'
+  },
+
+  // ===== TIER 3 — COMPLÉMENTAIRES =====
+  {
+    nom: 'L-Théanine',
+    icon: '🍵',
+    tier: 3,
+    benefit: 'Apaisant — réduit anxiété sans somnolence',
+    dosage: '200 mg en fin de journée',
+    duree: 'Au besoin',
+    interactions: 'Synergique avec magnésium',
+    forme: 'Suntheanine pure',
+    science: 'Réduction du stress anticipatoire',
+    color: '#3d6b58',
+    bg: '#e8f5d9'
+  },
+  {
+    nom: 'Curcumine + Pipérine',
+    icon: '🟡',
+    tier: 3,
+    benefit: 'Anti-inflammatoire systémique — soulage douleurs chroniques',
+    dosage: '500–1000 mg curcumine avec pipérine, 2x/jour aux repas',
+    duree: 'Cures de 2 à 3 mois',
+    interactions: 'Anticoagulants — espacer',
+    forme: 'Standardisé à 95% curcuminoïdes + pipérine',
+    science: 'Effet anti-inflammatoire comparable à AINS',
+    color: '#d97706',
+    bg: '#fef3c7'
+  }
+];
+
+function switchRecettesTab(tab, btn) {
+  const tabs = ['recettes','complements'];
+  tabs.forEach(function(t) {
+    const el = document.getElementById(t + '-tab-content');
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(tab + '-tab-content');
+  if (target) target.classList.remove('hidden');
+
+  document.querySelectorAll('#page-recettes .jtab').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+
+  if (tab === 'complements') {
+    renderComplements();
+  }
+}
+
+function renderComplements() {
+  const container = document.getElementById('complements-list');
+  if (!container) return;
+
+  // Grouper par tier
+  const byTier = { 1: [], 2: [], 3: [] };
+  COMPLEMENTS_SJSR.forEach(function(c) {
+    byTier[c.tier].push(c);
+  });
+
+  const tierLabels = {
+    1: { l: '⭐ Recommandés en 1ère intention', sub: 'Evidence scientifique forte' },
+    2: { l: '✓ Soutien complémentaire', sub: 'Evidence modérée — selon profil' },
+    3: { l: '🌿 Optionnels', sub: 'Au cas par cas' }
+  };
+
+  let html = '';
+
+  [1, 2, 3].forEach(function(tier) {
+    if (byTier[tier].length === 0) return;
+    const t = tierLabels[tier];
+    html += '<div style="margin-bottom:24px;">' +
+      '<div style="font-size:0.78rem;font-weight:700;color:#2d4a3e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">' + t.l + '</div>' +
+      '<div style="font-size:0.78rem;color:#8a9e96;font-style:italic;margin-bottom:14px;">' + t.sub + '</div>';
+
+    byTier[tier].forEach(function(c, idx) {
+      const id = 'comp-' + tier + '-' + idx;
+      html += '<div class="comp-card" id="' + id + '" onclick="toggleComp(\'' + id + '\')">' +
+        '<div class="comp-header">' +
+          '<div class="comp-icon-circle" style="background:' + c.bg + ';">' + c.icon + '</div>' +
+          '<div style="flex:1;min-width:0;">' +
+            '<div class="comp-name">' + c.nom + '</div>' +
+            '<div class="comp-benefit">' + c.benefit + '</div>' +
+          '</div>' +
+          '<span class="comp-arrow">›</span>' +
+        '</div>' +
+        '<div class="comp-details">' +
+          '<div class="comp-detail-row"><span class="comp-detail-label">💊 Dosage</span><span class="comp-detail-val">' + c.dosage + '</span></div>' +
+          '<div class="comp-detail-row"><span class="comp-detail-label">⏱ Durée</span><span class="comp-detail-val">' + c.duree + '</span></div>' +
+          '<div class="comp-detail-row"><span class="comp-detail-label">🧬 Forme</span><span class="comp-detail-val">' + c.forme + '</span></div>' +
+          '<div class="comp-detail-row"><span class="comp-detail-label">⚠️ Interactions</span><span class="comp-detail-val">' + c.interactions + '</span></div>' +
+          '<div class="comp-science">📚 ' + c.science + '</div>' +
+        '</div>' +
+      '</div>';
+    });
+
+    html += '</div>';
+  });
+
+  // Disclaimer
+  html += '<div style="background:#fef6f4;border-left:3px solid #c0614a;border-radius:8px;padding:12px 14px;margin-top:8px;font-size:0.82rem;color:#5a4e44;line-height:1.5;">' +
+    '<strong>⚠️ Important :</strong> Ces informations sont fournies à titre éducatif. Toute supplémentation doit être validée par votre médecin, surtout si vous prenez d\'autres traitements. Un bilan sanguin (ferritine, vitamine D, B12) est recommandé avant toute cure.' +
+  '</div>';
+
+  container.innerHTML = html;
+}
+
+function toggleComp(id) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('expanded');
+}
+
+
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
 }
