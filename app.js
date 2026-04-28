@@ -8701,3 +8701,220 @@ function updateRecipeCounters() {
   document.querySelectorAll('[data-recipe-count="free"]').forEach(el => el.textContent = free);
   document.querySelectorAll('[data-recipe-count="premium"]').forEach(el => el.textContent = premium);
 }
+
+// ============================================================
+// EXPORT / IMPORT DES DONNÉES — RGPD
+// ============================================================
+
+const FLORA_DATA_KEYS = [
+  'flora_journal',
+  'flora_agenda',
+  'flora_placard',
+  'flora_profile',
+  'flora_profil',
+  'flora_premium',
+  'flora_user_email',
+  'flora_user_name',
+  'flora-medications'
+];
+
+function exportFloraData() {
+  const data = {
+    _meta: {
+      app: 'Flora',
+      version: '1.2',
+      exportedAt: new Date().toISOString(),
+      schema: 1
+    },
+    data: {}
+  };
+  
+  // Récolter toutes les clés Flōra
+  FLORA_DATA_KEYS.forEach(key => {
+    const value = localStorage.getItem(key);
+    if (value !== null) {
+      try {
+        // Si c'est du JSON, on le parse pour avoir un export lisible
+        data.data[key] = JSON.parse(value);
+      } catch(e) {
+        // Sinon on garde la string telle quelle
+        data.data[key] = value;
+      }
+    }
+  });
+  
+  // Compter les entrées pour le toast de confirmation
+  const journalCount = data.data.flora_journal ? Object.keys(data.data.flora_journal).length : 0;
+  const agendaCount = data.data.flora_agenda ? Object.keys(data.data.flora_agenda).length : 0;
+  
+  // Créer le blob et déclencher le téléchargement
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  
+  const a = document.createElement('a');
+  a.href = url;
+  const dateStr = new Date().toISOString().split('T')[0];
+  a.download = 'flora-data-' + dateStr + '.json';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  
+  // Libérer la mémoire après un délai
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  
+  // Feedback
+  showFloraDataToast(
+    '✅ Export réussi',
+    journalCount + ' entrée' + (journalCount > 1 ? 's' : '') + ' de journal · ' + 
+    agendaCount + ' jour' + (agendaCount > 1 ? 's' : '') + ' d\'agenda',
+    'success'
+  );
+}
+
+function importFloraData(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  
+  reader.onload = function(e) {
+    try {
+      const text = e.target.result;
+      const parsed = JSON.parse(text);
+      
+      // Vérifier la structure
+      if (!parsed._meta || !parsed.data) {
+        throw new Error('Format de fichier non reconnu');
+      }
+      
+      if (parsed._meta.app !== 'Flora') {
+        throw new Error('Ce fichier ne provient pas de Flōra');
+      }
+      
+      // Compter ce qui va être importé
+      const incomingJournal = parsed.data.flora_journal || {};
+      const incomingAgenda = parsed.data.flora_agenda || {};
+      const journalCount = Object.keys(incomingJournal).length;
+      const agendaCount = Object.keys(incomingAgenda).length;
+      
+      // Compter les données actuelles
+      let currentJournal = {};
+      let currentAgenda = {};
+      try {
+        currentJournal = JSON.parse(localStorage.getItem('flora_journal') || '{}');
+        currentAgenda = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
+      } catch(err) {}
+      
+      const currentJournalCount = Object.keys(currentJournal).length;
+      const currentAgendaCount = Object.keys(currentAgenda).length;
+      
+      // Demander confirmation à l'utilisateur
+      let confirmMsg = 'Importer ces données ?\n\n';
+      confirmMsg += '📥 Données à importer :\n';
+      confirmMsg += '   • ' + journalCount + ' entrée' + (journalCount > 1 ? 's' : '') + ' de journal\n';
+      confirmMsg += '   • ' + agendaCount + ' jour' + (agendaCount > 1 ? 's' : '') + ' d\'agenda\n\n';
+      
+      if (currentJournalCount > 0 || currentAgendaCount > 0) {
+        confirmMsg += '⚠️ Données actuelles sur cet appareil :\n';
+        confirmMsg += '   • ' + currentJournalCount + ' entrée' + (currentJournalCount > 1 ? 's' : '') + ' de journal\n';
+        confirmMsg += '   • ' + currentAgendaCount + ' jour' + (currentAgendaCount > 1 ? 's' : '') + ' d\'agenda\n\n';
+        confirmMsg += 'Les données seront FUSIONNÉES (les entrées du même jour seront remplacées).';
+      } else {
+        confirmMsg += 'Aucune donnée actuelle — l\'import remplacera votre profil vide.';
+      }
+      
+      if (!confirm(confirmMsg)) {
+        input.value = ''; // reset
+        return;
+      }
+      
+      // FUSION (merge) plutôt que remplacement total
+      let imported = 0;
+      Object.entries(parsed.data).forEach(([key, value]) => {
+        if (!FLORA_DATA_KEYS.includes(key)) return; // sécurité
+        
+        try {
+          // Pour journal et agenda : merge par date
+          if (key === 'flora_journal' || key === 'flora_agenda') {
+            const existing = JSON.parse(localStorage.getItem(key) || '{}');
+            const merged = Object.assign({}, existing, value);
+            localStorage.setItem(key, JSON.stringify(merged));
+          } 
+          // Pour le reste : remplacement direct
+          else {
+            const valueToStore = typeof value === 'string' ? value : JSON.stringify(value);
+            localStorage.setItem(key, valueToStore);
+          }
+          imported++;
+        } catch(err) {
+          console.error('Erreur import clé', key, err);
+        }
+      });
+      
+      // Reset input
+      input.value = '';
+      
+      // Feedback puis reload pour appliquer les changements
+      showFloraDataToast(
+        '✅ Import réussi',
+        journalCount + ' entrée' + (journalCount > 1 ? 's' : '') + ' importée' + (journalCount > 1 ? 's' : '') + '. Rechargement…',
+        'success'
+      );
+      
+      // Reload après 1.5s pour appliquer
+      setTimeout(() => {
+        window.location.reload();
+      }, 1500);
+      
+    } catch(err) {
+      console.error('Erreur import :', err);
+      input.value = ''; // reset
+      showFloraDataToast(
+        '❌ Erreur d\'import',
+        err.message || 'Le fichier ne semble pas être un export Flōra valide',
+        'error'
+      );
+    }
+  };
+  
+  reader.onerror = function() {
+    input.value = '';
+    showFloraDataToast('❌ Erreur de lecture', 'Impossible de lire le fichier', 'error');
+  };
+  
+  reader.readAsText(file);
+}
+
+// Toast de confirmation pour Export/Import
+function showFloraDataToast(title, message, level) {
+  const existing = document.getElementById('flora-data-toast');
+  if (existing) existing.remove();
+  
+  const colors = {
+    success: { bg: '#3d6b58', text: '#fff' },
+    error: { bg: '#c0614a', text: '#fff' },
+    info: { bg: '#2d4a3e', text: '#fff' }
+  };
+  const c = colors[level] || colors.info;
+  
+  const toast = document.createElement('div');
+  toast.id = 'flora-data-toast';
+  toast.className = 'flora-data-toast';
+  toast.style.cssText = 'position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-20px);background:' + c.bg + ';color:' + c.text + ';padding:14px 22px;border-radius:14px;box-shadow:0 6px 24px rgba(0,0,0,0.2);z-index:10000;opacity:0;transition:all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);max-width:90vw;';
+  toast.innerHTML = 
+    '<div style="font-weight:600;font-size:0.95rem;margin-bottom:4px;">' + title + '</div>' +
+    '<div style="font-size:0.82rem;opacity:0.92;">' + message + '</div>';
+  
+  document.body.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.opacity = '1';
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+  }, 10);
+  
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(-20px)';
+    setTimeout(() => toast.remove(), 350);
+  }, 3500);
+}

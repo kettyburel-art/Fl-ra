@@ -1165,3 +1165,108 @@ button[aria-label^="Verre"]:focus-visible {
   outline: 2px solid #b88820;
   outline-offset: 2px;
 }
+
+/* ============================
+   PROFIL — Section données (Export/Import)
+   ============================ */
+
+.data-management-section {
+  background: linear-gradient(135deg, #fff8e1, #fdf6f0);
+  border: 1.5px solid rgba(212, 168, 67, 0.25);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 12px 0;
+}
+
+.data-management-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 4px;
+}
+
+.data-management-sub {
+  font-size: 0.78rem;
+  color: #6c5e44;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.data-action-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  border: none;
+  padding: 12px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 8px;
+  transition: all 0.18s;
+  text-align: left;
+  box-shadow: 0 1px 3px rgba(45, 74, 62, 0.06);
+  color: #2d4a3e;
+}
+
+.data-action-btn:last-child {
+  margin-bottom: 0;
+}
+
+.data-action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(45, 74, 62, 0.12);
+}
+
+.data-action-btn:focus-visible {
+  outline: 2px solid #2d4a3e;
+  outline-offset: 2px;
+}
+
+.data-action-icon {
+  font-size: 1.4rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(212, 168, 67, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.data-action-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.data-action-label {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  line-height: 1.3;
+}
+
+.data-action-sub {
+  font-size: 0.76rem;
+  color: #6c8278;
+  line-height: 1.35;
+}
+
+.data-action-arrow {
+  font-size: 1.3rem;
+  color: #a0735c;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .data-action-btn {
+    transition: none !important;
+    transform: none !important;
+  }
+}
