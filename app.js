@@ -5204,6 +5204,12 @@ let _journalDouleurs = { reveil: 0, jour: 0, nuit: 0 };
 let _journalMeds = [];
 let _journalRituels = [];
 let _journalNotes = '';
+// Nouveaux champs : habitudes du jour
+let _journalEau = 0;
+let _journalCafeine = { tasses: 0, heureDerniere: '' };
+let _journalAlcool = 0;
+let _journalSymptomes = [];
+let _journalCycle = { phase: '', flux: '' };
 let _statsPeriod = 14;
 
 // Couleurs et thème
@@ -5299,6 +5305,12 @@ function loadJournalEntry() {
     _journalMeds = entry.meds2 || [];
     _journalRituels = entry.rituels2 || [];
     _journalNotes = entry.notes2 || '';
+    // Nouveaux champs : habitudes du jour
+    _journalEau = entry.eau || 0;
+    _journalCafeine = entry.cafeine || { tasses: 0, heureDerniere: '' };
+    _journalAlcool = entry.alcool || 0;
+    _journalSymptomes = entry.symptomes || [];
+    _journalCycle = entry.cycleMenstruel || { phase: '', flux: '' };
   } else {
     _journalCycles = [{ couche: '23:00', leve: '07:00' }];
     _journalLevers = 0;
@@ -5309,6 +5321,12 @@ function loadJournalEntry() {
     _journalMeds = [];
     _journalRituels = [];
     _journalNotes = '';
+    // Nouveaux champs : habitudes du jour
+    _journalEau = 0;
+    _journalCafeine = { tasses: 0, heureDerniere: '' };
+    _journalAlcool = 0;
+    _journalSymptomes = [];
+    _journalCycle = { phase: '', flux: '' };
   }
 }
 
@@ -5509,6 +5527,12 @@ function renderJournalToday() {
       douleursHTML +
     '</div>' +
 
+    // HABITUDES DU JOUR (nouveau bloc)
+    renderHabitudesBlock() +
+
+    // SYMPTÔMES (nouveau bloc)
+    renderSymptomesBlock() +
+
     // NOTES
     '<div class="journal-block">' +
       '<div class="jblock-title">📝 Notes — Symptômes · Déclencheurs · Observations</div>' +
@@ -5538,6 +5562,223 @@ function renderJournalToday() {
       s.dataset.styled = '1';
     }
   });
+}
+
+// === Nouveaux blocs : Habitudes du jour & Symptômes ===
+
+function renderHabitudesBlock() {
+  // Hydratation : 8 verres = jauge cliquable
+  const eauTotal = 8;
+  let eauHTML = '';
+  for (let i = 0; i < eauTotal; i++) {
+    const filled = i < _journalEau;
+    eauHTML += '<button onclick="setJEau(' + (i + 1) + ')" aria-label="Verre ' + (i + 1) + '" style="background:none;border:none;cursor:pointer;font-size:1.5rem;padding:4px;line-height:1;opacity:' + (filled ? '1' : '0.25') + ';transition:opacity 0.15s;">💧</button>';
+  }
+  const eauLabel = _journalEau === 0 ? 'Aucun verre' : _journalEau + ' verre' + (_journalEau > 1 ? 's' : '') + (_journalEau >= 6 ? ' ✓' : '');
+
+  // Caféine : compteur + heure
+  const cafTasses = _journalCafeine.tasses || 0;
+  const cafHeure = _journalCafeine.heureDerniere || '';
+  const cafAlerte = cafHeure && parseInt(cafHeure.split(':')[0]) >= 14;
+
+  // Alcool : compteur simple
+  const alcoolLabel = _journalAlcool === 0 ? 'Aucun verre' : _journalAlcool + ' verre' + (_journalAlcool > 1 ? 's' : '');
+
+  // Cycle menstruel — affiché seulement si profil féminin (par défaut on l'affiche)
+  const phasesOpts = [
+    { v: '', l: '— Non concernée —' },
+    { v: 'regles', l: '🩸 Règles' },
+    { v: 'folliculaire', l: '🌱 Folliculaire' },
+    { v: 'ovulation', l: '🌸 Ovulation' },
+    { v: 'luteale', l: '🌙 Lutéale' },
+    { v: 'spm', l: '⚠️ SPM (avant règles)' }
+  ].map(o => '<option value="' + o.v + '"' + (o.v === _journalCycle.phase ? ' selected' : '') + '>' + o.l + '</option>').join('');
+
+  const fluxOpts = [
+    { v: '', l: '—' },
+    { v: 'leger', l: 'Léger' },
+    { v: 'modere', l: 'Modéré' },
+    { v: 'abondant', l: 'Abondant' }
+  ].map(o => '<option value="' + o.v + '"' + (o.v === _journalCycle.flux ? ' selected' : '') + '>' + o.l + '</option>').join('');
+
+  const fluxVisible = _journalCycle.phase === 'regles';
+
+  return (
+    '<div class="journal-block">' +
+      '<div class="jblock-title">🌿 Habitudes du jour</div>' +
+
+      // HYDRATATION
+      '<div style="margin:14px 0 18px;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">' +
+          '<span style="font-size:0.85rem;font-weight:600;color:#2d4a3e;">💧 Hydratation</span>' +
+          '<span style="font-size:0.8rem;color:#6c8278;font-weight:500;">' + eauLabel + '</span>' +
+        '</div>' +
+        '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center;background:#f7f3ee;padding:8px;border-radius:12px;">' + eauHTML + '</div>' +
+        '<div style="font-size:0.7rem;color:#8a9e96;text-align:center;margin-top:6px;font-style:italic;">Objectif : 6-8 verres / jour</div>' +
+      '</div>' +
+
+      // CAFÉINE
+      '<div style="margin:14px 0;padding:12px 14px;background:#f7f3ee;border-radius:12px;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
+          '<span style="font-size:0.85rem;font-weight:600;color:#2d4a3e;">☕ Caféine</span>' +
+          '<div style="display:flex;align-items:center;gap:6px;">' +
+            '<button onclick="changeJCafeine(-1)" aria-label="Moins" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">−</button>' +
+            '<span style="font-size:1rem;font-weight:700;color:#2d4a3e;min-width:24px;text-align:center;">' + cafTasses + '</span>' +
+            '<button onclick="changeJCafeine(1)" aria-label="Plus" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">+</button>' +
+          '</div>' +
+        '</div>' +
+        (cafTasses > 0 ?
+          '<div style="display:flex;align-items:center;gap:8px;">' +
+            '<label style="font-size:0.78rem;color:#4a5e54;flex:1;">Heure dernière prise :</label>' +
+            '<input type="time" value="' + cafHeure + '" onchange="setJCafeineHeure(this.value)" style="padding:6px 10px;border:1.5px solid #ede8e0;border-radius:10px;background:#fff;font-family:DM Sans,sans-serif;font-size:0.85rem;color:#2d4a3e;" />' +
+          '</div>'
+          : '') +
+        (cafAlerte ?
+          '<div style="margin-top:8px;padding:8px 10px;background:rgba(212,168,67,0.15);border-left:3px solid #d4a843;border-radius:8px;font-size:0.75rem;color:#5a4a30;line-height:1.4;">⚠️ Caféine après 14h : peut aggraver le SJSR (demi-vie ~6h)</div>'
+          : '') +
+      '</div>' +
+
+      // ALCOOL
+      '<div style="margin:14px 0;padding:12px 14px;background:#f7f3ee;border-radius:12px;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;">' +
+          '<div>' +
+            '<div style="font-size:0.85rem;font-weight:600;color:#2d4a3e;">🍷 Alcool</div>' +
+            '<div style="font-size:0.75rem;color:#8a9e96;margin-top:2px;">' + alcoolLabel + '</div>' +
+          '</div>' +
+          '<div style="display:flex;align-items:center;gap:6px;">' +
+            '<button onclick="changeJAlcool(-1)" aria-label="Moins" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">−</button>' +
+            '<span style="font-size:1rem;font-weight:700;color:#2d4a3e;min-width:24px;text-align:center;">' + _journalAlcool + '</span>' +
+            '<button onclick="changeJAlcool(1)" aria-label="Plus" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">+</button>' +
+          '</div>' +
+        '</div>' +
+        (_journalAlcool > 0 ?
+          '<div style="margin-top:8px;padding:8px 10px;background:rgba(212,168,67,0.1);border-left:3px solid #d4a843;border-radius:8px;font-size:0.72rem;color:#5a4a30;line-height:1.4;">L\'alcool fragmente le sommeil et peut aggraver le SJSR la même nuit.</div>'
+          : '') +
+      '</div>' +
+
+      // CYCLE MENSTRUEL
+      '<div style="margin:14px 0 4px;padding:12px 14px;background:#f7f3ee;border-radius:12px;">' +
+        '<div style="font-size:0.85rem;font-weight:600;color:#2d4a3e;margin-bottom:8px;">🌸 Cycle menstruel</div>' +
+        '<select onchange="setJCyclePhase(this.value)" class="field" style="margin-bottom:' + (fluxVisible ? '8px' : '0') + ';">' + phasesOpts + '</select>' +
+        (fluxVisible ?
+          '<select onchange="setJCycleFlux(this.value)" class="field"><option value="">Flux —</option>' + fluxOpts + '</select>'
+          : '') +
+        '<div style="font-size:0.7rem;color:#8a9e96;margin-top:6px;font-style:italic;">Le SJSR peut s\'aggraver en phase lutéale et pendant les règles (lien ferritine).</div>' +
+      '</div>' +
+
+    '</div>'
+  );
+}
+
+function renderSymptomesBlock() {
+  // Liste organisée par catégories
+  const groupes = [
+    {
+      titre: 'Énergie & cognition',
+      items: [
+        { id: 'fatigue', label: 'Fatigue' },
+        { id: 'brouillard', label: 'Brouillard mental' },
+        { id: 'concentration', label: 'Concentration ↓' },
+        { id: 'hyperfocus', label: 'Hyperfocus' },
+        { id: 'procrastination', label: 'Procrastination' }
+      ]
+    },
+    {
+      titre: 'Émotionnel',
+      items: [
+        { id: 'anxiete', label: 'Anxiété' },
+        { id: 'irritabilite', label: 'Irritabilité' },
+        { id: 'surcharge', label: 'Surcharge sensorielle' }
+      ]
+    },
+    {
+      titre: 'Physique',
+      items: [
+        { id: 'crampes', label: 'Crampes' },
+        { id: 'fourmillements', label: 'Fourmillements' },
+        { id: 'jambes-lourdes', label: 'Jambes lourdes' },
+        { id: 'maux-tete', label: 'Maux de tête' },
+        { id: 'douleurs-art', label: 'Douleurs articulaires' },
+        { id: 'bouffees', label: 'Bouffées de chaleur' }
+      ]
+    },
+    {
+      titre: 'Digestif',
+      items: [
+        { id: 'ballonnements', label: 'Ballonnements' },
+        { id: 'rgo', label: 'Reflux / RGO' },
+        { id: 'transit', label: 'Transit perturbé' }
+      ]
+    }
+  ];
+
+  const groupesHTML = groupes.map(g => {
+    const chipsHTML = g.items.map(item => {
+      const active = _journalSymptomes.includes(item.id);
+      return '<button onclick="toggleJSymptome(\'' + item.id + '\')" style="padding:7px 13px;background:' + (active ? '#c8e6d4' : '#fff') + ';border:1.5px solid ' + (active ? '#3d6b58' : '#ede8e0') + ';border-radius:99px;font-size:0.8rem;font-weight:' + (active ? '600' : '500') + ';color:' + (active ? '#2d4a3e' : '#4a5e54') + ';cursor:pointer;font-family:DM Sans,sans-serif;transition:all 0.15s;min-height:34px;">' + item.label + '</button>';
+    }).join('');
+
+    return '<div style="margin-bottom:14px;">' +
+      '<div style="font-size:0.72rem;font-weight:700;color:#6c8278;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">' + g.titre + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + chipsHTML + '</div>' +
+    '</div>';
+  }).join('');
+
+  const total = _journalSymptomes.length;
+
+  return (
+    '<div class="journal-block">' +
+      '<div class="jblock-title" style="display:flex;align-items:center;justify-content:space-between;">' +
+        '<span>🩺 Symptômes ressentis</span>' +
+        (total > 0 ? '<span style="font-size:0.72rem;font-weight:600;background:rgba(61,107,88,0.15);color:#2d4a3e;padding:3px 10px;border-radius:99px;">' + total + ' coché' + (total > 1 ? 's' : '') + '</span>' : '') +
+      '</div>' +
+      '<div style="margin-top:14px;">' + groupesHTML + '</div>' +
+    '</div>'
+  );
+}
+
+// === Handlers : Habitudes ===
+function setJEau(n) {
+  // Cliquer sur le verre déjà rempli = décrémente
+  _journalEau = (_journalEau === n) ? n - 1 : n;
+  renderJournalToday();
+}
+
+function changeJCafeine(delta) {
+  _journalCafeine.tasses = Math.max(0, (_journalCafeine.tasses || 0) + delta);
+  if (_journalCafeine.tasses === 0) _journalCafeine.heureDerniere = '';
+  renderJournalToday();
+}
+
+function setJCafeineHeure(heure) {
+  _journalCafeine.heureDerniere = heure;
+  renderJournalToday();
+}
+
+function changeJAlcool(delta) {
+  _journalAlcool = Math.max(0, _journalAlcool + delta);
+  renderJournalToday();
+}
+
+function setJCyclePhase(phase) {
+  _journalCycle.phase = phase;
+  if (phase !== 'regles') _journalCycle.flux = '';
+  renderJournalToday();
+}
+
+function setJCycleFlux(flux) {
+  _journalCycle.flux = flux;
+  renderJournalToday();
+}
+
+function toggleJSymptome(id) {
+  const idx = _journalSymptomes.indexOf(id);
+  if (idx === -1) {
+    _journalSymptomes.push(id);
+  } else {
+    _journalSymptomes.splice(idx, 1);
+  }
+  renderJournalToday();
 }
 
 // === Handlers ===
@@ -5622,6 +5863,12 @@ function saveJournal() {
     meds2: _journalMeds,
     rituels2: _journalRituels,
     notes2: _journalNotes,
+    // Nouveaux champs habitudes du jour
+    eau: _journalEau,
+    cafeine: _journalCafeine,
+    alcool: _journalAlcool,
+    symptomes: _journalSymptomes,
+    cycleMenstruel: _journalCycle,
     totalSleep: totalSleep,
     // Compatibilité avec l'ancien format pour stats/streak
     duree: totalSleep / 60,
@@ -7328,6 +7575,12 @@ function loadProfil() {
   document.getElementById('p-sg').checked    = !!profile.sansGluten;
   document.getElementById('p-sl').checked    = !!profile.sansLactose;
   document.getElementById('p-sv').checked    = !!profile.vegetarien;
+  
+  // Toggle cycle menstruel (par défaut activé)
+  const cycleEl = document.getElementById('p-cycle');
+  if (cycleEl) {
+    cycleEl.checked = profile.cycleEnabled !== false;
+  }
 
   const initials = (profile.name || '?').charAt(0).toUpperCase();
   document.getElementById('avatar-initials').textContent   = initials;
@@ -7349,6 +7602,19 @@ function saveProfil(btn) {
   profile.sansGluten  = document.getElementById('p-sg').checked;
   profile.sansLactose = document.getElementById('p-sl').checked;
   profile.vegetarien  = document.getElementById('p-sv').checked;
+  
+  // Sauvegarder le toggle cycle
+  const cycleEl = document.getElementById('p-cycle');
+  if (cycleEl) {
+    profile.cycleEnabled = cycleEl.checked;
+  }
+  
+  // Aussi dans flora_profil pour shouldShowCycle()
+  try {
+    const stored = JSON.parse(localStorage.getItem('flora_profil') || '{}');
+    stored.cycleEnabled = profile.cycleEnabled;
+    localStorage.setItem('flora_profil', JSON.stringify(stored));
+  } catch(e) {}
 
   saveState();
   updateDashboard();
@@ -7698,4 +7964,232 @@ function toggleComp(id) {
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+
+// ============================================================
+// JOURNAL ENRICHI — Habitudes du jour + Symptômes étendus
+// ============================================================
+
+// === BLOC HABITUDES DU JOUR ===
+function renderHabitudesBlock() {
+  // Hydratation : 8 verres = jauge cliquable
+  const verresHTML = Array.from({length: 8}, (_, i) => {
+    const filled = i < _journalEau;
+    return '<button onclick="toggleEau(' + (i+1) + ')" aria-label="Verre ' + (i+1) + '" style="width:32px;height:42px;border:2px solid ' + (filled ? '#3b82f6' : '#d4ecf2') + ';background:' + (filled ? 'linear-gradient(to top, #60a5fa, #93c5fd)' : '#f7f3ee') + ';border-radius:6px 6px 14px 14px;cursor:pointer;padding:0;transition:all 0.18s;display:flex;align-items:flex-end;justify-content:center;font-size:0.7rem;color:' + (filled ? '#fff' : '#a4b8c4') + ';font-weight:600;">' + (filled ? '✓' : (i+1)) + '</button>';
+  }).join('');
+  
+  const eauLabel = _journalEau === 0 ? 'Aucun verre' 
+                 : _journalEau === 1 ? '1 verre' 
+                 : _journalEau >= 8 ? '8 verres ou +'
+                 : _journalEau + ' verres';
+
+  // Caféine
+  const cafTasses = _journalCafeine.tasses || 0;
+  const cafHeure = _journalCafeine.heureDerniere || '';
+  const cafTassesLabel = cafTasses === 0 ? 'Aucune tasse' 
+                       : cafTasses === 1 ? '1 tasse'
+                       : cafTasses + ' tasses';
+  
+  // Alerte caféine si dernière prise > 14h
+  let cafAlert = '';
+  if (cafHeure) {
+    const [h] = cafHeure.split(':').map(Number);
+    if (h >= 14 && h <= 23) {
+      cafAlert = '<div style="font-size:0.75rem;color:#c0614a;margin-top:8px;padding:8px 12px;background:rgba(192,97,74,0.08);border-radius:8px;border-left:3px solid #c0614a;">⚠️ Café après 14h : peut aggraver le SJSR la nuit (demi-vie 5-6h)</div>';
+    }
+  }
+
+  // Alcool
+  const alcoolLabel = _journalAlcool === 0 ? 'Aucun verre' 
+                    : _journalAlcool === 1 ? '1 verre' 
+                    : _journalAlcool + ' verres';
+
+  // Cycle menstruel : afficher seulement si le profil le permet
+  // Vérifie le sexe ou le toggle dans le profil
+  const showCycle = shouldShowCycle();
+  let cycleHTML = '';
+  if (showCycle) {
+    const phases = [
+      { v:'', l:'—' },
+      { v:'regles', l:'🌹 Règles' },
+      { v:'folliculaire', l:'🌱 Folliculaire' },
+      { v:'ovulation', l:'✨ Ovulation' },
+      { v:'luteale', l:'🌙 Lutéale' }
+    ];
+    const flux = [
+      { v:'', l:'—' },
+      { v:'leger', l:'Léger' },
+      { v:'modere', l:'Modéré' },
+      { v:'abondant', l:'Abondant' }
+    ];
+    
+    const phaseOpts = phases.map(p => 
+      '<option value="' + p.v + '"' + (p.v === _journalCycle.phase ? ' selected' : '') + '>' + p.l + '</option>'
+    ).join('');
+    
+    const fluxOpts = flux.map(f => 
+      '<option value="' + f.v + '"' + (f.v === _journalCycle.flux ? ' selected' : '') + '>' + f.l + '</option>'
+    ).join('');
+
+    cycleHTML = 
+      '<div class="habitude-row">' +
+        '<div class="habitude-label">🌸 Cycle menstruel</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+          '<select onchange="updateCyclePhase(this.value)" class="field" style="font-size:0.85rem;padding:8px 10px;">' + phaseOpts + '</select>' +
+          (_journalCycle.phase === 'regles' 
+            ? '<select onchange="updateCycleFlux(this.value)" class="field" style="font-size:0.85rem;padding:8px 10px;">' + fluxOpts + '</select>'
+            : '<div style="display:flex;align-items:center;font-size:0.78rem;color:#8a9e96;font-style:italic;padding-left:10px;">Phase actuelle</div>'
+          ) +
+        '</div>' +
+      '</div>';
+  }
+
+  return '<div class="journal-block">' +
+    '<div class="jblock-title">🌿 Habitudes du jour</div>' +
+    
+    // HYDRATATION
+    '<div class="habitude-row">' +
+      '<div class="habitude-label">💧 Hydratation <span style="font-weight:400;color:#8a9e96;">(verres d\'eau)</span></div>' +
+      '<div style="display:flex;gap:5px;justify-content:flex-start;flex-wrap:wrap;margin-bottom:4px;">' + verresHTML + '</div>' +
+      '<div style="font-size:0.78rem;color:#3d6b58;font-weight:500;">' + eauLabel + '</div>' +
+    '</div>' +
+    
+    // CAFÉINE
+    '<div class="habitude-row">' +
+      '<div class="habitude-label">☕ Caféine</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">' +
+        '<div>' +
+          '<label style="font-size:0.7rem;color:#8a9e96;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:5px;">Tasses</label>' +
+          '<div style="display:flex;align-items:center;gap:8px;background:#f7f3ee;border-radius:14px;padding:6px;">' +
+            '<button onclick="changeCafTasses(-1)" style="width:30px;height:30px;border-radius:50%;background:#fff;border:none;font-size:1rem;cursor:pointer;">−</button>' +
+            '<span style="flex:1;text-align:center;font-weight:700;color:#2d4a3e;">' + cafTassesLabel + '</span>' +
+            '<button onclick="changeCafTasses(1)" style="width:30px;height:30px;border-radius:50%;background:#fff;border:none;font-size:1rem;cursor:pointer;">+</button>' +
+          '</div>' +
+        '</div>' +
+        '<div>' +
+          '<label style="font-size:0.7rem;color:#8a9e96;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:5px;">Dernière prise</label>' +
+          '<input type="time" value="' + cafHeure + '" onchange="updateCafHeure(this.value)" class="field" style="font-size:0.9rem;padding:8px 10px;" ' + (cafTasses === 0 ? 'disabled' : '') + ' />' +
+        '</div>' +
+      '</div>' +
+      cafAlert +
+    '</div>' +
+    
+    // ALCOOL
+    '<div class="habitude-row">' +
+      '<div class="habitude-label">🍷 Alcool <span style="font-weight:400;color:#8a9e96;">(verres dans la journée)</span></div>' +
+      '<div style="display:flex;align-items:center;gap:8px;background:#f7f3ee;border-radius:14px;padding:6px;">' +
+        '<button onclick="changeAlcool(-1)" style="width:30px;height:30px;border-radius:50%;background:#fff;border:none;font-size:1rem;cursor:pointer;">−</button>' +
+        '<span style="flex:1;text-align:center;font-weight:700;color:#2d4a3e;">' + alcoolLabel + '</span>' +
+        '<button onclick="changeAlcool(1)" style="width:30px;height:30px;border-radius:50%;background:#fff;border:none;font-size:1rem;cursor:pointer;">+</button>' +
+      '</div>' +
+      (_journalAlcool >= 2 ? '<div style="font-size:0.74rem;color:#a0735c;margin-top:6px;font-style:italic;">L\'alcool peut aggraver le SJSR la nuit même.</div>' : '') +
+    '</div>' +
+    
+    // CYCLE (conditionnel)
+    cycleHTML +
+    
+  '</div>';
+}
+
+// === BLOC SYMPTÔMES ÉTENDUS ===
+function renderSymptomesBlock() {
+  const symptomesList = [
+    { id:'fatigue', label:'😴 Fatigue', color:'#a0735c' },
+    { id:'anxiete', label:'😟 Anxiété', color:'#a0735c' },
+    { id:'brouillard', label:'🌫️ Brouillard mental', color:'#a0735c' },
+    { id:'maux-tete', label:'🤕 Maux de tête', color:'#a0735c' },
+    { id:'crampes', label:'🦵 Crampes', color:'#c0614a' },
+    { id:'fourmillements', label:'⚡ Fourmillements', color:'#c0614a' },
+    { id:'jambes-lourdes', label:'🪨 Jambes lourdes', color:'#c0614a' },
+    { id:'douleurs-articulaires', label:'🦴 Douleurs articulaires', color:'#a0735c' },
+    { id:'ballonnements', label:'🎈 Ballonnements', color:'#d4a843' },
+    { id:'rgo', label:'🔥 Reflux / RGO', color:'#d4a843' },
+    { id:'transit', label:'🌀 Transit perturbé', color:'#d4a843' },
+    { id:'irritabilite', label:'😤 Irritabilité', color:'#a0735c' },
+    { id:'concentration', label:'🎯 Concentration ↓', color:'#a0735c' },
+    { id:'surcharge-sensorielle', label:'🔊 Surcharge sensorielle', color:'#7a4e8a' },
+    { id:'hyperfocus', label:'🔍 Hyperfocus', color:'#7a4e8a' },
+    { id:'procrastination', label:'⏳ Procrastination', color:'#7a4e8a' },
+    { id:'bouffees-chaleur', label:'🔥 Bouffées de chaleur', color:'#c0614a' },
+    { id:'secheresse', label:'💧 Sécheresse oculaire/buccale', color:'#a0735c' }
+  ];
+  
+  const chipsHTML = symptomesList.map(s => {
+    const active = _journalSymptomes.includes(s.id);
+    return '<button onclick="toggleSymptome(\'' + s.id + '\')" class="symptome-chip ' + (active ? 'active' : '') + '" ' +
+           'style="' + (active ? 'background:' + s.color + '22;border-color:' + s.color + ';color:' + s.color + ';' : '') + '">' +
+           s.label +
+           '</button>';
+  }).join('');
+  
+  const count = _journalSymptomes.length;
+  const countLabel = count === 0 ? 'Aucun symptôme' 
+                   : count === 1 ? '1 symptôme'
+                   : count + ' symptômes';
+  
+  return '<div class="journal-block">' +
+    '<div class="jblock-title">🩺 Symptômes ressentis aujourd\'hui ' +
+      '<span style="font-size:0.75rem;color:#8a9e96;font-weight:400;">— ' + countLabel + '</span>' +
+    '</div>' +
+    '<div class="symptomes-grid">' + chipsHTML + '</div>' +
+  '</div>';
+}
+
+// === HANDLERS — Habitudes du jour ===
+function toggleEau(n) {
+  // Cliquer sur le verre N : si on est déjà à N, on descend à N-1, sinon on monte à N
+  _journalEau = (_journalEau === n) ? n - 1 : n;
+  if (_journalEau < 0) _journalEau = 0;
+  if (_journalEau > 8) _journalEau = 8;
+  renderJournalToday();
+}
+
+function changeCafTasses(delta) {
+  _journalCafeine.tasses = Math.max(0, Math.min(10, (_journalCafeine.tasses || 0) + delta));
+  if (_journalCafeine.tasses === 0) _journalCafeine.heureDerniere = '';
+  renderJournalToday();
+}
+
+function updateCafHeure(val) {
+  _journalCafeine.heureDerniere = val;
+  renderJournalToday();
+}
+
+function changeAlcool(delta) {
+  _journalAlcool = Math.max(0, Math.min(10, _journalAlcool + delta));
+  renderJournalToday();
+}
+
+function updateCyclePhase(val) {
+  _journalCycle.phase = val;
+  if (val !== 'regles') _journalCycle.flux = '';
+  renderJournalToday();
+}
+
+function updateCycleFlux(val) {
+  _journalCycle.flux = val;
+  renderJournalToday();
+}
+
+function toggleSymptome(id) {
+  const i = _journalSymptomes.indexOf(id);
+  if (i === -1) {
+    _journalSymptomes.push(id);
+  } else {
+    _journalSymptomes.splice(i, 1);
+  }
+  renderJournalToday();
+}
+
+// === Détermine si on doit afficher le bloc cycle menstruel ===
+function shouldShowCycle() {
+  // 1. Vérifier dans le profil si l'utilisatrice a explicitement activé le suivi
+  try {
+    const profil = JSON.parse(localStorage.getItem('flora_profil') || '{}');
+    if (profil.cycleEnabled === true) return true;
+    if (profil.cycleEnabled === false) return false;
+  } catch(e) {}
+  
+  // 2. Par défaut : afficher (sera ajouté un toggle dans le profil)
+  return true;
 }
