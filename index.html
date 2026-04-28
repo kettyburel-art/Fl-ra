@@ -587,10 +587,10 @@
           <div class="plan-card" id="plan-card">
             <div class="plan-name">Flōra Gratuit</div>
             <div class="plan-features">
-              <div class="pf">✅ 20 recettes anti-inflammatoires</div>
+              <div class="pf">✅ <span data-recipe-count="free">—</span> recettes anti-inflammatoires</div>
               <div class="pf">✅ Journal illimité</div>
               <div class="pf">✅ Agenda 1 semaine</div>
-              <div class="pf pf-locked">🔒 Bibliothèque complète (120+ recettes)</div>
+              <div class="pf pf-locked">🔒 Bibliothèque complète (<span data-recipe-count="total">—</span> recettes)</div>
               <div class="pf pf-locked">🔒 Générateur illimité</div>
               <div class="pf pf-locked">🔒 Statistiques avancées</div>
             </div>
@@ -666,17 +666,29 @@
         </div>
 
         <div class="journal-block">
-          <div class="jblock-title">🔒 Mentions légales</div>
+          <div class="jblock-title">🔒 Mentions légales & RGPD</div>
           <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
-            Éditrice : Ketty Burel · Maisons-Alfort (94700), France<br>
-            Hébergement : GitHub Pages (GitHub Inc., San Francisco, CA)<br>
-            Paiements : Stripe Inc.<br><br>
-            Application non soumise à déclaration CNIL (aucune collecte de données personnelles côté serveur).
+            <strong>Éditrice :</strong> Ketty Burel · Maisons-Alfort (94700), France<br>
+            <strong>Hébergement :</strong> GitHub Pages (GitHub Inc., San Francisco, CA)<br>
+            <strong>Paiements :</strong> Stripe Inc. (les données de paiement sont gérées directement par Stripe, voir <a href="https://stripe.com/fr/privacy" target="_blank" rel="noopener" style="color:var(--green-deep);">leur politique</a>)<br>
+            <strong>Mesure d'audience :</strong> Plausible Analytics (anonyme, sans cookies, conforme RGPD, voir <a href="https://plausible.io/data-policy" target="_blank" rel="noopener" style="color:var(--green-deep);">leur politique</a>)
           </p>
+          
+          <div style="margin-top:14px;padding:12px 14px;background:rgba(61,107,88,0.06);border-radius:10px;border-left:3px solid var(--green-deep);">
+            <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.65;margin:0;">
+              <strong>🔐 Protection de vos données</strong><br><br>
+              Vos données de bien-être (journal, profil, agenda, médicaments) sont stockées 
+              <strong>uniquement sur votre appareil</strong> (localStorage du navigateur). 
+              Aucune donnée de santé ne transite ni n'est conservée sur nos serveurs.<br><br>
+              <strong>Vos droits RGPD :</strong> accès, rectification, effacement, portabilité — 
+              vous pouvez à tout moment exporter ou supprimer vos données depuis votre profil. 
+              Pour toute demande : kettyburel@gmail.com
+            </p>
+          </div>
         </div>
 
         <div style="text-align:center;padding:16px 0;color:var(--text-light);font-size:0.78rem;">
-          Flōra v1.1 · Conçu avec ❤️ pour la communauté SJSR/TDAH
+          Flōra v1.2 · Conçu avec ❤️ pour la communauté SJSR/TDAH
         </div>
       </section>
 
@@ -835,7 +847,7 @@
         <p>Tout ce dont vous avez besoin pour votre bien-être</p>
       </div>
       <div class="premium-features">
-        <div class="pf-item">✅ 65 recettes anti-inflammatoires (dont 30+ exclusives)</div>
+        <div class="pf-item">✅ <span data-recipe-count="total">—</span> recettes anti-inflammatoires (dont <span data-recipe-count="premium">—</span> exclusives Premium)</div>
         <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
         <div class="pf-item">✅ Générateur de menus illimité</div>
         <div class="pf-item">✅ Statistiques & tendances avancées</div>

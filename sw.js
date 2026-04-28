@@ -1,95 +1,124 @@
-// Flōra Service Worker — v2.1 (force update)
-const CACHE_VERSION = 'flora-v' + Date.now(); // Version unique à chaque déploiement
-const CACHE_NAME = 'flora-cache-v2';
+// ===========================================
+// FLŌRA — Service Worker v2.1
+// Stratégie : Network First pour les fichiers critiques (HTML/JS/CSS)
+//             + Cache First pour les fonts et icônes
+// ===========================================
 
+// IMPORTANT : utilise Date.now() pour invalider le cache à chaque déploiement
+const CACHE_NAME = 'flora-cache-v' + Date.now();
+
+// Fichiers critiques à mettre en cache
 const CORE_ASSETS = [
-  '/Fl-ra/',
-  '/Fl-ra/index.html',
-  '/Fl-ra/app.js',
-  '/Fl-ra/style.css',
-  '/Fl-ra/manifest.json'
+  './',
+  './index.html',
+  './style.css',
+  './flora_modals.css',
+  './app.js',
+  './flora_complements.js',
+  './flora_interactions.js',
+  './manifest.json',
+  './icon.svg'
 ];
 
-// Install — pré-cache des fichiers critiques
-self.addEventListener('install', function(event) {
-  console.log('[SW] Install', CACHE_VERSION);
-  self.skipWaiting(); // Force l'activation immédiate
+// Fichiers ignorés du cache (toujours network)
+const SKIP_CACHE = [
+  '/api/',
+  'analytics',
+  'plausible.io',
+  'stripe',
+  'sumup'
+];
+
+// === INSTALL ===
+self.addEventListener('install', event => {
+  console.log('[SW] Install', CACHE_NAME);
   event.waitUntil(
-    caches.open(CACHE_NAME).then(function(cache) {
-      return cache.addAll(CORE_ASSETS);
-    }).catch(function(err) {
-      console.warn('[SW] Cache install failed:', err);
-    })
+    caches.open(CACHE_NAME)
+      .then(cache => {
+        console.log('[SW] Caching core assets');
+        return cache.addAll(CORE_ASSETS).catch(err => {
+          console.warn('[SW] Some core assets failed to cache:', err);
+          // Continue malgré tout
+        });
+      })
+      .then(() => self.skipWaiting())
   );
 });
 
-// Activate — supprime les anciens caches
-self.addEventListener('activate', function(event) {
-  console.log('[SW] Activate', CACHE_VERSION);
+// === ACTIVATE ===
+self.addEventListener('activate', event => {
+  console.log('[SW] Activate', CACHE_NAME);
   event.waitUntil(
-    caches.keys().then(function(keys) {
-      return Promise.all(
-        keys.filter(function(k) { return k !== CACHE_NAME; })
-            .map(function(k) {
-              console.log('[SW] Deleting old cache:', k);
-              return caches.delete(k);
-            })
-      );
-    }).then(function() {
-      return self.clients.claim(); // Prend contrôle immédiat de toutes les pages
-    })
+    caches.keys().then(keys => 
+      Promise.all(
+        keys
+          .filter(k => k !== CACHE_NAME && k.startsWith('flora-cache-'))
+          .map(k => {
+            console.log('[SW] Deleting old cache:', k);
+            return caches.delete(k);
+          })
+      )
+    ).then(() => self.clients.claim())
   );
 });
 
-// Fetch — Network First pour app.js, index.html, style.css
-// Cache First pour les autres assets
-self.addEventListener('fetch', function(event) {
+// === FETCH ===
+self.addEventListener('fetch', event => {
+  const url = new URL(event.request.url);
+  
+  // Ne pas intercepter les requêtes non-GET ni externes (Plausible, Stripe, etc.)
   if (event.request.method !== 'GET') return;
-
-  const url = event.request.url;
-  const isCriticalAsset = url.includes('app.js') ||
-                          url.includes('index.html') ||
-                          url.includes('style.css') ||
-                          url.endsWith('/Fl-ra/') ||
-                          url.endsWith('/Fl-ra');
-
-  if (isCriticalAsset) {
-    // Network First : on prend toujours la version réseau si dispo
+  if (SKIP_CACHE.some(skip => event.request.url.includes(skip))) return;
+  
+  // === Cache First pour les fonts Google ===
+  if (url.hostname === 'fonts.googleapis.com' || url.hostname === 'fonts.gstatic.com') {
     event.respondWith(
-      fetch(event.request)
-        .then(function(response) {
-          // Cloner pour pouvoir mettre en cache + retourner
-          const cloned = response.clone();
-          caches.open(CACHE_NAME).then(function(cache) {
-            cache.put(event.request, cloned);
-          });
-          return response;
-        })
-        .catch(function() {
-          // Si offline, fallback sur le cache
-          return caches.match(event.request);
-        })
-    );
-  } else {
-    // Cache First pour le reste (images, fonts, etc.)
-    event.respondWith(
-      caches.match(event.request).then(function(cached) {
-        return cached || fetch(event.request).then(function(response) {
-          if (response && response.status === 200) {
-            const cloned = response.clone();
-            caches.open(CACHE_NAME).then(function(cache) {
-              cache.put(event.request, cloned);
-            });
+      caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request).then(response => {
+          if (response.ok) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
           }
           return response;
         });
       })
     );
+    return;
   }
+  
+  // === Network First pour le reste (HTML/JS/CSS de l'app) ===
+  event.respondWith(
+    fetch(event.request)
+      .then(response => {
+        // Mettre en cache si OK
+        if (response.ok && response.type === 'basic') {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+        }
+        return response;
+      })
+      .catch(() => {
+        // Fallback sur le cache si réseau indisponible
+        return caches.match(event.request).then(cached => {
+          if (cached) return cached;
+          // Pour les requêtes HTML, fallback sur index.html
+          if (event.request.headers.get('accept')?.includes('text/html')) {
+            return caches.match('./index.html');
+          }
+          // Sinon erreur 503
+          return new Response('Hors ligne', { 
+            status: 503, 
+            statusText: 'Service Unavailable',
+            headers: { 'Content-Type': 'text/plain;charset=UTF-8' }
+          });
+        });
+      })
+  );
 });
 
-// Message — permet à l'app de forcer un skipWaiting
-self.addEventListener('message', function(event) {
+// === MESSAGE (pour forcer une mise à jour depuis l'app) ===
+self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }

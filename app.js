@@ -330,9 +330,9 @@ const RECETTES = [
   {
     id: 8, cat: 'diner', premium: false,
     emoji: '🐠', nom: 'Papillote saumon-légumes verts',
-    temps: '25 min', calories: 350, diff: 'Facile',
+    temps: '20 min', calories: 350, diff: 'Facile',
     tags: ['sg', 'sl'],
-    benefices: 'La cuisson en papillote préserve tous les nutriments et oméga-3. Les brocolis apportent la vitamine C qui améliore l\'absorption du fer.',
+    benefices: 'La cuisson en papillote courte préserve les oméga-3 (qui s\'oxydent au-delà de 15 min de cuisson). Les brocolis apportent la vitamine C qui améliore l\'absorption du fer.',
     ingredients: [
       '150g saumon',
       '100g brocolis',
@@ -348,7 +348,7 @@ const RECETTES = [
       'Découpez une feuille de papier cuisson assez grande.',
       'Disposez les légumes au centre, posez le saumon dessus.',
       'Arrosez d\'huile d\'olive et de jus de citron, ajoutez les herbes.',
-      'Fermez la papillote hermétiquement et enfournez 20 min.'
+      'Fermez la papillote hermétiquement et enfournez 12 à 15 min (pas plus, pour préserver les oméga-3).'
     ]
   },
   {
@@ -943,11 +943,11 @@ const RECETTES = [
   // DÎNERS supplémentaires
   // =============================================
   {
-    id: 33, cat: 'diner', premium: false,
-    emoji: '🎃', nom: 'Velouté potimarron-chocolat-cannelle',
+    id: 33, cat: 'snack', premium: false,
+    emoji: '🧁', nom: 'Muffins potimarron-chocolat-cannelle',
     temps: '35 min', calories: 290, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le potimarron est riche en bêta-carotène et en potassium. Le chocolat noir ajoute des flavonoïdes anti-inflammatoires. Un dîner doux et réconfortant pour favoriser le sommeil.',
+    benefices: 'Le potimarron est riche en bêta-carotène et en potassium. Le chocolat noir ajoute des flavonoïdes anti-inflammatoires. Un en-cas réconfortant et naturellement sucré.',
     ingredients: [
       '190g purée de potimarron (cuit)',
       '60g miel',
@@ -964,7 +964,7 @@ const RECETTES = [
       'Préchauffez le four à 180°C.',
       'Mélangez les ingrédients secs : fécule, farine, cannelle, chocolat haché et poudre d\'amande.',
       'Dans un autre bol, mélangez la purée froide, le miel, le lait et l\'huile.',
-      'Combinez les deux préparations. Versez dans des moules huilés.',
+      'Combinez les deux préparations. Versez dans des moules à muffins huilés.',
       'Saupoudrez de graines de courge. Cuisez 25 min à 180°C.',
       'Vérifiez la cuisson avec la lame d\'un couteau — doit ressortir sèche.'
     ]
@@ -5052,6 +5052,7 @@ function initApp() {
   renderAgenda();
   loadProfil();
   setJournalDate();
+  updateRecipeCounters();
 
   // Recette du jour — change chaque jour, cliquable directement
   const free = RECETTES.filter(r => !r.premium);
@@ -8688,4 +8689,15 @@ function renderInsightRecommendations(insights) {
       '</div>'
     ).join('') +
   '</div>';
+}
+
+// === COMPTEUR RECETTES UNIFIÉ ===
+function updateRecipeCounters() {
+  const total = RECETTES.length;
+  const free = RECETTES.filter(r => !r.premium).length;
+  const premium = total - free;
+  
+  document.querySelectorAll('[data-recipe-count="total"]').forEach(el => el.textContent = total);
+  document.querySelectorAll('[data-recipe-count="free"]').forEach(el => el.textContent = free);
+  document.querySelectorAll('[data-recipe-count="premium"]').forEach(el => el.textContent = premium);
 }

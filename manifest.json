@@ -1,15 +1,19 @@
 {
-  "name": "Flōra — Bien-être anti-inflammatoire",
+  "name": "Flōra",
   "short_name": "Flōra",
-  "description": "Journal de bien-être, recettes anti-inflammatoires et générateur de menus personnalisés",
+  "description": "Bien-être personnalisé : nutrition anti-inflammatoire, journal de symptômes et accompagnement SJSR / TDAH.",
+  "id": "/Fl-ra/",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
-  "orientation": "portrait-primary",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "orientation": "portrait",
+  "background_color": "#fdf6f0",
   "theme_color": "#2d4a3e",
-  "background_color": "#f7f3ee",
   "lang": "fr",
-  "categories": ["health", "food", "lifestyle"],
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "food"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon.svg",
@@ -22,20 +26,6 @@
       "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
-    }
-  ],
-  "shortcuts": [
-    {
-      "name": "Journal du jour",
-      "short_name": "Journal",
-      "url": "./index.html#journal",
-      "icons": [{ "src": "icon.svg", "sizes": "any" }]
-    },
-    {
-      "name": "Recettes",
-      "short_name": "Recettes",
-      "url": "./index.html#recettes",
-      "icons": [{ "src": "icon.svg", "sizes": "any" }]
     }
   ]
 }
