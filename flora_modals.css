@@ -1,0 +1,558 @@
+/* ============================
+   FLŌRA — Compléments / Interactions médicamenteuses
+   À ajouter à la fin de style.css
+   ============================ */
+
+/* === MODAL OVERLAY GÉNÉRIQUE === */
+.flora-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 45, 38, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: floraModalFade 0.2s ease;
+}
+
+@keyframes floraModalFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.flora-modal-content {
+  background: #fdf6f0;
+  border-radius: 24px 24px 0 0;
+  width: 100%;
+  max-width: 540px;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 -8px 32px rgba(45, 74, 62, 0.25);
+  animation: floraModalSlide 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (min-width: 600px) {
+  .flora-modal-overlay { align-items: center; }
+  .flora-modal-content { border-radius: 24px; max-height: 88vh; }
+}
+
+@keyframes floraModalSlide {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.flora-modal-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 22px 16px;
+  border-bottom: 1px solid rgba(160, 115, 92, 0.12);
+  flex-shrink: 0;
+}
+
+.flora-modal-overline {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #a0735c;
+  margin-bottom: 4px;
+}
+
+.flora-modal-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.flora-modal-close {
+  background: rgba(160, 115, 92, 0.1);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: #4a5e54;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: auto;
+  transition: background 0.15s;
+}
+
+.flora-modal-close:hover { background: rgba(160, 115, 92, 0.2); }
+.flora-modal-close:focus-visible {
+  outline: 2px solid #2d4a3e;
+  outline-offset: 2px;
+}
+
+.flora-modal-body {
+  padding: 18px 22px 22px;
+  overflow-y: auto;
+  flex: 1;
+  -webkit-overflow-scrolling: touch;
+}
+
+.flora-modal-footer {
+  padding: 14px 18px 18px;
+  border-top: 1px solid rgba(160, 115, 92, 0.12);
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  background: #fdf6f0;
+}
+
+.flora-btn-primary,
+.flora-btn-secondary,
+.flora-btn-danger {
+  flex: 1;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  min-height: 44px;
+  transition: all 0.15s;
+}
+
+.flora-btn-primary {
+  background: #2d4a3e;
+  color: #fff;
+}
+.flora-btn-primary:hover { background: #1e2d26; }
+
+.flora-btn-secondary {
+  background: rgba(160, 115, 92, 0.1);
+  color: #4a5e54;
+}
+.flora-btn-secondary:hover { background: rgba(160, 115, 92, 0.18); }
+
+.flora-btn-danger {
+  background: #c0614a;
+  color: #fff;
+}
+.flora-btn-danger:hover { background: #9e4a36; }
+
+.flora-btn-primary:focus-visible,
+.flora-btn-secondary:focus-visible,
+.flora-btn-danger:focus-visible {
+  outline: 2px solid #2d4a3e;
+  outline-offset: 2px;
+}
+
+/* === MODAL — Saisie médicaments === */
+.meds-modal { max-width: 540px; }
+
+.meds-intro {
+  font-size: 0.92rem;
+  color: #4a5e54;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+
+.meds-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.meds-checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  background: #fff;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border: 1.5px solid transparent;
+}
+
+.meds-checkbox-row:hover { background: #f7f3ee; }
+
+.meds-checkbox-row input[type="checkbox"] {
+  margin-top: 3px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+  accent-color: #2d4a3e;
+}
+
+.meds-checkbox-row:has(input:checked) {
+  background: #c8e6d4;
+  border-color: #3d6b58;
+}
+
+.meds-checkbox-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.meds-checkbox-label {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: #1e2d26;
+  line-height: 1.3;
+}
+
+.meds-checkbox-sub {
+  font-size: 0.78rem;
+  color: #6c8278;
+  line-height: 1.35;
+}
+
+.meds-checkbox-none .meds-checkbox-label {
+  color: #2d4a3e;
+}
+
+.meds-divider {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #6c8278;
+  font-style: italic;
+  padding: 8px 0;
+  letter-spacing: 0.03em;
+}
+
+.meds-disclaimer {
+  font-size: 0.82rem;
+  color: #6c8278;
+  line-height: 1.5;
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  background: rgba(212, 168, 67, 0.1);
+  border-left: 3px solid #d4a843;
+  border-radius: 8px;
+}
+
+/* === MODAL — Avertissement interaction === */
+.warning-modal { border-top: 4px solid #d4a843; }
+.warning-danger { border-top-color: #c0614a; }
+
+.warning-header {
+  background: linear-gradient(135deg, rgba(212, 168, 67, 0.1), transparent);
+}
+
+.warning-danger .warning-header {
+  background: linear-gradient(135deg, rgba(192, 97, 74, 0.1), transparent);
+}
+
+.warning-icon-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  background: rgba(212, 168, 67, 0.18);
+  flex-shrink: 0;
+}
+
+.warning-danger .warning-icon-circle {
+  background: rgba(192, 97, 74, 0.18);
+}
+
+.overline-danger { color: #c0614a !important; }
+.overline-caution { color: #b88820 !important; }
+
+.warning-intro {
+  font-size: 0.94rem;
+  color: #4a5e54;
+  line-height: 1.55;
+  margin: 0 0 16px;
+}
+
+.warning-meds-block {
+  background: #fff;
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.warning-meds-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #6c8278;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+}
+
+.warning-meds-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.warning-meds-list li {
+  font-size: 0.9rem;
+  color: #1e2d26;
+  line-height: 1.4;
+}
+
+.warn-meds-sub {
+  font-size: 0.8rem;
+  color: #6c8278;
+  font-style: italic;
+}
+
+.warning-danger-box {
+  background: rgba(192, 97, 74, 0.08);
+  border-left: 4px solid #c0614a;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.warning-danger-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #c0614a;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+.warning-danger-box p {
+  font-size: 0.9rem;
+  color: #4a3030;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.warning-danger-box p:last-child { margin-bottom: 0; }
+.warning-strong { font-weight: 600; color: #c0614a; }
+
+.warning-caution-box {
+  background: rgba(212, 168, 67, 0.1);
+  border-left: 4px solid #d4a843;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.warning-caution-box p {
+  font-size: 0.9rem;
+  color: #5a4a30;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.warning-disclaimer {
+  font-size: 0.8rem;
+  color: #6c8278;
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* === FICHE COMPLÉMENT === */
+.comp-fiche-modal { max-width: 580px; }
+
+.comp-fiche-header {
+  align-items: center;
+}
+
+.comp-fiche-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.comp-fiche-titles {
+  flex: 1;
+  min-width: 0;
+}
+
+.comp-fiche-preuve {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.comp-fiche-tier {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.comp-fiche-section {
+  margin-bottom: 18px;
+}
+
+.comp-fiche-section:last-child { margin-bottom: 0; }
+
+.comp-fiche-label {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #6c8278;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.comp-fiche-text {
+  font-size: 0.94rem;
+  color: #1e2d26;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.comp-fiche-list {
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.comp-fiche-list li {
+  font-size: 0.88rem;
+  color: #4a5e54;
+  line-height: 1.45;
+}
+
+.comp-fiche-warning-section {
+  background: rgba(212, 168, 67, 0.08);
+  border-left: 3px solid #d4a843;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.comp-fiche-warning-section .comp-fiche-label {
+  color: #b88820;
+}
+
+.comp-fiche-sources {
+  background: #f7f3ee;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.comp-fiche-sources-text {
+  font-size: 0.82rem;
+  color: #6c8278;
+  font-style: italic;
+}
+
+.comp-fiche-disclaimer {
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: rgba(45, 74, 62, 0.06);
+  border-radius: 12px;
+  font-size: 0.85rem;
+  color: #4a5e54;
+  line-height: 1.5;
+}
+
+/* === LISTE COMPLÉMENTS — badges et tier === */
+.comp-tier {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.comp-risk-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.comp-risk-danger {
+  background: rgba(192, 97, 74, 0.15);
+}
+
+.comp-risk-caution {
+  background: rgba(212, 168, 67, 0.18);
+}
+
+/* On force le bouton .comp-card à ressembler à une carte */
+button.comp-card {
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+  border: none;
+  background: #fff;
+  display: block;
+}
+
+button.comp-card:focus-visible {
+  outline: 2px solid #2d4a3e;
+  outline-offset: 2px;
+}
+
+/* === TOAST === */
+.flora-toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: #2d4a3e;
+  color: #fff;
+  padding: 12px 20px;
+  border-radius: 99px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(45, 74, 62, 0.3);
+  z-index: 10000;
+  opacity: 0;
+  transition: all 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  pointer-events: none;
+}
+
+.flora-toast-visible {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* === ACCESSIBILITÉ — REDUCED MOTION === */
+@media (prefers-reduced-motion: reduce) {
+  .flora-modal-overlay,
+  .flora-modal-content,
+  .flora-toast {
+    animation: none !important;
+    transition: none !important;
+  }
+}
