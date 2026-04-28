@@ -5102,6 +5102,7 @@ function showPage(page) {
     switchGenTab('semaine', document.querySelector('#page-generateur .jtab'));
   }
   if (page === 'placard')    initPlacard();
+  if (page === 'insights')   renderInsights();
 }
 
 // ============================
@@ -6053,7 +6054,17 @@ function renderJournalStats() {
 
     '<div style="font-size:0.75rem;color:#8a9e96;text-align:center;padding:8px 0;">' +
       n + ' entrée' + (n > 1 ? 's' : '') + ' sur ' + days + ' jours' +
-    '</div>';
+    '</div>' +
+    
+    // CTA vers la page Insights complète
+    '<button onclick="showPage(\'insights\')" class="insights-cta-btn">' +
+      '<span style="font-size:1.4rem;">📊</span>' +
+      '<span style="flex:1;text-align:left;padding:0 12px;">' +
+        '<span style="display:block;font-weight:600;font-size:0.95rem;color:#2d4a3e;">Voir mes insights complets</span>' +
+        '<span style="display:block;font-size:0.78rem;color:#4a5e54;margin-top:2px;">Corrélations alimentation ↔ symptômes</span>' +
+      '</span>' +
+      '<span style="font-size:1.2rem;color:#a0735c;">›</span>' +
+    '</button>';
 }
 
 function setJStatsPeriod(p) {
@@ -8192,4 +8203,489 @@ function shouldShowCycle() {
   
   // 2. Par défaut : afficher (sera ajouté un toggle dans le profil)
   return true;
+}
+
+// ============================================================
+// PAGE INSIGHTS — Corrélations alimentation ↔ symptômes
+// ============================================================
+
+let _insightsPeriod = 30; // jours
+
+function renderInsights() {
+  const container = document.getElementById('insights-container');
+  if (!container) return;
+  
+  // Récolter les entrées sur la période
+  const periodMs = _insightsPeriod * 24 * 60 * 60 * 1000;
+  const cutoff = Date.now() - periodMs;
+  const entries = Object.entries(journal)
+    .filter(([dk, e]) => e && new Date(dk).getTime() >= cutoff)
+    .sort((a, b) => a[0].localeCompare(b[0]));
+  
+  // Sélecteur de période
+  const periodSelector = '<div class="insights-period-selector">' +
+    [7, 14, 30, 90].map(d => 
+      '<button class="insights-period-btn ' + (_insightsPeriod === d ? 'active' : '') + '" onclick="setInsightsPeriod(' + d + ')">' + 
+      d + ' jours</button>'
+    ).join('') +
+  '</div>';
+  
+  // Si pas assez de données
+  if (entries.length < 3) {
+    container.innerHTML = periodSelector + 
+      '<div class="insights-empty">' +
+        '<div class="insights-empty-icon">📊</div>' +
+        '<div class="insights-empty-title">Pas encore assez de données</div>' +
+        '<div class="insights-empty-sub">' +
+          'Continuez à remplir votre journal pendant ' + (3 - entries.length) + ' jour' + (3 - entries.length > 1 ? 's' : '') + ' supplémentaire' + (3 - entries.length > 1 ? 's' : '') + ' ' +
+          'pour commencer à voir des corrélations entre vos habitudes et vos symptômes.' +
+        '</div>' +
+        '<button class="btn-primary" style="margin-top:16px;" onclick="showPage(\'journal\')">Ouvrir mon journal →</button>' +
+      '</div>';
+    return;
+  }
+  
+  // Générer les insights
+  const insights = computeInsights(entries);
+  
+  let html = periodSelector;
+  
+  // INTRO résumé
+  html += '<div class="insights-intro">' +
+    '<div class="insights-intro-icon">🌿</div>' +
+    '<div>' +
+      '<div class="insights-intro-title">Vue sur ' + entries.length + ' jour' + (entries.length > 1 ? 's' : '') + '</div>' +
+      '<div class="insights-intro-sub">Analyse de vos habitudes et de vos ressentis</div>' +
+    '</div>' +
+  '</div>';
+  
+  // SECTION 1 : Patterns sommeil
+  html += renderInsightSection('🌙 Sommeil', insights.sleep);
+  
+  // SECTION 2 : Hydratation & boissons
+  html += renderInsightSection('💧 Hydratation & boissons', insights.drinks);
+  
+  // SECTION 3 : Symptômes les plus fréquents
+  html += renderInsightSection('🩺 Symptômes', insights.symptoms);
+  
+  // SECTION 4 : Corrélations alimentation
+  html += renderInsightSection('🍽️ Alimentation', insights.food);
+  
+  // SECTION 5 : Cycle (si données)
+  if (insights.cycle && insights.cycle.length > 0) {
+    html += renderInsightSection('🌸 Cycle menstruel', insights.cycle);
+  }
+  
+  // SECTION 6 : Recommandations
+  html += renderInsightRecommendations(insights);
+  
+  // Disclaimer
+  html += '<div class="insights-disclaimer">' +
+    '<strong>Important.</strong> Ces analyses sont des observations statistiques sur vos données personnelles, ' +
+    'pas un diagnostic médical. Une corrélation n\'implique pas une causalité. Discutez de vos observations ' +
+    'avec votre médecin pour les interpréter correctement.' +
+  '</div>';
+  
+  container.innerHTML = html;
+}
+
+function setInsightsPeriod(days) {
+  _insightsPeriod = days;
+  renderInsights();
+}
+
+// === Calcul des insights ===
+function computeInsights(entries) {
+  const result = {
+    sleep: [],
+    drinks: [],
+    symptoms: [],
+    food: [],
+    cycle: []
+  };
+  
+  // ====== SOMMEIL ======
+  const sleepDurs = entries.map(([_, e]) => (e.duree || 0)).filter(d => d > 0);
+  if (sleepDurs.length > 0) {
+    const avg = sleepDurs.reduce((a,b) => a+b, 0) / sleepDurs.length;
+    const goodNights = sleepDurs.filter(d => d >= 7).length;
+    const pct = Math.round((goodNights / sleepDurs.length) * 100);
+    
+    result.sleep.push({
+      level: avg >= 7 ? 'good' : avg >= 6 ? 'caution' : 'warning',
+      title: 'Durée moyenne : ' + avg.toFixed(1) + 'h par nuit',
+      detail: pct + '% de vos nuits sont supérieures ou égales à 7h.' +
+              (avg < 7 ? ' L\'objectif recommandé pour la récupération est de 7-9h.' : '')
+    });
+    
+    // Qualité moyenne
+    const qualites = entries.map(([_, e]) => e.qualite || 0).filter(q => q > 0);
+    if (qualites.length > 0) {
+      const avgQ = qualites.reduce((a,b) => a+b, 0) / qualites.length;
+      result.sleep.push({
+        level: avgQ >= 4 ? 'good' : avgQ >= 3 ? 'caution' : 'warning',
+        title: 'Qualité moyenne : ' + avgQ.toFixed(1) + ' / 5 ⭐',
+        detail: avgQ >= 4 
+          ? 'Excellente perception globale de votre sommeil.' 
+          : avgQ >= 3 
+            ? 'Sommeil correct, peut-être perfectible.'
+            : 'Votre perception du sommeil est faible — un signal à surveiller.'
+      });
+    }
+    
+    // SJSR moyen
+    const sjsrs = entries.map(([_, e]) => e.sjsr || 0).filter(s => s > 0);
+    if (sjsrs.length >= 3) {
+      const avgS = sjsrs.reduce((a,b) => a+b, 0) / sjsrs.length;
+      result.sleep.push({
+        level: avgS <= 2 ? 'good' : avgS <= 3 ? 'caution' : 'warning',
+        title: 'SJSR moyen : ' + avgS.toFixed(1) + ' / 5',
+        detail: avgS <= 2 
+          ? 'Symptômes SJSR globalement bien contrôlés.' 
+          : avgS <= 3 
+            ? 'Symptômes SJSR modérés, identifiez les déclencheurs.'
+            : 'Symptômes SJSR significatifs — à discuter avec votre médecin.'
+      });
+    }
+  }
+  
+  // ====== HYDRATATION ======
+  const eauVals = entries.map(([_, e]) => e.eau).filter(e => typeof e === 'number');
+  if (eauVals.length > 0) {
+    const avgEau = eauVals.reduce((a,b) => a+b, 0) / eauVals.length;
+    result.drinks.push({
+      level: avgEau >= 6 ? 'good' : avgEau >= 4 ? 'caution' : 'warning',
+      title: 'Hydratation moyenne : ' + avgEau.toFixed(1) + ' verres/jour',
+      detail: avgEau >= 6 
+        ? 'Bonne hydratation. Continuez !' 
+        : avgEau >= 4 
+          ? 'Hydratation correcte, vous pourriez augmenter à 6-8 verres pour réduire les crampes nocturnes.'
+          : 'Hydratation faible. La déshydratation aggrave les crampes nocturnes et le SJSR. Visez 8 verres/jour.'
+    });
+  }
+  
+  // ====== CAFÉINE ======
+  const cafEntries = entries.filter(([_, e]) => e.cafeine && e.cafeine.tasses > 0);
+  if (cafEntries.length >= 3) {
+    const avgTasses = cafEntries.reduce((a, [_, e]) => a + e.cafeine.tasses, 0) / cafEntries.length;
+    
+    // Nombre de jours avec caféine après 14h
+    const cafeineLate = cafEntries.filter(([_, e]) => {
+      if (!e.cafeine.heureDerniere) return false;
+      const [h] = e.cafeine.heureDerniere.split(':').map(Number);
+      return h >= 14;
+    });
+    
+    if (cafeineLate.length > 0) {
+      const pctLate = Math.round((cafeineLate.length / cafEntries.length) * 100);
+      
+      // Comparer le sommeil avec / sans caféine tardive
+      const sleepWithLate = cafeineLate.map(([_, e]) => e.duree || 0).filter(d => d > 0);
+      const sleepWithoutLate = entries
+        .filter(([_, e]) => {
+          if (!e.cafeine || e.cafeine.tasses === 0) return true;
+          if (!e.cafeine.heureDerniere) return true;
+          const [h] = e.cafeine.heureDerniere.split(':').map(Number);
+          return h < 14;
+        })
+        .map(([_, e]) => e.duree || 0)
+        .filter(d => d > 0);
+      
+      let cafComparison = '';
+      if (sleepWithLate.length >= 2 && sleepWithoutLate.length >= 2) {
+        const avgWith = sleepWithLate.reduce((a,b) => a+b, 0) / sleepWithLate.length;
+        const avgWithout = sleepWithoutLate.reduce((a,b) => a+b, 0) / sleepWithoutLate.length;
+        const diff = avgWithout - avgWith;
+        if (Math.abs(diff) >= 0.3) {
+          cafComparison = ' Vos nuits sont en moyenne <strong>' + Math.abs(diff).toFixed(1) + 'h plus ' + 
+            (diff > 0 ? 'longues' : 'courtes') + '</strong> les jours sans caféine après 14h.';
+        }
+      }
+      
+      result.drinks.push({
+        level: pctLate > 50 ? 'warning' : pctLate > 25 ? 'caution' : 'good',
+        title: '☕ Caféine après 14h : ' + pctLate + '% des jours',
+        detail: 'La caféine a une demi-vie de 5-6h. Une prise après 14h peut perturber l\'endormissement et aggraver le SJSR.' + cafComparison
+      });
+    } else {
+      result.drinks.push({
+        level: 'good',
+        title: '☕ Caféine : ' + avgTasses.toFixed(1) + ' tasse' + (avgTasses > 1 ? 's' : '') + ' en moyenne',
+        detail: 'Bonne hygiène — toujours avant 14h. C\'est idéal pour préserver le sommeil.'
+      });
+    }
+  }
+  
+  // ====== ALCOOL ======
+  const alcoolEntries = entries.filter(([_, e]) => typeof e.alcool === 'number' && e.alcool > 0);
+  if (alcoolEntries.length >= 2) {
+    const totalAlcool = alcoolEntries.reduce((a, [_, e]) => a + e.alcool, 0);
+    const avgAlcool = totalAlcool / entries.length;
+    const pctJoursAlcool = Math.round((alcoolEntries.length / entries.length) * 100);
+    
+    // Comparer le SJSR avec / sans alcool
+    const sjsrWith = alcoolEntries.map(([_, e]) => e.sjsr || 0).filter(s => s > 0);
+    const sjsrWithout = entries
+      .filter(([_, e]) => !e.alcool || e.alcool === 0)
+      .map(([_, e]) => e.sjsr || 0)
+      .filter(s => s > 0);
+    
+    let alcoolComparison = '';
+    if (sjsrWith.length >= 2 && sjsrWithout.length >= 2) {
+      const avgWith = sjsrWith.reduce((a,b) => a+b, 0) / sjsrWith.length;
+      const avgWithout = sjsrWithout.reduce((a,b) => a+b, 0) / sjsrWithout.length;
+      const diff = avgWith - avgWithout;
+      if (Math.abs(diff) >= 0.3) {
+        alcoolComparison = ' Votre SJSR moyen est <strong>' + Math.abs(diff).toFixed(1) + ' point' + 
+          (Math.abs(diff) > 1 ? 's' : '') + ' plus ' + (diff > 0 ? 'élevé' : 'bas') + 
+          '</strong> les jours avec alcool.';
+      }
+    }
+    
+    result.drinks.push({
+      level: pctJoursAlcool > 50 ? 'warning' : pctJoursAlcool > 25 ? 'caution' : 'good',
+      title: '🍷 Alcool : ' + pctJoursAlcool + '% des jours',
+      detail: 'L\'alcool fragmente le sommeil et peut aggraver le SJSR la nuit même.' + alcoolComparison
+    });
+  }
+  
+  // ====== SYMPTÔMES ======
+  const allSymptoms = {};
+  entries.forEach(([_, e]) => {
+    if (e.symptomes && Array.isArray(e.symptomes)) {
+      e.symptomes.forEach(s => {
+        allSymptoms[s] = (allSymptoms[s] || 0) + 1;
+      });
+    }
+  });
+  
+  const sortedSymptoms = Object.entries(allSymptoms)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5);
+  
+  if (sortedSymptoms.length > 0) {
+    const labels = {
+      'fatigue': 'Fatigue',
+      'anxiete': 'Anxiété',
+      'brouillard': 'Brouillard mental',
+      'maux-tete': 'Maux de tête',
+      'crampes': 'Crampes',
+      'fourmillements': 'Fourmillements',
+      'jambes-lourdes': 'Jambes lourdes',
+      'douleurs-articulaires': 'Douleurs articulaires',
+      'ballonnements': 'Ballonnements',
+      'rgo': 'Reflux / RGO',
+      'transit': 'Transit perturbé',
+      'irritabilite': 'Irritabilité',
+      'concentration': 'Concentration ↓',
+      'surcharge-sensorielle': 'Surcharge sensorielle',
+      'hyperfocus': 'Hyperfocus',
+      'procrastination': 'Procrastination',
+      'bouffees-chaleur': 'Bouffées de chaleur',
+      'secheresse': 'Sécheresse'
+    };
+    
+    sortedSymptoms.forEach(([symp, count]) => {
+      const pct = Math.round((count / entries.length) * 100);
+      result.symptoms.push({
+        level: pct > 50 ? 'warning' : pct > 25 ? 'caution' : 'good',
+        title: (labels[symp] || symp) + ' : ' + count + ' jour' + (count > 1 ? 's' : '') + ' (' + pct + '%)',
+        detail: pct > 50 
+          ? 'Symptôme très fréquent — à discuter avec votre médecin.'
+          : pct > 25 
+            ? 'Présent régulièrement — identifiez les déclencheurs possibles.'
+            : 'Présent occasionnellement.'
+      });
+    });
+  }
+  
+  // ====== ALIMENTATION (corrélation agenda ↔ symptômes/SJSR) ======
+  // Pour chaque recette consommée, on regarde le SJSR/symptômes du jour suivant
+  const foodCorrelations = {};
+  
+  entries.forEach(([dk, e]) => {
+    const dayAgenda = agenda[dk];
+    if (!dayAgenda) return;
+    
+    const sjsrScore = e.sjsr || 0;
+    
+    Object.values(dayAgenda).forEach(recId => {
+      if (!recId) return;
+      const recette = RECETTES.find(r => r.id === recId);
+      if (!recette) return;
+      
+      // Tags nutritionnels
+      const tags = [];
+      if (recette.nutri && recette.nutri.fer) tags.push('fer');
+      if (recette.nutri && recette.nutri.omega3) tags.push('omega3');
+      if (recette.nutri && recette.nutri.magnesium) tags.push('magnesium');
+      
+      tags.forEach(tag => {
+        if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+        foodCorrelations[tag].sjsrSum += sjsrScore;
+        foodCorrelations[tag].count += 1;
+      });
+    });
+  });
+  
+  const tagLabels = {
+    'fer': '🩸 Recettes riches en fer',
+    'omega3': '🐟 Recettes riches en oméga-3',
+    'magnesium': '⚡ Recettes riches en magnésium'
+  };
+  
+  Object.entries(foodCorrelations).forEach(([tag, data]) => {
+    if (data.count < 3) return; // pas assez de données
+    
+    const avgSjsr = data.sjsrSum / data.count;
+    const overallSjsr = entries.reduce((a, [_, e]) => a + (e.sjsr || 0), 0) / entries.length;
+    const diff = overallSjsr - avgSjsr;
+    
+    if (Math.abs(diff) >= 0.5) {
+      result.food.push({
+        level: diff > 0 ? 'good' : 'caution',
+        title: tagLabels[tag] + ' : ' + data.count + ' fois',
+        detail: 'SJSR moyen ces jours-là : <strong>' + avgSjsr.toFixed(1) + '/5</strong> ' +
+                '(vs <strong>' + overallSjsr.toFixed(1) + '/5</strong> en moyenne globale). ' +
+                (diff > 0 
+                  ? '✅ Tendance positive — continuez sur cette voie.' 
+                  : '⚠️ Tendance moins favorable — peut-être un autre facteur en cause.')
+      });
+    }
+  });
+  
+  if (result.food.length === 0) {
+    result.food.push({
+      level: 'info',
+      title: 'Pas encore assez de données',
+      detail: 'Pour des corrélations alimentation ↔ symptômes, remplissez votre agenda alimentaire chaque jour. ' +
+              'Au bout de 2-3 semaines, des patterns apparaîtront.'
+    });
+  }
+  
+  // ====== CYCLE MENSTRUEL ======
+  const cycleEntries = entries.filter(([_, e]) => e.cycleMenstruel && e.cycleMenstruel.phase);
+  if (cycleEntries.length >= 3) {
+    const phases = ['regles', 'folliculaire', 'ovulation', 'luteale'];
+    const phaseLabels = {
+      'regles': '🌹 Règles',
+      'folliculaire': '🌱 Phase folliculaire',
+      'ovulation': '✨ Ovulation',
+      'luteale': '🌙 Phase lutéale'
+    };
+    
+    phases.forEach(phase => {
+      const phaseDays = cycleEntries.filter(([_, e]) => e.cycleMenstruel.phase === phase);
+      if (phaseDays.length < 2) return;
+      
+      const avgSjsr = phaseDays.reduce((a, [_, e]) => a + (e.sjsr || 0), 0) / phaseDays.length;
+      const overallSjsr = entries.reduce((a, [_, e]) => a + (e.sjsr || 0), 0) / entries.length;
+      const diff = avgSjsr - overallSjsr;
+      
+      if (Math.abs(diff) >= 0.4) {
+        result.cycle.push({
+          level: diff > 0 ? 'caution' : 'good',
+          title: phaseLabels[phase] + ' : SJSR à ' + avgSjsr.toFixed(1) + '/5',
+          detail: diff > 0 
+            ? 'Vos symptômes semblent plus présents pendant cette phase (' + Math.abs(diff).toFixed(1) + ' point de plus). ' +
+              'C\'est cohérent avec le rôle des hormones sur le SJSR.'
+            : 'Vos symptômes sont mieux contrôlés pendant cette phase.'
+        });
+      }
+    });
+  }
+  
+  return result;
+}
+
+function renderInsightSection(title, insights) {
+  if (!insights || insights.length === 0) return '';
+  
+  return '<div class="insights-section">' +
+    '<div class="insights-section-title">' + title + '</div>' +
+    insights.map(i => 
+      '<div class="insight-card insight-' + i.level + '">' +
+        '<div class="insight-card-title">' + i.title + '</div>' +
+        '<div class="insight-card-detail">' + i.detail + '</div>' +
+      '</div>'
+    ).join('') +
+  '</div>';
+}
+
+function renderInsightRecommendations(insights) {
+  const recos = [];
+  
+  // Recommandations basées sur les patterns détectés
+  const allInsights = [...insights.sleep, ...insights.drinks, ...insights.symptoms, ...insights.food];
+  const warnings = allInsights.filter(i => i.level === 'warning');
+  
+  if (warnings.length === 0) {
+    return '<div class="insights-section">' +
+      '<div class="insights-section-title">💡 Recommandations</div>' +
+      '<div class="insight-card insight-good">' +
+        '<div class="insight-card-title">Vous êtes sur la bonne voie</div>' +
+        '<div class="insight-card-detail">Aucun signal d\'alerte majeur détecté sur cette période. Continuez vos bonnes habitudes !</div>' +
+      '</div>' +
+    '</div>';
+  }
+  
+  // Logique de recommandations contextuelles
+  const hasWarningCafeine = warnings.some(w => w.title.includes('Caféine'));
+  const hasWarningAlcool = warnings.some(w => w.title.includes('Alcool'));
+  const hasWarningHydratation = warnings.some(w => w.title.includes('Hydratation'));
+  const hasWarningSleep = warnings.some(w => w.title.includes('Durée'));
+  const hasFrequentCrampes = insights.symptoms.some(s => s.title.toLowerCase().includes('crampes') && s.level === 'warning');
+  
+  if (hasWarningCafeine) {
+    recos.push({
+      icon: '☕',
+      title: 'Stopper la caféine avant 14h',
+      detail: 'Test recommandé : 2 semaines sans café après 14h. Comparez avec vos données précédentes.'
+    });
+  }
+  
+  if (hasWarningAlcool) {
+    recos.push({
+      icon: '🍷',
+      title: 'Réduire ou décaler l\'alcool',
+      detail: 'Évitez l\'alcool 3-4h avant le coucher. Privilégiez les boissons sans alcool en semaine.'
+    });
+  }
+  
+  if (hasWarningHydratation || hasFrequentCrampes) {
+    recos.push({
+      icon: '💧',
+      title: 'Augmenter l\'hydratation',
+      detail: 'Visez 6-8 verres d\'eau/jour. Une déshydratation chronique peut aggraver crampes et SJSR.'
+    });
+  }
+  
+  if (hasWarningSleep) {
+    recos.push({
+      icon: '🌙',
+      title: 'Travailler l\'hygiène du sommeil',
+      detail: 'Couchez-vous à heures régulières, pas d\'écrans 1h avant. Visez 7-9h.'
+    });
+  }
+  
+  if (recos.length === 0) {
+    recos.push({
+      icon: '🩺',
+      title: 'Discuter avec votre médecin',
+      detail: 'Plusieurs signaux d\'alerte détectés. Partagez ces données lors de votre prochaine consultation.'
+    });
+  }
+  
+  return '<div class="insights-section">' +
+    '<div class="insights-section-title">💡 Recommandations personnalisées</div>' +
+    recos.map(r => 
+      '<div class="insight-recommendation">' +
+        '<div class="insight-reco-icon">' + r.icon + '</div>' +
+        '<div>' +
+          '<div class="insight-reco-title">' + r.title + '</div>' +
+          '<div class="insight-reco-detail">' + r.detail + '</div>' +
+        '</div>' +
+      '</div>'
+    ).join('') +
+  '</div>';
 }

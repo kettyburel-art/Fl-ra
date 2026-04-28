@@ -234,6 +234,15 @@
             </div>
             <div class="card-arrow">→</div>
           </div>
+
+          <div class="card card-insights" onclick="showPage('insights')">
+            <div class="card-icon">📊</div>
+            <div class="card-body">
+              <div class="card-title">Mes insights</div>
+              <div class="card-sub" id="insights-card-sub">Corrélations & patterns santé</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
         </div>
 
         <!-- Conseil SJSR rotatif -->
@@ -285,6 +294,20 @@
             <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">📄 Exporter PDF</button>
           </div>
           <div id="historique-list"></div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           PAGE INSIGHTS — Corrélations & analyses
+           ============================================ -->
+      <section id="page-insights" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <h2>Mes insights</h2>
+        </div>
+        
+        <div id="insights-container">
+          <!-- Rempli dynamiquement par renderInsights() -->
         </div>
       </section>
 
@@ -540,6 +563,23 @@
             <input type="checkbox" id="p-sv" class="toggle-input" />
             <span class="toggle-slider"></span>
           </label>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-title">Suivi santé</div>
+          <label class="toggle-row">
+            <span>Suivre mon cycle menstruel</span>
+            <input type="checkbox" id="p-cycle" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+          <button class="profil-action-btn" onclick="openMedicationsEditFromProfile()" style="width:100%;text-align:left;background:#fff;border:none;padding:14px 16px;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-top:8px;box-shadow:0 1px 3px rgba(45,74,62,0.06);font-family:inherit;">
+            <span style="font-size:1.4rem;">💊</span>
+            <span style="flex:1;text-align:left;">
+              <span style="display:block;font-size:0.92rem;font-weight:600;color:#2d4a3e;line-height:1.3;">Mes médicaments</span>
+              <span style="display:block;font-size:0.76rem;color:#6c8278;">Pour les alertes d'interaction avec compléments</span>
+            </span>
+            <span style="font-size:1.2rem;color:#a0735c;">›</span>
+          </button>
         </div>
 
         <div class="settings-group">

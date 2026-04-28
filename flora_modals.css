@@ -822,3 +822,346 @@ button.comp-card:focus-visible {
   color: #4a5e54;
   line-height: 1.4;
 }
+
+/* ============================
+   JOURNAL ENRICHI — Habitudes du jour + Symptômes
+   ============================ */
+
+.habitude-row {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(160, 115, 92, 0.12);
+}
+
+.habitude-row:first-child {
+  margin-top: 4px;
+  padding-top: 0;
+  border-top: none;
+}
+
+.habitude-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* === SYMPTÔMES — Grille de chips === */
+.symptomes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  margin-top: 8px;
+}
+
+@media (min-width: 600px) {
+  .symptomes-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.symptome-chip {
+  background: #f7f3ee;
+  border: 1.5px solid #ede8e0;
+  color: #4a5e54;
+  border-radius: 12px;
+  padding: 9px 10px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  line-height: 1.25;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.symptome-chip:hover {
+  background: #ede8e0;
+}
+
+.symptome-chip.active {
+  font-weight: 600;
+}
+
+.symptome-chip:focus-visible {
+  outline: 2px solid #2d4a3e;
+  outline-offset: 2px;
+}
+
+/* === HYDRATATION — Verres d'eau === */
+button[aria-label^="Verre"] {
+  font-family: 'DM Sans', sans-serif;
+}
+
+button[aria-label^="Verre"]:hover {
+  transform: translateY(-1px);
+}
+
+button[aria-label^="Verre"]:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .symptome-chip,
+  button[aria-label^="Verre"] {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ============================
+   PAGE INSIGHTS — Corrélations
+   ============================ */
+
+#insights-container {
+  padding-bottom: 100px;
+}
+
+/* === SÉLECTEUR DE PÉRIODE === */
+.insights-period-selector {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 18px;
+  background: #f7f3ee;
+  border-radius: 14px;
+  padding: 4px;
+}
+
+.insights-period-btn {
+  flex: 1;
+  border: none;
+  background: transparent;
+  padding: 10px 8px;
+  border-radius: 11px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #6c8278;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+}
+
+.insights-period-btn:hover {
+  color: #2d4a3e;
+}
+
+.insights-period-btn.active {
+  background: #2d4a3e;
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(45, 74, 62, 0.25);
+}
+
+/* === ÉTAT VIDE === */
+.insights-empty {
+  text-align: center;
+  padding: 40px 24px;
+  background: linear-gradient(135deg, #c8e6d4, #f7f3ee);
+  border-radius: 18px;
+}
+
+.insights-empty-icon {
+  font-size: 3rem;
+  margin-bottom: 14px;
+}
+
+.insights-empty-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 8px;
+}
+
+.insights-empty-sub {
+  font-size: 0.88rem;
+  color: #4a5e54;
+  line-height: 1.5;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+/* === INTRO === */
+.insights-intro {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #c8e6d4, #f0e8db);
+  border-radius: 18px;
+  margin-bottom: 22px;
+}
+
+.insights-intro-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.insights-intro-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 2px;
+}
+
+.insights-intro-sub {
+  font-size: 0.82rem;
+  color: #4a5e54;
+}
+
+/* === SECTIONS === */
+.insights-section {
+  margin-bottom: 26px;
+}
+
+.insights-section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 12px;
+}
+
+/* === CARTES INSIGHT === */
+.insight-card {
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+  border-left: 4px solid #ede8e0;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(45, 74, 62, 0.05);
+}
+
+.insight-card.insight-good {
+  background: rgba(61, 107, 88, 0.06);
+  border-left-color: #3d6b58;
+}
+
+.insight-card.insight-caution {
+  background: rgba(212, 168, 67, 0.07);
+  border-left-color: #d4a843;
+}
+
+.insight-card.insight-warning {
+  background: rgba(192, 97, 74, 0.07);
+  border-left-color: #c0614a;
+}
+
+.insight-card.insight-info {
+  background: rgba(106, 170, 138, 0.06);
+  border-left-color: #6aaa8a;
+}
+
+.insight-card-title {
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: #1e2d26;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.insight-card-detail {
+  font-size: 0.84rem;
+  color: #4a5e54;
+  line-height: 1.5;
+}
+
+.insight-card-detail strong {
+  color: #2d4a3e;
+  font-weight: 700;
+}
+
+/* === RECOMMANDATIONS === */
+.insight-recommendation {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, #fff8e1, #fdf6f0);
+  border-radius: 14px;
+  margin-bottom: 10px;
+  border: 1.5px solid rgba(212, 168, 67, 0.25);
+}
+
+.insight-reco-icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  background: rgba(212, 168, 67, 0.18);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insight-reco-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #5a4a30;
+  margin-bottom: 4px;
+}
+
+.insight-reco-detail {
+  font-size: 0.83rem;
+  color: #6c5e44;
+  line-height: 1.45;
+}
+
+/* === DISCLAIMER === */
+.insights-disclaimer {
+  margin-top: 26px;
+  padding: 14px 16px;
+  background: rgba(45, 74, 62, 0.04);
+  border-radius: 12px;
+  font-size: 0.78rem;
+  color: #6c8278;
+  line-height: 1.55;
+}
+
+.insights-disclaimer strong {
+  color: #4a5e54;
+}
+
+/* === CARTE INSIGHTS HOMEPAGE === */
+.card-insights {
+  background: linear-gradient(135deg, #fff8e1, #f0e8db) !important;
+}
+
+.card-insights .card-icon {
+  background: rgba(212, 168, 67, 0.18);
+  color: #b88820;
+}
+
+/* === CTA INSIGHTS DEPUIS STATS === */
+.insights-cta-btn {
+  width: 100%;
+  margin-top: 16px;
+  padding: 16px 18px;
+  background: linear-gradient(135deg, #fff8e1, #fdf6f0);
+  border: 1.5px solid rgba(212, 168, 67, 0.3);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.2s;
+}
+
+.insights-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(212, 168, 67, 0.2);
+}
+
+.insights-cta-btn:focus-visible {
+  outline: 2px solid #b88820;
+  outline-offset: 2px;
+}
