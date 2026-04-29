@@ -147,6 +147,23 @@
     .slider-douleur-j{width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none}
     .slider-douleur-j::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2)}
     .slider-douleur-j::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#fff;border:2.5px solid #2d4a3e;cursor:pointer}
+
+    /* === DARK MODE OVERRIDES — surcharge des styles injectés === */
+    [data-theme="dark"] .comp-name { color: #f5efe8 !important; }
+    [data-theme="dark"] .comp-benefit { color: #d4ccc0 !important; }
+    [data-theme="dark"] .agenda-period-label,
+    [data-theme="dark"] .drawer-day,
+    [data-theme="dark"] .serenite-drawer-title,
+    [data-theme="dark"] .meal-recipe-name { color: #f5efe8 !important; }
+    [data-theme="dark"] .date-nav-btn,
+    [data-theme="dark"] .journal-date,
+    [data-theme="dark"] .agenda-toggle-btn,
+    [data-theme="dark"] .drawer-close,
+    [data-theme="dark"] .serenite-drawer-close { color: #d4ccc0; }
+    [data-theme="dark"] .agenda-nav-btn { background: #1a201d; color: #f5efe8; }
+    [data-theme="dark"] .date-nav-btn { background: #232a26; border-color: rgba(255,255,255,0.08); }
+    [data-theme="dark"] .drawer-close { background: #1a201d; }
+    [data-theme="dark"] .serenite-drawer-close { background: rgba(255,255,255,0.08); }
   `;
   document.head.appendChild(style);
 })();

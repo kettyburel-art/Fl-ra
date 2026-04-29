@@ -2782,3 +2782,29 @@ button,
   background: var(--white);
   color: var(--text-dark);
 }
+
+/* ================================================================
+   FIX FINAL — Titres en mode sombre
+   var(--green-deep) reste sombre en dark, donc on force les titres
+   à utiliser une couleur claire visible
+   ================================================================ */
+
+[data-theme="dark"] .page-header-inner h2,
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .jblock-title,
+[data-theme="dark"] .card-title {
+  color: #f5efe8 !important;
+}
+
+/* Les sous-titres et textes secondaires */
+[data-theme="dark"] .card-sub,
+[data-theme="dark"] .filter-section-title {
+  color: #d4ccc0 !important;
+}
+
+/* Compteurs, valeurs importantes */
+[data-theme="dark"] .stat-value,
+[data-theme="dark"] .recette-name,
+[data-theme="dark"] .badge-num {
+  color: #f5efe8 !important;
+}

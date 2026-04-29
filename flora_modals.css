@@ -1602,3 +1602,61 @@ button[aria-label^="Verre"]:focus-visible {
 [data-theme="dark"] [style*="border: 1.5px solid #ede8e0"] {
   border-color: rgba(255, 255, 255, 0.08) !important;
 }
+
+/* ================================================================
+   FIX FINAL MODE SOMBRE — Force couleurs claires pour TOUS les titres
+   Solution catch-all en surchargeant TOUTES les variables vertes
+   utilisées comme texte
+   ================================================================ */
+
+/* Titres principaux des sections en page Insights */
+[data-theme="dark"] .insights-section-title,
+[data-theme="dark"] .insights-intro-title,
+[data-theme="dark"] .insights-empty-title,
+[data-theme="dark"] .shopping-empty-title,
+[data-theme="dark"] .data-management-title {
+  color: #f5efe8 !important;
+}
+
+/* Titres compléments */
+[data-theme="dark"] .comp-meds-banner-label,
+[data-theme="dark"] .comp-name,
+[data-theme="dark"] .flora-modal-title,
+[data-theme="dark"] .comp-fiche-text {
+  color: #f5efe8 !important;
+}
+
+/* Sous-titres et descriptions */
+[data-theme="dark"] .insights-intro-sub,
+[data-theme="dark"] .insights-empty-sub,
+[data-theme="dark"] .insight-card-title,
+[data-theme="dark"] .insight-card-detail,
+[data-theme="dark"] .comp-meds-banner-sub,
+[data-theme="dark"] .comp-benefit,
+[data-theme="dark"] .comp-fiche-list li,
+[data-theme="dark"] .data-management-sub,
+[data-theme="dark"] .data-action-label,
+[data-theme="dark"] .data-action-sub {
+  color: #d4ccc0 !important;
+}
+
+/* Cartes insight valeurs importantes (chiffres) */
+[data-theme="dark"] .insight-card-detail strong {
+  color: #f5efe8 !important;
+}
+
+/* Légende compléments */
+[data-theme="dark"] .comp-legend-summary {
+  color: #d4ccc0 !important;
+}
+
+/* Si le titre Sommeil/Hydratation est dans un h3 ou similaire */
+[data-theme="dark"] .insights-section h3,
+[data-theme="dark"] .insights-section h2 {
+  color: #f5efe8 !important;
+}
+
+/* Bouton Configurer reste lisible (texte blanc sur fond vert) */
+[data-theme="dark"] .comp-meds-banner-btn {
+  color: #ffffff !important;
+}
