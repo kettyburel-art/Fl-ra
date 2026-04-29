@@ -2808,3 +2808,21 @@ button,
 [data-theme="dark"] .badge-num {
   color: #f5efe8 !important;
 }
+
+/* ================================================================
+   FIX MODE SOMBRE — Encadré "Conseil" recette
+   ================================================================ */
+
+[data-theme="dark"] .recipe-conseil {
+  background: rgba(212, 168, 67, 0.1);
+  border-color: rgba(232, 185, 79, 0.4);
+  color: #e8d4a8;
+}
+
+[data-theme="dark"] .recipe-conseil strong {
+  color: #f5efe8;
+}
+
+[data-theme="dark"] .recipe-conseil span {
+  color: #d4ccc0;
+}

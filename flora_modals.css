@@ -1660,3 +1660,15 @@ button[aria-label^="Verre"]:focus-visible {
 [data-theme="dark"] .comp-meds-banner-btn {
   color: #ffffff !important;
 }
+
+/* ================================================================
+   FIX FINAL — Modals avec fond clair en dur
+   ================================================================ */
+
+[data-theme="dark"] .flora-modal-content {
+  background: #232a26 !important;
+}
+
+[data-theme="dark"] .flora-modal-footer {
+  background: #232a26 !important;
+}
