@@ -9287,9 +9287,11 @@ function saveRepasLibre() {
     return;
   }
   
+  // === DIAGNOSTIC : afficher le contexte ===
+  const debugInfo = 'dk=' + _repasLibreCtx.dk + ' / slug=' + _repasLibreCtx.slug + ' / ing=' + _repasLibreCtx.ingredients.length;
+  
   if (!_repasLibreCtx.dk || !_repasLibreCtx.slug) {
-    alert('Erreur : date ou repas non défini. Réessayez.');
-    console.error('[Flōra] _repasLibreCtx incomplet:', _repasLibreCtx);
+    alert('🐛 BUG : contexte invalide → ' + debugInfo);
     return;
   }
   
@@ -9307,8 +9309,6 @@ function saveRepasLibre() {
     isLibrary: _repasLibreCtx.saveAsRecipe
   };
   
-  console.log('[Flōra] Saving repas libre:', meal);
-  
   // 1. Sauvegarder le repas custom
   saveCustomMeal(meal);
   
@@ -9317,23 +9317,23 @@ function saveRepasLibre() {
   agenda[dk][slug] = id;
   saveState();
   
-  console.log('[Flōra] Agenda updated:', agenda[dk]);
+  // === DIAGNOSTIC : vérifier la sauvegarde ===
+  const verifAgenda = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
+  const verifMeals = JSON.parse(localStorage.getItem('flora_custom_meals') || '{}');
+  if (!verifAgenda[dk] || verifAgenda[dk][slug] !== id || !verifMeals[id]) {
+    alert('🐛 BUG sauvegarde : agenda[' + dk + '][' + slug + ']=' + (verifAgenda[dk] ? verifAgenda[dk][slug] : 'undefined') + ' / meal=' + (verifMeals[id] ? 'OK' : 'MANQUANT'));
+    return;
+  }
   
-  // 3. Forcer la lecture depuis localStorage pour vérifier
-  try {
-    const verif = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
-    console.log('[Flōra] Verif agenda from localStorage:', verif[dk]);
-  } catch(e) { console.error('[Flōra] Erreur lecture verif:', e); }
-  
-  // 4. Reset le contexte
+  // 3. Reset le contexte
   _repasLibreCtx = { dk: null, slug: null, ingredients: [], nom: '', saveAsRecipe: false };
   
-  // 5. Fermer modal repas libre
+  // 4. Fermer modal repas libre
   const modal = document.getElementById('flora-repas-libre-modal');
   if (modal) modal.remove();
   document.body.style.overflow = '';
   
-  // 6. Toast
+  // 5. Toast
   if (typeof showFloraDataToast === 'function') {
     showFloraDataToast(
       '✨ Repas ajouté',
@@ -9344,16 +9344,28 @@ function saveRepasLibre() {
     );
   }
   
-  // 7. Re-render agenda drawer
+  // 6. FORCER LE RE-RENDER : navigation agenda + ouverture drawer
   _agendaSelectedDay = dk;
+  
+  // Si la page agenda n'est pas active, y aller
+  const agendaPage = document.getElementById('page-agenda');
+  if (agendaPage && agendaPage.classList.contains('hidden')) {
+    showPage('agenda');
+  }
+  
+  // Force le re-render mois + drawer après un délai pour laisser le DOM se stabiliser
   setTimeout(function() {
-    const drawer = document.getElementById('agenda-day-drawer');
-    if (drawer) {
-      drawer.classList.remove('hidden');
-      renderAgendaDayDrawer(dk);
-    }
-    // Aussi re-render le mois pour les pastilles
     if (typeof renderAgendaMonth === 'function') renderAgendaMonth();
+    
+    setTimeout(function() {
+      const drawer = document.getElementById('agenda-day-drawer');
+      if (drawer) {
+        drawer.classList.remove('hidden');
+        if (typeof renderAgendaDayDrawer === 'function') {
+          renderAgendaDayDrawer(dk);
+        }
+      }
+    }, 100);
   }, 200);
 }
 
