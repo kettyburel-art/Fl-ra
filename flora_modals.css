@@ -1672,3 +1672,347 @@ button[aria-label^="Verre"]:focus-visible {
 [data-theme="dark"] .flora-modal-footer {
   background: #232a26 !important;
 }
+
+/* ================================================================
+   REPAS LIBRES — Composer un repas avec ingrédients du placard
+   ================================================================ */
+
+.repas-libre-modal {
+  max-width: 600px;
+}
+
+.repas-libre-section {
+  margin-bottom: 18px;
+}
+
+.repas-libre-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #6c8278;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 8px;
+}
+
+[data-theme="dark"] .repas-libre-label {
+  color: #b8a896 !important;
+}
+
+#repas-libre-nom {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1.5px solid #ede8e0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: 'DM Sans', sans-serif;
+  background: #fff;
+  color: #1e2d26;
+}
+
+#repas-libre-nom:focus {
+  outline: none;
+  border-color: #2d4a3e;
+}
+
+[data-theme="dark"] #repas-libre-nom {
+  background: #1a201d;
+  border-color: rgba(255,255,255,0.1);
+  color: #f5efe8;
+}
+
+/* === Sélection actuelle === */
+.repas-libre-selected {
+  background: #f7f3ee;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 48px;
+}
+
+[data-theme="dark"] .repas-libre-selected {
+  background: #1a201d;
+}
+
+.repas-libre-selected-chip {
+  background: #2d4a3e;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 99px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repas-libre-selected-chip button {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.repas-libre-selected-chip button:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+.repas-libre-benefices {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: rgba(61, 107, 88, 0.08);
+  border-left: 3px solid #3d6b58;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #2d4a3e;
+  line-height: 1.4;
+}
+
+[data-theme="dark"] .repas-libre-benefices {
+  background: rgba(74, 128, 104, 0.15);
+  color: #c8e6d4 !important;
+}
+
+/* === Catégories d'ingrédients === */
+.repas-libre-categories {
+  background: #fdf6f0;
+  border-radius: 12px;
+  padding: 12px;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+[data-theme="dark"] .repas-libre-categories {
+  background: #1a201d;
+}
+
+.repas-libre-cat {
+  margin-bottom: 14px;
+}
+
+.repas-libre-cat:last-child {
+  margin-bottom: 0;
+}
+
+.repas-libre-cat-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #4a5e54;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+[data-theme="dark"] .repas-libre-cat-title {
+  color: #d4ccc0 !important;
+}
+
+.repas-libre-cat-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.repas-libre-ing-chip {
+  background: #fff;
+  border: 1.5px solid #ede8e0;
+  color: #4a5e54;
+  padding: 7px 12px;
+  border-radius: 99px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  min-height: 36px;
+}
+
+.repas-libre-ing-chip:hover {
+  background: #f7f3ee;
+  border-color: #d4cab8;
+}
+
+.repas-libre-ing-chip.selected {
+  background: #2d4a3e;
+  border-color: #2d4a3e;
+  color: #fff;
+}
+
+.repas-libre-ing-chip:focus-visible {
+  outline: 2px solid #2d4a3e;
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .repas-libre-ing-chip {
+  background: #232a26;
+  border-color: rgba(255,255,255,0.08);
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .repas-libre-ing-chip:hover {
+  background: #2c332f;
+  border-color: rgba(255,255,255,0.18);
+}
+
+[data-theme="dark"] .repas-libre-ing-chip.selected {
+  background: #4a8068;
+  border-color: #4a8068;
+  color: #fff;
+}
+
+/* === Empty state === */
+.repas-libre-empty {
+  text-align: center;
+  padding: 30px 20px;
+  background: rgba(212, 168, 67, 0.08);
+  border-radius: 12px;
+}
+
+[data-theme="dark"] .repas-libre-empty {
+  background: rgba(232, 185, 79, 0.08);
+}
+
+[data-theme="dark"] .repas-libre-empty > div:nth-child(2) {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .repas-libre-empty > div:nth-child(3) {
+  color: #d4ccc0 !important;
+}
+
+/* === Toggle "sauvegarder en bibliothèque" === */
+.repas-libre-save-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: linear-gradient(135deg, #fff8e1, #fdf6f0);
+  border: 1.5px solid rgba(212, 168, 67, 0.3);
+  border-radius: 14px;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+[data-theme="dark"] .repas-libre-save-toggle {
+  background: linear-gradient(135deg, rgba(232, 185, 79, 0.1), rgba(35, 42, 38, 0.5));
+  border-color: rgba(232, 185, 79, 0.25);
+}
+
+.repas-libre-save-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #d4a843;
+  flex-shrink: 0;
+}
+
+.repas-libre-save-label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.9rem;
+  color: #2d4a3e;
+}
+
+.repas-libre-save-sub {
+  font-size: 0.77rem;
+  color: #6c5e44;
+  font-weight: 400;
+}
+
+[data-theme="dark"] .repas-libre-save-label {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .repas-libre-save-sub {
+  color: #d4ccc0 !important;
+}
+
+/* === Boutons actions sur meal-card-empty === */
+.meal-empty-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.meal-empty-action {
+  flex: 1;
+  min-width: 140px;
+  background: rgba(45, 74, 62, 0.06);
+  border: 1.5px solid rgba(45, 74, 62, 0.15);
+  color: #2d4a3e;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  min-height: 40px;
+}
+
+.meal-empty-action:hover {
+  background: rgba(45, 74, 62, 0.12);
+}
+
+.meal-empty-action-libre {
+  background: linear-gradient(135deg, rgba(212, 168, 67, 0.12), rgba(212, 168, 67, 0.06));
+  border-color: rgba(212, 168, 67, 0.4);
+  color: #b88820;
+}
+
+.meal-empty-action-libre:hover {
+  background: linear-gradient(135deg, rgba(212, 168, 67, 0.2), rgba(212, 168, 67, 0.12));
+}
+
+[data-theme="dark"] .meal-empty-action {
+  background: rgba(255,255,255,0.06);
+  border-color: rgba(255,255,255,0.12);
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .meal-empty-action-libre {
+  background: rgba(232, 185, 79, 0.1);
+  border-color: rgba(232, 185, 79, 0.3);
+  color: #e8c456;
+}
+
+/* === Tag "✨ Libre" sur les meal-cards === */
+.meal-libre-tag {
+  display: inline-block;
+  background: rgba(212, 168, 67, 0.18);
+  color: #b88820;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  margin-left: 6px;
+  vertical-align: middle;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+[data-theme="dark"] .meal-libre-tag {
+  background: rgba(232, 185, 79, 0.2);
+  color: #e8c456;
+}
+
+.meal-card-libre {
+  border-left: 3px solid #d4a843;
+}
+
+[data-theme="dark"] .meal-card-libre {
+  border-left-color: #e8c456;
+}

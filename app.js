@@ -7042,17 +7042,50 @@ function renderAgendaDayDrawer(dk) {
     // Cas: aucune recette assignée
     if (!rec) {
       return `
-        <div class="meal-card meal-card-empty" onclick="editAgendaMeal('${dk}','${r.slug}')">
-          <div class="meal-card-header">
+        <div class="meal-card meal-card-empty">
+          <div class="meal-card-header" onclick="editAgendaMeal('${dk}','${r.slug}')">
             <div class="meal-icon-circle" style="background:${r.bg};">${r.icon}</div>
             <div>
               <div class="meal-card-title">${r.label}</div>
               <div class="meal-card-time">${horaires[r.slug]}</div>
             </div>
           </div>
-          <div class="meal-empty-cta">+ Ajouter une recette</div>
+          <div class="meal-empty-actions">
+            <button class="meal-empty-action" onclick="editAgendaMeal('${dk}','${r.slug}')">
+              📖 Choisir une recette
+            </button>
+            <button class="meal-empty-action meal-empty-action-libre" onclick="openRepasLibre('${dk}','${r.slug}')">
+              ✨ Repas libre
+            </button>
+          </div>
         </div>
       `;
+    }
+
+    // Cas: repas libre (custom_)
+    if (typeof recId === 'string' && recId.startsWith('custom_')) {
+      const customMeal = getCustomMeal(recId);
+      if (customMeal) {
+        const ingredientsHTML = (customMeal.ingredients || [])
+          .map(ing => '<span class="ingredient-chip">◆ ' + ing + '</span>')
+          .join('');
+        const beneficesAuto = computeMealBenefices(customMeal.ingredients);
+        return `
+          <div class="meal-card meal-card-libre">
+            <div class="meal-card-header">
+              <div class="meal-icon-circle" style="background:${r.bg};">${r.icon}</div>
+              <div style="flex:1;">
+                <div class="meal-card-title">${r.label} <span class="meal-libre-tag">✨ Libre</span></div>
+                <div class="meal-card-time">${horaires[r.slug]}</div>
+              </div>
+              <button class="meal-clear-btn" onclick="event.stopPropagation();clearAgendaMeal('${dk}','${r.slug}');">✕</button>
+            </div>
+            <div class="meal-recipe-name">${customMeal.nom}</div>
+            ${ingredientsHTML ? '<div class="meal-ingredients">' + ingredientsHTML + '</div>' : ''}
+            ${beneficesAuto ? '<div class="meal-benefice">🌿🌿 ' + beneficesAuto + '</div>' : ''}
+          </div>
+        `;
+      }
     }
 
     // Cas: recette présente — affichage complet
@@ -8529,20 +8562,42 @@ function computeInsights(entries) {
     
     Object.values(dayAgenda).forEach(recId => {
       if (!recId) return;
-      const recette = RECETTES.find(r => r.id === recId);
-      if (!recette) return;
       
-      // Tags nutritionnels
-      const tags = [];
-      if (recette.nutri && recette.nutri.fer) tags.push('fer');
-      if (recette.nutri && recette.nutri.omega3) tags.push('omega3');
-      if (recette.nutri && recette.nutri.magnesium) tags.push('magnesium');
+      // Cas 1 : recette de la bibliothèque
+      if (typeof recId === 'number' || (typeof recId === 'string' && !recId.startsWith('custom_'))) {
+        const recette = RECETTES.find(r => r.id === recId || r.id === parseInt(recId));
+        if (!recette) return;
+        
+        const tags = [];
+        if (recette.nutri && recette.nutri.fer) tags.push('fer');
+        if (recette.nutri && recette.nutri.omega3) tags.push('omega3');
+        if (recette.nutri && recette.nutri.magnesium) tags.push('magnesium');
+        
+        tags.forEach(tag => {
+          if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+          foodCorrelations[tag].sjsrSum += sjsrScore;
+          foodCorrelations[tag].count += 1;
+        });
+      }
       
-      tags.forEach(tag => {
-        if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
-        foodCorrelations[tag].sjsrSum += sjsrScore;
-        foodCorrelations[tag].count += 1;
-      });
+      // Cas 2 : repas libre
+      if (typeof recId === 'string' && recId.startsWith('custom_')) {
+        const customMeal = getCustomMeal(recId);
+        if (!customMeal || !customMeal.ingredients) return;
+        
+        // Détection automatique des nutriments selon ingrédients
+        const lower = customMeal.ingredients.join(' ').toLowerCase();
+        const tags = [];
+        if (/(épinard|lentille|pois chiche|haricot|abats|foie|boudin|sardine)/i.test(lower)) tags.push('fer');
+        if (/(saumon|sardine|maquereau|hareng|graines? de lin|graines? de chia|noix)/i.test(lower)) tags.push('omega3');
+        if (/(amande|cacao|chocolat|graines? de courge|épinard|sarrasin|banane)/i.test(lower)) tags.push('magnesium');
+        
+        tags.forEach(tag => {
+          if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+          foodCorrelations[tag].sjsrSum += sjsrScore;
+          foodCorrelations[tag].count += 1;
+        });
+      }
     });
   });
   
@@ -8732,7 +8787,9 @@ const FLORA_DATA_KEYS = [
   'flora_premium',
   'flora_user_email',
   'flora_user_name',
-  'flora-medications'
+  'flora-medications',
+  'flora_custom_meals',
+  'flora_theme'
 ];
 
 function exportFloraData() {
@@ -8982,3 +9039,313 @@ function loadTheme() {
 
 // Appliquer le thème au plus tôt (avant initApp)
 loadTheme();
+
+// ============================================================
+// REPAS LIBRES — Composer un repas avec les ingrédients du placard
+// ============================================================
+
+// Stockage : flora_custom_meals { 'custom_xxx': { id, nom, ingredients, slug, dk, createdAt, isLibrary } }
+
+let _repasLibreCtx = { dk: null, slug: null, ingredients: [], nom: '', saveAsRecipe: false };
+
+function getCustomMeals() {
+  try {
+    return JSON.parse(localStorage.getItem('flora_custom_meals') || '{}');
+  } catch(e) {
+    return {};
+  }
+}
+
+function getCustomMeal(id) {
+  const all = getCustomMeals();
+  return all[id] || null;
+}
+
+function saveCustomMeal(meal) {
+  const all = getCustomMeals();
+  all[meal.id] = meal;
+  localStorage.setItem('flora_custom_meals', JSON.stringify(all));
+}
+
+function deleteCustomMeal(id) {
+  const all = getCustomMeals();
+  delete all[id];
+  localStorage.setItem('flora_custom_meals', JSON.stringify(all));
+}
+
+// === Calcul automatique des bénéfices nutritionnels selon ingrédients ===
+function computeMealBenefices(ingredients) {
+  if (!ingredients || !ingredients.length) return '';
+  
+  const lower = ingredients.map(i => i.toLowerCase()).join(' ');
+  const benefits = [];
+  
+  // Détection par mots-clés
+  if (/(saumon|sardine|maquereau|hareng|graines? de lin|graines? de chia|noix)/i.test(lower)) {
+    benefits.push('riche en oméga-3');
+  }
+  if (/(épinard|lentille|pois chiche|haricot|abats|foie|boudin|rouge)/i.test(lower)) {
+    benefits.push('source de fer');
+  }
+  if (/(amande|cacao|chocolat|graines? de courge|épinard|sarrasin|banane)/i.test(lower)) {
+    benefits.push('apport en magnésium');
+  }
+  if (/(citron|persil|kiwi|fraise|poivron|brocoli|orange)/i.test(lower)) {
+    benefits.push('vitamine C');
+  }
+  if (/(œuf|saumon|sardine|maquereau|champignon)/i.test(lower)) {
+    benefits.push('vitamine D');
+  }
+  if (/(riz complet|sarrasin|quinoa|patate douce|pomme de terre|millet)/i.test(lower)) {
+    benefits.push('glucides lents');
+  }
+  if (/(curcuma|gingembre|cannelle|ail)/i.test(lower)) {
+    benefits.push('anti-inflammatoire');
+  }
+  if (/(persil|basilic|coriandre|menthe)/i.test(lower)) {
+    benefits.push('herbes aromatiques');
+  }
+  if (/(banane|avocat|amande|graines? de courge)/i.test(lower)) {
+    benefits.push('soutien dopamine');
+  }
+  
+  if (benefits.length === 0) return '';
+  
+  // Capitaliser et joindre
+  const text = benefits.slice(0, 4).join(', ');
+  return text.charAt(0).toUpperCase() + text.slice(1) + '.';
+}
+
+// === Ouvrir le composeur de repas libre ===
+function openRepasLibre(dk, slug) {
+  _repasLibreCtx = { dk, slug, ingredients: [], nom: '', saveAsRecipe: false };
+  
+  // Pré-remplir avec les ingrédients cochés du placard
+  const placardChecked = Object.keys(placardItems).filter(k => placardItems[k]);
+  
+  // Fermer le drawer agenda actuel
+  const drawer = document.getElementById('agenda-day-drawer');
+  if (drawer) drawer.classList.add('hidden');
+  
+  renderRepasLibreModal(placardChecked);
+}
+
+function renderRepasLibreModal(placardChecked) {
+  // Retirer modal existant
+  document.getElementById('flora-repas-libre-modal')?.remove();
+  
+  const slugLabels = {
+    petitdej: '☀️ Petit-déjeuner',
+    dejeuner: '🥗 Déjeuner',
+    diner: '🌙 Dîner',
+    snack: '🍎 Collation'
+  };
+  
+  // Construire la liste d'ingrédients par catégorie depuis le placard
+  // On ne montre QUE les ingrédients cochés dans le placard + bouton ajout libre
+  let categoriesHTML = '';
+  
+  if (typeof PLACARD_CATEGORIES !== 'undefined') {
+    const cats = Object.entries(PLACARD_CATEGORIES);
+    cats.forEach(([catName, items]) => {
+      const itemsAvailable = items.filter(item => placardItems[item]);
+      if (itemsAvailable.length === 0) return;
+      
+      const itemsHTML = itemsAvailable.map(item => {
+        const isSelected = _repasLibreCtx.ingredients.includes(item);
+        return '<button class="repas-libre-ing-chip ' + (isSelected ? 'selected' : '') + '" ' +
+               'onclick="toggleRepasLibreIngredient(\'' + item.replace(/'/g, "\\'") + '\')">' + 
+               item + '</button>';
+      }).join('');
+      
+      categoriesHTML += 
+        '<div class="repas-libre-cat">' +
+          '<div class="repas-libre-cat-title">' + catName + '</div>' +
+          '<div class="repas-libre-cat-items">' + itemsHTML + '</div>' +
+        '</div>';
+    });
+  }
+  
+  if (!categoriesHTML) {
+    categoriesHTML = '<div class="repas-libre-empty">' +
+      '<div style="font-size:2rem;margin-bottom:8px;">🗄️</div>' +
+      '<div style="font-weight:600;color:#2d4a3e;margin-bottom:6px;">Aucun ingrédient dans le placard</div>' +
+      '<div style="font-size:0.84rem;color:#6c8278;">Cochez d\'abord vos ingrédients dans la page Placard pour pouvoir composer un repas libre.</div>' +
+    '</div>';
+  }
+  
+  // Liste des ingrédients sélectionnés
+  const selectedHTML = _repasLibreCtx.ingredients.length === 0
+    ? '<div style="font-size:0.85rem;color:#8a9e96;font-style:italic;text-align:center;padding:12px 0;">Aucun ingrédient sélectionné</div>'
+    : _repasLibreCtx.ingredients.map(ing => 
+        '<span class="repas-libre-selected-chip">' + ing + 
+        ' <button onclick="toggleRepasLibreIngredient(\'' + ing.replace(/'/g, "\\'") + '\')" aria-label="Retirer">✕</button></span>'
+      ).join('');
+  
+  // Bénéfices auto-calculés
+  const beneficesAuto = computeMealBenefices(_repasLibreCtx.ingredients);
+  
+  const modal = document.createElement('div');
+  modal.id = 'flora-repas-libre-modal';
+  modal.className = 'flora-modal-overlay';
+  modal.innerHTML = 
+    '<div class="flora-modal-content repas-libre-modal">' +
+      '<div class="flora-modal-header">' +
+        '<div>' +
+          '<div class="flora-modal-overline">' + (slugLabels[_repasLibreCtx.slug] || '🍽️ Repas') + '</div>' +
+          '<h2 class="flora-modal-title">✨ Composer un repas libre</h2>' +
+        '</div>' +
+        '<button class="flora-modal-close" aria-label="Fermer" onclick="closeRepasLibre()">✕</button>' +
+      '</div>' +
+      
+      '<div class="flora-modal-body">' +
+        // Champ nom du repas
+        '<div class="repas-libre-section">' +
+          '<label class="repas-libre-label">Nom du repas</label>' +
+          '<input type="text" id="repas-libre-nom" class="field" ' +
+            'placeholder="Ex : Pavé cabillaud aux épinards" ' +
+            'value="' + (_repasLibreCtx.nom || '') + '" ' +
+            'oninput="_repasLibreCtx.nom=this.value" />' +
+        '</div>' +
+        
+        // Ingrédients sélectionnés
+        '<div class="repas-libre-section">' +
+          '<label class="repas-libre-label">Ingrédients sélectionnés' +
+            (_repasLibreCtx.ingredients.length > 0 ? ' (' + _repasLibreCtx.ingredients.length + ')' : '') +
+          '</label>' +
+          '<div class="repas-libre-selected">' + selectedHTML + '</div>' +
+          (beneficesAuto ? '<div class="repas-libre-benefices">🌿 ' + beneficesAuto + '</div>' : '') +
+        '</div>' +
+        
+        // Catégories du placard
+        '<div class="repas-libre-section">' +
+          '<label class="repas-libre-label">📦 Mes ingrédients du placard</label>' +
+          '<div class="repas-libre-categories">' + categoriesHTML + '</div>' +
+        '</div>' +
+        
+        // Option : sauvegarder en bibliothèque
+        '<label class="repas-libre-save-toggle">' +
+          '<input type="checkbox" ' + (_repasLibreCtx.saveAsRecipe ? 'checked' : '') + ' ' +
+            'onchange="_repasLibreCtx.saveAsRecipe=this.checked">' +
+          '<span class="repas-libre-save-label">' +
+            '<span style="font-weight:600;">📚 Sauvegarder dans ma bibliothèque</span>' +
+            '<span class="repas-libre-save-sub">Pour réutiliser ce repas plus tard</span>' +
+          '</span>' +
+        '</label>' +
+      '</div>' +
+      
+      '<div class="flora-modal-footer">' +
+        '<button class="flora-btn-secondary" onclick="closeRepasLibre()">Annuler</button>' +
+        '<button class="flora-btn-primary" onclick="saveRepasLibre()" ' +
+          (_repasLibreCtx.ingredients.length === 0 ? 'disabled' : '') + '>' +
+          '✓ Ajouter au repas' +
+        '</button>' +
+      '</div>' +
+    '</div>';
+  
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+}
+
+function toggleRepasLibreIngredient(ing) {
+  const i = _repasLibreCtx.ingredients.indexOf(ing);
+  if (i === -1) {
+    _repasLibreCtx.ingredients.push(ing);
+  } else {
+    _repasLibreCtx.ingredients.splice(i, 1);
+  }
+  // Sauvegarder le nom actuel avant re-render
+  const nomEl = document.getElementById('repas-libre-nom');
+  if (nomEl) _repasLibreCtx.nom = nomEl.value;
+  
+  // Re-render
+  const placardChecked = Object.keys(placardItems).filter(k => placardItems[k]);
+  renderRepasLibreModal(placardChecked);
+}
+
+function closeRepasLibre() {
+  const modal = document.getElementById('flora-repas-libre-modal');
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+  
+  // Reouvrir le drawer agenda si on était dedans
+  if (_repasLibreCtx.dk && document.getElementById('agenda-day-drawer')) {
+    renderAgendaDayDrawer(_repasLibreCtx.dk);
+  }
+  _repasLibreCtx = { dk: null, slug: null, ingredients: [], nom: '', saveAsRecipe: false };
+}
+
+function saveRepasLibre() {
+  const nomEl = document.getElementById('repas-libre-nom');
+  if (nomEl) _repasLibreCtx.nom = nomEl.value.trim();
+  
+  if (_repasLibreCtx.ingredients.length === 0) {
+    alert('Sélectionnez au moins un ingrédient.');
+    return;
+  }
+  
+  const nom = _repasLibreCtx.nom || _repasLibreCtx.ingredients.slice(0, 3).join(' · ');
+  const id = 'custom_' + Date.now();
+  
+  const meal = {
+    id: id,
+    nom: nom,
+    ingredients: [..._repasLibreCtx.ingredients],
+    slug: _repasLibreCtx.slug,
+    createdAt: new Date().toISOString(),
+    isLibrary: _repasLibreCtx.saveAsRecipe
+  };
+  
+  saveCustomMeal(meal);
+  
+  // Ajouter à l'agenda
+  if (_repasLibreCtx.dk && _repasLibreCtx.slug) {
+    if (!agenda[_repasLibreCtx.dk]) agenda[_repasLibreCtx.dk] = {};
+    agenda[_repasLibreCtx.dk][_repasLibreCtx.slug] = id;
+    saveState();
+  }
+  
+  // Fermer modal et reouvrir drawer
+  const dk = _repasLibreCtx.dk;
+  closeRepasLibre();
+  
+  // Toast de confirmation
+  if (typeof showFloraDataToast === 'function') {
+    showFloraDataToast(
+      '✨ Repas ajouté',
+      meal.isLibrary 
+        ? meal.nom + ' · Sauvegardé dans la bibliothèque' 
+        : meal.nom,
+      'success'
+    );
+  }
+  
+  // Re-render agenda
+  if (dk && document.getElementById('agenda-day-drawer')) {
+    setTimeout(() => renderAgendaDayDrawer(dk), 100);
+  }
+}
+
+// === Bouton d'accès depuis le PLACARD ===
+function openRepasLibreFromPlacard() {
+  // Demander pour quel slot et quelle date
+  const today = dateKey(new Date());
+  const slot = prompt(
+    'Pour quel repas voulez-vous composer ce repas libre ?\n\n' +
+    '1 = Petit-déjeuner\n' +
+    '2 = Déjeuner\n' +
+    '3 = Dîner\n\n' +
+    'Tapez 1, 2 ou 3 :'
+  );
+  
+  if (!slot) return;
+  
+  const slugMap = { '1': 'petitdej', '2': 'dejeuner', '3': 'diner' };
+  const slug = slugMap[slot.trim()];
+  if (!slug) {
+    alert('Choix invalide. Tapez 1, 2 ou 3.');
+    return;
+  }
+  
+  openRepasLibre(today, slug);
+}
