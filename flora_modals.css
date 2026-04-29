@@ -1270,3 +1270,335 @@ button[aria-label^="Verre"]:focus-visible {
     transform: none !important;
   }
 }
+
+/* ================================================================
+   FIX MODE SOMBRE — Surcharge des couleurs en dur
+   Pages Insights, Compléments et autres
+   ================================================================ */
+
+/* === Compléments — fix mode sombre === */
+[data-theme="dark"] .comp-meds-banner-label,
+[data-theme="dark"] .comp-meds-banner-sub {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .comp-meds-banner-sub {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .comp-legend-summary {
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .comp-name {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .comp-benefit {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .comp-arrow {
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .comp-fiche-label {
+  color: #b8a896 !important;
+}
+
+[data-theme="dark"] .comp-fiche-text {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .comp-fiche-list li {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .flora-modal-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .comp-fiche-disclaimer {
+  background: rgba(255, 255, 255, 0.06);
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .comp-page-disclaimer {
+  background: rgba(232, 185, 79, 0.08);
+  color: #e8d4a8;
+  border-left-color: #b88820;
+}
+
+/* === Habitudes & symptômes journal — fix mode sombre === */
+[data-theme="dark"] .habitude-label {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .habitude-row {
+  border-top-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .symptome-chip.active {
+  font-weight: 600;
+}
+
+/* === Insights — fix mode sombre === */
+[data-theme="dark"] .insights-intro-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .insights-intro-sub {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .insights-section-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .insight-card {
+  background: #232a26;
+}
+
+[data-theme="dark"] .insight-card-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .insight-card-detail {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .insight-card-detail strong {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .insight-recommendation {
+  background: linear-gradient(135deg, rgba(232, 185, 79, 0.08), rgba(35, 42, 38, 0.6));
+  border-color: rgba(232, 185, 79, 0.25);
+}
+
+[data-theme="dark"] .insight-reco-title {
+  color: #e8d4a8 !important;
+}
+
+[data-theme="dark"] .insight-reco-detail {
+  color: #c4b894 !important;
+}
+
+[data-theme="dark"] .insight-reco-icon {
+  background: rgba(232, 185, 79, 0.18);
+}
+
+[data-theme="dark"] .insights-empty-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .insights-empty-sub {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .insights-disclaimer {
+  background: rgba(255, 255, 255, 0.04);
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .insights-disclaimer strong {
+  color: #d4ccc0;
+}
+
+/* === Section données (export/import) — fix mode sombre === */
+[data-theme="dark"] .data-action-label {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .data-action-sub {
+  color: #9eaba2 !important;
+}
+
+[data-theme="dark"] .data-action-arrow {
+  color: #b8a896;
+}
+
+/* === Modals médicaments / avertissement — fix mode sombre === */
+[data-theme="dark"] .meds-intro {
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .meds-checkbox-row {
+  background: #1a201d;
+}
+
+[data-theme="dark"] .meds-checkbox-row:hover {
+  background: #232a26;
+}
+
+[data-theme="dark"] .meds-checkbox-row:has(input:checked) {
+  background: rgba(74, 128, 104, 0.2);
+  border-color: #5a9078;
+}
+
+[data-theme="dark"] .meds-checkbox-label {
+  color: #f5efe8;
+}
+
+[data-theme="dark"] .meds-checkbox-sub {
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .meds-divider {
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .meds-disclaimer {
+  background: rgba(232, 185, 79, 0.08);
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .warning-meds-block {
+  background: #1a201d;
+}
+
+[data-theme="dark"] .warning-meds-list li {
+  color: #f5efe8;
+}
+
+[data-theme="dark"] .warn-meds-sub {
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .warning-intro {
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .warning-disclaimer {
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .warning-danger-box p {
+  color: #f0d4cc;
+}
+
+[data-theme="dark"] .warning-caution-box p {
+  color: #e8d4a8;
+}
+
+/* === Liste de courses — fix mode sombre === */
+[data-theme="dark"] .shopping-empty-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .shopping-empty-sub {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .shopping-meta-count {
+  color: #f5efe8;
+}
+
+[data-theme="dark"] .shopping-meta-budget {
+  color: #9eaba2;
+}
+
+/* === Boutons primaires/secondaires modal — fix mode sombre === */
+[data-theme="dark"] .flora-btn-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d4ccc0;
+}
+
+[data-theme="dark"] .flora-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* === Toast === */
+[data-theme="dark"] .flora-toast {
+  background: #4a8068;
+}
+
+/* === CTA Insights depuis Stats === */
+[data-theme="dark"] .insights-cta-btn {
+  background: linear-gradient(135deg, rgba(232, 185, 79, 0.08), rgba(35, 42, 38, 0.5));
+  border-color: rgba(232, 185, 79, 0.25);
+}
+
+[data-theme="dark"] .insights-cta-btn span[style*="color:#2d4a3e"] {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .insights-cta-btn span[style*="color:#4a5e54"] {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] .insights-cta-btn span[style*="color:#a0735c"] {
+  color: #b8a896 !important;
+}
+
+/* === Badge filtre placard === */
+[data-theme="dark"] .placard-active-badge {
+  background: linear-gradient(135deg, rgba(74, 128, 104, 0.25), rgba(35, 42, 38, 0.6));
+  color: #c8e6d4;
+  border-color: #4a8068;
+}
+
+[data-theme="dark"] .placard-badge-close {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ================================================================
+   FIX MODE SOMBRE — Override des styles inline en dur dans app.js
+   Ces sélecteurs avec [style*=...] surchargent les couleurs hardcodées
+   ================================================================ */
+
+[data-theme="dark"] [style*="color:#2d4a3e"],
+[data-theme="dark"] [style*="color: #2d4a3e"],
+[data-theme="dark"] [style*="color:#1e2d26"],
+[data-theme="dark"] [style*="color: #1e2d26"] {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] [style*="color:#4a5e54"],
+[data-theme="dark"] [style*="color: #4a5e54"] {
+  color: #d4ccc0 !important;
+}
+
+[data-theme="dark"] [style*="color:#8a9e96"],
+[data-theme="dark"] [style*="color: #8a9e96"],
+[data-theme="dark"] [style*="color:#6c8278"],
+[data-theme="dark"] [style*="color: #6c8278"] {
+  color: #9eaba2 !important;
+}
+
+[data-theme="dark"] [style*="color:#a0735c"],
+[data-theme="dark"] [style*="color: #a0735c"] {
+  color: #b8a896 !important;
+}
+
+[data-theme="dark"] [style*="color:#5a4a30"],
+[data-theme="dark"] [style*="color: #5a4a30"] {
+  color: #e8d4a8 !important;
+}
+
+[data-theme="dark"] [style*="color:#b88820"],
+[data-theme="dark"] [style*="color: #b88820"] {
+  color: #e8c456 !important;
+}
+
+[data-theme="dark"] [style*="background:#fff"],
+[data-theme="dark"] [style*="background: #fff"],
+[data-theme="dark"] [style*="background:#ffffff"],
+[data-theme="dark"] [style*="background: #ffffff"] {
+  background: #232a26 !important;
+}
+
+[data-theme="dark"] [style*="background:#f7f3ee"],
+[data-theme="dark"] [style*="background: #f7f3ee"] {
+  background: #1a201d !important;
+}
+
+[data-theme="dark"] [style*="background:#fdf6f0"],
+[data-theme="dark"] [style*="background: #fdf6f0"] {
+  background: #1a201d !important;
+}
+
+[data-theme="dark"] [style*="border:1.5px solid #ede8e0"],
+[data-theme="dark"] [style*="border: 1.5px solid #ede8e0"] {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
