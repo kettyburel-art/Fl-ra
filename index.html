@@ -243,6 +243,15 @@
             </div>
             <div class="card-arrow">→</div>
           </div>
+
+          <div class="card card-etirements" onclick="showPage('etirements')">
+            <div class="card-icon">🧘‍♀️</div>
+            <div class="card-body">
+              <div class="card-title">Étirements SJSR</div>
+              <div class="card-sub">6 exercices avec timer</div>
+            </div>
+            <div class="card-arrow">→</div>
+          </div>
         </div>
 
         <!-- Conseil SJSR rotatif -->
@@ -308,6 +317,20 @@
         
         <div id="insights-container">
           <!-- Rempli dynamiquement par renderInsights() -->
+        </div>
+      </section>
+
+      <!-- ============================================
+           PAGE ÉTIREMENTS SJSR
+           ============================================ -->
+      <section id="page-etirements" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
+          <h2>Étirements SJSR</h2>
+        </div>
+        
+        <div id="etirements-container">
+          <!-- Rempli dynamiquement par renderEtirementsPage() -->
         </div>
       </section>
 

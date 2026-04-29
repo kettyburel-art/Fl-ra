@@ -5121,6 +5121,7 @@ function showPage(page) {
   }
   if (page === 'placard')    initPlacard();
   if (page === 'insights')   renderInsights();
+  if (page === 'etirements') renderEtirementsPage();
 }
 
 // ============================
@@ -7037,32 +7038,8 @@ function renderAgendaDayDrawer(dk) {
   // Construire le HTML pour chaque repas
   const repasHTML = repasConfig.map(r => {
     const recId = dayData[r.slug];
-    const rec = recId ? RECETTES.find(x => x.id === recId) : null;
-
-    // Cas: aucune recette assignée
-    if (!rec) {
-      return `
-        <div class="meal-card meal-card-empty">
-          <div class="meal-card-header" onclick="editAgendaMeal('${dk}','${r.slug}')">
-            <div class="meal-icon-circle" style="background:${r.bg};">${r.icon}</div>
-            <div>
-              <div class="meal-card-title">${r.label}</div>
-              <div class="meal-card-time">${horaires[r.slug]}</div>
-            </div>
-          </div>
-          <div class="meal-empty-actions">
-            <button class="meal-empty-action" onclick="editAgendaMeal('${dk}','${r.slug}')">
-              📖 Choisir une recette
-            </button>
-            <button class="meal-empty-action meal-empty-action-libre" onclick="openRepasLibre('${dk}','${r.slug}')">
-              ✨ Repas libre
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    // Cas: repas libre (custom_)
+    
+    // Cas: repas libre (custom_) — vérifier AVANT le cas vide
     if (typeof recId === 'string' && recId.startsWith('custom_')) {
       const customMeal = getCustomMeal(recId);
       if (customMeal) {
@@ -7086,6 +7063,32 @@ function renderAgendaDayDrawer(dk) {
           </div>
         `;
       }
+    }
+    
+    // Recette de la bibliothèque
+    const rec = recId ? RECETTES.find(x => x.id === recId) : null;
+
+    // Cas: aucune recette assignée
+    if (!rec) {
+      return `
+        <div class="meal-card meal-card-empty">
+          <div class="meal-card-header" onclick="editAgendaMeal('${dk}','${r.slug}')">
+            <div class="meal-icon-circle" style="background:${r.bg};">${r.icon}</div>
+            <div>
+              <div class="meal-card-title">${r.label}</div>
+              <div class="meal-card-time">${horaires[r.slug]}</div>
+            </div>
+          </div>
+          <div class="meal-empty-actions">
+            <button class="meal-empty-action" onclick="editAgendaMeal('${dk}','${r.slug}')">
+              📖 Choisir une recette
+            </button>
+            <button class="meal-empty-action meal-empty-action-libre" onclick="openRepasLibre('${dk}','${r.slug}')">
+              ✨ Repas libre
+            </button>
+          </div>
+        </div>
+      `;
     }
 
     // Cas: recette présente — affichage complet
@@ -9284,32 +9287,53 @@ function saveRepasLibre() {
     return;
   }
   
+  if (!_repasLibreCtx.dk || !_repasLibreCtx.slug) {
+    alert('Erreur : date ou repas non défini. Réessayez.');
+    console.error('[Flōra] _repasLibreCtx incomplet:', _repasLibreCtx);
+    return;
+  }
+  
   const nom = _repasLibreCtx.nom || _repasLibreCtx.ingredients.slice(0, 3).join(' · ');
   const id = 'custom_' + Date.now();
+  const dk = _repasLibreCtx.dk;
+  const slug = _repasLibreCtx.slug;
   
   const meal = {
     id: id,
     nom: nom,
     ingredients: [..._repasLibreCtx.ingredients],
-    slug: _repasLibreCtx.slug,
+    slug: slug,
     createdAt: new Date().toISOString(),
     isLibrary: _repasLibreCtx.saveAsRecipe
   };
   
+  console.log('[Flōra] Saving repas libre:', meal);
+  
+  // 1. Sauvegarder le repas custom
   saveCustomMeal(meal);
   
-  // Ajouter à l'agenda
-  if (_repasLibreCtx.dk && _repasLibreCtx.slug) {
-    if (!agenda[_repasLibreCtx.dk]) agenda[_repasLibreCtx.dk] = {};
-    agenda[_repasLibreCtx.dk][_repasLibreCtx.slug] = id;
-    saveState();
-  }
+  // 2. Ajouter à l'agenda
+  if (!agenda[dk]) agenda[dk] = {};
+  agenda[dk][slug] = id;
+  saveState();
   
-  // Fermer modal et reouvrir drawer
-  const dk = _repasLibreCtx.dk;
-  closeRepasLibre();
+  console.log('[Flōra] Agenda updated:', agenda[dk]);
   
-  // Toast de confirmation
+  // 3. Forcer la lecture depuis localStorage pour vérifier
+  try {
+    const verif = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
+    console.log('[Flōra] Verif agenda from localStorage:', verif[dk]);
+  } catch(e) { console.error('[Flōra] Erreur lecture verif:', e); }
+  
+  // 4. Reset le contexte
+  _repasLibreCtx = { dk: null, slug: null, ingredients: [], nom: '', saveAsRecipe: false };
+  
+  // 5. Fermer modal repas libre
+  const modal = document.getElementById('flora-repas-libre-modal');
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+  
+  // 6. Toast
   if (typeof showFloraDataToast === 'function') {
     showFloraDataToast(
       '✨ Repas ajouté',
@@ -9320,10 +9344,17 @@ function saveRepasLibre() {
     );
   }
   
-  // Re-render agenda
-  if (dk && document.getElementById('agenda-day-drawer')) {
-    setTimeout(() => renderAgendaDayDrawer(dk), 100);
-  }
+  // 7. Re-render agenda drawer
+  _agendaSelectedDay = dk;
+  setTimeout(function() {
+    const drawer = document.getElementById('agenda-day-drawer');
+    if (drawer) {
+      drawer.classList.remove('hidden');
+      renderAgendaDayDrawer(dk);
+    }
+    // Aussi re-render le mois pour les pastilles
+    if (typeof renderAgendaMonth === 'function') renderAgendaMonth();
+  }, 200);
 }
 
 // === Bouton d'accès depuis le PLACARD ===
@@ -9348,4 +9379,405 @@ function openRepasLibreFromPlacard() {
   }
   
   openRepasLibre(today, slug);
+}
+
+// ============================================================
+// ÉTIREMENTS SJSR — Module interactif avec timer
+// ============================================================
+
+const ETIREMENTS_SJSR = [
+  {
+    id: 'mollet-debout',
+    nom: 'Étirement du mollet debout',
+    icon: '🦵',
+    color: '#4a8068',
+    duree: 20,
+    benefice: 'Soulage les impatiences',
+    instructions: [
+      'Debout face à un mur, mains posées dessus à hauteur d\'épaules.',
+      'Reculez une jambe, talon bien plaqué au sol.',
+      'Poussez doucement le talon vers le sol, jambe arrière tendue.',
+      'Maintenez l\'étirement sans à-coups.'
+    ]
+  },
+  {
+    id: 'rotations-cheville',
+    nom: 'Rotations de cheville au sol',
+    icon: '🔄',
+    color: '#3d6b58',
+    duree: 30,
+    benefice: 'Active la circulation',
+    instructions: [
+      'Allongez-vous sur le dos, jambes tendues.',
+      'Soulevez une jambe à 30°, pied détendu.',
+      'Effectuez 10 rotations de cheville dans un sens.',
+      'Puis 10 rotations dans l\'autre sens. Changez de jambe.'
+    ]
+  },
+  {
+    id: 'flexion-hanche',
+    nom: 'Flexion douce de hanche',
+    icon: '🪑',
+    color: '#7a4e8a',
+    duree: 20,
+    benefice: 'Détente musculaire',
+    instructions: [
+      'Asseyez-vous sur une chaise, dos droit.',
+      'Pliez doucement un genou vers vous, mains autour du tibia.',
+      'Tirez doucement vers la poitrine sans forcer.',
+      'Relâchez progressivement. Changez de jambe.'
+    ]
+  },
+  {
+    id: 'ischio-assis',
+    nom: 'Étirement ischio-jambiers assis',
+    icon: '🧘',
+    color: '#a04060',
+    duree: 25,
+    benefice: 'Soulagement lombaire et des jambes',
+    instructions: [
+      'Asseyez-vous au sol, jambes tendues devant vous.',
+      'Penchez le buste en avant, dos droit.',
+      'Atteignez les pieds (sans forcer), genoux légèrement souples.',
+      'Respirez profondément pendant l\'étirement.'
+    ]
+  },
+  {
+    id: 'jambes-elevees',
+    nom: 'Posture des jambes élevées',
+    icon: '🛌',
+    color: '#3d6b58',
+    duree: 60,
+    benefice: 'Active la circulation',
+    instructions: [
+      'Allongez-vous sur le dos, près d\'un mur.',
+      'Positionnez vos jambes contre le mur, à 90°.',
+      'Bras le long du corps, paumes vers le ciel.',
+      'Maintenez la position en respirant profondément.'
+    ]
+  },
+  {
+    id: 'massage-mollets',
+    nom: 'Massage des mollets',
+    icon: '👐',
+    color: '#a0735c',
+    duree: 45,
+    benefice: 'Soulage la tension',
+    instructions: [
+      'Asseyez-vous sur le sol ou le lit.',
+      'Utilisez vos mains pour pétrir vos mollets fermement.',
+      'Massez des chevilles vers les genoux (sens du retour veineux).',
+      'Insistez sur les zones tendues, sans douleur excessive.'
+    ]
+  }
+];
+
+let _etirementTimer = null;
+let _etirementTimerSec = 0;
+let _etirementCurrentId = null;
+
+function renderEtirementsPage() {
+  const container = document.getElementById('etirements-container');
+  if (!container) return;
+  
+  const cardsHTML = ETIREMENTS_SJSR.map(e => 
+    '<button class="etirement-card" onclick="openEtirementDetail(\'' + e.id + '\')" ' +
+      'style="--etir-color: ' + e.color + ';">' +
+      '<div class="etirement-icon" style="background: ' + e.color + '22; color: ' + e.color + ';">' + e.icon + '</div>' +
+      '<div class="etirement-content">' +
+        '<div class="etirement-name">' + e.nom + '</div>' +
+        '<div class="etirement-benefice">' + e.benefice + '</div>' +
+        '<div class="etirement-duree">⏱ ' + e.duree + ' secondes</div>' +
+      '</div>' +
+      '<div class="etirement-arrow">›</div>' +
+    '</button>'
+  ).join('');
+  
+  container.innerHTML = 
+    '<div class="etirements-intro">' +
+      '<div class="etirements-intro-icon">🧘‍♀️</div>' +
+      '<div>' +
+        '<div class="etirements-intro-title">6 étirements pour soulager le SJSR</div>' +
+        '<div class="etirements-intro-sub">Pratiquez quotidiennement, le soir avant le coucher ou pendant une crise.</div>' +
+      '</div>' +
+    '</div>' +
+    
+    '<button class="etirements-routine-btn" onclick="startRoutineComplete()">' +
+      '<span style="font-size:1.4rem;">▶️</span>' +
+      '<span style="flex:1;text-align:left;padding:0 12px;">' +
+        '<span style="display:block;font-weight:600;font-size:0.95rem;">Routine complète guidée</span>' +
+        '<span style="display:block;font-size:0.78rem;opacity:0.85;margin-top:2px;">~3 min · les 6 exercices avec timer auto</span>' +
+      '</span>' +
+      '<span style="font-size:1.2rem;">›</span>' +
+    '</button>' +
+    
+    '<div class="etirements-list">' + cardsHTML + '</div>' +
+    
+    '<div class="etirements-disclaimer">' +
+      '<strong>Important.</strong> Arrêtez immédiatement en cas de douleur vive. ' +
+      'Ces étirements ne remplacent pas un avis médical. En cas de SJSR sévère ou persistant, ' +
+      'consultez votre médecin ou un kinésithérapeute.' +
+    '</div>';
+}
+
+function openEtirementDetail(id) {
+  const etir = ETIREMENTS_SJSR.find(e => e.id === id);
+  if (!etir) return;
+  
+  document.getElementById('flora-etirement-modal')?.remove();
+  
+  const stepsHTML = etir.instructions.map((step, i) => 
+    '<div class="etirement-step">' +
+      '<div class="etirement-step-num" style="background:' + etir.color + ';">' + (i + 1) + '</div>' +
+      '<div class="etirement-step-text">' + step + '</div>' +
+    '</div>'
+  ).join('');
+  
+  const modal = document.createElement('div');
+  modal.id = 'flora-etirement-modal';
+  modal.className = 'flora-modal-overlay';
+  modal.innerHTML = 
+    '<div class="flora-modal-content etirement-detail-modal">' +
+      '<div class="flora-modal-header" style="background: linear-gradient(135deg, ' + etir.color + '22, ' + etir.color + '08);">' +
+        '<div class="etirement-detail-icon" style="background:' + etir.color + '33; color:' + etir.color + ';">' + etir.icon + '</div>' +
+        '<div style="flex:1;">' +
+          '<div class="flora-modal-overline" style="color:' + etir.color + ';">' + etir.benefice + '</div>' +
+          '<h2 class="flora-modal-title">' + etir.nom + '</h2>' +
+        '</div>' +
+        '<button class="flora-modal-close" aria-label="Fermer" onclick="closeEtirementDetail()">✕</button>' +
+      '</div>' +
+      
+      '<div class="flora-modal-body">' +
+        // Timer
+        '<div class="etirement-timer-block">' +
+          '<div class="etirement-timer-display" id="etir-timer-display" style="color:' + etir.color + ';">' +
+            etir.duree + 's' +
+          '</div>' +
+          '<div class="etirement-timer-progress">' +
+            '<div class="etirement-timer-bar" id="etir-timer-bar" style="background:' + etir.color + ';"></div>' +
+          '</div>' +
+          '<button class="etirement-timer-btn" id="etir-timer-btn" ' +
+            'onclick="toggleEtirementTimer(\'' + etir.id + '\', ' + etir.duree + ')" ' +
+            'style="background:' + etir.color + ';">' +
+            '▶ Démarrer le timer' +
+          '</button>' +
+        '</div>' +
+        
+        '<div class="etirement-instructions">' +
+          '<div class="etirement-instructions-title">Exécution</div>' +
+          stepsHTML +
+        '</div>' +
+        
+        '<div class="etirement-tip">' +
+          '<span style="font-size:1.2rem;">💡</span>' +
+          '<span>Respirez profondément pendant l\'étirement. ' +
+            'Ne forcez jamais — l\'étirement doit être confortable.</span>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  _etirementCurrentId = id;
+}
+
+function closeEtirementDetail() {
+  if (_etirementTimer) {
+    clearInterval(_etirementTimer);
+    _etirementTimer = null;
+  }
+  const modal = document.getElementById('flora-etirement-modal');
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+  _etirementCurrentId = null;
+}
+
+function toggleEtirementTimer(id, duree) {
+  const etir = ETIREMENTS_SJSR.find(e => e.id === id);
+  if (!etir) return;
+  
+  const btn = document.getElementById('etir-timer-btn');
+  const display = document.getElementById('etir-timer-display');
+  const bar = document.getElementById('etir-timer-bar');
+  
+  if (_etirementTimer) {
+    // Pause
+    clearInterval(_etirementTimer);
+    _etirementTimer = null;
+    if (btn) btn.innerHTML = '▶ Reprendre';
+    return;
+  }
+  
+  if (_etirementTimerSec === 0 || _etirementTimerSec >= duree) {
+    _etirementTimerSec = 0;
+  }
+  
+  if (btn) btn.innerHTML = '⏸ Pause';
+  
+  _etirementTimer = setInterval(() => {
+    _etirementTimerSec++;
+    const remaining = duree - _etirementTimerSec;
+    const progress = (_etirementTimerSec / duree) * 100;
+    
+    if (display) display.textContent = remaining + 's';
+    if (bar) bar.style.width = progress + '%';
+    
+    if (_etirementTimerSec >= duree) {
+      clearInterval(_etirementTimer);
+      _etirementTimer = null;
+      _etirementTimerSec = 0;
+      if (display) display.textContent = '✓ Terminé';
+      if (btn) btn.innerHTML = '🔁 Recommencer';
+      
+      // Vibration de fin si supporté
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate([200, 100, 200]); } catch(e) {}
+      }
+      
+      // Toast
+      if (typeof showFloraDataToast === 'function') {
+        showFloraDataToast('✓ Étirement terminé', etir.nom + ' · ' + etir.benefice, 'success');
+      }
+    }
+  }, 1000);
+}
+
+// === ROUTINE COMPLÈTE GUIDÉE ===
+let _routineState = { index: 0, timer: null, sec: 0, isPaused: false };
+
+function startRoutineComplete() {
+  _routineState = { index: 0, timer: null, sec: 0, isPaused: false };
+  renderRoutineStep();
+}
+
+function renderRoutineStep() {
+  const etir = ETIREMENTS_SJSR[_routineState.index];
+  if (!etir) {
+    closeRoutine();
+    if (typeof showFloraDataToast === 'function') {
+      showFloraDataToast('🌿 Routine terminée', 'Bravo, vous avez complété les 6 étirements !', 'success');
+    }
+    return;
+  }
+  
+  document.getElementById('flora-routine-modal')?.remove();
+  
+  const stepsHTML = etir.instructions.map((step, i) => 
+    '<div class="etirement-step">' +
+      '<div class="etirement-step-num" style="background:' + etir.color + ';">' + (i + 1) + '</div>' +
+      '<div class="etirement-step-text">' + step + '</div>' +
+    '</div>'
+  ).join('');
+  
+  const total = ETIREMENTS_SJSR.length;
+  const current = _routineState.index + 1;
+  
+  const modal = document.createElement('div');
+  modal.id = 'flora-routine-modal';
+  modal.className = 'flora-modal-overlay';
+  modal.innerHTML = 
+    '<div class="flora-modal-content etirement-detail-modal">' +
+      '<div class="flora-modal-header" style="background: linear-gradient(135deg, ' + etir.color + '22, ' + etir.color + '08);">' +
+        '<div class="etirement-detail-icon" style="background:' + etir.color + '33; color:' + etir.color + ';">' + etir.icon + '</div>' +
+        '<div style="flex:1;">' +
+          '<div class="flora-modal-overline" style="color:' + etir.color + ';">Étape ' + current + ' / ' + total + '</div>' +
+          '<h2 class="flora-modal-title">' + etir.nom + '</h2>' +
+        '</div>' +
+        '<button class="flora-modal-close" aria-label="Quitter la routine" onclick="closeRoutine()">✕</button>' +
+      '</div>' +
+      
+      '<div class="flora-modal-body">' +
+        '<div class="routine-progress-bar">' +
+          '<div class="routine-progress-fill" style="width:' + ((current - 1) / total * 100) + '%; background:' + etir.color + ';"></div>' +
+        '</div>' +
+        
+        '<div class="etirement-timer-block">' +
+          '<div class="etirement-timer-display" id="routine-timer-display" style="color:' + etir.color + ';">' +
+            etir.duree + 's' +
+          '</div>' +
+          '<div class="etirement-timer-progress">' +
+            '<div class="etirement-timer-bar" id="routine-timer-bar" style="background:' + etir.color + ';"></div>' +
+          '</div>' +
+        '</div>' +
+        
+        '<div class="etirement-instructions">' +
+          '<div class="etirement-instructions-title">' + etir.benefice + '</div>' +
+          stepsHTML +
+        '</div>' +
+      '</div>' +
+      
+      '<div class="flora-modal-footer">' +
+        '<button class="flora-btn-secondary" onclick="skipRoutineStep()">⏭ Passer</button>' +
+        '<button class="flora-btn-primary" id="routine-control-btn" onclick="toggleRoutineTimer()" ' +
+          'style="background:' + etir.color + ';">▶ Démarrer</button>' +
+      '</div>' +
+    '</div>';
+  
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  _routineState.sec = 0;
+}
+
+function toggleRoutineTimer() {
+  const etir = ETIREMENTS_SJSR[_routineState.index];
+  if (!etir) return;
+  
+  const btn = document.getElementById('routine-control-btn');
+  const display = document.getElementById('routine-timer-display');
+  const bar = document.getElementById('routine-timer-bar');
+  
+  if (_routineState.timer) {
+    clearInterval(_routineState.timer);
+    _routineState.timer = null;
+    if (btn) btn.innerHTML = '▶ Reprendre';
+    return;
+  }
+  
+  if (btn) btn.innerHTML = '⏸ Pause';
+  
+  _routineState.timer = setInterval(() => {
+    _routineState.sec++;
+    const remaining = etir.duree - _routineState.sec;
+    const progress = (_routineState.sec / etir.duree) * 100;
+    
+    if (display) display.textContent = remaining + 's';
+    if (bar) bar.style.width = progress + '%';
+    
+    if (_routineState.sec >= etir.duree) {
+      clearInterval(_routineState.timer);
+      _routineState.timer = null;
+      if (display) display.textContent = '✓';
+      
+      if ('vibrate' in navigator) {
+        try { navigator.vibrate([200, 100, 200]); } catch(e) {}
+      }
+      
+      // Auto-passer à l'étape suivante après 1.5s
+      setTimeout(() => {
+        _routineState.index++;
+        renderRoutineStep();
+      }, 1500);
+    }
+  }, 1000);
+}
+
+function skipRoutineStep() {
+  if (_routineState.timer) {
+    clearInterval(_routineState.timer);
+    _routineState.timer = null;
+  }
+  _routineState.index++;
+  _routineState.sec = 0;
+  renderRoutineStep();
+}
+
+function closeRoutine() {
+  if (_routineState.timer) {
+    clearInterval(_routineState.timer);
+    _routineState.timer = null;
+  }
+  const modal = document.getElementById('flora-routine-modal');
+  if (modal) modal.remove();
+  document.body.style.overflow = '';
+  _routineState = { index: 0, timer: null, sec: 0, isPaused: false };
 }

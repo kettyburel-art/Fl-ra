@@ -2016,3 +2016,406 @@ button[aria-label^="Verre"]:focus-visible {
 [data-theme="dark"] .meal-card-libre {
   border-left-color: #e8c456;
 }
+
+/* ================================================================
+   ÉTIREMENTS SJSR — Page et modals
+   ================================================================ */
+
+#etirements-container {
+  padding-bottom: 100px;
+}
+
+/* === Carte tuile homepage === */
+.card-etirements {
+  background: linear-gradient(135deg, #efe2f0, #f0e8db) !important;
+}
+
+.card-etirements .card-icon {
+  background: rgba(122, 78, 138, 0.18);
+  color: #7a4e8a;
+}
+
+[data-theme="dark"] .card-etirements {
+  background: linear-gradient(135deg, rgba(122, 78, 138, 0.2), #232a26) !important;
+}
+
+[data-theme="dark"] .card-etirements .card-icon {
+  background: rgba(122, 78, 138, 0.3);
+  color: #c4a3d4;
+}
+
+/* === Intro de la page === */
+.etirements-intro {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 18px;
+  background: linear-gradient(135deg, #efe2f0, #f0e8db);
+  border-radius: 18px;
+  margin-bottom: 18px;
+}
+
+[data-theme="dark"] .etirements-intro {
+  background: linear-gradient(135deg, rgba(122, 78, 138, 0.18), rgba(35, 42, 38, 0.6));
+}
+
+.etirements-intro-icon {
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.etirements-intro-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #2d4a3e;
+  margin-bottom: 4px;
+}
+
+.etirements-intro-sub {
+  font-size: 0.85rem;
+  color: #4a5e54;
+  line-height: 1.45;
+}
+
+[data-theme="dark"] .etirements-intro-title {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .etirements-intro-sub {
+  color: #d4ccc0 !important;
+}
+
+/* === Bouton routine complète === */
+.etirements-routine-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #7a4e8a, #5a3a6a);
+  color: #fff;
+  border: none;
+  padding: 18px 18px;
+  border-radius: 18px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(122, 78, 138, 0.25);
+  transition: all 0.18s;
+}
+
+.etirements-routine-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 22px rgba(122, 78, 138, 0.35);
+}
+
+.etirements-routine-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .etirements-routine-btn {
+  background: linear-gradient(135deg, #8a5e9a, #6a4a7a);
+}
+
+/* === Liste des cartes étirements === */
+.etirements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.etirement-card {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #fff;
+  border: 1.5px solid #ede8e0;
+  padding: 14px 16px;
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  text-align: left;
+  transition: all 0.18s;
+  box-shadow: 0 1px 3px rgba(45, 74, 62, 0.04);
+}
+
+.etirement-card:hover {
+  transform: translateY(-1px);
+  border-color: var(--etir-color, #2d4a3e);
+  box-shadow: 0 4px 12px rgba(45, 74, 62, 0.08);
+}
+
+.etirement-card:focus-visible {
+  outline: 2px solid var(--etir-color, #2d4a3e);
+  outline-offset: 2px;
+}
+
+[data-theme="dark"] .etirement-card {
+  background: #232a26;
+  border-color: rgba(255,255,255,0.08);
+}
+
+.etirement-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+.etirement-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.etirement-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1e2d26;
+  line-height: 1.3;
+  margin-bottom: 4px;
+}
+
+.etirement-benefice {
+  font-size: 0.82rem;
+  color: var(--etir-color, #4a5e54);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.etirement-duree {
+  font-size: 0.76rem;
+  color: #8a9e96;
+}
+
+.etirement-arrow {
+  font-size: 1.4rem;
+  color: #a0735c;
+  flex-shrink: 0;
+}
+
+[data-theme="dark"] .etirement-name {
+  color: #f5efe8 !important;
+}
+
+[data-theme="dark"] .etirement-duree {
+  color: #9eaba2;
+}
+
+[data-theme="dark"] .etirement-arrow {
+  color: #b8a896;
+}
+
+/* === Modal détail étirement === */
+.etirement-detail-modal {
+  max-width: 580px;
+}
+
+.etirement-detail-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+}
+
+/* === Timer === */
+.etirement-timer-block {
+  text-align: center;
+  padding: 22px 16px;
+  background: #f7f3ee;
+  border-radius: 16px;
+  margin-bottom: 18px;
+}
+
+[data-theme="dark"] .etirement-timer-block {
+  background: #1a201d;
+}
+
+.etirement-timer-display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.etirement-timer-progress {
+  width: 100%;
+  height: 8px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+[data-theme="dark"] .etirement-timer-progress {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.etirement-timer-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 99px;
+  transition: width 1s linear;
+}
+
+.etirement-timer-btn {
+  background: #2d4a3e;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 99px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  transition: all 0.15s;
+  min-height: 44px;
+}
+
+.etirement-timer-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.etirement-timer-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+/* === Instructions === */
+.etirement-instructions {
+  margin-bottom: 18px;
+}
+
+.etirement-instructions-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #6c8278;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+}
+
+[data-theme="dark"] .etirement-instructions-title {
+  color: #b8a896 !important;
+}
+
+.etirement-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(160, 115, 92, 0.1);
+}
+
+.etirement-step:last-child {
+  border-bottom: none;
+}
+
+[data-theme="dark"] .etirement-step {
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+.etirement-step-num {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #2d4a3e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.etirement-step-text {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #1e2d26;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .etirement-step-text {
+  color: #f5efe8 !important;
+}
+
+/* === Tip box === */
+.etirement-tip {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: rgba(212, 168, 67, 0.1);
+  border-left: 3px solid #d4a843;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.85rem;
+  color: #5a4a30;
+  line-height: 1.5;
+}
+
+[data-theme="dark"] .etirement-tip {
+  background: rgba(232, 185, 79, 0.1);
+  color: #e8d4a8 !important;
+}
+
+/* === Disclaimer === */
+.etirements-disclaimer {
+  margin-top: 22px;
+  padding: 14px 16px;
+  background: rgba(45, 74, 62, 0.05);
+  border-radius: 12px;
+  font-size: 0.82rem;
+  color: #4a5e54;
+  line-height: 1.55;
+}
+
+[data-theme="dark"] .etirements-disclaimer {
+  background: rgba(255, 255, 255, 0.04);
+  color: #d4ccc0 !important;
+}
+
+/* === Routine progress bar === */
+.routine-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+
+[data-theme="dark"] .routine-progress-bar {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.routine-progress-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .etirement-card:hover,
+  .etirements-routine-btn:hover,
+  .etirement-timer-btn:hover {
+    transform: none;
+  }
+  
+  .etirement-timer-bar,
+  .routine-progress-fill {
+    transition: none !important;
+  }
+}
