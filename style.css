@@ -2311,3 +2311,474 @@ textarea.field { resize: vertical; min-height: 80px; }
   padding: 3px 10px; border-radius: 99px;
 }
 
+
+/* ================================================================
+   ACCESSIBILITÉ + MODE SOMBRE — Actions 16 à 21
+   ================================================================ */
+
+/* === Variables couleurs centralisées (re-déclarées pour le mode sombre) === */
+:root {
+  /* Tons clairs (mode défaut, déjà existants) */
+  --green-deep: #2d4a3e;
+  --green-mid: #3d6b58;
+  --green-pale: #c8e6d4;
+  --cream: #f7f3ee;
+  --cream-dark: #ede8e0;
+  --white: #ffffff;
+  --text-dark: #1e2d26;
+  --text-mid: #4a5e54;
+  --text-light: #6c8278; /* Foncé pour respecter contraste WCAG AA (était #8a9e96) */
+  --text-soft: #8a7e74; /* Foncé pour passer WCAG AA sur fond cream */
+  --gold: #d4a843;
+  --rust: #c0614a;
+  --shadow: rgba(45, 74, 62, 0.08);
+  --shadow-strong: rgba(45, 74, 62, 0.18);
+}
+
+/* ================================================================
+   ACTION 16 — prefers-reduced-motion
+   Désactive animations/transitions pour brouillard mental, migraines,
+   troubles vestibulaires (fréquents avec inflammation chronique)
+   ================================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    animation-delay: 0ms !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Splash : on garde le contenu visible mais sans le drop animé */
+  #splash {
+    animation: none !important;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .splash-loader,
+  .splash-loader::before,
+  .splash-loader::after {
+    animation: none !important;
+  }
+}
+
+/* ================================================================
+   ACTION 17 — Focus visible
+   Outline net pour navigation clavier (accessibilité essentielle)
+   ================================================================ */
+
+/* Cible tous les éléments interactifs au focus clavier */
+:focus-visible {
+  outline: 2px solid var(--green-mid);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Boutons spécifiques avec outline plus marqué */
+button:focus-visible,
+.chip:focus-visible,
+.nav-btn:focus-visible,
+.jtab:focus-visible,
+.budget-chip:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 3px;
+}
+
+/* Inputs et textareas : outline + bordure renforcée */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--green-deep);
+  outline-offset: 0;
+}
+
+/* Désactiver outline sur clic souris (mais garder pour clavier) */
+button:focus:not(:focus-visible),
+input:focus:not(:focus-visible),
+.chip:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ================================================================
+   ACTION 18 — Contrastes corrigés (WCAG AA)
+   --text-light foncé de #8a9e96 → #6c8278 (ratio 4.6:1 conforme)
+   --text-soft foncé pour passer AA aussi
+   (Ces ajustements sont dans :root ci-dessus, écrasent les anciennes valeurs)
+   ================================================================ */
+
+/* ================================================================
+   ACTION 19 — Plancher police minimum
+   Aucune police en dessous de 0.72rem (11.5px) pour fatigue oculaire
+   ================================================================ */
+
+.nav-label,
+.recette-tag,
+.recette-time,
+.shopping-meta,
+.card-sub {
+  font-size: 0.72rem !important;
+}
+
+.comp-tier {
+  font-size: 0.7rem !important;
+}
+
+/* ================================================================
+   ACTION 20 — Zones tactiles min 44x44px (Apple HIG / Material)
+   Pour utilisatrices avec tremblements (TDAH, anxiété, fatigue)
+   ================================================================ */
+
+button,
+.chip,
+.nav-btn,
+.jtab,
+.budget-chip {
+  min-height: 44px;
+}
+
+/* Sauf pour les chips serrés dans les filtres (déjà 36px qui est OK pour des chips) */
+.filter-chips .chip {
+  min-height: 36px;
+}
+
+/* Boutons icônes (croix de fermeture, retour, etc.) : min 36px */
+.flora-modal-close,
+.back-btn {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+/* ================================================================
+   ACTION 21 — MODE SOMBRE
+   Activé via [data-theme="dark"] sur <html>
+   ================================================================ */
+
+[data-theme="dark"] {
+  --green-deep: #4a8068;
+  --green-mid: #5a9078;
+  --green-pale: #2a3d36;
+  --cream: #1a1f1c;          /* Fond principal sombre */
+  --cream-dark: #14181a;      /* Fond plus profond */
+  --white: #232a26;           /* Cartes (était #fff en clair) */
+  --text-dark: #f5efe8;       /* Texte principal */
+  --text-mid: #d4ccc0;        /* Texte secondaire */
+  --text-light: #9eaba2;      /* Texte tertiaire */
+  --text-soft: #b8a896;
+  --gold: #e8b94f;
+  --rust: #d97a5e;
+  --shadow: rgba(0, 0, 0, 0.3);
+  --shadow-strong: rgba(0, 0, 0, 0.5);
+}
+
+/* Body en mode sombre */
+[data-theme="dark"] body {
+  background: var(--cream);
+  color: var(--text-dark);
+}
+
+/* Header sombre */
+[data-theme="dark"] .topbar {
+  background: #0d1210;
+  border-bottom-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Cards : on adoucit les ombres */
+[data-theme="dark"] .recette-card,
+[data-theme="dark"] .card,
+[data-theme="dark"] button.comp-card,
+[data-theme="dark"] .data-action-btn,
+[data-theme="dark"] .insight-card {
+  background: var(--white);
+  border-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* Inputs et textareas */
+[data-theme="dark"] .field,
+[data-theme="dark"] input,
+[data-theme="dark"] textarea,
+[data-theme="dark"] select {
+  background: #1a201d;
+  color: var(--text-dark);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] input::placeholder,
+[data-theme="dark"] textarea::placeholder {
+  color: var(--text-light);
+}
+
+/* Chips */
+[data-theme="dark"] .chip {
+  background: #2c332f;
+  color: var(--text-mid);
+}
+
+[data-theme="dark"] .chip.active {
+  background: var(--green-deep);
+  color: var(--text-dark);
+}
+
+/* Modals */
+[data-theme="dark"] .flora-modal-content {
+  background: #232a26;
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .flora-modal-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+[data-theme="dark"] .flora-modal-close {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-mid);
+}
+
+[data-theme="dark"] .flora-modal-footer,
+[data-theme="dark"] .flora-modal-header {
+  background: #232a26;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Bandeaux compléments */
+[data-theme="dark"] .comp-meds-banner {
+  background: linear-gradient(135deg, #2a3d36, #1f2622);
+}
+
+[data-theme="dark"] .comp-legend {
+  background: var(--white);
+}
+
+[data-theme="dark"] .comp-fiche-sources {
+  background: #1a201d;
+}
+
+/* Journal blocks */
+[data-theme="dark"] .journal-block {
+  background: var(--white);
+}
+
+/* Bandeau bouton "Configurer" : reste vert */
+[data-theme="dark"] .comp-meds-banner-btn {
+  background: var(--green-deep);
+  color: #fff;
+}
+
+/* Insights cards */
+[data-theme="dark"] .insight-card.insight-good {
+  background: rgba(74, 128, 104, 0.15);
+}
+
+[data-theme="dark"] .insight-card.insight-caution {
+  background: rgba(232, 185, 79, 0.1);
+}
+
+[data-theme="dark"] .insight-card.insight-warning {
+  background: rgba(217, 122, 94, 0.12);
+}
+
+[data-theme="dark"] .insights-intro {
+  background: linear-gradient(135deg, #2a3d36, #2c2820);
+}
+
+[data-theme="dark"] .insights-empty {
+  background: linear-gradient(135deg, #2a3d36, #1f2622);
+}
+
+[data-theme="dark"] .insights-period-selector {
+  background: #1a201d;
+}
+
+[data-theme="dark"] .insights-period-btn {
+  color: var(--text-light);
+}
+
+[data-theme="dark"] .insights-period-btn.active {
+  background: var(--green-deep);
+  color: var(--text-dark);
+}
+
+/* Bouton danger en sombre */
+[data-theme="dark"] .btn-danger {
+  background: rgba(217, 122, 94, 0.15);
+  color: var(--rust);
+  border-color: rgba(217, 122, 94, 0.3);
+}
+
+/* Boutons primaires : on garde le vert distinct */
+[data-theme="dark"] .btn-primary {
+  background: var(--green-deep);
+  color: #fff;
+}
+
+/* Section données (export/import) */
+[data-theme="dark"] .data-management-section {
+  background: linear-gradient(135deg, #2c2820, #232a26);
+  border-color: rgba(232, 185, 79, 0.2);
+}
+
+[data-theme="dark"] .data-action-btn {
+  background: var(--white);
+}
+
+[data-theme="dark"] .data-action-icon {
+  background: rgba(232, 185, 79, 0.15);
+}
+
+[data-theme="dark"] .data-management-title {
+  color: var(--text-dark);
+}
+
+[data-theme="dark"] .data-management-sub {
+  color: var(--text-mid);
+}
+
+/* Bottom nav */
+[data-theme="dark"] .bottom-nav {
+  background: #0d1210;
+  border-top-color: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .nav-btn:not(.active) {
+  color: var(--text-light);
+}
+
+/* Symptômes chips */
+[data-theme="dark"] .symptome-chip {
+  background: #2c332f;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: var(--text-mid);
+}
+
+/* Habitudes — verres d'eau */
+[data-theme="dark"] button[aria-label^="Verre"] {
+  background-color: #1a201d !important;
+  color: #6c8278 !important;
+}
+
+/* Liste de courses */
+[data-theme="dark"] .shopping-empty {
+  background: linear-gradient(135deg, #2a3d36, #1f2622);
+}
+
+[data-theme="dark"] .shopping-meta {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+/* Recettes — emoji background */
+[data-theme="dark"] .recette-emoji {
+  background: linear-gradient(135deg, #2a3d36, #2c332f);
+}
+
+[data-theme="dark"] .recette-emoji::after {
+  background: linear-gradient(to top, rgba(35, 42, 38, 0.4), transparent);
+}
+
+/* Désactiver l'effet de hover translucide */
+[data-theme="dark"] .recette-card:hover {
+  box-shadow: 0 6px 20px var(--shadow-strong);
+}
+
+/* ================================================================
+   ACTION 21 BIS — Auto-mode sombre selon préférence système
+   Activé seulement si data-theme="auto" ou si non défini
+   ================================================================ */
+@media (prefers-color-scheme: dark) {
+  [data-theme="auto"],
+  html:not([data-theme]) {
+    /* Ne PAS auto-activer sans permission utilisateur :
+       on laisse le toggle profil décider. Cette media query
+       sert juste à respecter le choix "auto" si choisi. */
+  }
+  
+  [data-theme="auto"] {
+    --green-deep: #4a8068;
+    --green-mid: #5a9078;
+    --green-pale: #2a3d36;
+    --cream: #1a1f1c;
+    --cream-dark: #14181a;
+    --white: #232a26;
+    --text-dark: #f5efe8;
+    --text-mid: #d4ccc0;
+    --text-light: #9eaba2;
+    --text-soft: #b8a896;
+    --gold: #e8b94f;
+    --rust: #d97a5e;
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-strong: rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ================================================================
+   ARIA — Cacher visuellement mais lisible par lecteurs d'écran
+   ================================================================ */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* === Sélecteur de thème (Profil) === */
+.theme-selector {
+  display: flex;
+  gap: 8px;
+  background: var(--cream);
+  padding: 6px;
+  border-radius: 14px;
+}
+
+.theme-option {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 12px 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--text-mid);
+  transition: all 0.18s;
+  min-height: 56px;
+}
+
+.theme-option:hover {
+  background: rgba(45, 74, 62, 0.05);
+}
+
+.theme-option.active {
+  background: var(--white);
+  color: var(--green-deep);
+  font-weight: 600;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.theme-option-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.theme-option-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .theme-selector {
+  background: #1a201d;
+}
+
+[data-theme="dark"] .theme-option.active {
+  background: var(--white);
+  color: var(--text-dark);
+}

@@ -138,8 +138,8 @@
     </div>
     <div class="header-right">
       <span id="header-greeting"></span>
-      <button class="icon-btn" id="header-login-btn" onclick="showLogin()" title="Se connecter">🔑</button>
-      <button class="icon-btn" onclick="showPage('profil')" title="Profil">👤</button>
+      <button class="icon-btn" id="header-login-btn" onclick="showLogin()" title="Se connecter" aria-label="Se connecter">🔑</button>
+      <button class="icon-btn" onclick="showPage('profil')" title="Profil" aria-label="Mon profil">👤</button>
     </div>
   </header>
 
@@ -260,7 +260,7 @@
 
             <section id="page-journal" class="page hidden">
         <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
           <h2>Journal de nuit SJSR</h2>
         </div>
 
@@ -302,7 +302,7 @@
            ============================================ -->
       <section id="page-insights" class="page hidden">
         <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
           <h2>Mes insights</h2>
         </div>
         
@@ -313,7 +313,7 @@
 
       <section id="page-recettes" class="page hidden">
         <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
           <h2>Recettes & Compléments</h2>
         </div>
 
@@ -421,7 +421,7 @@
 
       <section id="page-agenda" class="page hidden">
         <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
           <h2>Agenda alimentaire</h2>
         </div>
 
@@ -447,7 +447,7 @@
 
       <section id="page-generateur" class="page hidden">
         <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
           <h2>Générateur de menus</h2>
         </div>
 
@@ -519,7 +519,7 @@
 
       <section id="page-profil" class="page hidden">
         <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')">←</button>
+          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
           <h2>Mon profil</h2>
         </div>
 
@@ -543,6 +543,24 @@
               <option value="energie">Retrouver de l'énergie</option>
               <option value="global">Bien-être global</option>
             </select>
+          </div>
+        </div>
+
+        <div class="settings-group">
+          <div class="settings-title">Apparence</div>
+          <div class="theme-selector">
+            <button class="theme-option" data-theme-value="light" onclick="setTheme('light')">
+              <span class="theme-option-icon">☀️</span>
+              <span class="theme-option-label">Clair</span>
+            </button>
+            <button class="theme-option" data-theme-value="dark" onclick="setTheme('dark')">
+              <span class="theme-option-icon">🌙</span>
+              <span class="theme-option-label">Sombre</span>
+            </button>
+            <button class="theme-option" data-theme-value="auto" onclick="setTheme('auto')">
+              <span class="theme-option-icon">🔄</span>
+              <span class="theme-option-label">Auto</span>
+            </button>
           </div>
         </div>
 
@@ -720,7 +738,7 @@
 
       <section id="page-placard" class="page hidden">
     <div class="page-header-inner">
-      <button class="back-btn" onclick="showPage('accueil')">←</button>
+      <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
       <h2>Mon Placard 🗄️</h2>
     </div>
 
@@ -769,7 +787,7 @@
 
       <section id="page-batch" class="page hidden">
     <div class="page-header-inner">
-      <button class="back-btn" onclick="showPage('accueil')">←</button>
+      <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
       <h2>Batch Cooking 🍳</h2>
     </div>
 

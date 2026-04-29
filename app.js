@@ -8918,3 +8918,50 @@ function showFloraDataToast(title, message, level) {
     setTimeout(() => toast.remove(), 350);
   }, 3500);
 }
+
+// ============================================================
+// THÈME — Mode sombre / clair / auto
+// ============================================================
+
+function setTheme(theme) {
+  // Validation
+  if (!['light', 'dark', 'auto'].includes(theme)) theme = 'light';
+  
+  // Application immédiate
+  if (theme === 'light') {
+    document.documentElement.removeAttribute('data-theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+  
+  // Sauvegarde
+  try {
+    localStorage.setItem('flora_theme', theme);
+  } catch(e) {}
+  
+  // Mise à jour des boutons actifs
+  document.querySelectorAll('.theme-option').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.themeValue === theme);
+  });
+  
+  // Mise à jour du theme-color du navigateur (barre du haut sur mobile)
+  const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeColorMeta) {
+    let isDark = theme === 'dark';
+    if (theme === 'auto') {
+      isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    }
+    themeColorMeta.setAttribute('content', isDark ? '#0d1210' : '#2d4a3e');
+  }
+}
+
+function loadTheme() {
+  let saved = 'light';
+  try {
+    saved = localStorage.getItem('flora_theme') || 'light';
+  } catch(e) {}
+  setTheme(saved);
+}
+
+// Appliquer le thème au plus tôt (avant initApp)
+loadTheme();
