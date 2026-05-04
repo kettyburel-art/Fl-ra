@@ -678,10 +678,72 @@ textarea.field { resize: vertical; min-height: 80px; }
   transition: transform 0.18s, box-shadow 0.18s;
   box-shadow: 0 2px 10px var(--shadow);
   border: 1px solid rgba(45, 74, 62, 0.04);
+  position: relative;
 }
 
 .recette-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow-strong); }
 .recette-card:active { transform: scale(0.97); }
+
+/* Bouton ❤️ favoris sur les cartes */
+.recette-fav-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  font-size: 1.05rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s, background 0.15s;
+  z-index: 2;
+  padding: 0;
+  line-height: 1;
+}
+.recette-fav-btn:hover  { transform: scale(1.12); background: #fff; }
+.recette-fav-btn:active { transform: scale(0.92); }
+.recette-fav-btn.fav-active { animation: heartPop 0.32s ease-out; }
+
+/* Bouton ❤️ favoris dans la modale recette */
+.modal-fav-btn {
+  position: absolute;
+  top: 14px;
+  right: 60px; /* à gauche de la croix de fermeture du modal */
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+  z-index: 5;
+  padding: 0;
+}
+.modal-fav-btn:hover    { transform: scale(1.1); }
+.modal-fav-btn:active   { transform: scale(0.92); }
+.modal-fav-btn.fav-active { animation: heartPop 0.32s ease-out; }
+
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+/* Chip "❤️ Favoris" : fond rosé subtil quand actif */
+.chip.chip-favoris.active {
+  background: linear-gradient(135deg, #fde8ec, #fad4dc);
+  color: #b03050;
+  border-color: #f0c0cc;
+}
 
 .recette-emoji {
   font-size: 2.6rem;
@@ -689,6 +751,7 @@ textarea.field { resize: vertical; min-height: 80px; }
   height: 88px;
   display: flex; align-items: center; justify-content: center;
   position: relative;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
 }
 
 .recette-emoji::after {
@@ -698,6 +761,59 @@ textarea.field { resize: vertical; min-height: 80px; }
   height: 30px;
   background: linear-gradient(to top, rgba(255,255,255,0.4), transparent);
   pointer-events: none;
+}
+
+/* Halos par catégorie : un cercle radial coloré derrière l'emoji */
+.recette-emoji::before {
+  content: '';
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.55) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+.recette-emoji > * { position: relative; z-index: 1; }
+
+/* 🌅 Petit-déjeuner — halo doré chaleureux, début de journée */
+.recette-emoji.cat-petit-dejeuner {
+  background: linear-gradient(135deg, #fdf3d8, #fae5b8);
+}
+.recette-emoji.cat-petit-dejeuner::before {
+  background: radial-gradient(circle, rgba(255, 200, 100, 0.5) 0%, transparent 70%);
+}
+
+/* 🥂 Brunch — halo rose pâle festif */
+.recette-emoji.cat-brunch {
+  background: linear-gradient(135deg, #fde8ec, #fad4dc);
+}
+.recette-emoji.cat-brunch::before {
+  background: radial-gradient(circle, rgba(245, 180, 200, 0.5) 0%, transparent 70%);
+}
+
+/* ☀️ Déjeuner — halo vert clair frais */
+.recette-emoji.cat-dejeuner {
+  background: linear-gradient(135deg, #d8eedb, #bfdcc7);
+}
+.recette-emoji.cat-dejeuner::before {
+  background: radial-gradient(circle, rgba(140, 200, 160, 0.5) 0%, transparent 70%);
+}
+
+/* 🌙 Dîner — halo violet doux apaisant */
+.recette-emoji.cat-diner {
+  background: linear-gradient(135deg, #e8e0ed, #d4c8de);
+}
+.recette-emoji.cat-diner::before {
+  background: radial-gradient(circle, rgba(160, 130, 195, 0.45) 0%, transparent 70%);
+}
+
+/* 🍎 Snack — halo orangé énergique */
+.recette-emoji.cat-snack {
+  background: linear-gradient(135deg, #fde8d0, #fad2b0);
+}
+.recette-emoji.cat-snack::before {
+  background: radial-gradient(circle, rgba(245, 160, 100, 0.5) 0%, transparent 70%);
 }
 
 .recette-info { padding: 12px 14px 14px; }
@@ -784,13 +900,101 @@ textarea.field { resize: vertical; min-height: 80px; }
 }
 
 /* Modal recette content */
-.modal-recipe-header { text-align: center; margin-bottom: 20px; }
-.modal-recipe-emoji { font-size: 3rem; }
+/* ============================================================
+   Hero modale recette : bandeau coloré dégradé selon catégorie
+   ============================================================ */
+.modal-recipe-header {
+  text-align: center;
+  margin: -22px -22px 20px;        /* déborde des paddings du modal */
+  padding: 28px 22px 22px;
+  position: relative;
+  border-radius: 22px 22px 0 0;
+  background: linear-gradient(135deg, var(--green-pale), var(--cream-dark));
+  overflow: hidden;
+}
+.modal-recipe-header::before {
+  /* halo lumineux derrière l'emoji */
+  content: '';
+  position: absolute;
+  top: 18px; left: 50%;
+  transform: translateX(-50%);
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.7) 0%, transparent 65%);
+  pointer-events: none;
+}
+.modal-recipe-emoji {
+  font-size: 4.4rem;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  line-height: 1;
+}
 .modal-recipe-title {
   font-family: var(--font-display);
   font-size: 1.4rem;
   color: var(--green-deep);
-  margin-top: 8px;
+  margin-top: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Hero par catégorie — assorti aux halos des cartes */
+.modal-recipe-header.cat-petit-dejeuner {
+  background: linear-gradient(135deg, #fdf3d8, #fae5b8);
+}
+.modal-recipe-header.cat-brunch {
+  background: linear-gradient(135deg, #fde8ec, #fad4dc);
+}
+.modal-recipe-header.cat-dejeuner {
+  background: linear-gradient(135deg, #d8eedb, #bfdcc7);
+}
+.modal-recipe-header.cat-diner {
+  background: linear-gradient(135deg, #e8e0ed, #d4c8de);
+}
+.modal-recipe-header.cat-snack {
+  background: linear-gradient(135deg, #fde8d0, #fad2b0);
+}
+
+/* Le bouton ❤️ favori reste bien en haut à droite du header coloré */
+.modal-recipe-header .modal-fav-btn { z-index: 3; }
+
+/* ============================================================
+   États vides illustrés
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 32px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.empty-illustration {
+  width: 120px;
+  height: 120px;
+  margin-bottom: 12px;
+  opacity: 0.92;
+  animation: emptyFloat 4s ease-in-out infinite;
+}
+.empty-state-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.05rem;
+  color: var(--green-deep);
+  font-weight: 600;
+  margin-top: 4px;
+}
+.empty-state-text {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  max-width: 260px;
+  line-height: 1.45;
+}
+
+@keyframes emptyFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
 }
 
 .recipe-meta-row {
@@ -1240,6 +1444,539 @@ textarea.field { resize: vertical; min-height: 80px; }
   margin-top: 3px;
 }
 
+/* ============================================================
+   Mes recettes — page liste + modal de création/édition
+   ============================================================ */
+.my-recipe-card {
+  position: relative;
+}
+.my-recipe-edit-btn,
+.my-recipe-delete-btn {
+  position: absolute;
+  top: 8px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  z-index: 3;
+  padding: 0;
+  line-height: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.15s, background 0.15s;
+}
+.my-recipe-edit-btn:hover,
+.my-recipe-delete-btn:hover { transform: scale(1.1); }
+.my-recipe-edit-btn:active,
+.my-recipe-delete-btn:active { transform: scale(0.92); }
+
+.my-recipe-edit-btn {
+  right: 44px;
+  color: var(--green-deep);
+}
+.my-recipe-edit-btn:hover {
+  background: var(--green-pale);
+}
+.my-recipe-delete-btn {
+  right: 8px;
+  color: #c0614a;
+  font-size: 1.1rem;
+}
+.my-recipe-delete-btn:hover {
+  background: #fde8e0;
+}
+
+/* Modal création/édition de recette */
+.myr-emoji-current {
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 8px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--green-pale), var(--cream-dark));
+  border-radius: 14px;
+}
+.myr-emoji-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  max-height: 140px;
+  overflow-y: auto;
+  padding: 6px;
+  background: #f7f3ee;
+  border-radius: 10px;
+}
+.emoji-pick {
+  background: none;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  font-size: 1.3rem;
+  padding: 4px;
+  cursor: pointer;
+  transition: background 0.12s, border-color 0.12s;
+  font-family: inherit;
+  line-height: 1;
+}
+.emoji-pick:hover { background: var(--white); }
+.emoji-pick.active {
+  background: var(--white);
+  border-color: var(--green-deep);
+}
+
+.myr-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.myr-tag-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #f7f3ee;
+  border-radius: 99px;
+  font-size: 0.82rem;
+  color: var(--text-mid);
+  cursor: pointer;
+  user-select: none;
+  border: 1.5px solid transparent;
+  transition: background 0.15s, border-color 0.15s;
+}
+.myr-tag-label:has(input:checked) {
+  background: var(--green-pale);
+  border-color: var(--green-deep);
+  color: var(--green-deep);
+  font-weight: 600;
+}
+.myr-tag-label input { cursor: pointer; }
+
+/* ============================================================
+   Mode rapide du journal
+   ============================================================ */
+.journal-quick-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, #fef2e3, #fde6cc);
+  border: 1.5px solid #d49d6b;
+  border-radius: 16px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  font-family: inherit;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 2px 10px rgba(212, 157, 107, 0.15);
+}
+.journal-quick-btn:hover  { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(212, 157, 107, 0.25); }
+.journal-quick-btn:active { transform: scale(0.98); }
+.quick-btn-icon  { font-size: 1.4rem; }
+.quick-btn-label {
+  flex: 1;
+  text-align: left;
+  font-weight: 600;
+  color: #7a4a1e;
+  font-size: 0.92rem;
+}
+.quick-btn-arrow {
+  color: #a0735c;
+  font-size: 1.2rem;
+}
+
+/* Overlay du modal */
+.quick-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(45, 74, 62, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: quickFadeIn 0.25s ease-out;
+}
+.quick-modal {
+  background: var(--white);
+  border-radius: 22px;
+  width: 100%;
+  max-width: 440px;
+  max-height: 92vh;
+  overflow-y: auto;
+  padding: 22px 22px 18px;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+  animation: quickSlideUp 0.3s ease-out;
+}
+.quick-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+.quick-modal-title {
+  font-family: var(--font-display, Playfair Display, Georgia, serif);
+  font-size: 1.3rem;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+.quick-modal-close {
+  background: none;
+  border: none;
+  font-size: 1.4rem;
+  color: var(--text-light);
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 8px;
+  line-height: 1;
+}
+.quick-modal-close:hover { background: #f7f3ee; }
+.quick-modal-sub {
+  font-size: 0.82rem;
+  color: var(--text-light);
+  margin: 0 0 18px;
+  font-style: italic;
+}
+
+.quick-section { margin-bottom: 20px; }
+.quick-section-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+/* Étoiles qualité */
+.quick-stars {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+.quick-star {
+  background: none;
+  border: none;
+  font-size: 2.2rem;
+  cursor: pointer;
+  color: #e8d488;
+  padding: 4px 8px;
+  transition: transform 0.15s;
+  line-height: 1;
+}
+.quick-star:hover  { transform: scale(1.18); }
+.quick-star:active { transform: scale(0.92); }
+.quick-star.active { color: #f0b429; }
+
+/* Slider douleur */
+.quick-douleur-display {
+  text-align: center;
+  margin-bottom: 8px;
+  font-family: var(--font-display, Playfair Display, Georgia, serif);
+}
+.quick-douleur-val {
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: var(--green-deep);
+}
+.quick-douleur-max {
+  font-size: 1.3rem;
+  color: var(--text-light);
+}
+.quick-slider {
+  width: 100%;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: linear-gradient(to right, #a8cfb1 0%, #f0d896 50%, #c0614a 100%);
+  border-radius: 99px;
+  outline: none;
+  margin-bottom: 6px;
+}
+.quick-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 26px;
+  background: var(--white);
+  border: 3px solid var(--green-deep);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.quick-slider::-moz-range-thumb {
+  width: 26px;
+  height: 26px;
+  background: var(--white);
+  border: 3px solid var(--green-deep);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+.quick-douleur-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-light);
+}
+
+/* Humeurs */
+.quick-moods {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.quick-mood {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 6px;
+  background: #f7f3ee;
+  border: 2px solid #ede8e0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.15s, background 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.quick-mood:hover  { transform: translateY(-1px); }
+.quick-mood:active { transform: scale(0.96); }
+.quick-mood.active {
+  background: var(--green-pale);
+  border-color: var(--green-deep);
+}
+.quick-mood-emoji { font-size: 1.6rem; line-height: 1; }
+.quick-mood-label {
+  font-size: 0.7rem;
+  color: var(--text-mid);
+  font-weight: 600;
+}
+.quick-mood.active .quick-mood-label { color: var(--green-deep); }
+
+/* Boutons d'action */
+.quick-modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+.quick-btn-cancel,
+.quick-btn-save {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  border: none;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s;
+}
+.quick-btn-cancel {
+  background: #f7f3ee;
+  color: var(--text-mid);
+}
+.quick-btn-cancel:hover { background: #ede8e0; }
+.quick-btn-save {
+  background: var(--green-deep);
+  color: var(--white);
+}
+.quick-btn-save:hover { background: #2a4538; }
+.quick-btn-cancel:active,
+.quick-btn-save:active { transform: scale(0.97); }
+
+/* Toast de confirmation */
+.quick-save-toast {
+  position: fixed;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--green-deep);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: 99px;
+  font-size: 0.88rem;
+  font-weight: 500;
+  z-index: 9999;
+  box-shadow: 0 4px 18px rgba(45, 74, 62, 0.35);
+  transition: opacity 0.4s, transform 0.4s;
+  white-space: nowrap;
+}
+
+@keyframes quickFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes quickSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   Bandeau d'incitation à saisir le journal (sur l'accueil)
+   ============================================================ */
+.journal-nudge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  margin: 12px 0 4px;
+  cursor: pointer;
+  font-size: 0.86rem;
+  line-height: 1.35;
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: nudgeAppear 0.4s ease-out;
+}
+.journal-nudge:hover  { transform: translateY(-1px); }
+.journal-nudge:active { transform: scale(0.98); }
+
+.nudge-icon { font-size: 1.3rem; flex-shrink: 0; }
+.nudge-text { flex: 1; min-width: 0; }
+.nudge-arrow {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* État doux : encouragement gentil (vert pâle) */
+.journal-nudge-soft {
+  background: linear-gradient(135deg, #e8f3ec, #f0f7e8);
+  color: var(--green-deep);
+  border: 1px solid rgba(61, 107, 88, 0.12);
+  box-shadow: 0 2px 8px rgba(45, 74, 62, 0.06);
+}
+
+/* État urgent : streak en cours à préserver (orange chaleureux) */
+.journal-nudge-urgent {
+  background: linear-gradient(135deg, #fef2e3, #fde6cc);
+  color: #7a4a1e;
+  border: 1px solid #d49d6b;
+  box-shadow: 0 2px 10px rgba(212, 157, 107, 0.2);
+}
+.journal-nudge-urgent .nudge-icon {
+  animation: flameFlicker 1.6s ease-in-out infinite;
+}
+
+/* État done : confirmation discrète (vert profond) */
+.journal-nudge-done {
+  background: linear-gradient(135deg, var(--green-deep), var(--green-mid, #3d6b58));
+  color: #fff;
+  border: 1px solid var(--green-deep);
+  box-shadow: 0 2px 8px rgba(45, 74, 62, 0.18);
+  cursor: default;
+}
+.journal-nudge-done:hover { transform: none; }
+.journal-nudge-done:active { transform: none; }
+
+@keyframes nudgeAppear {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  35%      { transform: scale(1.1) rotate(-3deg); }
+  70%      { transform: scale(1.05) rotate(2deg); }
+}
+
+/* ============================================================
+   Bloc "À manger aujourd'hui" sur l'accueil
+   ============================================================ */
+.today-meals-block {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px 12px;
+  margin: 16px 0;
+  box-shadow: 0 2px 10px var(--shadow);
+  border: 1px solid rgba(45, 74, 62, 0.04);
+}
+.today-meals-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.today-meals-title {
+  font-family: var(--font-display, 'Playfair Display', Georgia, serif);
+  font-size: 1.05rem;
+  color: var(--green-deep);
+  font-weight: 600;
+}
+.today-meals-link {
+  font-size: 0.78rem;
+  color: var(--green-mid);
+  cursor: pointer;
+  font-weight: 500;
+}
+.today-meals-link:hover { text-decoration: underline; }
+
+.today-meals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.today-meal-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, var(--green-pale), var(--cream-dark));
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.today-meal-item:hover {
+  transform: translateX(2px);
+  box-shadow: 0 3px 10px var(--shadow);
+}
+.today-meal-item:active { transform: scale(0.98); }
+
+.today-meal-emoji {
+  font-size: 1.8rem;
+  width: 44px;
+  height: 44px;
+  background: var(--white);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.today-meal-info { flex: 1; min-width: 0; }
+.today-meal-slot {
+  font-size: 0.7rem;
+  color: var(--text-mid);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+.today-meal-name {
+  font-size: 0.92rem;
+  color: var(--green-deep);
+  font-weight: 600;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.today-meal-meta {
+  font-size: 0.72rem;
+  color: var(--text-light);
+  margin-top: 2px;
+}
+.today-meal-arrow {
+  color: var(--text-light);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
 .conseil-sjsr {
   background: var(--white);
   border-radius: var(--radius-lg);
@@ -1528,6 +2265,112 @@ textarea.field { resize: vertical; min-height: 80px; }
   border-color: var(--green-light);
   color: var(--green-deep);
   font-weight: 600;
+}
+
+/* ============================================================
+   Placard — recherche + ajout d'ingrédient personnalisé
+   ============================================================ */
+.placard-search-row {
+  position: relative;
+  margin-bottom: 10px;
+}
+.placard-search-input {
+  width: 100%;
+  padding: 11px 38px 11px 14px;
+  border: 1.5px solid var(--cream-dark);
+  border-radius: 14px;
+  font-size: 0.92rem;
+  background: var(--white);
+  color: var(--text-mid);
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.placard-search-input:focus {
+  border-color: var(--green-mid, #3d6b58);
+}
+.placard-clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--cream-dark);
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  line-height: 1;
+}
+.placard-clear-btn:hover { background: var(--text-light); color: var(--white); }
+
+.placard-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, #f7f3ee, #ede8e0);
+  border: 1.5px dashed var(--green-mid, #3d6b58);
+  color: var(--green-deep);
+  border-radius: 14px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-bottom: 14px;
+  transition: background 0.15s, transform 0.15s;
+}
+.placard-add-btn:hover  { background: linear-gradient(135deg, #ede8e0, #ddd6cc); }
+.placard-add-btn:active { transform: scale(0.98); }
+.placard-add-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--green-deep);
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Item personnalisé : style légèrement distinct + bouton de suppression au hover */
+.placard-item-custom {
+  position: relative;
+  border-style: dashed;
+  padding-right: 24px;
+}
+.placard-item-custom .placard-item-del {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(192, 97, 74, 0.12);
+  color: #c0614a;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+.placard-item-custom .placard-item-del:hover {
+  background: #c0614a;
+  color: var(--white);
 }
 
 /* ============================
@@ -2829,4 +3672,32 @@ button,
 
 [data-theme="dark"] .recipe-conseil span {
   color: #e0d4b0 !important;
+}
+
+/* ============================================
+   REPAS DU JOUR (journal) — modes & autocomplete
+   ============================================ */
+.repas-mode-btn {
+  padding: 8px 12px;
+  border: 1.5px solid #ede8e0;
+  border-radius: 99px;
+  background: var(--white);
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  cursor: pointer;
+  color: var(--text);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.repas-mode-btn:hover {
+  border-color: var(--green-deep);
+  background: var(--cream);
+}
+.repas-mode-btn:active {
+  transform: scale(0.97);
+}
+[data-theme="dark"] .repas-mode-btn {
+  background: var(--card-bg, #2a2620);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e8dfc8;
 }

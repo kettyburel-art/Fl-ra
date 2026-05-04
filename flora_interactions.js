@@ -120,7 +120,7 @@ const MEDICAMENTS_FAMILLES = [
 
 function getUserMedications() {
   try {
-    const saved = localStorage.getItem('flora-medications');
+    const saved = localStorage.getItem('flora_medications');
     return saved ? JSON.parse(saved) : null;
   } catch(e) {
     return null;
@@ -129,7 +129,7 @@ function getUserMedications() {
 
 function setUserMedications(medsArray) {
   try {
-    localStorage.setItem('flora-medications', JSON.stringify({
+    localStorage.setItem('flora_medications', JSON.stringify({
       meds: medsArray,
       updatedAt: new Date().toISOString()
     }));
@@ -141,7 +141,7 @@ function setUserMedications(medsArray) {
 }
 
 function hasUserBeenAskedAboutMeds() {
-  return localStorage.getItem('flora-medications') !== null;
+  return localStorage.getItem('flora_medications') !== null;
 }
 
 // ============================

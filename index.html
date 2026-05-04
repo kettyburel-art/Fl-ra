@@ -9,7 +9,7 @@
 <title>Flōra</title>
 <link rel="manifest" href="manifest.json" />
 
-<link rel="apple-touch-icon" href="icons/icon-180.png" />
+<link rel="apple-touch-icon" href="icon.svg" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -197,6 +197,9 @@
           </div>
         </div>
 
+        <!-- Bandeau d'incitation à saisir le journal (apparaît selon contexte) -->
+        <div id="journal-nudge" class="journal-nudge hidden" onclick="showPage('journal')"></div>
+
         <!-- 4 cards -->
         <div class="card-grid">
           <div class="card card-journal" onclick="showPage('journal')">
@@ -254,6 +257,15 @@
           </div>
         </div>
 
+        <!-- À manger aujourd'hui (visible seulement si au moins 1 repas planifié) -->
+        <div id="today-meals-block" class="today-meals-block hidden">
+          <div class="today-meals-header">
+            <span class="today-meals-title">🍽️ À manger aujourd'hui</span>
+            <span class="today-meals-link" onclick="showPage('agenda')">Agenda →</span>
+          </div>
+          <div id="today-meals-list" class="today-meals-list"></div>
+        </div>
+
         <!-- Conseil SJSR rotatif -->
         <div class="conseil-sjsr" id="conseil-sjsr" onclick="nextConseil()">
           <div class="conseil-icon" id="conseil-icon">🦵</div>
@@ -276,6 +288,7 @@
         <div class="journal-tabs">
           <button class="jtab active" onclick="switchJTab('today', this)">Aujourd'hui</button>
           <button class="jtab" onclick="switchJTab('stats', this)">Statistiques</button>
+          <button class="jtab" onclick="switchJTab('calendrier', this)">Calendrier</button>
           <button class="jtab" onclick="switchJTab('historique', this)">Historique</button>
         </div>
 
@@ -294,6 +307,11 @@
         <!-- TAB STATISTIQUES -->
         <div id="jtab-stats" class="hidden">
           <div id="stats-journal-container"></div>
+        </div>
+
+        <!-- TAB CALENDRIER -->
+        <div id="jtab-calendrier" class="hidden">
+          <div id="calendar-journal-container"></div>
         </div>
 
         <!-- TAB HISTORIQUE -->
@@ -360,6 +378,7 @@
           <span class="chip" onclick="filterCat('dejeuner', this)">☀️ Déjeuners</span>
           <span class="chip" onclick="filterCat('diner', this)">🌙 Dîners</span>
           <span class="chip" onclick="filterCat('snack', this)">🍎 Snacks</span>
+          <span class="chip chip-favoris" onclick="toggleFavorisFilter(this)" id="chip-favoris">❤️ Favoris</span>
         </div>
         <!-- Filtres nutritionnels -->
         <div class="filter-chips" id="nutri-filters" style="margin-top:6px;">
@@ -683,6 +702,51 @@
           </div>
           <span style="color:#8a9e96;">›</span>
         </div>
+
+        <!-- Lien vers les badges -->
+        <div style="margin-top:10px;padding:14px 16px;background:#f7f3ee;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showPage('badges')">
+          <span style="font-size:1.4rem;">🏅</span>
+          <div style="flex:1;">
+            <div style="font-weight:600;color:#2d4a3e;font-size:0.95rem;">Mes badges</div>
+            <div style="font-size:0.78rem;color:#8a9e96;" id="badges-summary-line">Vos petites victoires →</div>
+          </div>
+          <span style="color:#8a9e96;">›</span>
+        </div>
+
+        <!-- Lien vers Mes recettes -->
+        <div style="margin-top:10px;padding:14px 16px;background:#f7f3ee;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showPage('mes-recettes')">
+          <span style="font-size:1.4rem;">📖</span>
+          <div style="flex:1;">
+            <div style="font-weight:600;color:#2d4a3e;font-size:0.95rem;">Mes recettes</div>
+            <div style="font-size:0.78rem;color:#8a9e96;" id="my-recipes-summary-line">Tes créations personnelles →</div>
+          </div>
+          <span style="color:#8a9e96;">›</span>
+        </div>
+      </section>
+
+      <!-- ============================================
+           PAGE BADGES — Suivi des accomplissements
+           ============================================ -->
+      <section id="page-badges" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('profil')" aria-label="Retour au profil">←</button>
+          <h2>Mes badges</h2>
+        </div>
+        <div id="badges-container"></div>
+      </section>
+
+      <!-- ============================================
+           PAGE MES RECETTES — recettes personnelles
+           ============================================ -->
+      <section id="page-mes-recettes" class="page hidden">
+        <div class="page-header-inner">
+          <button class="back-btn" onclick="showPage('profil')" aria-label="Retour au profil">←</button>
+          <h2>Mes recettes</h2>
+        </div>
+        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:14px;line-height:1.4;">
+          Crée tes propres recettes. Elles apparaîtront automatiquement dans la recherche, le générateur de menu et tu peux les marquer en favoris.
+        </p>
+        <div id="my-recettes-container"></div>
       </section>
 
       <section id="page-apropos" class="page hidden">
@@ -787,6 +851,22 @@
       <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
         Cochez les ingrédients déjà dans votre cuisine.
       </p>
+
+      <!-- Barre de recherche -->
+      <div class="placard-search-row">
+        <input type="text" id="placard-search" class="placard-search-input"
+               placeholder="🔍 Rechercher un ingrédient…"
+               oninput="filterPlacardItems(this.value)" />
+        <button class="placard-clear-btn hidden" id="placard-clear-btn"
+                onclick="clearPlacardSearch()" aria-label="Effacer la recherche">✕</button>
+      </div>
+
+      <!-- Bouton ajout d'un ingrédient personnalisé -->
+      <button class="placard-add-btn" onclick="openPlacardAddModal()">
+        <span class="placard-add-icon">+</span>
+        <span>Ajouter un ingrédient personnalisé</span>
+      </button>
+
       <div id="placard-categories"></div>
       <button class="btn-primary full-width" style="margin-top:16px" onclick="filterRecettesByPlacard()">
         🌿 Voir les recettes avec mon placard
@@ -959,6 +1039,8 @@
     </div>
   </div>
 
+  <script src="flora_recettes.js"></script>
+  <script src="flora_plans.js"></script>
   <script src="flora_complements.js"></script>
   <script src="flora_interactions.js"></script>
   <script src="app.js"></script>

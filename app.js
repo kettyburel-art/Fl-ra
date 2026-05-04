@@ -175,3784 +175,8 @@
 // ============================
 // DATA — Recettes
 // ============================
-const RECETTES = [
-  // --- PETITS-DÉJEUNERS (gratuit) ---
-  {
-    id: 1, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥣', nom: 'Chia pudding mangue-gingembre',
-    temps: '5 min + 8h', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Riche en oméga-3 (chia) pour réduire l\'inflammation. Le gingembre soulage les douleurs articulaires. Idéal avant coucher pour favoriser le sommeil.',
-    ingredients: [
-      '40g graines de chia',
-      '250ml lait de coco',
-      '1/2 mangue fraîche',
-      '1 cm gingembre frais râpé',
-      '1 c.à.c miel ou sirop d\'agave',
-      '1 pincée de curcuma'
-    ],
-    etapes: [
-      'Mélangez le chia, le lait de coco, le gingembre râpé et le miel dans un bocal.',
-      'Incorporez le curcuma et mélangez bien.',
-      'Réfrigérez toute la nuit (minimum 4h).',
-      'Au moment de servir, déposez les dés de mangue fraîche sur le dessus.',
-      'Ajoutez quelques graines de courge si disponibles.'
-    ]
-  },
-  {
-    id: 2, cat: 'petit-dejeuner', premium: false,
-    emoji: '🍌', nom: 'Porridge sarrasin banane-cannelle',
-    temps: '10 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le sarrasin est riche en magnésium, essentiel pour les jambes (SJSR). La banane apporte du tryptophane précurseur de sérotonine.',
-    ingredients: [
-      '60g flocons de sarrasin',
-      '200ml lait d\'avoine',
-      '1 banane mûre',
-      '1/2 c.à.c cannelle',
-      '1 c.à.s beurre d\'amande',
-      '1 c.à.c miel'
-    ],
-    etapes: [
-      'Faites chauffer le lait d\'avoine à feu moyen.',
-      'Ajoutez les flocons de sarrasin et la cannelle, mélangez.',
-      'Laissez cuire 5 min en remuant jusqu\'à consistance crémeuse.',
-      'Écrasez la moitié de la banane dans le porridge.',
-      'Servez avec le reste de banane en rondelles, le beurre d\'amande et le miel.'
-    ]
-  },
-  {
-    id: 3, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥑', nom: 'Toast de riz à l\'avocat & graines',
-    temps: '8 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'avocat est riche en vitamine E, puissant anti-oxydant. Les graines de chanvre apportent des protéines complètes et des oméga-6 équilibrés.',
-    ingredients: [
-      '2 galettes de riz',
-      '1 avocat mûr',
-      '1 c.à.c graines de chanvre',
-      '1 c.à.c graines de sésame',
-      '1/2 citron',
-      'Sel Santé, poivre',
-      'Piment d\'Espelette (optionnel)'
-    ],
-    etapes: [
-      'Écrasez l\'avocat à la fourchette avec le jus de citron.',
-      'Assaisonnez avec le Sel Santé et le poivre.',
-      'Étalez sur les galettes de riz.',
-      'Parsemez de graines de chanvre et sésame.',
-      'Ajoutez le piment d\'Espelette selon votre tolérance.'
-    ]
-  },
+// → Définies dans flora_recettes.js (175 recettes), chargé avant app.js dans index.html
 
-  // --- DÉJEUNERS (gratuit + premium) ---
-  {
-    id: 4, cat: 'dejeuner', premium: false,
-    emoji: '🐟', nom: 'Saumon gingembre graines de lin',
-    temps: '20 min', calories: 480, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Combinaison d\'oméga-3 (saumon + lin) pour une action anti-inflammatoire puissante. Le gingembre renforce l\'effet. Idéal 2-3x/semaine.',
-    ingredients: [
-      '150g pavé de saumon',
-      '1 c.à.s huile d\'olive',
-      '1 c.à.c graines de lin moulues',
-      '1 cm gingembre frais',
-      '1/2 citron',
-      '150g épinards frais',
-      'Herbes : ciboulette, persil',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C ou préparez une poêle à feu moyen.',
-      'Badigeonnez le saumon d\'huile d\'olive et de gingembre râpé.',
-      'Assaisonnez avec le Sel Santé, enfournez 12-15 min ou poêlez 3-4 min chaque côté.',
-      'Faites revenir les épinards à l\'huile d\'olive, 2 min.',
-      'Dressez : épinards, saumon, graines de lin, herbes fraîches et jus de citron.'
-    ]
-  },
-  {
-    id: 5, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Salade pois chiches-basilic',
-    temps: '10 min', calories: 390, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les légumineuses sont la base de l\'alimentation anti-inflammatoire. Riches en fer et en fibres, elles stabilisent la glycémie et réduisent les douleurs.',
-    ingredients: [
-      '200g pois chiches cuits',
-      '1 bouquet de basilic',
-      '1 tomate',
-      '1/2 concombre',
-      '1 c.à.s huile d\'olive',
-      '1/2 citron',
-      '1 gousse d\'ail',
-      'Sel Santé, cumin'
-    ],
-    etapes: [
-      'Rincez les pois chiches et égouttez-les.',
-      'Coupez la tomate et le concombre en dés.',
-      'Émincez l\'ail finement ou pressez-le.',
-      'Mélangez tout dans un saladier.',
-      'Assaisonnez avec l\'huile d\'olive, le jus de citron, le cumin et le Sel Santé.',
-      'Ajoutez le basilic ciselé au dernier moment.'
-    ]
-  },
-  {
-    id: 6, cat: 'dejeuner', premium: true,
-    emoji: '🍲', nom: 'Curry lentilles corail-curcuma',
-    temps: '25 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le curcuma + poivre noir = biodisponibilité maximale de la curcumine. Les lentilles corail apportent un fer facilement assimilable.',
-    ingredients: [
-      '180g lentilles corail',
-      '400ml lait de coco',
-      '1 c.à.c curcuma',
-      '1/2 c.à.c poivre noir',
-      '1 oignon',
-      '2 gousses d\'ail',
-      '1 c.à.c gingembre moulu',
-      'Épinards, coriandre'
-    ],
-    etapes: [
-      'Faites revenir oignon et ail dans l\'huile de coco.',
-      'Ajoutez le curcuma, le gingembre, le poivre — 1 min.',
-      'Incorporez les lentilles et le lait de coco.',
-      'Couvrez et laissez mijoter 18-20 min.',
-      'Ajoutez les épinards en fin de cuisson, servez avec la coriandre.'
-    ]
-  },
-  {
-    id: 7, cat: 'dejeuner', premium: true,
-    emoji: '🥙', nom: 'Brandade morue-courgettes',
-    temps: '30 min', calories: 380, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'La morue est une source de protéines légères et de vitamine D, souvent déficitaire en cas de douleurs chroniques.',
-    ingredients: [
-      '200g morue dessalée',
-      '2 courgettes',
-      '3 c.à.s huile d\'olive',
-      '2 gousses d\'ail',
-      '1 citron',
-      'Persil frais',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Pochez la morue dans l\'eau frémissante 8 min.',
-      'Faites cuire les courgettes à la vapeur 10 min.',
-      'Émiettez la morue, mixez les courgettes avec l\'huile d\'olive.',
-      'Mélangez les deux préparations avec l\'ail pressé.',
-      'Ajoutez le jus de citron et le persil. Servez tiède.'
-    ]
-  },
-
-  // --- DÎNERS ---
-  {
-    id: 8, cat: 'diner', premium: false,
-    emoji: '🐠', nom: 'Papillote saumon-légumes verts',
-    temps: '20 min', calories: 350, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La cuisson en papillote courte préserve les oméga-3 (qui s\'oxydent au-delà de 15 min de cuisson). Les brocolis apportent la vitamine C qui améliore l\'absorption du fer.',
-    ingredients: [
-      '150g saumon',
-      '100g brocolis',
-      '50g haricots verts',
-      '1/2 courgette',
-      '1 c.à.s huile d\'olive',
-      '1/2 citron',
-      'Thym, romarin',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Découpez une feuille de papier cuisson assez grande.',
-      'Disposez les légumes au centre, posez le saumon dessus.',
-      'Arrosez d\'huile d\'olive et de jus de citron, ajoutez les herbes.',
-      'Fermez la papillote hermétiquement et enfournez 12 à 15 min (pas plus, pour préserver les oméga-3).'
-    ]
-  },
-  {
-    id: 9, cat: 'diner', premium: false,
-    emoji: '🥣', nom: 'Velouté poireau-patate douce',
-    temps: '30 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Soupe douce pour le soir : la patate douce est riche en bêta-carotène anti-inflammatoire. Les poireaux sont prébiotiques pour le microbiote.',
-    ingredients: [
-      '2 poireaux',
-      '1 patate douce',
-      '500ml bouillon de légumes',
-      '1 c.à.s huile d\'olive',
-      '1 c.à.c curcuma',
-      'Graines de courge',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Émincez les poireaux et coupez la patate douce en cubes.',
-      'Faites revenir les poireaux dans l\'huile d\'olive 5 min.',
-      'Ajoutez la patate douce et le bouillon.',
-      'Laissez mijoter 20 min jusqu\'à ce que les légumes soient tendres.',
-      'Mixez finement, ajoutez le curcuma, rectifiez l\'assaisonnement.',
-      'Servez avec les graines de courge toastées.'
-    ]
-  },
-  {
-    id: 10, cat: 'diner', premium: true,
-    emoji: '🥩', nom: 'Agneau polenta pistaches',
-    temps: '35 min', calories: 520, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'L\'agneau est la viande la plus riche en fer héminique (combat la fatigue SJSR). Les pistaches sont anti-inflammatoires et riches en magnésium.',
-    ingredients: [
-      '150g épaule d\'agneau',
-      '80g polenta',
-      '300ml bouillon',
-      '30g pistaches',
-      'Romarin, ail',
-      '1 c.à.s huile d\'olive',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Faites mariner l\'agneau avec le romarin, l\'ail et l\'huile d\'olive 30 min.',
-      'Faites cuire la polenta dans le bouillon 5 min en remuant.',
-      'Saisissez l\'agneau à feu vif 3 min de chaque côté.',
-      'Laissez reposer 5 min avant de trancher.',
-      'Dressez la polenta, disposez l\'agneau et parsemez de pistaches concassées.'
-    ]
-  },
-
-  // --- SNACKS ---
-  {
-    id: 11, cat: 'snack', premium: false,
-    emoji: '🟤', nom: 'Boules énergie datte-amande-cacao',
-    temps: '15 min + 1h frigo', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Combo parfait SJSR : le magnésium des amandes + le fer des dattes + la théobromine du cacao. Snack anti-fatigue sans sucre ajouté.',
-    ingredients: [
-      '12 dattes Medjool dénoyautées',
-      '80g amandes entières',
-      '2 c.à.s cacao en poudre (non sucré)',
-      '1 c.à.s beurre d\'amande',
-      '1 c.à.c extrait de vanille',
-      'Coco râpée pour rouler'
-    ],
-    etapes: [
-      'Mixez les amandes jusqu\'à obtenir une poudre grossière.',
-      'Ajoutez les dattes, le cacao, le beurre d\'amande et la vanille.',
-      'Mixez jusqu\'à obtenir une masse homogène et collante.',
-      'Formez des boules de la taille d\'une noix avec les mains humides.',
-      'Roulez dans la coco râpée et réfrigérez 1h minimum.'
-    ]
-  },
-  {
-    id: 12, cat: 'snack', premium: false,
-    emoji: '🍑', nom: 'Abricots rôtis miel-thym',
-    temps: '20 min', calories: 150, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les abricots rôtis concentrent le bêta-carotène et le potassium. Le thym est anti-inflammatoire et facilite la digestion.',
-    ingredients: [
-      '4 abricots mûrs',
-      '1 c.à.s miel',
-      '2 branches de thym frais',
-      '1 c.à.s jus de citron',
-      'Amandes effilées (optionnel)'
-    ],
-    etapes: [
-      'Préchauffez le four à 200°C.',
-      'Coupez les abricots en deux et retirez les noyaux.',
-      'Disposez-les face coupée vers le haut dans un plat.',
-      'Arrosez de miel et de jus de citron, déposez le thym.',
-      'Enfournez 15 min jusqu\'à ce qu\'ils soient dorés et fondants.',
-      'Ajoutez les amandes effilées toastées avant de servir.'
-    ]
-  },
-  {
-    id: 13, cat: 'snack', premium: true,
-    emoji: '🍫', nom: 'Mousse choco noir-cerise-piment',
-    temps: '15 min + 2h frigo', calories: 220, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le cacao à 85% est l\'un des aliments les plus riches en flavonoïdes anti-inflammatoires. La cerise réduit les marqueurs de l\'inflammation (études SJSR).',
-    ingredients: [
-      '80g chocolat 85%',
-      '200ml lait de coco entier',
-      '100g cerises dénoyautées',
-      '1 pincée de piment de Cayenne',
-      '1 c.à.c extrait de vanille'
-    ],
-    etapes: [
-      'Faites fondre le chocolat au bain-marie.',
-      'Fouettez le lait de coco réfrigéré jusqu\'à consistance de crème fouettée.',
-      'Incorporez délicatement le chocolat fondu refroidi.',
-      'Ajoutez la vanille et le piment de Cayenne.',
-      'Répartissez dans des verrines avec les cerises.',
-      'Réfrigérez 2h minimum avant de servir.'
-    ]
-  },
-  {
-    id: 14, cat: 'snack', premium: true,
-    emoji: '🍑', nom: 'Fondant pêche-noisette-farine de riz',
-    temps: '35 min', calories: 260, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Alternative goûteuse au gâteau classique, sans gluten ni lactose. Les noisettes apportent de la vitamine E protectrice.',
-    ingredients: [
-      '2 pêches mûres',
-      '150g farine de riz',
-      '80g noisettes moulues',
-      '2 œufs',
-      '60ml huile de coco',
-      '60g sucre de fleur de coco',
-      '1/2 c.à.c levure chimique'
-    ],
-    etapes: [
-      'Préchauffez le four à 170°C. Beurrez un moule avec l\'huile de coco.',
-      'Fouettez les œufs avec le sucre jusqu\'à blanchiment.',
-      'Ajoutez l\'huile de coco fondue.',
-      'Incorporez la farine de riz, les noisettes moulues et la levure.',
-      'Coupez les pêches en fines tranches et intégrez-les à la pâte.',
-      'Enfournez 25-28 min. Laissez refroidir avant de démouler.'
-    ]
-  },
-
-  // =============================================
-  // SNACKS FASTOCHES — gratuits (découverte)
-  // =============================================
-  {
-    id: 15, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Barres dattes-noisettes-chocolat',
-    temps: '15 min + 12h frigo', calories: 200, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Seulement 3 ingrédients ! Les dattes apportent du fer et du magnésium, les noisettes de la vitamine E. Idéal pour remplacer les barres du commerce trop sucrées.',
-    ingredients: [
-      '300g dattes moelleuses (Medjool)',
-      '120g noisettes',
-      '90g chocolat noir'
-    ],
-    etapes: [
-      'Torréfiez les noisettes quelques minutes au four ou à sec dans une poêle.',
-      'Dénoyautez les dattes.',
-      'Hachez grossièrement le chocolat au couteau.',
-      'Mixez les noisettes et le chocolat jusqu\'à obtenir une poudre grossière. Réservez.',
-      'Mixez les dattes jusqu\'à formation d\'une pâte. Ajoutez noisettes et chocolat. Mixez à nouveau.',
-      'Tassez dans un moule chemisé de papier sulfurisé. Mettez un poids dessus et réfrigérez 12h.',
-      'Découpez en barres et conservez au frigo dans une boîte hermétique.'
-    ]
-  },
-  {
-    id: 16, cat: 'snack', premium: false,
-    emoji: '🥜', nom: 'Mélange de fruits secs énergie',
-    temps: '2 min', calories: 160, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le snack anti-SJSR par excellence : noix (magnésium), baies de goji (fer + antioxydants), dattes (énergie lente). À préparer la veille et emporter partout.',
-    ingredients: [
-      '5 cerneaux de noix',
-      '5 amandes',
-      '5 noisettes',
-      '3 fèves de cacao',
-      '1 poignée de baies de goji',
-      '1 poignée de raisins secs',
-      '1 figue sèche coupée en dés',
-      '1 abricot sec en petits morceaux',
-      '1 datte Medjool dénoyautée'
-    ],
-    etapes: [
-      'Tout mélanger dans un petit pot.',
-      'Emporter dans son sac — prêt à grignoter à tout moment !'
-    ]
-  },
-  {
-    id: 17, cat: 'snack', premium: false,
-    emoji: '🌾', nom: 'Barres d\'énergie flocons-compote',
-    temps: '30 min', calories: 190, diff: 'Facile',
-    tags: ['sl', 'vg'],
-    benefices: 'Base polyvalente à personnaliser selon vos goûts. Les graines de courge apportent du zinc et du magnésium, excellents pour la fatigue et le sommeil.',
-    ingredients: [
-      '80g flocons de millet (ou avoine certifiée sg)',
-      '80g lait végétal',
-      '1 poignée de raisins secs',
-      '1 poignée d\'amandes et noisettes concassées',
-      '1 c.à.s graines de courge',
-      '3 c.à.s compote de pomme',
-      '1 c.à.s miel'
-    ],
-    etapes: [
-      'Mélangez tous les ingrédients dans un saladier.',
-      'Versez dans un moule à cake (12x26cm).',
-      'Cuisez 25 min à 180°C.',
-      'Laissez refroidir complètement avant de couper en barres.'
-    ]
-  },
-  {
-    id: 18, cat: 'snack', premium: false,
-    emoji: '🥥', nom: 'Roses des sables aux amandes',
-    temps: '10 min + 1h frigo', calories: 145, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les pétales de maïs apportent des glucides d\'énergie rapide. La purée d\'amande est riche en vitamine E et en graisses saines anti-inflammatoires.',
-    ingredients: [
-      '100g pétales de maïs sans gluten',
-      '60g purée d\'amande',
-      '1 à 2 c.à.s huile de coco',
-      '½ verre de lait végétal',
-      '2 c.à.s sirop d\'agave ou miel',
-      '2 c.à.s noix de coco râpée (optionnel)'
-    ],
-    etapes: [
-      'Chauffez doucement la purée d\'amande, le lait végétal et le sirop d\'agave dans une casserole 5 min.',
-      'Ajoutez les pétales de maïs et mélangez 1 min.',
-      'Formez des petits tas sur du papier sulfurisé ou dans des moules silicone.',
-      'Réfrigérez au moins 1h. Pour des roses croustillantes, passez 5 min au four à 220°C.'
-    ]
-  },
-
-  // =============================================
-  // SNACKS FASTOCHES — premium (bibliothèque)
-  // =============================================
-  {
-    id: 19, cat: 'snack', premium: true,
-    emoji: '🟢', nom: 'Truffes cajou-matcha-menthe',
-    temps: '10 min + 1h frigo', calories: 120, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les noix de cajou sont riches en zinc et en magnésium. Le thé matcha est un puissant antioxydant qui améliore la concentration sans exciter comme le café.',
-    ingredients: [
-      '140g noix de cajou',
-      '1,5 à 2 c.à.s sirop d\'agave',
-      '½ à 1 c.à.c thé matcha en poudre',
-      '¾ c.à.c eau',
-      '5 à 8 gouttes d\'huile essentielle de menthe poivrée alimentaire'
-    ],
-    etapes: [
-      'Réduisez les noix de cajou en poudre au mini-hachoir.',
-      'Ajoutez le sirop d\'agave, le matcha et l\'eau. Mixez.',
-      'Ajustez matcha et sirop selon goût. Incorporez les gouttes de menthe.',
-      'Façonnez des truffes à la main et réfrigérez 1h.',
-      'Se conservent 1 semaine en boîte hermétique au frais.'
-    ]
-  },
-  {
-    id: 20, cat: 'snack', premium: true,
-    emoji: '🌀', nom: 'Cookies sarrasin-raisins-chocolat',
-    temps: '35 min', calories: 175, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le sarrasin est l\'allié SJSR numéro 1 : riche en magnésium et rutine qui améliore la circulation sanguine dans les jambes. Une collation légère et rassasiante.',
-    ingredients: [
-      '1 bol de flocons de sarrasin',
-      '½ tasse de farine de sarrasin',
-      '2 c.à.s huile de sésame',
-      '1 verre de raisins secs',
-      '4 c.à.s pépites de chocolat noir',
-      '1 poignée de noisettes ou amandes',
-      '1 verre de jus de pomme'
-    ],
-    etapes: [
-      'Mélangez les flocons, la farine et l\'huile de sésame.',
-      'Incorporez les autres ingrédients en mélangeant à chaque ajout.',
-      'Laissez reposer 20 min pendant que le four préchauffe à 180°C.',
-      'Formez des petits tas à la cuillère sur une plaque huilée.',
-      'Enfournez 15 min. Laissez refroidir avant de décoller.'
-    ]
-  },
-  {
-    id: 21, cat: 'snack', premium: true,
-    emoji: '🫐', nom: 'Galettes croustillantes cranberries',
-    temps: '40 min', calories: 155, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les cranberries sont riches en proanthocyanidines, des antioxydants qui réduisent l\'inflammation. Les amandes apportent de la vitamine E.',
-    ingredients: [
-      '1,5 tasse de farine de riz',
-      '1 c.à.c arrow-root',
-      '4 c.à.s sucre de canne',
-      '2 c.à.s poudre d\'amande',
-      '1 c.à.c cannelle',
-      'Quelques gouttes d\'extrait de vanille',
-      '1/3 tasse d\'huile de tournesol',
-      '1 poignée de noisettes',
-      '1 poignée de cranberries séchées',
-      '1/4 tasse d\'eau tiède'
-    ],
-    etapes: [
-      'Mélangez la farine, l\'arrow-root, le sucre, la poudre d\'amande, la cannelle et la vanille.',
-      'Incorporez l\'huile pour "sabler" la pâte.',
-      'Écrasez grossièrement les noisettes. Ajoutez noisettes et cranberries.',
-      'Ajoutez l\'eau tiède et malaxez.',
-      'Étalez la pâte et formez de petites galettes. Enfournez à 180°C pour 20-25 min.'
-    ]
-  },
-  {
-    id: 22, cat: 'snack', premium: true,
-    emoji: '🍪', nom: 'Cookies poudre d\'amande fruits secs',
-    temps: '15 min', calories: 165, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La poudre d\'amande remplace totalement la farine. Riche en protéines végétales et en vitamine E. Ces cookies sont légers et se conservent plusieurs jours.',
-    ingredients: [
-      '150g poudre d\'amande',
-      '90g cassonade',
-      '2 blancs d\'œufs',
-      'Quelques gouttes d\'extrait d\'amande amère',
-      '½ sachet de levure chimique sans gluten',
-      'Fruits secs au choix : noix, raisins secs, noisettes'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Battez les blancs d\'œufs avec la cassonade jusqu\'à consistance mousseuse.',
-      'Ajoutez la poudre d\'amande, la levure et l\'extrait d\'amande amère.',
-      'Formez des galettes sur une plaque, enfoncez quelques fruits secs.',
-      'Enfournez 10 min. Laissez refroidir avant de décoller.'
-    ]
-  },
-  {
-    id: 23, cat: 'snack', premium: true,
-    emoji: '🌰', nom: 'Biscuits noix-châtaigne purée d\'amande',
-    temps: '25 min', calories: 180, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La farine de châtaigne est douce, naturellement sucrée et sans gluten. La purée d\'amande donne une texture croquante à l\'extérieur et fondante à l\'intérieur.',
-    ingredients: [
-      '80g purée d\'amande',
-      '80g sucre',
-      '1 œuf',
-      '1/3 c.à.c vanille liquide',
-      '90g farine de châtaigne',
-      '½ c.à.c levure chimique',
-      '75g noix décortiquées'
-    ],
-    etapes: [
-      'Mélangez purée d\'amande et sucre.',
-      'Ajoutez l\'œuf et la vanille. Bien mélanger.',
-      'Incorporez la farine de châtaigne et la levure.',
-      'Hachez grossièrement les noix et ajoutez à la pâte.',
-      'Formez un boudin, découpez des tranches de 0,5 cm.',
-      'Enfournez à 180°C pour 12-15 min. Laissez refroidir sur une grille.'
-    ]
-  },
-  {
-    id: 24, cat: 'snack', premium: true,
-    emoji: '🍌', nom: 'Cookies moelleux banane-pralin',
-    temps: '15 min', calories: 160, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Sans œufs ! La banane lie la pâte et apporte du potassium et du tryptophane. Le pralin ajoute du magnésium et une saveur gourmande irrésistible.',
-    ingredients: [
-      '1 grosse banane bien mûre',
-      '1 pincée de cannelle',
-      '15g sucre',
-      '200g farine de riz',
-      '½ c.à.c bicarbonate',
-      '1 grosse c.à.s pâte de pralin',
-      '2 c.à.s huile neutre'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Écrasez la banane avec la cannelle et le sucre.',
-      'Ajoutez la farine et le bicarbonate. Bien mélanger.',
-      'Incorporez la pâte de pralin et l\'huile.',
-      'Formez de petites boules et faites cuire 10 min — les cookies doivent rester moelleux.'
-    ]
-  },
-
-  // =============================================
-  // PETITS-DÉJEUNERS supplémentaires
-  // =============================================
-  {
-    id: 25, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥞', nom: 'Porridge compote de pomme-sarrasin',
-    temps: '30 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le sarrasin est la céréale anti-SJSR par excellence grâce à sa richesse en magnésium et rutine. La compote de pomme évite le pic de glycémie du matin.',
-    ingredients: [
-      '125g farine de sarrasin',
-      '40g farine de riz complète',
-      '60g flocons de millet',
-      '1 c.à.c cannelle moulue',
-      '100ml huile végétale',
-      '100ml lait de riz',
-      '150ml compote de pomme',
-      '3 c.à.s sirop d\'érable',
-      '1 grosse pomme en cubes',
-      '30g graines de courge'
-    ],
-    etapes: [
-      'Préchauffez le four à 190°C.',
-      'Mélangez les ingrédients secs dans un saladier.',
-      'Dans un autre bol, mélangez les liquides et les cubes de pomme.',
-      'Combinez les deux préparations.',
-      'Versez dans des moules à muffins. Saupoudrez de graines de courge.',
-      'Cuisez 25-30 min jusqu\'à légère dorure. Dégustez tiède.'
-    ]
-  },
-  {
-    id: 26, cat: 'petit-dejeuner', premium: false,
-    emoji: '🫚', nom: 'Pains d\'épices sans gluten au miel',
-    temps: '30 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le miel est un sucre à index glycémique modéré qui nourrit le microbiote. Les épices (cannelle, gingembre) ont des propriétés anti-inflammatoires reconnues.',
-    ingredients: [
-      '250g farine de riz',
-      '170g miel',
-      '80g confiture d\'oranges amères',
-      '12cl lait de riz',
-      '25g sucre roux',
-      '2 c.à.c mélange épices pain d\'épices',
-      '1 c.à.c bicarbonate de soude',
-      'Amandes effilées et sucre en grains pour la déco'
-    ],
-    etapes: [
-      'Préchauffez le four à 150°C.',
-      'Mélangez les ingrédients secs dans un grand saladier.',
-      'Faites chauffer le lait de riz et versez-le chaud sur le miel et la confiture. Bien mélanger.',
-      'Incorporez ce mélange aux ingrédients secs.',
-      'Versez dans des petits moules à cake. Décorez avec les amandes et le sucre en grains.',
-      'Cuisez 20-25 min à 150°C.'
-    ]
-  },
-  {
-    id: 27, cat: 'petit-dejeuner', premium: true,
-    emoji: '🧇', nom: 'Madeleines citron purée d\'amande',
-    temps: '20 min', calories: 240, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'La purée d\'amande remplace le beurre et apporte des graisses saines. Le zeste de citron est riche en vitamine C qui booste l\'absorption du fer.',
-    ingredients: [
-      '80g sucre de canne blond',
-      '2 jaunes d\'œufs',
-      '1 zeste de citron finement râpé',
-      '30g purée d\'amandes blanches',
-      '30g huile de pépins de raisin',
-      '80g farine de riz',
-      '2 blancs d\'œufs'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Mélangez énergiquement sucre et jaunes d\'œufs jusqu\'à blanchiment.',
-      'Incorporez le zeste, la purée d\'amandes et l\'huile, puis la farine.',
-      'Montez les blancs en neige ferme. Incorporez 1/3 pour détendre, puis le reste délicatement.',
-      'Répartissez dans des moules à madeleines bien huilés.',
-      'Enfournez 12-15 min selon la taille. Laissez refroidir sur grille.'
-    ]
-  },
-  {
-    id: 28, cat: 'petit-dejeuner', premium: true,
-    emoji: '🥐', nom: 'Mini muffins banane-noisette nomades',
-    temps: '20 min', calories: 220, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Sans gluten, sans lait et sans œufs ! La banane lie la pâte naturellement. Les noisettes apportent des graisses saines et les abricots secs du fer facilement assimilable.',
-    ingredients: [
-      '1 petite banane',
-      '1 c.à.s purée de cacahuètes',
-      '1 c.à.s purée de noisettes',
-      '3 noix grossièrement hachées',
-      '6 noisettes hachées',
-      '2 c.à.s farine de riz',
-      '1 c.à.c levure chimique sans gluten',
-      '2 c.à.s flocons de millet',
-      '2 c.à.s lait de riz',
-      '2 abricots secs en petits dés'
-    ],
-    etapes: [
-      'Écrasez la banane et mélangez avec les purées de cacahuètes et noisettes.',
-      'Ajoutez les noix et noisettes hachées.',
-      'Versez la farine, la levure, les flocons de millet et le lait de riz.',
-      'Incorporez les abricots secs.',
-      'Répartissez dans 10 moules à mini muffins. Enfournez à 180°C pour 15 min.'
-    ]
-  },
-
-  // =============================================
-  // DÉJEUNERS supplémentaires
-  // =============================================
-  {
-    id: 29, cat: 'dejeuner', premium: false,
-    emoji: '🥕', nom: 'Biscuits salés carotte-roquette-pois chiche',
-    temps: '45 min', calories: 290, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La farine de pois chiche est une excellente source de protéines végétales et de fer. La carotte apporte du bêta-carotène. Idéal en en-cas salé ou en accompagnement.',
-    ingredients: [
-      '1 belle carotte',
-      '1 grosse poignée de roquette',
-      '80g farine de riz',
-      '70g farine de pois chiche',
-      '2 pincées de sel',
-      '½ c.à.c cumin en poudre',
-      '3 c.à.s huile d\'olive',
-      '4 à 5 cl d\'eau'
-    ],
-    etapes: [
-      'Râpez finement la carotte et hachez la roquette.',
-      'Mélangez les farines, le sel, le cumin, la carotte et la roquette.',
-      'Ajoutez l\'eau et l\'huile. Pétrissez à la main.',
-      'Formez une boule et réfrigérez 30 min.',
-      'Étalez la pâte, découpez à l\'emporte-pièce et enfournez à 180°C pour 15-20 min.',
-      'Sortez quand les biscuits se colorent joliment. Laissez refroidir.'
-    ]
-  },
-  {
-    id: 30, cat: 'dejeuner', premium: false,
-    emoji: '🫘', nom: 'Mini muffins polenta-pois chiches',
-    temps: '30 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Sans gluten, sans lait et sans œufs ! La polenta et les pois chiches forment un duo protéines + glucides complexes parfait pour tenir jusqu\'au soir.',
-    ingredients: [
-      '60g farine de pois chiches',
-      '50g polenta',
-      '1 c.à.s graines de tournesol (ou olives/tomates séchées)',
-      '1 c.à.c levure chimique sans gluten',
-      '1 c.à.c sucre',
-      '8cl lait végétal',
-      '3cl huile d\'olive',
-      'Sel, poivre'
-    ],
-    etapes: [
-      'Mélangez la farine de pois chiches, la polenta, la levure, le sucre et les graines. Salez, poivrez.',
-      'Creusez un puits, versez le lait végétal et l\'huile. Mélangez — pâte épaisse.',
-      'Versez une cuillère de pâte dans 6 moules à mini muffins bien remplis.',
-      'Décorez de quelques graines.',
-      'Enfournez à 180°C pour 20 min. Dégustez tiède ou froid.'
-    ]
-  },
-  {
-    id: 31, cat: 'dejeuner', premium: true,
-    emoji: '🫙', nom: 'Cake carotte-curcuma-tomates séchées',
-    temps: '40 min', calories: 340, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Curcuma + carotte + jus de citron = trio anti-inflammatoire puissant. La purée de patate douce remplace les œufs et apporte des fibres et du bêta-carotène.',
-    ingredients: [
-      '90g farine de riz complète',
-      '70g farine de maïs',
-      '40g poudre d\'amandes',
-      '2 c.à.c curcuma en poudre',
-      '½ sachet de levure chimique',
-      '70g carottes râpées',
-      '100g purée de patate douce',
-      '6 tomates séchées à l\'huile d\'olive',
-      '8 olives noires',
-      '200ml lait végétal',
-      '1 c.à.s jus de citron',
-      'Piment d\'Espelette, coriandre fraîche'
-    ],
-    etapes: [
-      'Préchauffez le four à 210°C.',
-      'Râpez les carottes avec le jus de citron. Coupez tomates et olives en petits dés.',
-      'Mélangez les ingrédients secs dans un saladier.',
-      'Dans un autre bol, mélangez purée de patate douce, lait, tomates, olives et coriandre.',
-      'Combinez les deux préparations et versez dans des moules à muffins.',
-      'Cuisez à 210°C pendant 10 min, puis 13-15 min à 180°C. Laissez refroidir complètement.'
-    ]
-  },
-  {
-    id: 32, cat: 'dejeuner', premium: true,
-    emoji: '🫓', nom: 'Petits pains danois sans gluten',
-    temps: '35 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les graines de lin et sésame apportent des oméga-3 et du calcium végétal. La gomme de guar remplace le gluten en structurant la pâte naturellement.',
-    ingredients: [
-      '200g farine de riz complet',
-      '50g farine de pois chiche',
-      '30g graines de lin',
-      '30g graines de sésame',
-      '1 c.à.s gomme de guar',
-      '1dl huile d\'olive',
-      '½ dl eau',
-      '¾ dl lait de riz',
-      '1 pincée de sel',
-      '1 c.à.s herbes de Provence'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Mélangez tous les ingrédients secs dans un bol.',
-      'Incorporez l\'huile, l\'eau et le lait de riz, puis le sel et les herbes.',
-      'Mélangez pour obtenir une pâte homogène qui ne colle pas trop.',
-      'Remplissez des petits moules à muffins.',
-      'Cuisez 20-25 min. Vérifiez la cuisson en tapant le dessous : si dur, c\'est prêt !'
-    ]
-  },
-
-  // =============================================
-  // DÎNERS supplémentaires
-  // =============================================
-  {
-    id: 33, cat: 'snack', premium: false,
-    emoji: '🧁', nom: 'Muffins potimarron-chocolat-cannelle',
-    temps: '35 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le potimarron est riche en bêta-carotène et en potassium. Le chocolat noir ajoute des flavonoïdes anti-inflammatoires. Un en-cas réconfortant et naturellement sucré.',
-    ingredients: [
-      '190g purée de potimarron (cuit)',
-      '60g miel',
-      '55g poudre d\'amande',
-      '35g fécule de maïs',
-      '30g farine de châtaigne',
-      '60ml lait d\'amande',
-      '30ml huile d\'olive',
-      '½ c.à.c cannelle',
-      '2 c.à.s chocolat noir haché',
-      'Graines de courge pour la déco'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Mélangez les ingrédients secs : fécule, farine, cannelle, chocolat haché et poudre d\'amande.',
-      'Dans un autre bol, mélangez la purée froide, le miel, le lait et l\'huile.',
-      'Combinez les deux préparations. Versez dans des moules à muffins huilés.',
-      'Saupoudrez de graines de courge. Cuisez 25 min à 180°C.',
-      'Vérifiez la cuisson avec la lame d\'un couteau — doit ressortir sèche.'
-    ]
-  },
-  {
-    id: 34, cat: 'diner', premium: false,
-    emoji: '🥗', nom: 'Muffins provençaux olives-romarin',
-    temps: '35 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les olives noires sont riches en graisses mono-insaturées anti-inflammatoires. Le romarin est un puissant antioxydant. Un dîner léger et méditerranéen.',
-    ingredients: [
-      '125g farine de riz',
-      '½ c.à.c bicarbonate de soude',
-      '125g lait de riz',
-      '1 c.à.s vinaigre de cidre',
-      '70g huile d\'olive',
-      '15g tomates séchées en petits cubes',
-      '6 olives noires en petits cubes',
-      '1 c.à.s romarin haché',
-      '1 c.à.s ail en granulé',
-      'Poivre au goût'
-    ],
-    etapes: [
-      'Mélangez le lait, le vinaigre de cidre et l\'huile dans un bol.',
-      'Mélangez la farine, le bicarbonate, les tomates, olives, romarin et ail dans un saladier.',
-      'Versez les liquides sur les solides. Mélangez sans pétrir.',
-      'Versez dans 11 mini moules à muffins huilés.',
-      'Cuisez 25 min à 180°C. Emportez partout !'
-    ]
-  },
-  {
-    id: 35, cat: 'diner', premium: true,
-    emoji: '🎂', nom: 'Gâteau carotte-noix sans gluten',
-    temps: '90 min', calories: 420, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Les carottes râpées fraîches apportent bêta-carotène et fibres. Les noix sont riches en oméga-3 d\'origine végétale. Un gâteau qui se prépare à l\'avance.',
-    ingredients: [
-      '1 tasse farine de riz',
-      '1 tasse poudre d\'amande',
-      '½ tasse fécule de maïs',
-      '1 c.à.c bicarbonate',
-      '2 c.à.c cannelle',
-      '4 œufs',
-      '1 tasse huile végétale',
-      '1 tasse sucre de canne',
-      '1 tasse cassonade',
-      '1 tasse noix concassées',
-      '250g carottes râpées'
-    ],
-    etapes: [
-      'Mélangez les ingrédients secs : farines, bicarbonate, sel, cannelle.',
-      'Battez dans un autre bol l\'huile, les œufs, le sucre et la cassonade pendant 5 min.',
-      'Ajoutez progressivement le mélange sec aux liquides.',
-      'Incorporez les noix puis les carottes râpées.',
-      'Versez dans un grand moule graissé.',
-      'Cuisez à 180°C pendant 60 min puis à 200°C pendant 20 min supplémentaires.'
-    ]
-  },
-  {
-    id: 36, cat: 'diner', premium: true,
-    emoji: '🍊', nom: 'Gâteau chocolat-jus d\'orange sans beurre',
-    temps: '40 min', calories: 310, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Sans œufs, sans beurre ! Le jus d\'orange apporte de la vitamine C qui améliore l\'humeur. Le cacao est riche en flavonoïdes anti-inflammatoires et en magnésium.',
-    ingredients: [
-      '200g farine sans gluten',
-      '100g sucre muscovado',
-      '3 c.à.s cacao en poudre',
-      '1 sachet de levure chimique sans gluten',
-      '1 c.à.c cannelle',
-      '8cl huile de noisettes',
-      '20cl jus d\'orange pur'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Mélangez la farine, le sucre, le cacao, la levure et la cannelle.',
-      'Ajoutez l\'huile et le jus d\'orange.',
-      'Mélangez à la cuillère en bois jusqu\'à consistance homogène.',
-      'Versez dans un moule et cuisez 30-35 min.'
-    ]
-  },
-  {
-    id: 37, cat: 'diner', premium: true,
-    emoji: '🍌', nom: 'Mini cakes banane-chocolat sans œufs',
-    temps: '30 min', calories: 350, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les bananes mûres lient la pâte sans œufs et apportent du potassium. Le chocolat noir est anti-inflammatoire. Une recette ultra moelleuse idéale pour finir les bananes trop mûres.',
-    ingredients: [
-      '3 bananes mûres bio',
-      '1 verre de sucre (100g environ)',
-      '2 verres de farine de riz bio',
-      '1 sachet de levure chimique sans gluten',
-      '10cl huile d\'olive',
-      '1 bouchon de rhum à la vanille',
-      '80g chocolat noir en petits morceaux'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Écrasez les bananes à la fourchette.',
-      'Ajoutez le sucre et mélangez.',
-      'Mélangez farine et levure, puis incorporez progressivement à la pâte.',
-      'Ajoutez l\'huile, le rhum vanillé et les morceaux de chocolat.',
-      'Versez dans des moules. Cuisez 20 min jusqu\'à légère dorure. Bon tiède ou froid !'
-    ]
-  },
-
-  // =============================================
-  // RECETTES SÉRÉNITÉ SJSR/TDAH — Issues de la
-  // bibliothèque Autour Du Naturel adaptée
-  // =============================================
-
-  // --- ENTRÉES / STARTERS ---
-  {
-    id: 38, cat: 'dejeuner', premium: false,
-    emoji: '🍆', nom: 'Caviar d\'aubergines au tahini',
-    temps: '30 min', calories: 190, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le tahini (crème de sésame) est riche en calcium et magnésium. L\'aubergine grillée est alcalinisante et riche en antioxydants. Le citron booste l\'absorption du fer.',
-    ingredients: [
-      '2 belles aubergines',
-      '2 c.à.s tahini (crème de sésame)',
-      '2 gousses d\'ail',
-      '1 citron (jus)',
-      '2 c.à.s huile d\'olive',
-      'Sel Santé, cumin, persil frais'
-    ],
-    etapes: [
-      'Percez les aubergines et faites-les griller entières au four à 220°C pendant 20-25 min.',
-      'Laissez refroidir, puis pelez et égouttez la chair.',
-      'Mixez la chair avec le tahini, l\'ail pressé, le jus de citron et l\'huile d\'olive.',
-      'Assaisonnez avec le Sel Santé et le cumin.',
-      'Servez frais avec du persil haché et un filet d\'huile d\'olive.'
-    ]
-  },
-  {
-    id: 39, cat: 'dejeuner', premium: false,
-    emoji: '🥕', nom: 'Verrines de carottes au cumin',
-    temps: '35 min', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Carottes riches en bêta-carotène antioxydant. Le cumin est anti-inflammatoire. La crème de riz apporte des glucides doux. Parfait en entrée légère ou en snack.',
-    ingredients: [
-      '1 kg de carottes',
-      '1 oignon',
-      '15cl crème de riz',
-      '2 c.à.s huile d\'olive',
-      '1 c.à.c cumin moulu',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Épluchez et coupez les carottes en rondelles.',
-      'Faites revenir l\'oignon émincé dans l\'huile d\'olive jusqu\'à dorure.',
-      'Ajoutez les carottes, le cumin, le Sel Santé et le poivre.',
-      'Cuisez à feu doux 15 min — les carottes doivent rester légèrement fermes.',
-      'Mixez et incorporez progressivement la crème de riz.',
-      'Versez dans des verrines. Servez bien frais.'
-    ]
-  },
-  {
-    id: 40, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Tartare de betteraves-graines de tournesol',
-    temps: '15 min', calories: 175, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La betterave est riche en nitrates qui améliorent la circulation sanguine — excellente pour le SJSR. Les graines de tournesol apportent du magnésium et de la vitamine E.',
-    ingredients: [
-      '3 betteraves cuites',
-      '2 c.à.s graines de tournesol toastées',
-      '1 échalote',
-      '2 c.à.s huile d\'olive',
-      '1 c.à.s vinaigre de cidre',
-      'Persil frais, sel Santé, poivre'
-    ],
-    etapes: [
-      'Coupez les betteraves en petits cubes.',
-      'Émincez finement l\'échalote.',
-      'Mélangez betteraves, échalote, huile, vinaigre.',
-      'Assaisonnez avec le Sel Santé et le poivre.',
-      'Parsemez de graines de tournesol toastées et de persil haché.'
-    ]
-  },
-  {
-    id: 41, cat: 'dejeuner', premium: true,
-    emoji: '🐟', nom: 'Tartare de saumon-avocat-gingembre',
-    temps: '15 min', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Triple action anti-SJSR : oméga-3 du saumon, graisses saines de l\'avocat, gingembre anti-inflammatoire puissant. Le citron optimise l\'absorption du fer.',
-    ingredients: [
-      '200g saumon très frais (sushi-grade)',
-      '1 avocat mûr',
-      '1 cm gingembre frais râpé',
-      '1 citron vert (jus + zeste)',
-      '1 c.à.s tamari (sg)',
-      'Ciboulette, graines de sésame'
-    ],
-    etapes: [
-      'Coupez le saumon en petits cubes réguliers.',
-      'Coupez l\'avocat en cubes de même taille.',
-      'Mélangez délicatement avec le gingembre, le jus de citron vert et le tamari.',
-      'Dressez dans des cercles. Parsemez de ciboulette et graines de sésame.',
-      'Servez immédiatement bien frais.'
-    ]
-  },
-  {
-    id: 42, cat: 'dejeuner', premium: true,
-    emoji: '🥬', nom: 'Soupe froide concombre-menthe-avocat',
-    temps: '10 min', calories: 200, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Soupe alcalinisante et hydratante. L\'avocat apporte des graisses anti-inflammatoires. La menthe fraîche est digestive et apaisante. Idéale en été contre les jambes lourdes.',
-    ingredients: [
-      '2 concombres',
-      '1 avocat',
-      '1 citron vert',
-      '1 bouquet de menthe fraîche',
-      '1 yaourt de soja nature',
-      'Sel Santé, glaçons'
-    ],
-    etapes: [
-      'Pelez et coupez les concombres en morceaux.',
-      'Mixez concombre, avocat, jus de citron, menthe et yaourt de soja.',
-      'Assaisonnez avec le Sel Santé.',
-      'Réfrigérez 30 min minimum avant de servir avec des glaçons.'
-    ]
-  },
-
-  // --- PLATS PRINCIPAUX ---
-  {
-    id: 43, cat: 'dejeuner', premium: false,
-    emoji: '🍗', nom: 'Poulet patate douce sauge',
-    temps: '40 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La patate douce à index glycémique bas fournit une énergie stable. La sauge est anti-inflammatoire. Le poulet apporte des protéines et du tryptophane précurseur de sérotonine.',
-    ingredients: [
-      '2 blancs de poulet',
-      '2 patates douces',
-      '6 feuilles de sauge fraîche',
-      '2 c.à.s huile d\'olive',
-      '1 citron',
-      'Sel Santé, poivre, ail'
-    ],
-    etapes: [
-      'Préchauffez le four à 200°C.',
-      'Coupez les patates douces en cubes, enrobez d\'huile d\'olive, sauge et Sel Santé.',
-      'Enfournez les patates 25 min.',
-      'Faites dorer les blancs de poulet à la poêle 4 min chaque côté avec ail et huile.',
-      'Servez le poulet sur les patates douces rôties avec un jus de citron.'
-    ]
-  },
-  {
-    id: 44, cat: 'dejeuner', premium: false,
-    emoji: '🐟', nom: 'Saumon mi-cuit gingembre-lin',
-    temps: '20 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Recette phare anti-SJSR : double dose d\'oméga-3 (saumon + lin). Le gingembre est le plus puissant anti-inflammatoire naturel. À manger 2-3x/semaine.',
-    ingredients: [
-      '150g pavé de saumon',
-      '1 c.à.c graines de lin moulues',
-      '1 cm gingembre frais râpé',
-      '1/2 citron',
-      '1 c.à.s huile d\'olive',
-      '100g épinards frais',
-      'Persil frais, Sel Santé'
-    ],
-    etapes: [
-      'Badigeonnez le saumon de gingembre râpé et d\'huile d\'olive.',
-      'Cuisez à la poêle 3-4 min côté peau, 2 min côté chair — le cœur doit rester nacré.',
-      'Faites tomber les épinards à la poêle 2 min à l\'huile d\'olive.',
-      'Dressez : épinards, saumon, graines de lin moulues, persil frais, jus de citron.'
-    ]
-  },
-  {
-    id: 45, cat: 'dejeuner', premium: true,
-    emoji: '🐑', nom: 'Agneau confit polenta-pistaches',
-    temps: '2h', calories: 520, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'L\'agneau est la viande la plus riche en fer héminique — combat directement la fatigue SJSR. Les pistaches apportent du magnésium. Un plat du dimanche thérapeutique.',
-    ingredients: [
-      '400g épaule d\'agneau',
-      '150g polenta de maïs',
-      '500ml bouillon de légumes',
-      '50g pistaches',
-      'Romarin, ail, huile d\'olive',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Préchauffez le four à 160°C. Faites dorer l\'agneau à la cocotte avec ail et romarin.',
-      'Couvrez et enfournez 1h30 à 1h45 — la viande doit se détacher à la fourchette.',
-      'Préparez la polenta en versant progressivement dans le bouillon chaud. Remuez 5 min.',
-      'Effilochez l\'agneau à la fourchette.',
-      'Dressez la polenta, posez l\'agneau, parsemez de pistaches concassées.'
-    ]
-  },
-  {
-    id: 46, cat: 'dejeuner', premium: true,
-    emoji: '🥘', nom: 'Quinoa-légumes rôtis-grenade',
-    temps: '35 min', calories: 390, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le quinoa est une protéine complète rare dans le végétal. La grenade est l\'un des fruits les plus antioxydants. Les légumes rôtis concentrent leurs nutriments.',
-    ingredients: [
-      '200g quinoa',
-      '1 courgette',
-      '1 poivron rouge',
-      '1 aubergine',
-      'Graines d\'une demi-grenade',
-      'Huile d\'olive, Sel Santé',
-      'Menthe fraîche, jus de citron'
-    ],
-    etapes: [
-      'Cuisez le quinoa dans le double de son volume d\'eau 15 min.',
-      'Coupez les légumes en cubes, enrobez d\'huile et de Sel Santé.',
-      'Rôtissez à l\'air fryer 200°C 18 min ou au four 220°C 25 min.',
-      'Mélangez quinoa, légumes rôtis, grenade, menthe et citron.',
-      'Servez tiède ou froid selon saison.'
-    ]
-  },
-  {
-    id: 47, cat: 'dejeuner', premium: true,
-    emoji: '🍝', nom: 'Penne coulis poivrons-féta végane',
-    temps: '30 min', calories: 430, diff: 'Facile',
-    tags: ['sg'],
-    benefices: 'Le poivron rouge est l\'un des légumes les plus riches en vitamine C — booste l\'absorption du fer des pâtes. La feta apporte du calcium. Choisissez des pâtes sans gluten.',
-    ingredients: [
-      '200g penne sans gluten',
-      '3 poivrons rouges',
-      '100g feta (ou tofu ferme)',
-      '2 gousses d\'ail',
-      '2 c.à.s huile d\'olive',
-      'Basilic frais, Sel Santé'
-    ],
-    etapes: [
-      'Grilllez les poivrons au four 25 min à 220°C, puis pelez et épépinez.',
-      'Mixez les poivrons avec l\'ail, l\'huile d\'olive et le Sel Santé.',
-      'Cuisez les pâtes al dente selon le paquet.',
-      'Mélangez pâtes et coulis de poivrons.',
-      'Émiettez la feta par-dessus avec du basilic frais.'
-    ]
-  },
-
-  // --- SOUPES ---
-  {
-    id: 48, cat: 'diner', premium: false,
-    emoji: '🥣', nom: 'Soupe de lentilles-épinards-curcuma',
-    temps: '30 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Binôme roi anti-SJSR : lentilles (fer) + épinards (fer + calcium) + citron (vitamine C) = absorption du fer maximisée. Le curcuma renforce l\'effet anti-inflammatoire.',
-    ingredients: [
-      '200g lentilles vertes',
-      '150g épinards frais ou surgelés',
-      '1 oignon',
-      '2 gousses d\'ail',
-      '1 c.à.c curcuma',
-      '½ c.à.c poivre noir',
-      '1 citron',
-      'Huile d\'olive, Sel Santé'
-    ],
-    etapes: [
-      'Rincez les lentilles. Faites revenir oignon et ail dans l\'huile d\'olive.',
-      'Ajoutez le curcuma et le poivre noir, remuez 1 min.',
-      'Ajoutez les lentilles et couvrez de 800ml d\'eau. Cuisez 20 min.',
-      'Ajoutez les épinards en fin de cuisson. Remuez 2 min.',
-      'Assaisonnez avec le Sel Santé et terminez avec un généreux jus de citron.'
-    ]
-  },
-  {
-    id: 49, cat: 'diner', premium: false,
-    emoji: '🥕', nom: 'Velouté panais-poire-gingembre',
-    temps: '35 min', calories: 240, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le panais est riche en potassium et vitamine C. La poire apporte de la douceur et des fibres prébiotiques pour le microbiote. Le gingembre est anti-nauséeux et anti-inflammatoire.',
-    ingredients: [
-      '3 panais',
-      '2 poires mûres',
-      '1 cm gingembre frais',
-      '1 oignon',
-      '600ml bouillon de légumes',
-      '10cl crème de coco',
-      'Sel Santé, graines de courge'
-    ],
-    etapes: [
-      'Épluchez et coupez panais et poires en morceaux.',
-      'Faites revenir l\'oignon dans l\'huile d\'olive.',
-      'Ajoutez panais, poires, gingembre et bouillon. Cuisez 20 min.',
-      'Mixez finement avec la crème de coco.',
-      'Assaisonnez avec le Sel Santé. Parsemez de graines de courge toastées.'
-    ]
-  },
-  {
-    id: 50, cat: 'diner', premium: false,
-    emoji: '🌿', nom: 'Soupe verte épinards-poireaux-petits pois',
-    temps: '25 min', calories: 210, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Soupe chlorophylle : triple source de fer végétal (épinards, petits pois, poireaux). Les poireaux sont prébiotiques pour le microbiote. Terminer avec du persil frais pour la dopamine.',
-    ingredients: [
-      '2 poireaux',
-      '150g épinards surgelés',
-      '150g petits pois surgelés',
-      '2 pommes de terre',
-      '700ml eau',
-      'Persil frais, Sel Santé'
-    ],
-    etapes: [
-      'Émincez les poireaux et faites-les revenir dans l\'huile d\'olive.',
-      'Ajoutez les pommes de terre en dés et couvrez d\'eau.',
-      'Ajoutez les petits pois et les épinards. Cuisez 15 min.',
-      'Mixez et assaisonnez avec le Sel Santé.',
-      'Parsemez de persil frais avant de servir.'
-    ]
-  },
-  {
-    id: 51, cat: 'diner', premium: true,
-    emoji: '🎃', nom: 'Velouté potimarron-châtaignes-noisettes',
-    temps: '45 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le potimarron est riche en bêta-carotène et potassium. Les châtaignes apportent du magnésium et des glucides complexes. Un dîner doux et alcalinisant parfait pour le soir.',
-    ingredients: [
-      '500g potimarron',
-      '150g châtaignes cuites',
-      '1 oignon',
-      '600ml bouillon de légumes',
-      '10cl lait d\'avoine',
-      'Noisettes toastées, Sel Santé'
-    ],
-    etapes: [
-      'Coupez le potimarron en cubes (avec la peau si bio).',
-      'Faites revenir l\'oignon, ajoutez le potimarron et les châtaignes.',
-      'Couvrez de bouillon et cuisez 25 min à feu doux.',
-      'Mixez avec le lait d\'avoine jusqu\'à consistance soyeuse.',
-      'Assaisonnez avec le Sel Santé. Parsemez de noisettes toastées concassées.'
-    ]
-  },
-  {
-    id: 52, cat: 'diner', premium: true,
-    emoji: '🐟', nom: 'Velouté poisson-fenouil-safran',
-    temps: '40 min', calories: 310, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le poisson blanc est une source de protéines légères faciles à digérer le soir. Le fenouil est antispasmodique et favorise le sommeil. Le safran a des propriétés antidépressives reconnues.',
-    ingredients: [
-      '300g dos de cabillaud ou lieu',
-      '1 bulbe de fenouil',
-      '1 oignon',
-      '1 dose de safran',
-      '600ml bouillon de poisson ou légumes',
-      '10cl crème de riz',
-      'Sel Santé, citron'
-    ],
-    etapes: [
-      'Émincez le fenouil et l\'oignon. Faites revenir à l\'huile d\'olive.',
-      'Ajoutez le safran et le bouillon. Cuisez 15 min.',
-      'Ajoutez le poisson en morceaux et cuisez 8 min à feu doux.',
-      'Mixez partiellement (garder quelques morceaux de poisson).',
-      'Incorporez la crème de riz. Assaisonnez et servez avec du citron.'
-    ]
-  },
-  {
-    id: 53, cat: 'diner', premium: true,
-    emoji: '🌽', nom: 'Soupe de maïs-poivrons doux-coriandre',
-    temps: '25 min', calories: 240, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le maïs apporte des glucides à index glycémique modéré. Les poivrons rouges sont parmi les légumes les plus riches en vitamine C. La coriandre est un détoxifiant naturel.',
-    ingredients: [
-      '400g maïs doux (surgelé)',
-      '2 poivrons rouges rôtis',
-      '1 oignon',
-      '500ml bouillon de légumes',
-      '10cl lait de coco',
-      'Coriandre fraîche, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir l\'oignon dans l\'huile d\'olive.',
-      'Ajoutez le maïs, les poivrons et le bouillon. Cuisez 10 min.',
-      'Mixez avec le lait de coco.',
-      'Assaisonnez avec le Sel Santé. Servez avec de la coriandre fraîche hachée.'
-    ]
-  },
-
-  // --- DESSERTS SJSR ---
-  {
-    id: 54, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Mousse chocolat noir-cerises au piment',
-    temps: '15 min + 2h frigo', calories: 230, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le chocolat 85% est riche en magnésium et flavonoïdes. Les cerises réduisent les marqueurs de l\'inflammation (études spécifiques SJSR). Le piment améliore la circulation sanguine dans les jambes.',
-    ingredients: [
-      '100g chocolat noir 85% min',
-      '3 blancs d\'œufs',
-      '100g cerises fraîches ou surgelées',
-      '1 pincée de piment de Cayenne',
-      '1 c.à.c extrait de vanille'
-    ],
-    etapes: [
-      'Faites fondre le chocolat au bain-marie. Laissez tiédir.',
-      'Montez les blancs en neige ferme.',
-      'Incorporez délicatement le chocolat fondu aux blancs en neige.',
-      'Ajoutez la vanille et le piment de Cayenne.',
-      'Répartissez dans des verrines avec les cerises. Réfrigérez 2h minimum.'
-    ]
-  },
-  {
-    id: 55, cat: 'snack', premium: false,
-    emoji: '🍑', nom: 'Moelleux pêches-noisettes farine de riz',
-    temps: '40 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les noisettes sont riches en vitamine E, puissant antioxydant protecteur. La farine de riz est naturellement sans gluten et légère. Les pêches apportent du bêta-carotène.',
-    ingredients: [
-      '3 pêches mûres',
-      '150g farine de riz',
-      '80g poudre de noisettes',
-      '2 œufs',
-      '80g sucre de canne',
-      '60ml huile d\'olive douce',
-      '1 sachet de levure sans gluten'
-    ],
-    etapes: [
-      'Préchauffez le four à 170°C.',
-      'Fouettez les œufs avec le sucre jusqu\'à blanchiment.',
-      'Ajoutez l\'huile, la farine, les noisettes et la levure.',
-      'Pelez et coupez les pêches en tranches. Incorporez-les à la pâte.',
-      'Versez dans un moule. Enfournez 30-35 min. Vérifiez avec la lame d\'un couteau.'
-    ]
-  },
-  {
-    id: 56, cat: 'snack', premium: true,
-    emoji: '🫐', nom: 'Sorbet Ninja Creami baies-gingembre',
-    temps: '5 min + 24h congélo', calories: 120, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les fruits rouges sont les plus riches en antioxydants (anthocyanes) qui réduisent l\'inflammation. Le gingembre amplifie l\'effet. Un snack TV sain et délicieux.',
-    ingredients: [
-      '300g fruits rouges mélangés (surgelés)',
-      '1 banane',
-      '1 c.à.c gingembre frais râpé',
-      '2 c.à.s sirop d\'agave',
-      '100ml lait de coco'
-    ],
-    etapes: [
-      'Mixez tous les ingrédients ensemble.',
-      'Versez dans le pot Ninja Creami. Congelez 24h.',
-      'Sortez du congélateur 5 min avant. Passez en mode "Sorbet".',
-      'Servez immédiatement dans des verrines.'
-    ]
-  },
-  {
-    id: 57, cat: 'snack', premium: true,
-    emoji: '🍐', nom: 'Poires rôties au four miel-cardamome',
-    temps: '25 min', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les poires sont riches en fibres prébiotiques bénéfiques pour le microbiote. La cardamome est digestive et anti-inflammatoire. Le miel est un sucre doux à IG modéré.',
-    ingredients: [
-      '4 poires mûres mais fermes',
-      '2 c.à.s miel',
-      '½ c.à.c cardamome moulue',
-      '½ c.à.c cannelle',
-      '2 c.à.s amandes effilées',
-      '1 citron (jus)'
-    ],
-    etapes: [
-      'Préchauffez le four à 190°C.',
-      'Coupez les poires en deux et retirez le cœur.',
-      'Mélangez le miel, la cardamome, la cannelle et le jus de citron.',
-      'Disposez les poires côté coupé vers le haut. Arrosez de la préparation.',
-      'Parsemez d\'amandes effilées. Enfournez 18-20 min jusqu\'à légère caramélisation.'
-    ]
-  },
-  {
-    id: 58, cat: 'snack', premium: true,
-    emoji: '🫘', nom: 'Crème de haricots blancs-tahini-herbes',
-    temps: '10 min', calories: 210, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les haricots blancs sont riches en fer et en magnésium. Le tahini apporte du calcium végétal. Parfait en tartinade sur galettes de riz ou en accompagnement de légumes crus.',
-    ingredients: [
-      '400g haricots blancs cuits (boîte)',
-      '2 c.à.s tahini',
-      '2 gousses d\'ail',
-      '1 citron (jus)',
-      '2 c.à.s huile d\'olive',
-      'Persil, ciboulette, Sel Santé'
-    ],
-    etapes: [
-      'Rincez et égouttez les haricots blancs.',
-      'Mixez avec le tahini, l\'ail pressé, le jus de citron et l\'huile d\'olive.',
-      'Ajoutez un peu d\'eau pour obtenir la consistance désirée.',
-      'Assaisonnez avec le Sel Santé. Incorporez les herbes fraîches.',
-      'Servez avec des galettes de riz ou des bâtonnets de légumes.'
-    ]
-  },
-
-  // --- SAUCES & CONDIMENTS ---
-  {
-    id: 59, cat: 'dejeuner', premium: false,
-    emoji: '🫒', nom: 'Sauce vierge tomates-basilic-olive',
-    temps: '10 min', calories: 110, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le lycopène des tomates est un antioxydant puissant. L\'huile d\'olive extra-vierge contient de l\'oléocanthal, un anti-inflammatoire naturel. La sauce vierge se prépare en 10 min.',
-    ingredients: [
-      '4 tomates mûres',
-      '1 bouquet de basilic frais',
-      '4 c.à.s huile d\'olive extra-vierge',
-      '1 échalote',
-      '1 citron (jus)',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Mondez les tomates (ébouillantez 30 sec puis pelez).',
-      'Coupez-les en petits dés et égouttez-les.',
-      'Mélangez avec l\'échalote émincée, l\'huile et le jus de citron.',
-      'Assaisonnez avec le Sel Santé et le poivre.',
-      'Ajoutez le basilic ciselé au dernier moment.'
-    ]
-  },
-  {
-    id: 60, cat: 'dejeuner', premium: true,
-    emoji: '🌿', nom: 'Sauce au pourpier-yaourt végétal-citron',
-    temps: '5 min', calories: 90, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le pourpier est l\'une des rares plantes riches en oméga-3 végétaux — exceptionnel pour le SJSR. Le yaourt de soja apporte des probiotiques bénéfiques pour le microbiote intestinal.',
-    ingredients: [
-      '1 bouquet de pourpier (ou épinards à défaut)',
-      '150g yaourt de soja nature',
-      '1 citron (jus)',
-      '1 gousse d\'ail',
-      '2 c.à.s huile d\'olive',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Mixez le pourpier avec le yaourt de soja, le jus de citron et l\'ail.',
-      'Incorporez l\'huile d\'olive progressivement.',
-      'Assaisonnez avec le Sel Santé.',
-      'Servez frais sur poisson vapeur, quinoa ou légumes rôtis.'
-    ]
-  },
-  {
-    id: 61, cat: 'dejeuner', premium: true,
-    emoji: '🥜', nom: 'Sauce satay cacahuète-gingembre-tamari',
-    temps: '5 min', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La cacahuète est riche en protéines et magnésium. Le gingembre et le tamari ajoutent une action anti-inflammatoire. Cette sauce versatile accompagne riz, poulet ou légumes vapeur.',
-    ingredients: [
-      '4 c.à.s beurre de cacahuète',
-      '2 c.à.s tamari (sg)',
-      '1 cm gingembre frais râpé',
-      '1 citron vert (jus)',
-      '1 c.à.c sirop d\'agave',
-      '4 c.à.s eau chaude'
-    ],
-    etapes: [
-      'Mélangez le beurre de cacahuète avec le tamari, le gingembre et le jus de citron vert.',
-      'Ajoutez le sirop d\'agave.',
-      'Diluez progressivement avec l\'eau chaude jusqu\'à la consistance désirée.',
-      'Ajustez l\'assaisonnement. Conservez au frigo jusqu\'à 5 jours.'
-    ]
-  },
-
-  // --- PETIT-DÉJEUNERS SJSR SUPPLÉMENTAIRES ---
-  {
-    id: 62, cat: 'petit-dejeuner', premium: false,
-    emoji: '🫐', nom: 'Smoothie bowl fruits rouges-chia-granola',
-    temps: '10 min', calories: 350, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les fruits rouges sont les champions des antioxydants anti-inflammatoires. Les graines de chia apportent des oméga-3. Le granola donne des glucides lents pour une énergie stable toute la matinée.',
-    ingredients: [
-      '200g fruits rouges (surgelés ok)',
-      '1 banane congelée',
-      '100ml lait d\'amande',
-      '2 c.à.s graines de chia',
-      '3 c.à.s granola sans gluten',
-      '1 c.à.c gingembre frais râpé'
-    ],
-    etapes: [
-      'Mixez les fruits rouges, la banane congelée et le lait d\'amande.',
-      'Versez dans un bol épais.',
-      'Parsemez de graines de chia, granola et gingembre râpé.',
-      'Servez immédiatement avant que le mélange décongèle.'
-    ]
-  },
-  {
-    id: 63, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌰', nom: 'Bouillie de châtaigne-millet-noisettes',
-    temps: '15 min', calories: 330, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La châtaigne est riche en magnésium et en glucides complexes à IG bas. Le millet est l\'une des céréales les plus riches en magnésium. Parfait petit-déjeuner SJSR pour les jambes calmes.',
-    ingredients: [
-      '50g farine de châtaigne',
-      '30g flocons de millet',
-      '300ml lait de noisette',
-      '1 c.à.c miel',
-      '1 pincée de cannelle',
-      '1 c.à.s noisettes torréfiées concassées'
-    ],
-    etapes: [
-      'Portez le lait de noisette à frémissement dans une casserole.',
-      'Versez la farine de châtaigne et les flocons de millet en pluie en fouettant.',
-      'Cuisez à feu doux 8 min en remuant constamment.',
-      'Sucrez au miel, ajoutez la cannelle.',
-      'Versez dans un bol, parsemez de noisettes torréfiées concassées.'
-    ]
-  },
-  {
-    id: 64, cat: 'petit-dejeuner', premium: true,
-    emoji: '🥚', nom: 'Œufs cocotte épinards-curcuma',
-    temps: '20 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les œufs sont riches en vitamine B12 et en fer. Les épinards doublent l\'apport en fer. Le curcuma + poivre = absorption maximisée de tous les nutriments. Un brunch thérapeutique.',
-    ingredients: [
-      '2 œufs bio',
-      '100g épinards frais ou surgelés',
-      '1 c.à.c curcuma',
-      '½ c.à.c poivre noir',
-      '2 c.à.s huile d\'olive',
-      'Sel Santé, persil frais'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Faites tomber les épinards dans l\'huile d\'olive avec le curcuma et le poivre.',
-      'Répartissez dans 2 ramequins huilés.',
-      'Cassez un œuf dans chaque ramequin. Assaisonnez avec le Sel Santé.',
-      'Enfournez 10-12 min — le blanc doit être pris et le jaune encore coulant.',
-      'Parsemez de persil frais avant de servir.'
-    ]
-  },
-  {
-    id: 65, cat: 'petit-dejeuner', premium: true,
-    emoji: '🫚', nom: 'Lait d\'or curcuma-cannelle-gingembre',
-    temps: '5 min', calories: 120, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La boisson anti-SJSR du soir par excellence. Le curcuma + poivre = biodisponibilité maximale. La cannelle régule la glycémie nocturne. Le gingembre apaise les jambes. À boire 30 min avant le coucher.',
-    ingredients: [
-      '250ml lait de millet ou d\'avoine',
-      '1 c.à.c curcuma moulu',
-      '½ c.à.c cannelle moulue',
-      '¼ c.à.c gingembre moulu (ou frais râpé)',
-      '1 pincée de poivre noir',
-      '1 c.à.c miel (optionnel)'
-    ],
-    etapes: [
-      'Chauffez le lait végétal à feu doux sans bouillir.',
-      'Ajoutez le curcuma, la cannelle, le gingembre et le poivre noir.',
-      'Fouettez bien pour dissoudre les épices.',
-      'Sucrez légèrement au miel si désiré.',
-      'Buvez chaud 30 min avant le coucher — c\'est votre rituel sérénité 🌙'
-    ]
-  },
-
-  // =============================================
-  // NOUVELLES RECETTES — Vague 3
-  // Mix toutes catégories · Printemps/Été · SJSR
-  // =============================================
-
-  // --- PETITS-DÉJEUNERS ---
-  {
-    id: 66, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥭', nom: 'Bol açaí mangue-coco',
-    temps: '10 min', calories: 340, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'açaí est l\'un des fruits les plus riches en antioxydants. La mangue apporte de la vitamine C qui booste l\'absorption du fer. Un petit-déjeuner anti-inflammatoire express.',
-    ingredients: [
-      '100g pulpe d\'açaï surgelée',
-      '1 banane congelée',
-      '100ml lait de coco',
-      '½ mangue fraîche',
-      '2 c.à.s noix de coco râpée',
-      '1 c.à.s graines de chanvre'
-    ],
-    etapes: [
-      'Mixez la pulpe d\'açaï, la banane congelée et le lait de coco.',
-      'Versez dans un bol — la texture doit être épaisse comme une glace.',
-      'Disposez les dés de mangue fraîche par-dessus.',
-      'Parsemez de noix de coco râpée et graines de chanvre.',
-      'Servez immédiatement.'
-    ]
-  },
-  {
-    id: 67, cat: 'petit-dejeuner', premium: false,
-    emoji: '🍓', nom: 'Pancakes sarrasin-fraises sans œuf',
-    temps: '20 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le sarrasin est riche en magnésium et rutine, essentiels pour le SJSR. Les fraises sont une des meilleures sources de vitamine C. Sans œufs grâce à la banane comme liant.',
-    ingredients: [
-      '150g farine de sarrasin',
-      '1 banane mûre écrasée',
-      '200ml lait de riz',
-      '1 c.à.c levure sans gluten',
-      '1 c.à.s huile de coco',
-      '150g fraises fraîches',
-      '1 c.à.s sirop d\'agave'
-    ],
-    etapes: [
-      'Mélangez farine, levure et lait de riz. Incorporez la banane écrasée.',
-      'Ajoutez l\'huile de coco fondue. La pâte doit être légèrement épaisse.',
-      'Faites cuire des petites crêpes épaisses 2-3 min chaque côté dans une poêle huilée.',
-      'Servez avec les fraises coupées en deux et un filet de sirop d\'agave.'
-    ]
-  },
-  {
-    id: 68, cat: 'petit-dejeuner', premium: true,
-    emoji: '🥜', nom: 'Toast patate douce-beurre d\'amande',
-    temps: '15 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La patate douce rôtie remplace le pain — index glycémique bas, riche en bêta-carotène. Le beurre d\'amande apporte du magnésium et des graisses anti-inflammatoires.',
-    ingredients: [
-      '1 patate douce moyenne',
-      '2 c.à.s beurre d\'amande',
-      '1 banane',
-      '1 c.à.c graines de chia',
-      '1 c.à.c miel',
-      '1 pincée de cannelle'
-    ],
-    etapes: [
-      'Coupez la patate douce en tranches de 1 cm dans la longueur.',
-      'Passez au grille-pain 2 fois ou faites dorer à la poêle 4 min chaque côté.',
-      'Étalez le beurre d\'amande sur chaque tranche.',
-      'Disposez des rondelles de banane par-dessus.',
-      'Parsemez de chia, cannelle et un filet de miel.'
-    ]
-  },
-  {
-    id: 69, cat: 'petit-dejeuner', premium: true,
-    emoji: '🌺', nom: 'Granola maison noix-fruits rouges',
-    temps: '35 min + 30min four', calories: 410, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Batch cooking du dimanche — se conserve 3 semaines. Les fruits rouges séchés sont concentrés en anthocyanes anti-inflammatoires. Les noix apportent des oméga-3 végétaux.',
-    ingredients: [
-      '300g flocons de millet ou sarrasin',
-      '100g noix mélangées',
-      '50g amandes effilées',
-      '3 c.à.s huile de coco',
-      '3 c.à.s sirop d\'érable',
-      '1 c.à.c cannelle',
-      '80g fruits rouges séchés (cranberries, myrtilles)'
-    ],
-    etapes: [
-      'Préchauffez le four à 160°C.',
-      'Mélangez flocons, noix, amandes, huile de coco fondue, sirop d\'érable et cannelle.',
-      'Étalez sur une plaque et enfournez 25-30 min en remuant toutes les 10 min.',
-      'Laissez refroidir complètement — le granola durcit en refroidissant.',
-      'Ajoutez les fruits rouges séchés. Conservez en bocal hermétique.'
-    ]
-  },
-
-  // --- DÉJEUNERS ---
-  {
-    id: 70, cat: 'dejeuner', premium: false,
-    emoji: '🥙', nom: 'Bowl quinoa-pois chiches-légumes rôtis',
-    temps: '35 min', calories: 450, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le bowl parfait pour le bureau — se prépare en batch le dimanche. Quinoa + pois chiches = protéines complètes. Les légumes rôtis concentrent leurs vitamines et minéraux.',
-    ingredients: [
-      '200g quinoa',
-      '400g pois chiches cuits',
-      '1 courgette',
-      '1 poivron rouge',
-      '2 c.à.s huile d\'olive',
-      '1 c.à.c curcuma',
-      '1 citron',
-      'Persil frais, Sel Santé'
-    ],
-    etapes: [
-      'Cuisez le quinoa 15 min dans le double de son volume d\'eau.',
-      'Coupez courgette et poivron en cubes. Enrobez d\'huile, curcuma et Sel Santé.',
-      'Rôtissez à 200°C pendant 20 min ou à l\'air fryer 180°C 15 min.',
-      'Assemblez le bowl : quinoa, légumes rôtis, pois chiches.',
-      'Arrosez d\'huile d\'olive et de jus de citron. Parsemez de persil.'
-    ]
-  },
-  {
-    id: 71, cat: 'dejeuner', premium: false,
-    emoji: '🐠', nom: 'Sardines à l\'huile sur salade de roquette',
-    temps: '10 min', calories: 360, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les sardines sont la meilleure source de fer héminique et d\'oméga-3. Riches en calcium (arêtes). Repas ultra-rapide idéal au bureau. La roquette apporte du fer végétal.',
-    ingredients: [
-      '1 boîte de sardines à l\'huile d\'olive',
-      '80g roquette',
-      '1 tomate',
-      '½ concombre',
-      '1 citron',
-      '1 c.à.s câpres',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Disposez la roquette dans un grand bol.',
-      'Ajoutez la tomate et le concombre coupés en dés.',
-      'Égouttez les sardines et posez-les sur la salade.',
-      'Ajoutez les câpres.',
-      'Assaisonnez avec le jus de citron, Sel Santé et poivre.'
-    ]
-  },
-  {
-    id: 72, cat: 'dejeuner', premium: true,
-    emoji: '🍜', nom: 'Nouilles de riz saumon-épinards-sésame',
-    temps: '20 min', calories: 490, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les nouilles de riz sont une alternative légère aux pâtes. Saumon + épinards = combo fer + oméga-3 imbattable pour le SJSR. Le sésame apporte du calcium végétal.',
-    ingredients: [
-      '150g nouilles de riz',
-      '120g saumon fumé',
-      '100g épinards frais',
-      '2 c.à.s tamari (sg)',
-      '1 c.à.s huile de sésame',
-      '1 cm gingembre râpé',
-      'Graines de sésame, citron vert'
-    ],
-    etapes: [
-      'Cuisez les nouilles de riz selon le paquet. Égouttez et réservez.',
-      'Dans une poêle, faites tomber les épinards avec le gingembre.',
-      'Ajoutez le tamari et l\'huile de sésame.',
-      'Incorporez les nouilles et mélangez 1 min.',
-      'Dressez avec le saumon fumé, les graines de sésame et le citron vert.'
-    ]
-  },
-  {
-    id: 73, cat: 'dejeuner', premium: true,
-    emoji: '🥗', nom: 'Salade de lentilles beluga-betterave-noix',
-    temps: '25 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les lentilles beluga sont les plus riches en fer et protéines. La betterave améliore la circulation sanguine (idéal SJSR). Les noix apportent des oméga-3 végétaux.',
-    ingredients: [
-      '200g lentilles beluga (noires)',
-      '2 betteraves cuites',
-      '50g noix',
-      '1 bouquet de persil',
-      '2 c.à.s vinaigre balsamique',
-      '3 c.à.s huile d\'olive',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Cuisez les lentilles 20 min dans l\'eau bouillante. Égouttez et laissez refroidir.',
-      'Coupez les betteraves en cubes.',
-      'Mélangez lentilles, betteraves et noix grossièrement concassées.',
-      'Préparez la vinaigrette : huile d\'olive, vinaigre balsamique, Sel Santé.',
-      'Assaisonnez et parsemez de persil frais haché.'
-    ]
-  },
-  {
-    id: 74, cat: 'dejeuner', premium: true,
-    emoji: '🥘', nom: 'Tajine de légumes printaniers-pois chiches',
-    temps: '40 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le cumin, la coriandre et le curcuma forment un trio anti-inflammatoire puissant. Les pois chiches apportent du fer et des protéines végétales. Idéal batch cooking.',
-    ingredients: [
-      '400g pois chiches cuits',
-      '2 carottes',
-      '1 courgette',
-      '1 oignon',
-      '400g tomates concassées',
-      '1 c.à.c curcuma',
-      '1 c.à.c cumin',
-      '1 c.à.c coriandre moulue',
-      'Coriandre fraîche, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir l\'oignon émincé dans l\'huile d\'olive.',
-      'Ajoutez les épices et remuez 1 min pour les torréfier.',
-      'Ajoutez carottes et courgette en cubes, puis les tomates concassées.',
-      'Incorporez les pois chiches. Couvrez et laissez mijoter 25 min.',
-      'Servez avec de la coriandre fraîche. Se congèle très bien.'
-    ]
-  },
-
-  // --- DÎNERS ---
-  {
-    id: 75, cat: 'diner', premium: false,
-    emoji: '🐟', nom: 'Dos de cabillaud vapeur-purée patate douce',
-    temps: '25 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le cabillaud est une protéine légère idéale le soir — facile à digérer. La vapeur préserve tous les nutriments. La patate douce à IG bas évite les pics glycémiques nocturnes.',
-    ingredients: [
-      '150g dos de cabillaud',
-      '2 patates douces',
-      '10cl lait de coco',
-      '1 citron',
-      'Coriandre fraîche',
-      'Sel Santé, curcuma'
-    ],
-    etapes: [
-      'Faites cuire les patates douces à la vapeur 15 min. Mixez avec le lait de coco et le curcuma.',
-      'Assaisonnez le cabillaud avec le Sel Santé et le citron.',
-      'Cuisez à la vapeur 8-10 min — le poisson doit se détacher en feuillets.',
-      'Dressez la purée, posez le cabillaud par-dessus.',
-      'Parsemez de coriandre fraîche et d\'un filet de citron.'
-    ]
-  },
-  {
-    id: 76, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Curry de légumes verts-lait de coco léger',
-    temps: '25 min', calories: 280, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Dîner alcalinisant par excellence. Les brocolis et épinards apportent du fer et du calcium. Le lait de coco est anti-inflammatoire. Le curcuma + poivre = absorption maximisée.',
-    ingredients: [
-      '200g brocolis',
-      '100g épinards',
-      '100g petits pois',
-      '200ml lait de coco allégé',
-      '1 c.à.c pâte de curry vert (sg)',
-      '1 c.à.c curcuma',
-      'Citron vert, coriandre'
-    ],
-    etapes: [
-      'Faites revenir la pâte de curry dans un peu d\'huile de coco 1 min.',
-      'Ajoutez le lait de coco et le curcuma. Portez à frémissement.',
-      'Ajoutez les brocolis et laissez cuire 5 min.',
-      'Incorporez les épinards et les petits pois en fin de cuisson.',
-      'Servez avec du jus de citron vert et de la coriandre fraîche.'
-    ]
-  },
-  {
-    id: 77, cat: 'diner', premium: true,
-    emoji: '🍄', nom: 'Risotto de quinoa-champignons-herbes',
-    temps: '30 min', calories: 350, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le quinoa remplace le riz pour un risotto sans gluten naturellement riche en protéines. Les champignons sont riches en sélénium antioxydant et en vitamine D.',
-    ingredients: [
-      '200g quinoa',
-      '300g champignons mélangés',
-      '1 oignon',
-      '2 gousses d\'ail',
-      '600ml bouillon de légumes chaud',
-      '2 c.à.s levure nutritionnelle',
-      'Thym, persil, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir oignon et ail dans l\'huile d\'olive.',
-      'Ajoutez les champignons et faites dorer 5 min.',
-      'Incorporez le quinoa, mélangez 1 min.',
-      'Ajoutez le bouillon louche par louche comme un risotto, en remuant.',
-      'En fin de cuisson, ajoutez la levure nutritionnelle et les herbes.'
-    ]
-  },
-  {
-    id: 78, cat: 'diner', premium: true,
-    emoji: '🌮', nom: 'Galettes de pois chiche-épinards farcies',
-    temps: '30 min', calories: 360, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les pois chiches sont la base idéale SJSR — fer, magnésium, protéines végétales complètes. Ces galettes se préparent en batch et se réchauffent facilement.',
-    ingredients: [
-      '400g pois chiches cuits',
-      '100g épinards cuits',
-      '2 gousses d\'ail',
-      '1 c.à.c cumin',
-      '1 c.à.c curcuma',
-      '2 c.à.s farine de pois chiche',
-      'Huile d\'olive, Sel Santé'
-    ],
-    etapes: [
-      'Mixez les pois chiches avec l\'ail, le cumin et le curcuma.',
-      'Incorporez les épinards essorés et la farine de pois chiche.',
-      'Formez des galettes de 1 cm d\'épaisseur.',
-      'Faites cuire à la poêle huilée 4 min chaque côté.',
-      'Servez avec une sauce tahini-citron ou de la sauce vierge.'
-    ]
-  },
-  {
-    id: 79, cat: 'diner', premium: true,
-    emoji: '🐙', nom: 'Salade tiède de poulpe-pommes de terre-olives',
-    temps: '45 min', calories: 390, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le poulpe est une excellente source de fer héminique et de zinc. Les olives apportent des graisses mono-insaturées anti-inflammatoires. Un plat méditerranéen thérapeutique.',
-    ingredients: [
-      '300g poulpe cuit',
-      '300g pommes de terre',
-      '60g olives noires',
-      '1 citron',
-      '3 c.à.s huile d\'olive',
-      'Persil plat, origan',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Cuisez les pommes de terre à l\'eau 20 min. Laissez tiédir et coupez en rondelles.',
-      'Coupez le poulpe en morceaux.',
-      'Mélangez poulpe, pommes de terre et olives.',
-      'Préparez la vinaigrette : huile d\'olive, citron, origan, Sel Santé.',
-      'Assaisonnez généreusement. Parsemez de persil plat frais.'
-    ]
-  },
-
-  // --- SNACKS / DESSERTS ---
-  {
-    id: 80, cat: 'snack', premium: false,
-    emoji: '🍎', nom: 'Chips de pomme cannelle au four',
-    temps: '5 min + 2h four', calories: 90, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les pommes sont riches en quercétine, un antioxydant anti-inflammatoire puissant. La cannelle régule la glycémie. Un snack zéro sucre ajouté pour les envies de grignotage.',
-    ingredients: [
-      '3 pommes',
-      '1 c.à.c cannelle',
-      '1 pincée de cardamome'
-    ],
-    etapes: [
-      'Préchauffez le four à 100°C.',
-      'Coupez les pommes en tranches très fines (2mm) à la mandoline ou au couteau.',
-      'Disposez sur une plaque recouverte de papier cuisson.',
-      'Saupoudrez de cannelle et cardamome.',
-      'Enfournez 1h30 à 2h en retournant à mi-cuisson. Laissez sécher dans le four éteint.'
-    ]
-  },
-  {
-    id: 81, cat: 'snack', premium: false,
-    emoji: '🫐', nom: 'Nice cream myrtilles-banane-spiruline',
-    temps: '5 min + 24h congélo', calories: 150, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La spiruline est la source végétale la plus concentrée en fer biodisponible — parfaite SJSR. Les myrtilles sont champions en anthocyanes anti-inflammatoires. Zéro sucre ajouté.',
-    ingredients: [
-      '2 bananes congelées',
-      '150g myrtilles surgelées',
-      '1 c.à.c spiruline en poudre',
-      '2 c.à.s lait de coco'
-    ],
-    etapes: [
-      'Mixez les bananes congelées avec le lait de coco jusqu\'à texture crémeuse.',
-      'Ajoutez les myrtilles et la spiruline.',
-      'Mixez à nouveau — la couleur devient bleu-vert magnifique.',
-      'Servez immédiatement ou recongelez 30 min pour une texture plus ferme.'
-    ]
-  },
-  {
-    id: 82, cat: 'snack', premium: false,
-    emoji: '🌰', nom: 'Beurre de noisettes maison',
-    temps: '15 min', calories: 190, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les noisettes sont parmi les noix les plus riches en vitamine E. Fait maison = zéro huile de palme, zéro sucre ajouté. Une cuillère le matin booste le magnésium de la journée.',
-    ingredients: [
-      '300g noisettes entières',
-      '1 pincée de sel Santé',
-      '1 c.à.c miel (optionnel)'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C. Étalez les noisettes sur une plaque.',
-      'Torréfiez 10-12 min jusqu\'à ce que les peaux craquèlent.',
-      'Frottez dans un torchon pour enlever un maximum de peaux.',
-      'Mixez au robot puissant 8-10 min en raclant les bords régulièrement.',
-      'La pâte va passer de sèche à crémeuse. Ajoutez le sel et le miel. Conservez en bocal.'
-    ]
-  },
-  {
-    id: 83, cat: 'snack', premium: true,
-    emoji: '🍋', nom: 'Tarte au citron sans cuisson farine de coco',
-    temps: '20 min + 2h frigo', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Sans cuisson et sans lactose. La farine de coco est riche en fibres et protéines. Le citron apporte de la vitamine C. Le curcuma dans la garniture renforce l\'action anti-inflammatoire.',
-    ingredients: [
-      '150g noix de cajou trempées 2h',
-      '4 dattes Medjool',
-      '80g farine de coco',
-      '3 citrons (jus + zeste)',
-      '100ml lait de coco entier',
-      '3 c.à.s sirop d\'agave',
-      '1 pincée de curcuma'
-    ],
-    etapes: [
-      'Mixez les dattes avec la farine de coco pour former la base. Tassez dans un moule.',
-      'Mixez les cajous égouttés avec le jus de citron, le zeste, le lait de coco et l\'agave.',
-      'Ajoutez le curcuma pour la couleur jaune naturelle.',
-      'Versez sur la base. Réfrigérez 2h minimum.',
-      'Démoulez et décorez d\'un zeste de citron.'
-    ]
-  },
-  {
-    id: 84, cat: 'snack', premium: true,
-    emoji: '🍫', nom: 'Bark chocolat noir-pistaches-fleur de sel',
-    temps: '15 min + 1h frigo', calories: 210, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le chocolat 85% est la meilleure source alimentaire de magnésium. Les pistaches apportent du fer et du potassium. La fleur de sel exalte les saveurs et apporte des minéraux.',
-    ingredients: [
-      '200g chocolat noir 85%',
-      '50g pistaches décortiquées',
-      '30g cranberries séchées',
-      '1 pincée de fleur de sel',
-      '1 c.à.c zeste d\'orange'
-    ],
-    etapes: [
-      'Faites fondre le chocolat au bain-marie.',
-      'Étalez sur une plaque recouverte de papier cuisson (5mm d\'épaisseur).',
-      'Parsemez de pistaches, cranberries, fleur de sel et zeste d\'orange.',
-      'Réfrigérez 1h jusqu\'à solidification complète.',
-      'Cassez en morceaux irréguliers. Conservez au frais.'
-    ]
-  },
-  {
-    id: 85, cat: 'snack', premium: true,
-    emoji: '🧁', nom: 'Muffins courgette-citron-amande',
-    temps: '35 min', calories: 240, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La courgette apporte de l\'eau, des fibres et de la vitamine C sans alourdir. La poudre d\'amande est riche en vitamine E. Ces muffins se conservent 4 jours et sont parfaits pour le petit-déjeuner.',
-    ingredients: [
-      '200g courgette râpée',
-      '150g poudre d\'amande',
-      '80g farine de riz',
-      '2 citrons (jus + zeste)',
-      '3 c.à.s sirop d\'agave',
-      '60ml huile d\'olive',
-      '1 sachet levure sans gluten'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Essorez bien la courgette râpée dans un torchon.',
-      'Mélangez poudre d\'amande, farine, levure.',
-      'Incorporez courgette, jus et zeste de citron, sirop d\'agave et huile.',
-      'Versez dans des moules à muffins. Enfournez 22-25 min.'
-    ]
-  },
-
-  // --- BATCH COOKING SPÉCIAL ---
-  {
-    id: 86, cat: 'dejeuner', premium: false,
-    emoji: '🍲', nom: 'Soupe minestrone détox printemps',
-    temps: '35 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Soupe complète riche en légumes de printemps. Les petits pois et épinards apportent du fer. Le bouillon de légumes maison est alcalinisant. Parfait pour 4 portions batch cooking.',
-    ingredients: [
-      '2 courgettes',
-      '2 carottes',
-      '100g petits pois',
-      '100g haricots verts',
-      '400g tomates concassées',
-      '100g haricots blancs cuits',
-      '1 oignon, 2 gousses d\'ail',
-      '1L bouillon de légumes',
-      'Basilic frais, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir oignon et ail dans l\'huile d\'olive.',
-      'Ajoutez carottes et courgettes en petits dés. Faites revenir 3 min.',
-      'Ajoutez les tomates, le bouillon et portez à ébullition.',
-      'Incorporez les haricots verts, petits pois et haricots blancs.',
-      'Laissez mijoter 15 min. Parsemez de basilic frais. Se congèle en portions.'
-    ]
-  },
-  {
-    id: 87, cat: 'dejeuner', premium: true,
-    emoji: '🫙', nom: 'Houmous maison pois chiche-tahini',
-    temps: '10 min', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le houmous est l\'en-cas idéal SJSR : fer des pois chiches + calcium du tahini + vitamine C du citron = absorption maximale. Batch cooking — dure 5 jours au frigo.',
-    ingredients: [
-      '400g pois chiches cuits',
-      '3 c.à.s tahini',
-      '2 citrons (jus)',
-      '2 gousses d\'ail',
-      '4 c.à.s huile d\'olive',
-      '4 c.à.s eau froide',
-      'Cumin, paprika, Sel Santé'
-    ],
-    etapes: [
-      'Rincez les pois chiches. Gardez quelques-uns pour la déco.',
-      'Mixez tahini et jus de citron 1 min pour blanchir.',
-      'Ajoutez ail, pois chiches, huile et eau froide. Mixez 3-4 min.',
-      'Assaisonnez avec le Sel Santé et le cumin.',
-      'Dressez avec un filet d\'huile, paprika et les pois chiches réservés.'
-    ]
-  },
-  {
-    id: 88, cat: 'diner', premium: false,
-    emoji: '🍆', nom: 'Gratin d\'aubergines-tomates-herbes',
-    temps: '50 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'aubergine est riche en nasunine, un antioxydant puissant dans la peau violette. Les tomates apportent du lycopène anti-inflammatoire. Plat méditerranéen alcalinisant.',
-    ingredients: [
-      '3 aubergines',
-      '4 tomates',
-      '3 gousses d\'ail',
-      '1 bouquet de basilic',
-      '4 c.à.s huile d\'olive',
-      '1 c.à.c origan',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Préchauffez le four à 190°C.',
-      'Coupez aubergines et tomates en rondelles.',
-      'Dans un plat huilé, disposez en alternance aubergines et tomates.',
-      'Parsemez d\'ail émincé, origan, Sel Santé et huile d\'olive.',
-      'Enfournez 35-40 min. Parsemez de basilic frais avant de servir.'
-    ]
-  },
-  {
-    id: 89, cat: 'petit-dejeuner', premium: false,
-    emoji: '🫐', nom: 'Muffins myrtilles-farine d\'avoine sg',
-    temps: '30 min', calories: 290, diff: 'Facile',
-    tags: ['sl', 'vg'],
-    benefices: 'Les myrtilles sont anti-inflammatoires et neuroprotectrices — particulièrement bénéfiques pour le TDAH. La farine d\'avoine certifiée sg est riche en bêta-glucane pour le microbiote.',
-    ingredients: [
-      '200g farine d\'avoine certifiée sg',
-      '150g myrtilles fraîches ou surgelées',
-      '2 œufs',
-      '100ml lait d\'amande',
-      '60g sucre de coco',
-      '60ml huile de coco',
-      '1 sachet levure sans gluten'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Fouettez les œufs avec le sucre de coco jusqu\'à blanchiment.',
-      'Ajoutez lait d\'amande et huile de coco fondue.',
-      'Incorporez farine et levure. Ajoutez délicatement les myrtilles.',
-      'Versez dans des moules à muffins. Enfournez 20-22 min.'
-    ]
-  },
-  {
-    id: 90, cat: 'snack', premium: false,
-    emoji: '🌿', nom: 'Infusion nuit profonde valériane-passiflore',
-    temps: '5 min', calories: 5, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La valériane réduit le temps d\'endormissement et améliore la qualité du sommeil — études cliniques validées pour le SJSR. La passiflore est anxiolytique naturelle. À boire 30 min avant le coucher.',
-    ingredients: [
-      '1 sachet de valériane ou 1 c.à.c de racine séchée',
-      '1 sachet de passiflore',
-      '1 c.à.c de tilleul',
-      '250ml eau bouillante',
-      '1 c.à.c miel'
-    ],
-    etapes: [
-      'Faites bouillir l\'eau (90°C idéalement, pas 100°C pour préserver les principes actifs).',
-      'Versez sur les plantes dans une tasse.',
-      'Laissez infuser 8-10 min à couvert.',
-      'Filtrez, sucrez légèrement au miel.',
-      'Buvez calme, dans le noir ou avec une lumière douce — votre rituel SJSR 🌙'
-    ]
-  },
-  {
-    id: 91, cat: 'diner', premium: true,
-    emoji: '🐚', nom: 'Moules marinières lait de coco-citronnelle',
-    temps: '20 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les moules sont la source de fer héminique la plus concentrée — encore plus que la viande rouge. Riches en zinc et oméga-3. La citronnelle est anti-inflammatoire et digestive.',
-    ingredients: [
-      '1 kg de moules',
-      '200ml lait de coco',
-      '1 tige de citronnelle',
-      '2 cm gingembre frais',
-      '2 gousses d\'ail',
-      '1 citron vert',
-      'Coriandre fraîche'
-    ],
-    etapes: [
-      'Grattez et rincez les moules. Jetez celles qui sont ouvertes.',
-      'Faites revenir ail, gingembre et citronnelle dans l\'huile de coco.',
-      'Ajoutez les moules et le lait de coco. Couvrez à feu vif.',
-      'Cuisez 4-5 min en secouant la cocotte — les moules doivent s\'ouvrir.',
-      'Arrosez de jus de citron vert. Parsemez de coriandre fraîche.'
-    ]
-  },
-  {
-    id: 92, cat: 'snack', premium: true,
-    emoji: '🍯', nom: 'Caramels mous dattes-beurre de cajou',
-    temps: '15 min + 1h frigo', calories: 160, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Des caramels sains sans sucre raffiné ! Les dattes ont un IG modéré et sont riches en fer et potassium. Le cajou apporte du zinc et du magnésium. Parfait snack TV anti-SJSR.',
-    ingredients: [
-      '200g dattes Medjool dénoyautées',
-      '80g beurre de cajou',
-      '2 c.à.s lait de coco',
-      '1 c.à.c extrait de vanille',
-      '1 pincée de fleur de sel'
-    ],
-    etapes: [
-      'Faites tremper les dattes 10 min dans l\'eau chaude.',
-      'Égouttez et mixez avec le beurre de cajou, le lait de coco et la vanille.',
-      'Étalez dans un moule recouvert de papier cuisson (1 cm d\'épaisseur).',
-      'Parsemez de fleur de sel. Réfrigérez 1h.',
-      'Découpez en petits carrés. Conservez au frigo.'
-    ]
-  },
-  {
-    id: 93, cat: 'petit-dejeuner', premium: true,
-    emoji: '🫚', nom: 'Crêpes farine de teff-banane',
-    temps: '20 min', calories: 320, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le teff est la céréale la plus riche en fer — une crêpe apporte autant de fer que 100g de viande. Originaire d\'Éthiopie, sans gluten, il est aussi riche en calcium et magnésium.',
-    ingredients: [
-      '150g farine de teff',
-      '1 banane écrasée',
-      '200ml lait de riz',
-      '1 c.à.s huile de coco',
-      '1 c.à.c extrait de vanille',
-      '1 pincée de sel Santé'
-    ],
-    etapes: [
-      'Mixez tous les ingrédients jusqu\'à pâte lisse.',
-      'Laissez reposer 10 min — la farine de teff absorbe les liquides.',
-      'Huilez légèrement une poêle antiadhésive.',
-      'Cuisez des petites crêpes 2-3 min chaque côté.',
-      'Servez avec des fruits frais, du miel ou du beurre d\'amande.'
-    ]
-  },
-  {
-    id: 94, cat: 'diner', premium: true,
-    emoji: '🫑', nom: 'Poivrons farcis quinoa-légumes-herbes',
-    temps: '45 min', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les poivrons rouges sont les champions de la vitamine C — boostent l\'absorption du fer du quinoa. Plat complet batch cooking qui se récauffe parfaitement.',
-    ingredients: [
-      '4 poivrons rouges',
-      '200g quinoa cuit',
-      '100g pois chiches cuits',
-      '1 courgette en dés',
-      '1 tomate en dés',
-      '1 c.à.c cumin',
-      'Persil, Sel Santé'
-    ],
-    etapes: [
-      'Préchauffez le four à 190°C.',
-      'Coupez les poivrons en deux, retirez les graines.',
-      'Mélangez quinoa, pois chiches, courgette, tomate, cumin et persil.',
-      'Remplissez les poivrons de la farce. Arrosez d\'huile d\'olive.',
-      'Enfournez 30 min. Les poivrons doivent être tendres et légèrement caramélisés.'
-    ]
-  },
-  {
-    id: 95, cat: 'snack', premium: false,
-    emoji: '🥕', nom: 'Houmous de betterave-carotte express',
-    temps: '10 min', calories: 140, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La betterave améliore la circulation sanguine dans les jambes — action directe sur le SJSR. La carotte apporte du bêta-carotène. Un snack coloré, nutritif et anti-inflammatoire.',
-    ingredients: [
-      '200g betteraves cuites',
-      '200g pois chiches cuits',
-      '2 carottes cuites',
-      '2 c.à.s tahini',
-      '1 citron',
-      '1 gousse d\'ail',
-      'Sel Santé, cumin'
-    ],
-    etapes: [
-      'Mixez tous les ingrédients ensemble.',
-      'Ajoutez un peu d\'eau si la consistance est trop épaisse.',
-      'Assaisonnez avec le Sel Santé et le cumin.',
-      'Servez avec des bâtonnets de légumes crus ou des galettes de riz.',
-      'Se conserve 4 jours au réfrigérateur.'
-    ]
-  },
-
-  // =============================================
-  // GUIDE 50 RECETTES ANTI-INFLAMMATOIRES
-  // Sans gluten · Sans lactose · Vague 4
-  // =============================================
-
-  // --- PETITS-DÉJEUNERS ---
-  {
-    id: 96, cat: 'petit-dejeuner', premium: false,
-    emoji: '🍳', nom: 'Omelette épinards-curcuma',
-    temps: '10 min', calories: 220, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les œufs sont riches en vitamine B12 et fer. Les épinards apportent du fer végétal. Le curcuma + œuf = absorption maximale des nutriments. Petit-déjeuner protéiné anti-SJSR.',
-    ingredients: [
-      '2 œufs bio',
-      '1 poignée d\'épinards frais',
-      '½ c.à.c curcuma',
-      '1 c.à.s huile d\'olive',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Battez les œufs avec le curcuma, le Sel Santé et le poivre.',
-      'Faites revenir les épinards dans l\'huile d\'olive 1 min.',
-      'Versez les œufs sur les épinards.',
-      'Cuisez à feu doux jusqu\'à prise complète.',
-      'Pliez et servez immédiatement.'
-    ]
-  },
-  {
-    id: 97, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥑', nom: 'Smoothie vert détox avocat-pomme-gingembre',
-    temps: '5 min', calories: 280, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'avocat apporte des graisses mono-insaturées anti-inflammatoires. Les épinards donnent du fer et du chlorophylle. Le gingembre est l\'anti-inflammatoire naturel le plus puissant.',
-    ingredients: [
-      '1 grosse poignée d\'épinards',
-      '½ avocat',
-      '1 pomme',
-      '1 cm gingembre frais',
-      '200ml eau de coco',
-      '½ citron (jus)'
-    ],
-    etapes: [
-      'Pelez la pomme et coupez en morceaux.',
-      'Placez tous les ingrédients dans le blender.',
-      'Mixez jusqu\'à obtenir une texture lisse.',
-      'Ajoutez de l\'eau si trop épais.',
-      'Buvez immédiatement pour profiter des nutriments.'
-    ]
-  },
-  {
-    id: 98, cat: 'petit-dejeuner', premium: false,
-    emoji: '🍌', nom: 'Pancakes banane-œuf (2 ingrédients)',
-    temps: '10 min', calories: 200, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La recette la plus simple du monde — sans farine ! La banane apporte du potassium et du tryptophane. Les œufs donnent des protéines complètes. Parfait pour les matins pressés.',
-    ingredients: [
-      '1 banane très mûre',
-      '2 œufs bio',
-      '1 c.à.c huile de coco'
-    ],
-    etapes: [
-      'Écrasez la banane à la fourchette jusqu\'à consistance lisse.',
-      'Battez les œufs et mélangez à la banane.',
-      'Huilez une poêle antiadhésive avec l\'huile de coco.',
-      'Versez de petites quantités de pâte et cuisez 2 min chaque côté.',
-      'Servez avec des fruits frais ou du miel.'
-    ]
-  },
-  {
-    id: 99, cat: 'petit-dejeuner', premium: false,
-    emoji: '🥜', nom: 'Tartines de sarrasin purée d\'amande-banane',
-    temps: '5 min', calories: 310, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le pain de sarrasin est riche en magnésium et rutine. La purée d\'amande apporte des graisses saines et de la vitamine E. La banane fournit du tryptophane et du potassium.',
-    ingredients: [
-      '2 tartines de pain de sarrasin',
-      '2 c.à.s purée d\'amande complète',
-      '1 banane',
-      '1 c.à.c miel (optionnel)'
-    ],
-    etapes: [
-      'Étalez généreusement la purée d\'amande sur les tartines.',
-      'Coupez la banane en rondelles et disposez-les par-dessus.',
-      'Ajoutez un filet de miel si désiré.',
-      'Dégustez immédiatement.'
-    ]
-  },
-  {
-    id: 100, cat: 'petit-dejeuner', premium: true,
-    emoji: '🫐', nom: 'Yaourt de soja myrtilles-noix du Brésil',
-    temps: '3 min', calories: 240, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les noix du Brésil sont la source alimentaire la plus riche en sélénium — un antioxydant puissant. 2 noix du Brésil = apport journalier en sélénium recommandé. Les myrtilles sont anti-inflammatoires.',
-    ingredients: [
-      '1 yaourt de soja bio nature',
-      '1 poignée de myrtilles fraîches',
-      '2 noix du Brésil concassées',
-      '1 c.à.c miel',
-      '1 c.à.c graines de lin moulues'
-    ],
-    etapes: [
-      'Versez le yaourt dans un bol.',
-      'Disposez les myrtilles par-dessus.',
-      'Ajoutez les noix du Brésil concassées.',
-      'Arrosez d\'un filet de miel et saupoudrez de graines de lin.',
-      'Dégustez immédiatement.'
-    ]
-  },
-  {
-    id: 101, cat: 'petit-dejeuner', premium: true,
-    emoji: '🐟', nom: 'Assiette scandinave saumon-avocat-œuf poché',
-    temps: '10 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Triple puissance anti-SJSR : oméga-3 du saumon + graisses saines de l\'avocat + fer et B12 de l\'œuf. Un petit-déjeuner digne d\'un restaurant healthy, en 10 minutes.',
-    ingredients: [
-      '1 tranche de saumon fumé',
-      '½ avocat',
-      '1 œuf bio',
-      '1 citron',
-      'Aneth ou ciboulette',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Portez une casserole d\'eau à frémissement avec un filet de vinaigre.',
-      'Cassez l\'œuf dans un bol, créez un tourbillon dans l\'eau et glissez l\'œuf doucement.',
-      'Cuisez 3 min pour un jaune coulant.',
-      'Disposez le saumon et l\'avocat en tranches dans une assiette.',
-      'Posez l\'œuf poché, assaisonnez et parsemez d\'herbes fraîches.'
-    ]
-  },
-  {
-    id: 102, cat: 'petit-dejeuner', premium: true,
-    emoji: '🌰', nom: 'Pain paléo poudre d\'amande-graines de lin',
-    temps: '10 min + 40min four', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Zéro céréale, zéro gluten. La poudre d\'amande est riche en vitamine E et graisses saines. Les graines de lin apportent des oméga-3. Se conserve 5 jours au frigo.',
-    ingredients: [
-      '150g poudre d\'amande',
-      '50g graines de lin moulues',
-      '3 œufs bio',
-      '½ c.à.c bicarbonate',
-      '1 pincée de sel Santé',
-      '1 c.à.s huile d\'olive'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Mélangez poudre d\'amande, graines de lin, bicarbonate et sel.',
-      'Incorporez les œufs battus et l\'huile d\'olive.',
-      'Versez dans un moule à cake huilé.',
-      'Enfournez 35-40 min. Vérifiez avec un couteau — doit ressortir sec.'
-    ]
-  },
-  {
-    id: 103, cat: 'petit-dejeuner', premium: true,
-    emoji: '💪', nom: 'Smoothie protéiné chanvre-cacao-datte',
-    temps: '5 min', calories: 350, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les protéines de chanvre sont complètes et riches en magnésium. Le cacao cru est anti-inflammatoire et stimulant naturel. Les dattes apportent du fer et de l\'énergie lente.',
-    ingredients: [
-      '2 c.à.s protéine de chanvre',
-      '300ml lait de noisette',
-      '1 c.à.s cacao cru en poudre',
-      '1 datte Medjool dénoyautée',
-      '1 banane congelée'
-    ],
-    etapes: [
-      'Placez tous les ingrédients dans le blender.',
-      'Mixez 1 min jusqu\'à consistance lisse et crémeuse.',
-      'Ajustez la consistance avec plus de lait si nécessaire.',
-      'Versez dans un grand verre et buvez immédiatement.'
-    ]
-  },
-
-  // --- DÉJEUNERS ---
-  {
-    id: 104, cat: 'dejeuner', premium: false,
-    emoji: '🌿', nom: 'Salade lentilles corail-carottes-cumin',
-    temps: '20 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les lentilles corail cuisent en 10 min et sont ultra-riches en fer facilement assimilable. Le cumin améliore la digestion des légumineuses. La carotte apporte du bêta-carotène.',
-    ingredients: [
-      '200g lentilles corail',
-      '2 carottes râpées',
-      '1 bouquet de coriandre',
-      '1 c.à.c cumin moulu',
-      '2 c.à.s huile d\'olive',
-      '1 citron',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Rincez et cuisez les lentilles corail 10 min dans l\'eau bouillante. Égouttez.',
-      'Laissez tiédir. Mélangez avec les carottes râpées.',
-      'Assaisonnez avec le cumin, l\'huile d\'olive et le jus de citron.',
-      'Parsemez de coriandre fraîche.',
-      'Servez tiède ou froid.'
-    ]
-  },
-  {
-    id: 105, cat: 'dejeuner', premium: false,
-    emoji: '🌾', nom: 'Taboulé de quinoa frais menthe-persil',
-    temps: '20 min + 30min repos', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le quinoa remplace la semoule — naturellement sans gluten et protéiné. Le persil est l\'herbe la plus riche en fer et vitamine C. La menthe est digestive et anti-spasmodique.',
-    ingredients: [
-      '200g quinoa',
-      '1 bouquet de persil plat',
-      '10 feuilles de menthe fraîche',
-      '3 tomates',
-      '½ concombre',
-      '2 citrons (jus)',
-      '3 c.à.s huile d\'olive, Sel Santé'
-    ],
-    etapes: [
-      'Cuisez le quinoa 15 min. Égouttez et laissez refroidir complètement.',
-      'Hachez finement persil et menthe.',
-      'Coupez tomates et concombre en petits dés.',
-      'Mélangez quinoa, herbes et légumes.',
-      'Assaisonnez avec citron, huile et sel. Laissez reposer 30 min au frais.'
-    ]
-  },
-  {
-    id: 106, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Salade kale massé pomme-noix',
-    temps: '15 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le kale est le légume le plus riche en calcium végétal. Le massage à l\'huile le rend plus digeste et libère ses nutriments. Les noix apportent des oméga-3. Anti-inflammatoire puissant.',
-    ingredients: [
-      '200g kale frais',
-      '2 c.à.s huile d\'olive',
-      '1 pomme',
-      '50g noix',
-      '1 citron',
-      '1 c.à.s vinaigre de cidre',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Retirez les tiges du kale. Déchirez les feuilles en morceaux.',
-      'Massez les feuilles avec l\'huile d\'olive et le citron pendant 2-3 min — elles deviennent tendres.',
-      'Coupez la pomme en fines lamelles.',
-      'Mélangez kale, pomme et noix grossièrement concassées.',
-      'Assaisonnez avec le vinaigre et le Sel Santé.'
-    ]
-  },
-  {
-    id: 107, cat: 'dejeuner', premium: false,
-    emoji: '🐟', nom: 'Salade betteraves-harengs fumés-pomme',
-    temps: '10 min', calories: 380, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le hareng fumé est encore plus riche en oméga-3 que le saumon. La betterave améliore la circulation sanguine. La pomme apporte de la quercétine anti-inflammatoire.',
-    ingredients: [
-      '2 betteraves cuites',
-      '150g filets de hareng fumé',
-      '1 pomme',
-      '1 c.à.s câpres',
-      '2 c.à.s huile de colza',
-      '1 c.à.s vinaigre de cidre',
-      'Aneth, Sel Santé'
-    ],
-    etapes: [
-      'Coupez les betteraves et la pomme en cubes.',
-      'Coupez les harengs en morceaux.',
-      'Mélangez délicatement tous les ingrédients.',
-      'Assaisonnez avec l\'huile de colza, le vinaigre et le Sel Santé.',
-      'Parsemez d\'aneth frais.'
-    ]
-  },
-  {
-    id: 108, cat: 'dejeuner', premium: true,
-    emoji: '🍱', nom: 'Bowl riz noir-crevettes-edamames',
-    temps: '30 min', calories: 450, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le riz noir vénéré est riche en anthocyanes — plus que les myrtilles ! Les crevettes sont une excellente source de zinc et de fer. Les edamames apportent des protéines végétales complètes.',
-    ingredients: [
-      '150g riz noir vénéré',
-      '150g crevettes décortiquées',
-      '100g edamames',
-      '1 radis noir',
-      '2 c.à.s tamari (sg)',
-      '1 c.à.s huile de sésame',
-      'Graines de sésame, citron vert'
-    ],
-    etapes: [
-      'Cuisez le riz noir 30-35 min. Il doit rester légèrement al dente.',
-      'Faites sauter les crevettes dans l\'huile de sésame 3 min.',
-      'Ajoutez les edamames et le tamari. Mélangez 1 min.',
-      'Dressez : riz noir, crevettes, edamames, radis noir en lamelles.',
-      'Parsemez de sésame et arrosez de jus de citron vert.'
-    ]
-  },
-  {
-    id: 109, cat: 'dejeuner', premium: true,
-    emoji: '🌯', nom: 'Wraps de laitue au poulet-avocat',
-    temps: '15 min', calories: 320, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Zéro glucides transformés — la laitue remplace la tortilla. Le poulet est riche en tryptophane et protéines. L\'avocat apporte des graisses anti-inflammatoires. Idéal déjeuner bureau léger.',
-    ingredients: [
-      '4 grandes feuilles de laitue iceberg',
-      '150g poulet cuit émietté',
-      '1 avocat',
-      '1 tomate',
-      '1 citron vert',
-      'Coriandre fraîche',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Lavez et séchez les feuilles de laitue.',
-      'Écrasez l\'avocat avec le jus de citron vert et le Sel Santé.',
-      'Coupez la tomate en petits dés.',
-      'Étalez la purée d\'avocat sur chaque feuille de laitue.',
-      'Garnissez de poulet émietté, tomate et coriandre. Roulez et dégustez.'
-    ]
-  },
-  {
-    id: 110, cat: 'dejeuner', premium: true,
-    emoji: '🥗', nom: 'Salade haricots blancs-thon-basilic',
-    temps: '10 min', calories: 390, diff: 'Très facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les haricots blancs sont riches en fer et fibres prébiotiques. Le thon apporte des oméga-3 et protéines. Le basilic est anti-inflammatoire et favorise la production de dopamine.',
-    ingredients: [
-      '400g haricots blancs cuits',
-      '1 boîte de thon au naturel',
-      '1 bouquet de basilic frais',
-      '4 oignons nouveaux',
-      '2 c.à.s huile d\'olive',
-      '1 citron',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Rincez et égouttez les haricots blancs.',
-      'Émiettez le thon.',
-      'Émincez les oignons nouveaux.',
-      'Mélangez haricots, thon et oignons.',
-      'Assaisonnez avec l\'huile d\'olive, le citron et le Sel Santé. Parsemez de basilic.'
-    ]
-  },
-  {
-    id: 111, cat: 'dejeuner', premium: true,
-    emoji: '🐠', nom: 'Poke bowl thon-wakamé-riz vinaigré',
-    temps: '25 min', calories: 480, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le wakamé est riche en iode, magnésium et calcium. Le thon cru sushi-grade est une source concentrée d\'oméga-3. Un plat complet anti-SJSR inspiré de la cuisine hawaïenne.',
-    ingredients: [
-      '150g riz à sushi',
-      '2 c.à.s vinaigre de riz',
-      '150g thon cru qualité sushi',
-      '20g algues wakamé réhydratées',
-      '½ concombre',
-      '1 c.à.s tamari',
-      '1 c.à.s huile de sésame, graines de sésame'
-    ],
-    etapes: [
-      'Cuisez le riz. Laissez tiédir et assaisonnez avec le vinaigre de riz.',
-      'Coupez le thon en cubes.',
-      'Réhydratez le wakamé 5 min dans l\'eau froide.',
-      'Coupez le concombre en fines rondelles.',
-      'Assemblez : riz, thon, wakamé, concombre. Assaisonnez avec tamari et huile de sésame.'
-    ]
-  },
-
-  // --- PLATS CHAUDS / DÎNERS ---
-  {
-    id: 112, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Wok poulet-brocolis-noix de cajou-tamari',
-    temps: '20 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le brocoli est une des meilleures sources de vitamine C (booste l\'absorption du fer). Les noix de cajou apportent du zinc et magnésium. Le tamari sans gluten remplace la sauce soja.',
-    ingredients: [
-      '2 blancs de poulet',
-      '200g brocolis',
-      '60g noix de cajou',
-      '3 c.à.s tamari sans gluten',
-      '1 cm gingembre râpé',
-      '2 gousses d\'ail',
-      '1 c.à.s huile de sésame'
-    ],
-    etapes: [
-      'Coupez le poulet en lanières.',
-      'Faites chauffer l\'huile de sésame à feu vif.',
-      'Faites sauter le poulet 4 min. Réservez.',
-      'Dans la même poêle, faites sauter ail, gingembre et brocolis 3 min.',
-      'Remettez le poulet, ajoutez tamari et cajou. Mélangez 1 min.'
-    ]
-  },
-  {
-    id: 113, cat: 'diner', premium: false,
-    emoji: '🫙', nom: 'Zoodles courgette au pesto basilic-pignons',
-    temps: '15 min', calories: 280, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Zéro glucides ! Les courgettes remplacent les pâtes. Le basilic est riche en antioxydants et favorise la dopamine. Les pignons apportent du zinc et du magnésium. Dîner ultra-léger.',
-    ingredients: [
-      '3 courgettes',
-      '1 bouquet de basilic frais',
-      '30g pignons de pin',
-      '1 gousse d\'ail',
-      '4 c.à.s huile d\'olive',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Faites des filaments de courgette avec un spiraliseur ou épluche-légumes.',
-      'Pour le pesto : mixez basilic, pignons, ail et huile d\'olive.',
-      'Assaisonnez le pesto avec le Sel Santé.',
-      'Mélangez les zoodles avec le pesto froid.',
-      'Servez immédiatement — les courgettes crues ou à peine chauffées.'
-    ]
-  },
-  {
-    id: 114, cat: 'diner', premium: false,
-    emoji: '🐟', nom: 'Daurade au four fenouil-orange',
-    temps: '35 min', calories: 350, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La daurade est riche en protéines légères et oméga-3. Le fenouil est anti-spasmodique et favorise le sommeil. L\'orange apporte de la vitamine C qui optimise l\'absorption du fer.',
-    ingredients: [
-      '1 daurade (ou 2 filets)',
-      '1 bulbe de fenouil',
-      '1 orange',
-      '3 c.à.s huile d\'olive',
-      'Thym, romarin',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Préchauffez le four à 190°C.',
-      'Émincez le fenouil et disposez dans un plat.',
-      'Ajoutez des rondelles d\'orange.',
-      'Posez la daurade par-dessus, arrosez d\'huile d\'olive.',
-      'Parsemez de thym et romarin. Enfournez 25-30 min.'
-    ]
-  },
-  {
-    id: 115, cat: 'diner', premium: false,
-    emoji: '🍅', nom: 'Shakshuka œufs-poivrons-tomates épicée',
-    temps: '25 min', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le lycopène des tomates cuites est plus biodisponible que cru. Les poivrons sont riches en vitamine C. Les épices (cumin, paprika) sont anti-inflammatoires. Un dîner complet économique.',
-    ingredients: [
-      '4 œufs bio',
-      '400g tomates concassées',
-      '2 poivrons rouges',
-      '1 oignon',
-      '2 gousses d\'ail',
-      '1 c.à.c cumin',
-      '1 c.à.c paprika',
-      'Coriandre fraîche, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir oignon et ail dans l\'huile d\'olive.',
-      'Ajoutez les poivrons émincés et cuisez 5 min.',
-      'Ajoutez les tomates, le cumin et le paprika. Laissez mijoter 10 min.',
-      'Creusez 4 puits dans la sauce. Cassez un œuf dans chaque puits.',
-      'Couvrez et cuisez 5-7 min. Parsemez de coriandre fraîche.'
-    ]
-  },
-  {
-    id: 116, cat: 'diner', premium: true,
-    emoji: '🌾', nom: 'Kasha sarrasin grillé-champignons-tofu',
-    temps: '25 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le kasha (sarrasin grillé) est plus riche en magnésium que le sarrasin cru. Les champignons apportent de la vitamine D et du sélénium. Le tofu au tamari est une protéine complète végétale.',
-    ingredients: [
-      '200g sarrasin grillé (kasha)',
-      '200g champignons mélangés',
-      '150g tofu ferme',
-      '2 carottes',
-      '2 c.à.s tamari',
-      '1 oignon',
-      'Huile d\'olive, Sel Santé'
-    ],
-    etapes: [
-      'Coupez le tofu en cubes et faites-le mariner dans le tamari 15 min.',
-      'Cuisez le kasha 10 min dans le double de son volume d\'eau.',
-      'Faites revenir oignon, carottes et champignons dans l\'huile d\'olive.',
-      'Ajoutez le tofu et faites dorer.',
-      'Incorporez le kasha cuit. Mélangez et assaisonnez avec le Sel Santé.'
-    ]
-  },
-  {
-    id: 117, cat: 'diner', premium: true,
-    emoji: '🦃', nom: 'Blanquette de dinde légère au coco',
-    temps: '40 min', calories: 390, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'La dinde est la viande la plus riche en tryptophane — précurseur de la sérotonine et mélatonine. Idéale le soir pour favoriser l\'endormissement. Le lait de coco remplace la crème fraîche.',
-    ingredients: [
-      '400g escalopes de dinde',
-      '200g champignons',
-      '2 carottes',
-      '200ml lait de coco',
-      '200ml bouillon de volaille',
-      '1 oignon, bouquet garni',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Coupez la dinde en cubes.',
-      'Faites revenir l\'oignon dans l\'huile d\'olive.',
-      'Ajoutez la dinde et faites dorer.',
-      'Ajoutez carottes, champignons, bouillon et lait de coco.',
-      'Laissez mijoter à feu doux 25 min avec le bouquet garni.'
-    ]
-  },
-  {
-    id: 118, cat: 'diner', premium: true,
-    emoji: '🐟', nom: 'Thon grillé sésame-purée de panais',
-    temps: '25 min', calories: 420, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le thon grillé est une source concentrée d\'oméga-3 et de protéines. Le panais est riche en potassium et vitamine C. Le sésame apporte du calcium et du zinc.',
-    ingredients: [
-      '2 pavés de thon',
-      '3 c.à.s graines de sésame',
-      '4 panais',
-      '100ml lait d\'amande',
-      '1 c.à.s huile d\'olive',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Cuisez les panais à la vapeur 15 min. Mixez avec le lait d\'amande.',
-      'Assaisonnez la purée avec le Sel Santé.',
-      'Panez les pavés de thon dans les graines de sésame des 2 côtés.',
-      'Faites saisir à feu vif 2 min chaque côté — le cœur doit rester rosé.',
-      'Servez le thon sur la purée de panais.'
-    ]
-  },
-  {
-    id: 119, cat: 'diner', premium: true,
-    emoji: '🐠', nom: 'Boulettes de sardines à la marocaine',
-    temps: '30 min', calories: 340, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Les sardines fraîches sont la source de fer héminique la plus économique. Cumin + coriandre + persil = trio anti-inflammatoire marocain. Riche en oméga-3 et calcium (arêtes).',
-    ingredients: [
-      '400g sardines fraîches vidées',
-      '1 bouquet de persil',
-      '2 gousses d\'ail',
-      '1 c.à.c cumin',
-      '400g tomates concassées',
-      '1 c.à.c paprika',
-      'Huile d\'olive, Sel Santé'
-    ],
-    etapes: [
-      'Levez les filets de sardines ou demandez à votre poissonnier.',
-      'Mixez les filets avec le persil, l\'ail et le cumin.',
-      'Formez des petites boulettes.',
-      'Préparez la sauce : faites mijoter les tomates avec le paprika 10 min.',
-      'Plongez les boulettes dans la sauce et cuisez 12 min à feu doux.'
-    ]
-  },
-  {
-    id: 120, cat: 'diner', premium: false,
-    emoji: '🎃', nom: 'Potimarron rôti au thym-huile d\'olive',
-    temps: '35 min', calories: 230, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le potimarron (avec sa peau si bio) est riche en bêta-carotène et potassium. Le thym est antibactérien et anti-inflammatoire. Un accompagnement ou plat léger idéal pour le soir.',
-    ingredients: [
-      '1 potimarron bio',
-      '3 c.à.s huile d\'olive',
-      '4 branches de thym frais',
-      '2 gousses d\'ail en chemise',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Préchauffez le four à 200°C.',
-      'Lavez le potimarron et coupez-le en quartiers (peau conservée si bio).',
-      'Disposez sur une plaque avec l\'ail en chemise.',
-      'Arrosez d\'huile d\'olive, parsemez de thym, assaisonnez.',
-      'Enfournez 30 min jusqu\'à fondant et légèrement caramélisé.'
-    ]
-  },
-  {
-    id: 121, cat: 'diner', premium: true,
-    emoji: '🍆', nom: 'Moussaka sans lactose crème de cajou',
-    temps: '60 min', calories: 430, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'La moussaka revisitée sans béchamel — la crème de cajou remplace parfaitement la sauce lactée. L\'aubergine est riche en antioxydants. La viande hachée apporte du fer héminique.',
-    ingredients: [
-      '3 aubergines',
-      '400g viande hachée de bœuf maigre',
-      '400g tomates concassées',
-      '150g noix de cajou trempées',
-      '200ml eau',
-      '1 c.à.c noix de muscade',
-      'Cannelle, Sel Santé'
-    ],
-    etapes: [
-      'Coupez les aubergines en rondelles et faites-les griller à l\'huile d\'olive.',
-      'Faites revenir la viande avec les tomates, cannelle et Sel Santé.',
-      'Mixez les cajou égouttés avec l\'eau et la muscade pour la béchamel de cajou.',
-      'Dans un plat : couche d\'aubergines, couche de viande, couche d\'aubergines.',
-      'Nappez de crème de cajou. Enfournez 30 min à 180°C.'
-    ]
-  },
-
-  // --- SOUPES, SNACKS & DESSERTS ---
-  {
-    id: 122, cat: 'diner', premium: false,
-    emoji: '🥦', nom: 'Velouté de chou-fleur à la muscade',
-    temps: '25 min', calories: 200, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le chou-fleur est riche en vitamine C et sulforaphane, un puissant antioxydant anti-inflammatoire. La muscade a des propriétés sédatives légères — idéale pour un dîner favorisant le sommeil.',
-    ingredients: [
-      '1 chou-fleur',
-      '200ml lait d\'amande',
-      '1 pincée de muscade',
-      '1 oignon',
-      '1 c.à.s huile d\'olive',
-      'Graines de courge, Sel Santé'
-    ],
-    etapes: [
-      'Coupez le chou-fleur en fleurettes. Faites cuire à la vapeur 15 min.',
-      'Faites revenir l\'oignon dans l\'huile d\'olive.',
-      'Mixez chou-fleur, oignon et lait d\'amande jusqu\'à consistance veloutée.',
-      'Ajoutez la muscade et le Sel Santé.',
-      'Servez avec des graines de courge toastées.'
-    ]
-  },
-  {
-    id: 123, cat: 'diner', premium: true,
-    emoji: '🫙', nom: 'Soupe miso-tofu-algues',
-    temps: '10 min', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le miso est un aliment fermenté riche en probiotiques bénéfiques pour le microbiote. Le tofu apporte des protéines végétales complètes. Les algues sont riches en iode et minéraux.',
-    ingredients: [
-      '1L eau',
-      '3 c.à.s pâte miso sans gluten',
-      '150g tofu soyeux en dés',
-      '10g algues wakamé séchées',
-      '3 oignons nouveaux émincés',
-      '1 c.à.s tamari'
-    ],
-    etapes: [
-      'Portez l\'eau à frémissement — ne pas bouillir pour préserver les probiotiques du miso.',
-      'Réhydratez le wakamé 5 min dans l\'eau froide. Égouttez.',
-      'Délayez la pâte miso dans un peu d\'eau chaude.',
-      'Ajoutez le miso délayé, le tofu et le wakamé dans la casserole.',
-      'Chauffez 2 min. Parsemez d\'oignons nouveaux et servez immédiatement.'
-    ]
-  },
-  {
-    id: 124, cat: 'snack', premium: false,
-    emoji: '🥑', nom: 'Guacamole maison express',
-    temps: '5 min', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'avocat est la star des graisses anti-inflammatoires. Le citron vert apporte de la vitamine C. La coriandre est un chélateur naturel de métaux lourds. Un snack parfait et nutritif.',
-    ingredients: [
-      '2 avocats mûrs',
-      '½ oignon rouge',
-      '1 citron vert (jus)',
-      '½ piment jalapeño (optionnel)',
-      '1 bouquet de coriandre fraîche',
-      'Sel Santé'
-    ],
-    etapes: [
-      'Écrasez les avocats à la fourchette — gardez une texture rustique.',
-      'Émincez finement l\'oignon rouge.',
-      'Hachez la coriandre.',
-      'Mélangez tous les ingrédients.',
-      'Assaisonnez avec le jus de citron vert et le Sel Santé. Servez immédiatement.'
-    ]
-  },
-  {
-    id: 125, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Mousse chocolat à l\'aquafaba',
-    temps: '15 min + 1h frigo', calories: 195, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'aquafaba (jus de pois chiches) monte en neige comme des blancs d\'œufs — zéro œuf, vegan ! Le chocolat 85% est riche en magnésium et flavonoïdes anti-inflammatoires. Un dessert bluffant.',
-    ingredients: [
-      '150g chocolat noir 85%',
-      '150ml aquafaba (jus boîte pois chiches)',
-      '1 c.à.s sirop d\'agave',
-      '1 c.à.c extrait de vanille'
-    ],
-    etapes: [
-      'Faites fondre le chocolat au bain-marie. Laissez refroidir 10 min.',
-      'Montez l\'aquafaba en neige ferme au batteur électrique (5-7 min).',
-      'Incorporez délicatement le chocolat fondu à l\'aquafaba en neige.',
-      'Ajoutez le sirop d\'agave et la vanille. Mélangez délicatement.',
-      'Répartissez dans des verrines. Réfrigérez 1h minimum.'
-    ]
-  },
-  {
-    id: 126, cat: 'snack', premium: false,
-    emoji: '🍎', nom: 'Pommes au four cannelle-noix',
-    temps: '5 min + 25min four', calories: 160, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La pomme cuite libère plus de quercétine qu\'en version crue. La cannelle régule la glycémie et est anti-inflammatoire. Les noix apportent des oméga-3. Un dessert simple et réconfortant.',
-    ingredients: [
-      '4 pommes',
-      '1 c.à.c cannelle',
-      '40g noix concassées',
-      '1 c.à.s sirop d\'érable',
-      '1 c.à.s raisins secs'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Évidez les pommes en gardant la base intacte.',
-      'Mélangez noix, raisins, cannelle et sirop d\'érable.',
-      'Garnissez les pommes de cette préparation.',
-      'Enfournez 25 min jusqu\'à ce que les pommes soient fondantes.'
-    ]
-  },
-  {
-    id: 127, cat: 'snack', premium: false,
-    emoji: '🍓', nom: 'Sorbet minute framboise-lait de coco',
-    temps: '3 min', calories: 120, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les framboises sont riches en ellagitanins, des antioxydants anti-inflammatoires puissants. Zéro sucre ajouté, zéro lactose. Un dessert express sain et délicieux.',
-    ingredients: [
-      '300g framboises surgelées',
-      '3 c.à.s lait de coco',
-      '1 c.à.s sirop d\'agave (optionnel)'
-    ],
-    etapes: [
-      'Placez les framboises surgelées dans le blender.',
-      'Ajoutez le lait de coco.',
-      'Mixez jusqu\'à obtenir une texture crémeuse et homogène.',
-      'Ajoutez du sirop d\'agave si trop acide.',
-      'Servez immédiatement dans des verrines.'
-    ]
-  },
-  {
-    id: 128, cat: 'snack', premium: false,
-    emoji: '🌿', nom: 'Infusion gingembre-citron anti-inflammatoire',
-    temps: '5 min', calories: 10, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le gingembre frais contient des gingérols et shogaols aux propriétés anti-inflammatoires prouvées cliniquement. Le citron alcalinise l\'organisme. La meilleure boisson après chaque repas pour le SJSR.',
-    ingredients: [
-      '3 cm gingembre frais',
-      '1 citron bio',
-      '300ml eau bouillante',
-      '1 c.à.c miel (optionnel)',
-      '1 pincée de curcuma'
-    ],
-    etapes: [
-      'Râpez ou tranchez finement le gingembre frais.',
-      'Versez l\'eau chaude (90°C) sur le gingembre.',
-      'Ajoutez le jus de citron et une rondelle pour la déco.',
-      'Laissez infuser 5 min.',
-      'Ajoutez le curcuma et le miel. Buvez chaud.'
-    ]
-  },
-  {
-    id: 129, cat: 'snack', premium: false,
-    emoji: '🍫', nom: 'Chocolat noir 85% et amandes — snack SJSR',
-    temps: '1 min', calories: 180, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le snack anti-SJSR le plus simple : 2 carrés de chocolat 85% = 50mg de magnésium. 10 amandes = magnésium + vitamine E + calcium. À consommer en soirée devant la TV.',
-    ingredients: [
-      '2 carrés de chocolat noir 85% minimum',
-      '10 amandes entières',
-      '1 pincée de fleur de sel (optionnel)'
-    ],
-    etapes: [
-      'Sortez le chocolat du réfrigérateur 5 min avant pour libérer les arômes.',
-      'Disposez les amandes dans un petit bol.',
-      'Savourez lentement en laissant fondre le chocolat.',
-      'La fleur de sel exalte les flavonoïdes du chocolat.',
-      'Parfait devant un bon drama coréen 🌙'
-    ]
-  },
-  {
-    id: 130, cat: 'snack', premium: true,
-    emoji: '⚡', nom: 'Energy balls dattes-cacao-amandes',
-    temps: '15 min + 30min frigo', calories: 170, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les dattes + amandes + cacao = combinaison parfaite fer + magnésium + flavonoïdes. Sans sucre ajouté, sans cuisson. Le cacao cru préserve tous les antioxydants contrairement au cacao traité.',
-    ingredients: [
-      '200g dattes Medjool dénoyautées',
-      '100g amandes',
-      '2 c.à.s cacao cru en poudre',
-      '1 c.à.c extrait de vanille',
-      'Noix de coco râpée pour rouler'
-    ],
-    etapes: [
-      'Mixez les amandes jusqu\'à poudre grossière.',
-      'Ajoutez les dattes, le cacao et la vanille.',
-      'Mixez jusqu\'à formation d\'une boule homogène.',
-      'Formez des boules de la taille d\'une noix.',
-      'Roulez dans la noix de coco. Réfrigérez 30 min. Conservez 2 semaines au frigo.'
-    ]
-  },
-  {
-    id: 131, cat: 'petit-dejeuner', premium: false,
-    emoji: '🌱', nom: 'Miam-ô-Fruit banane-colza-graines',
-    temps: '5 min', calories: 320, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La méthode Kousmine revisitée : la banane écrasée + huile de colza (oméga-3) + graines = petit-déjeuner complet anti-inflammatoire. L\'huile de colza est à consommer froide uniquement.',
-    ingredients: [
-      '½ banane bien mûre',
-      '2 c.à.s huile de colza bio (premier froid)',
-      '1 c.à.s graines de lin moulues',
-      '1 c.à.s graines de sésame',
-      'Fruits de saison au choix',
-      '1 c.à.c jus de citron'
-    ],
-    etapes: [
-      'Écrasez la banane à la fourchette dans un bol.',
-      'Incorporez immédiatement l\'huile de colza en mélangeant vigoureusement.',
-      'Ajoutez le jus de citron pour éviter l\'oxydation.',
-      'Parsemez des graines moulues.',
-      'Ajoutez les fruits de saison coupés en morceaux. Consommez immédiatement.'
-    ]
-  },
-  {
-    id: 132, cat: 'dejeuner', premium: true,
-    emoji: '🥗', nom: 'Carpaccio de courgettes crues-huile de cameline',
-    temps: '10 min', calories: 190, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'huile de cameline est la plus riche en oméga-3 végétaux (34%) après le lin. La courgette crue est plus riche en vitamines. La menthe est digestive et anti-spasmodique.',
-    ingredients: [
-      '3 courgettes fraîches',
-      '3 c.à.s huile de cameline (ou colza)',
-      '1 citron',
-      'Feuilles de menthe fraîche',
-      'Sel Santé, poivre',
-      'Zeste de citron'
-    ],
-    etapes: [
-      'Tranchez très finement les courgettes à la mandoline (2mm).',
-      'Disposez en rosace dans les assiettes.',
-      'Arrosez d\'huile de cameline et de jus de citron.',
-      'Assaisonnez avec le Sel Santé et le poivre.',
-      'Parsemez de feuilles de menthe et de zeste de citron.'
-    ]
-  },
-  {
-    id: 133, cat: 'dejeuner', premium: true,
-    emoji: '🥗', nom: 'Salade riz sauvage-potimarron-canneberges',
-    temps: '40 min', calories: 390, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le riz sauvage est techniquement une graminée sans gluten, riche en magnésium. Le potimarron est riche en bêta-carotène. Les canneberges sont anti-inflammatoires et riches en antioxydants.',
-    ingredients: [
-      '150g riz sauvage',
-      '300g potimarron',
-      '50g canneberges séchées',
-      '50g amandes effilées',
-      '3 c.à.s huile d\'olive',
-      '1 orange (jus)',
-      'Persil, Sel Santé'
-    ],
-    etapes: [
-      'Cuisez le riz sauvage 40 min. Égouttez.',
-      'Coupez le potimarron en cubes et rôtissez à 200°C 20 min.',
-      'Toastez les amandes à sec dans une poêle.',
-      'Mélangez riz, potimarron, canneberges et amandes.',
-      'Assaisonnez avec l\'huile d\'olive, le jus d\'orange et le Sel Santé.'
-    ]
-  },
-  {
-    id: 134, cat: 'diner', premium: true,
-    emoji: '🥩', nom: 'Chili con carne léger haricots rouges',
-    temps: '35 min', calories: 410, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le bœuf maigre est riche en fer héminique et zinc. Les haricots rouges apportent du fer végétal et des fibres. Le piment contient de la capsaïcine anti-inflammatoire. Idéal batch cooking.',
-    ingredients: [
-      '300g bœuf haché maigre',
-      '400g haricots rouges cuits',
-      '400g purée de tomates',
-      '1 oignon, 2 gousses d\'ail',
-      '1 c.à.c cumin',
-      '1 c.à.c piment en poudre',
-      'Coriandre fraîche, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir oignon et ail dans l\'huile d\'olive.',
-      'Ajoutez la viande et faites dorer en émiettant.',
-      'Ajoutez le cumin et le piment. Mélangez 1 min.',
-      'Incorporez la purée de tomates et les haricots.',
-      'Laissez mijoter 20 min. Parsemez de coriandre fraîche.'
-    ]
-  },
-  {
-    id: 135, cat: 'diner', premium: true,
-    emoji: '🍄', nom: 'Risotto de riz complet champignons-purée d\'amande',
-    temps: '45 min', calories: 420, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le riz complet conserve son magnésium et fibres. La purée d\'amande remplace le beurre — apport de vitamine E et graisses saines. Les champignons apportent du sélénium et vitamine D.',
-    ingredients: [
-      '200g riz complet',
-      '300g champignons mélangés',
-      '1 oignon',
-      '700ml bouillon de légumes chaud',
-      '2 c.à.s purée d\'amande',
-      '2 c.à.s levure nutritionnelle',
-      'Thym, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir l\'oignon dans l\'huile d\'olive.',
-      'Ajoutez le riz et faites-le nacrer 2 min.',
-      'Incorporez le bouillon louche par louche en remuant.',
-      'Ajoutez les champignons à mi-cuisson (30 min total).',
-      'En fin de cuisson, incorporez la purée d\'amande et la levure nutritionnelle.'
-    ]
-  },
-  {
-    id: 136, cat: 'dejeuner', premium: false,
-    emoji: '🥗', nom: 'Salade patate douce froide-roquette-pignons',
-    temps: '30 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La patate douce froide développe de l\'amidon résistant — un prébiotique excellent pour le microbiote. La roquette est riche en fer et glucosinolates anti-inflammatoires. Les pignons apportent du zinc.',
-    ingredients: [
-      '2 patates douces',
-      '80g roquette',
-      '30g pignons de pin',
-      '1 citron',
-      '3 c.à.s huile d\'olive',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Coupez les patates douces en cubes et rôtissez à 200°C 20 min.',
-      'Laissez refroidir complètement.',
-      'Toastez les pignons à sec dans une poêle.',
-      'Mélangez patates douces froides et roquette.',
-      'Préparez la vinaigrette au citron et assaisonnez. Parsemez de pignons.'
-    ]
-  },
-  {
-    id: 137, cat: 'dejeuner', premium: true,
-    emoji: '🥗', nom: 'Nems raw légumes-tofu fumé feuilles de riz',
-    temps: '20 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les nems raw sans friture conservent tous les nutriments. Le tofu fumé apporte des protéines végétales. Les légumes crus sont riches en enzymes digestives. Une entrée légère et colorée.',
-    ingredients: [
-      '8 feuilles de riz',
-      '2 carottes en julienne',
-      '½ concombre en bâtonnets',
-      '1 avocat',
-      '100g tofu fumé',
-      'Menthe fraîche',
-      'Sauce tamari-gingembre pour tremper'
-    ],
-    etapes: [
-      'Trempez les feuilles de riz 20 sec dans l\'eau tiède.',
-      'Disposez sur un torchon humide.',
-      'Garnissez de carottes, concombre, avocat et tofu fumé.',
-      'Ajoutez des feuilles de menthe fraîche.',
-      'Roulez en serrant bien. Servez avec la sauce tamari-gingembre.'
-    ]
-  },
-  {
-    id: 138, cat: 'snack', premium: true,
-    emoji: '🥜', nom: 'Granola sans céréales amandes-cajou-sésame',
-    temps: '20 min', calories: 290, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Granola paléo — zéro céréale, zéro gluten ! Les noix apportent des graisses saines, du magnésium et du zinc. Les graines de courge sont riches en tryptophane. Se conserve 1 mois en bocal.',
-    ingredients: [
-      '150g amandes',
-      '100g noix de cajou',
-      '50g graines de courge',
-      '2 c.à.s huile de coco fondue',
-      '2 c.à.s sirop d\'érable',
-      '1 c.à.c cannelle'
-    ],
-    etapes: [
-      'Préchauffez le four à 160°C.',
-      'Concassez grossièrement amandes et cajou.',
-      'Mélangez avec les graines de courge, l\'huile de coco, le sirop d\'érable et la cannelle.',
-      'Étalez sur une plaque recouverte de papier cuisson.',
-      'Enfournez 15 min en remuant à mi-cuisson. Laissez refroidir complètement avant de ranger.'
-    ]
-  },
-
-  // =============================================
-  // BRUNCH — 15 recettes sg/sl anti-inflam
-  // Spéciales week-end, conviviales, généreuses
-  // =============================================
-  {
-    id: 139, cat: 'brunch', premium: false,
-    emoji: '🥞', nom: 'Pancakes sarrasin-myrtilles sauce érable',
-    temps: '25 min', calories: 420, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le sarrasin est la céréale reine du SJSR — magnésium, rutine, fer. Les myrtilles apportent des anthocyanes anti-inflammatoires. Un brunch convivial qui prend soin de tes jambes.',
-    ingredients: [
-      '200g farine de sarrasin',
-      '2 œufs bio',
-      '250ml lait de riz',
-      '1 c.à.s huile de coco',
-      '150g myrtilles fraîches ou surgelées',
-      '3 c.à.s sirop d\'érable',
-      '1 c.à.c levure sans gluten'
-    ],
-    etapes: [
-      'Mélangez farine, levure, lait de riz et œufs jusqu\'à pâte lisse.',
-      'Laissez reposer 10 min.',
-      'Faites chauffer une poêle huilée à feu moyen.',
-      'Versez des louches de pâte, posez quelques myrtilles dessus.',
-      'Cuisez 3 min chaque côté. Servez avec le sirop d\'érable.'
-    ]
-  },
-  {
-    id: 140, cat: 'brunch', premium: false,
-    emoji: '🥑', nom: 'Toast avocat-saumon fumé-œuf poché',
-    temps: '15 min', calories: 450, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le trio gagnant SJSR : oméga-3 du saumon + graisses anti-inflammatoires de l\'avocat + fer et B12 de l\'œuf. Un brunch protéiné qui tient toute la matinée.',
-    ingredients: [
-      '2 tranches pain de sarrasin grillé',
-      '1 avocat mûr',
-      '100g saumon fumé',
-      '2 œufs bio',
-      '1 citron',
-      'Aneth frais, câpres',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Portez l\'eau à frémissement avec un trait de vinaigre.',
-      'Écrasez l\'avocat avec le citron et le Sel Santé.',
-      'Faites pocher les œufs 3 min (jaune coulant).',
-      'Étalez l\'avocat sur le pain grillé, disposez le saumon.',
-      'Posez l\'œuf poché, parsemez d\'aneth et câpres.'
-    ]
-  },
-  {
-    id: 141, cat: 'brunch', premium: false,
-    emoji: '🍳', nom: 'Shakshuka végétarienne aux poivrons',
-    temps: '30 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Plat convivial du Moyen-Orient. Les poivrons rouges sont champions de la vitamine C — idéal pour absorber le fer végétal. Les tomates cuites libèrent leur lycopène anti-inflammatoire.',
-    ingredients: [
-      '4 œufs bio',
-      '400g tomates concassées',
-      '2 poivrons rouges',
-      '1 oignon rouge',
-      '3 gousses d\'ail',
-      '1 c.à.c cumin, 1 c.à.c paprika fumé',
-      'Coriandre fraîche, Sel Santé'
-    ],
-    etapes: [
-      'Faites revenir oignon et ail dans l\'huile d\'olive.',
-      'Ajoutez les poivrons émincés, cuisez 8 min.',
-      'Incorporez les tomates, cumin et paprika. Mijotez 10 min.',
-      'Creusez 4 nids, cassez un œuf dans chacun.',
-      'Couvrez et cuisez 5-6 min. Parsemez de coriandre fraîche.'
-    ]
-  },
-  {
-    id: 142, cat: 'brunch', premium: false,
-    emoji: '🫐', nom: 'Bowl açaï topping granola-fruits frais',
-    temps: '10 min', calories: 390, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'L\'açaï est l\'un des aliments les plus riches en antioxydants au monde. Le granola maison apporte magnésium et fibres. Un brunch Instagram-friendly qui fait du bien à l\'intérieur.',
-    ingredients: [
-      '200g pulpe d\'açaï surgelée',
-      '1 banane congelée',
-      '100ml lait de coco',
-      '50g granola sg maison',
-      'Myrtilles, fraises, kiwi',
-      '2 c.à.s noix de coco râpée',
-      '1 c.à.s graines de chia'
-    ],
-    etapes: [
-      'Mixez la pulpe d\'açaï avec la banane congelée et le lait de coco.',
-      'Versez dans un grand bol — la texture doit être épaisse.',
-      'Disposez le granola d\'un côté, les fruits de l\'autre.',
-      'Parsemez de noix de coco et graines de chia.',
-      'Servez immédiatement avec une cuillère large.'
-    ]
-  },
-  {
-    id: 143, cat: 'brunch', premium: true,
-    emoji: '🧇', nom: 'Gaufres teff-banane sauce framboise',
-    temps: '30 min', calories: 440, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le teff est la céréale la plus riche en fer — une gaufre = autant de fer que 100g de bœuf. La sauce framboise apporte des antioxydants et de la vitamine C qui booste l\'absorption du fer.',
-    ingredients: [
-      '200g farine de teff',
-      '2 bananes mûres',
-      '200ml lait d\'amande',
-      '2 œufs bio',
-      '2 c.à.s huile de coco',
-      '200g framboises fraîches',
-      '2 c.à.s sirop d\'agave',
-      '1 c.à.c levure sg'
-    ],
-    etapes: [
-      'Écrasez les bananes, mélangez avec les œufs, le lait et l\'huile.',
-      'Incorporez la farine de teff et la levure.',
-      'Faites chauffer le gaufrier huilé.',
-      'Cuisez chaque gaufre 4-5 min.',
-      'Mixez les framboises avec le sirop d\'agave. Servez sur les gaufres chaudes.'
-    ]
-  },
-  {
-    id: 144, cat: 'brunch', premium: true,
-    emoji: '🥗', nom: 'Buddha bowl brunch saumon-avocat-quinoa',
-    temps: '25 min', calories: 510, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Un repas complet anti-SJSR dans un bol : oméga-3, fer, magnésium, vitamine C. Le quinoa chaud avec l\'avocat frais et le saumon mariné crée une harmonie chaud-froid parfaite.',
-    ingredients: [
-      '150g quinoa',
-      '120g saumon fumé ou frais',
-      '1 avocat',
-      '1 œuf mollet',
-      '50g épinards frais',
-      '1 citron vert',
-      '2 c.à.s tamari',
-      '1 c.à.s graines de sésame'
-    ],
-    etapes: [
-      'Cuisez le quinoa 15 min. Assaisonnez au tamari et sésame.',
-      'Faites l\'œuf mollet (7 min, eau bouillante).',
-      'Coupez l\'avocat en tranches, arrosez de citron vert.',
-      'Dressez le bol : quinoa chaud, épinards, saumon, avocat.',
-      'Posez l\'œuf coupé en deux. Décorez de graines de sésame.'
-    ]
-  },
-  {
-    id: 145, cat: 'brunch', premium: false,
-    emoji: '🍌', nom: 'Banana bread sans gluten chocolat-noix',
-    temps: '15 min + 50min four', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le banana bread à partager en famille. Les bananes mûres sont riches en potassium et tryptophane. Le chocolat 85% apporte du magnésium. Les noix donnent des oméga-3 végétaux.',
-    ingredients: [
-      '3 bananes très mûres',
-      '200g farine de riz',
-      '80g poudre d\'amande',
-      '3 œufs bio',
-      '80ml huile de coco',
-      '100g pépites de chocolat 85%',
-      '60g noix concassées',
-      '1 sachet levure sg'
-    ],
-    etapes: [
-      'Préchauffez le four à 175°C.',
-      'Écrasez les bananes. Mélangez avec les œufs et l\'huile de coco.',
-      'Incorporez farine, poudre d\'amande et levure.',
-      'Ajoutez les pépites de chocolat et les noix.',
-      'Versez dans un moule à cake. Enfournez 50 min. Vérifiez avec un couteau.'
-    ]
-  },
-  {
-    id: 146, cat: 'brunch', premium: false,
-    emoji: '🍄', nom: 'Œufs brouillés champignons-herbes truffées',
-    temps: '15 min', calories: 340, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Les œufs brouillés à la perfection : texture crémeuse sans beurre. Les champignons apportent du sélénium et vitamine D. L\'huile de truffe élève ce plat simple au rang de brunch gastronomique.',
-    ingredients: [
-      '4 œufs bio',
-      '200g champignons mélangés',
-      '2 c.à.s huile d\'olive',
-      '1 c.à.c huile de truffe (optionnel)',
-      '1 bouquet ciboulette',
-      '2 tranches pain de sarrasin',
-      'Sel Santé, poivre'
-    ],
-    etapes: [
-      'Faites sauter les champignons dans l\'huile d\'olive 5 min. Réservez.',
-      'Battez les œufs avec le Sel Santé.',
-      'À feu très doux, cuisez les œufs en remuant constamment à la spatule.',
-      'Retirez du feu avant prise complète — ils finissent de cuire hors du feu.',
-      'Dressez sur le pain grillé avec les champignons, la ciboulette et l\'huile de truffe.'
-    ]
-  },
-  {
-    id: 147, cat: 'brunch', premium: true,
-    emoji: '🦪', nom: 'Gravlax de saumon maison aneth-betterave',
-    temps: '20 min + 24h marinade', calories: 280, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le gravlax est du saumon cru mariné — préserve tous les oméga-3 intacts. La betterave colore naturellement et apporte des nitrates pour la circulation. Préparez la veille pour le brunch du dimanche.',
-    ingredients: [
-      '400g filet de saumon très frais',
-      '3 c.à.s sel Santé',
-      '2 c.à.s sirop d\'érable',
-      '1 betterave crue râpée',
-      '1 bouquet d\'aneth',
-      '1 citron (zeste)',
-      'Poivre noir concassé'
-    ],
-    etapes: [
-      'Mélangez sel, sirop d\'érable, betterave râpée, aneth et zeste de citron.',
-      'Enrobez le filet de saumon de cette marinade.',
-      'Emballez dans du film alimentaire, placez au frigo 24-48h.',
-      'Rincez délicatement avant de servir.',
-      'Tranchez finement en biais. Servez avec du pain de seigle sg et de la crème de cajou.'
-    ]
-  },
-  {
-    id: 148, cat: 'brunch', premium: false,
-    emoji: '🥐', nom: 'Muffins salés courgette-feta végane',
-    temps: '35 min', calories: 290, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Des muffins à emporter — idéaux pour un brunch nomade. La courgette apporte de l\'eau et de la légèreté. La feta végane à base de cajou donne l\'onctuosité sans lactose.',
-    ingredients: [
-      '2 courgettes râpées',
-      '150g farine de pois chiche',
-      '80g farine de riz',
-      '100g tofu ferme émietté (feta végane)',
-      '3 œufs bio',
-      '80ml huile d\'olive',
-      '1 c.à.c origan, 1 c.à.c curcuma',
-      '1 sachet levure sg'
-    ],
-    etapes: [
-      'Préchauffez le four à 180°C.',
-      'Essorez bien les courgettes râpées dans un torchon.',
-      'Mélangez farines, levure et épices.',
-      'Incorporez œufs, huile, courgettes et tofu émietté.',
-      'Remplissez les moules à muffins. Enfournez 22-25 min.'
-    ]
-  },
-  {
-    id: 149, cat: 'brunch', premium: true,
-    emoji: '🌺', nom: 'Smoothie bowl dragon fruit-coco-grenade',
-    temps: '10 min', calories: 310, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le dragon fruit (pitaya) est riche en bétalaïnes, des antioxydants rares aux propriétés anti-inflammatoires remarquables. La grenade apporte des polyphénols qui réduisent la douleur chronique.',
-    ingredients: [
-      '150g pitaya rose surgelée',
-      '1 banane congelée',
-      '100ml lait de coco',
-      '½ grenade (graines)',
-      '2 c.à.s noix de coco râpée',
-      '1 c.à.s graines de grenade de lin',
-      '1 c.à.c miel'
-    ],
-    etapes: [
-      'Mixez la pitaya avec la banane congelée et le lait de coco.',
-      'La couleur rose fuchsia doit être intense et la texture épaisse.',
-      'Versez dans un bol froid.',
-      'Décorez avec les graines de grenade, la noix de coco et les graines de lin.',
-      'Servez immédiatement — la pitaya colore magnifiquement.'
-    ]
-  },
-  {
-    id: 150, cat: 'brunch', premium: false,
-    emoji: '🥚', nom: 'Frittata aux légumes de saison',
-    temps: '25 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La frittata italienne est une omelette cuite au four — riche en protéines et légumes. Elle se mange chaude ou froide, parfaite pour partager. Les légumes de saison maximisent les nutriments.',
-    ingredients: [
-      '6 œufs bio',
-      '1 courgette',
-      '1 poivron rouge',
-      '100g épinards frais',
-      '1 oignon rouge',
-      '2 c.à.s huile d\'olive',
-      'Basilic frais, Sel Santé, poivre'
-    ],
-    etapes: [
-      'Préchauffez le four à 190°C.',
-      'Faites revenir l\'oignon et les légumes dans l\'huile d\'olive 8 min.',
-      'Battez les œufs avec le Sel Santé et le basilic.',
-      'Versez les œufs sur les légumes dans une poêle allant au four.',
-      'Enfournez 12-15 min jusqu\'à prise complète. Démoulez et servez en parts.'
-    ]
-  },
-  {
-    id: 151, cat: 'brunch', premium: true,
-    emoji: '🍓', nom: 'Crépes de teff sauce fraise-basilic',
-    temps: '30 min', calories: 380, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Des crêpes ultra-fines à la farine de teff — la plus riche en fer de toutes les céréales. La sauce fraise-basilic est une association surprenante qui apporte vitamine C et dopamine (basilic).',
-    ingredients: [
-      '150g farine de teff',
-      '300ml lait de riz',
-      '2 œufs bio',
-      '1 c.à.s huile de coco',
-      '300g fraises fraîches',
-      '10 feuilles de basilic frais',
-      '2 c.à.s sirop d\'agave'
-    ],
-    etapes: [
-      'Mélangez farine de teff, lait de riz, œufs et huile de coco.',
-      'Laissez reposer 15 min — la pâte s\'épaissit légèrement.',
-      'Cuisez des crêpes fines dans une poêle bien chaude.',
-      'Mixez les fraises avec le basilic et le sirop d\'agave.',
-      'Servez les crêpes avec la sauce fraise-basilic tiède.'
-    ]
-  },
-  {
-    id: 152, cat: 'brunch', premium: false,
-    emoji: '🫙', nom: 'Overnight oats mangue-passion-chia',
-    temps: '5 min + 8h repos', calories: 340, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le brunch préparé la veille — zéro stress le matin. Les flocons de millet remplacent l\'avoine (sg). La mangue + fruit de la passion = vitamines C, A et enzymes digestives.',
-    ingredients: [
-      '80g flocons de millet',
-      '2 c.à.s graines de chia',
-      '250ml lait de coco',
-      '1 mangue fraîche',
-      '2 fruits de la passion',
-      '1 c.à.s sirop d\'érable',
-      '1 pincée de cardamome'
-    ],
-    etapes: [
-      'Mélangez les flocons de millet avec les graines de chia et le lait de coco.',
-      'Ajoutez le sirop d\'érable et la cardamome.',
-      'Réfrigérez toute la nuit — les graines gonflent et créent une texture crémeuse.',
-      'Le matin, coupez la mangue en cubes et récupérez la pulpe des fruits de la passion.',
-      'Dressez en verrines avec les fruits par-dessus.'
-    ]
-  },
-  {
-    id: 153, cat: 'brunch', premium: true,
-    emoji: '🧆', nom: 'Falafels dorés sauce tahini-citron',
-    temps: '45 min', calories: 430, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les falafels maison sont riches en fer, fibres et protéines végétales. Cuits au four plutôt que frits — 60% de calories en moins. Le tahini apporte du calcium et des graisses saines.',
-    ingredients: [
-      '400g pois chiches cuits',
-      '1 oignon',
-      '3 gousses d\'ail',
-      '1 bouquet coriandre + persil',
-      '1 c.à.c cumin, 1 c.à.c coriandre moulue',
-      '2 c.à.s farine de pois chiche',
-      '3 c.à.s tahini',
-      '2 citrons'
-    ],
-    etapes: [
-      'Préchauffez le four à 200°C.',
-      'Mixez pois chiches, oignon, ail, herbes et épices — texture granuleuse, pas lisse.',
-      'Incorporez la farine de pois chiche. Formez des boulettes.',
-      'Disposez sur plaque huilée. Enfournez 25 min en retournant à mi-cuisson.',
-      'Sauce tahini : mélangez tahini + jus de citron + eau + ail. Servez avec les falafels.'
-    ]
-  },
-
-  // =============================================
-  // PREMIUM "HORS DU COMMUN"
-  // Ingrédients originaux, techniques de chef
-  // Exclusives abonnés Premium
-  // =============================================
-  {
-    id: 154, cat: 'dejeuner', premium: true,
-    emoji: '🦑', nom: 'Encornets grillés sauce vierge yuzu-gingembre',
-    temps: '20 min', calories: 340, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Les encornets sont une source exceptionnelle de fer héminique et de zinc — souvent ignorée. Le yuzu japonais est 3x plus riche en vitamine C que le citron. Une association umami-agrume inédite.',
-    ingredients: [
-      '300g anneaux d\'encornet frais',
-      '1 yuzu (ou citron + zeste d\'orange)',
-      '2 cm gingembre frais',
-      '3 tomates cerises coupées',
-      '10 feuilles de basilic thaï',
-      '2 c.à.s huile d\'olive',
-      'Fleur de sel, poivre de Timut'
-    ],
-    etapes: [
-      'Séchez bien les encornets — l\'humidité empêche la coloration.',
-      'Faites chauffer une poêle en fonte à feu très vif.',
-      'Saisissez les encornets 1 min chaque côté — ils doivent colorer vite.',
-      'Préparez la sauce vierge : tomates, yuzu, gingembre râpé, basilic thaï et huile d\'olive.',
-      'Dressez les encornets avec la sauce vierge et la fleur de sel.'
-    ]
-  },
-  {
-    id: 155, cat: 'diner', premium: true,
-    emoji: '🌿', nom: 'Tartare de betterave-lentilles beluga-huile de lin',
-    temps: '25 min', calories: 290, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Un tartare entièrement végétal. Les lentilles beluga + betterave = combo fer record. L\'huile de lin apportée froide conserve ses oméga-3 intacts. Le poivre de Sichuan est un analgésique naturel.',
-    ingredients: [
-      '200g lentilles beluga cuites',
-      '2 betteraves crues râpées finement',
-      '3 c.à.s huile de lin (premier froid)',
-      '1 échalote',
-      '2 c.à.s câpres',
-      '1 c.à.s moutarde de Dijon sg',
-      'Poivre de Sichuan, sel fumé'
-    ],
-    etapes: [
-      'Émincez finement l\'échalote, hachez les câpres.',
-      'Mélangez lentilles, betterave râpée, échalote et câpres.',
-      'Assaisonnez avec la moutarde, le sel fumé et le poivre de Sichuan concassé.',
-      'Finissez avec l\'huile de lin froide — ne jamais la chauffer.',
-      'Façonnez en cercle avec un emporte-pièce. Servez immédiatement.'
-    ]
-  },
-  {
-    id: 156, cat: 'diner', premium: true,
-    emoji: '🐙', nom: 'Ceviche de maquereau-concombre-lait de coco',
-    temps: '15 min + 30min marinade', calories: 310, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'Le ceviche "cuit" le poisson par l\'acidité du citron — aucune chaleur, tous les oméga-3 préservés. Le maquereau est la source la plus concentrée en EPA/DHA. Le lait de coco adoucit l\'acidité.',
-    ingredients: [
-      '300g filets de maquereau très frais',
-      '3 citrons verts (jus)',
-      '1 citron jaune (jus)',
-      '100ml lait de coco',
-      '½ concombre',
-      '1 piment doux',
-      'Coriandre fraîche, oignon rouge'
-    ],
-    etapes: [
-      'Coupez le maquereau en cubes de 1 cm.',
-      'Couvrez de jus de citron vert — la chair doit blanchir (30 min).',
-      'Égouttez partiellement. Ajoutez le lait de coco et le jus de citron jaune.',
-      'Incorporez concombre en dés, oignon rouge émincé et piment.',
-      'Parsemez de coriandre fraîche. Servez dans des verres froids.'
-    ]
-  },
-  {
-    id: 157, cat: 'diner', premium: true,
-    emoji: '🌾', nom: 'Risotto de millet-safran-moules fumées',
-    temps: '35 min', calories: 420, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Le millet remplace le riz pour un risotto sans gluten riche en magnésium. Le safran a des propriétés anti-dépressives et anti-inflammatoires prouvées. Les moules fumées sont concentrées en fer.',
-    ingredients: [
-      '200g millet décortiqué',
-      '1 pot de moules fumées',
-      '1 pincée de safran',
-      '1 échalote, 2 gousses d\'ail',
-      '150ml vin blanc sg (ou bouillon)',
-      '600ml bouillon de légumes chaud',
-      '2 c.à.s huile d\'olive, persil plat'
-    ],
-    etapes: [
-      'Faites infuser le safran dans 2 c.à.s d\'eau chaude.',
-      'Faites revenir échalote et ail, ajoutez le millet.',
-      'Déglacez au vin blanc (ou bouillon). Ajoutez le safran infusé.',
-      'Incorporez le bouillon louche par louche en remuant.',
-      'En fin de cuisson, ajoutez les moules fumées. Parsemez de persil.'
-    ]
-  },
-  {
-    id: 158, cat: 'dejeuner', premium: true,
-    emoji: '🥬', nom: 'Nems crus feuille de riz-spiruline-crevettes',
-    temps: '20 min', calories: 280, diff: 'Facile',
-    tags: ['sg', 'sl'],
-    benefices: 'La spiruline dans la sauce dipping est la source végétale la plus concentrée en fer et protéines. Les crevettes apportent du zinc et sélénium. Le gingembre dans la sauce est puissamment anti-inflammatoire.',
-    ingredients: [
-      '8 feuilles de riz',
-      '150g crevettes cuites',
-      '1 avocat',
-      '1 mangue verte',
-      'Menthe, coriandre fraîche',
-      '2 c.à.s tamari, 1 c.à.c spiruline',
-      '1 cm gingembre, 1 citron vert'
-    ],
-    etapes: [
-      'Trempez les feuilles de riz 20 sec. Posez sur torchon humide.',
-      'Garnissez de crevettes, avocat, mangue verte et herbes.',
-      'Roulez en serrant bien.',
-      'Sauce spiruline : mélangez tamari + gingembre râpé + jus citron vert + spiruline.',
-      'Servez les nems avec la sauce verte légèrement piquante.'
-    ]
-  },
-  {
-    id: 159, cat: 'diner', premium: true,
-    emoji: '🫀', nom: 'Carpaccio de betterave-fraise-vinaigre balsamique vieilli',
-    temps: '20 min + 1h frigo', calories: 220, diff: 'Moyen',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'La betterave tranchée fine améliore la circulation sanguine dans les jambes en 90 min. Les fraises apportent de l\'ellagique acid anti-inflammatoire. Le vinaigre balsamique vieilli est un prébiotique naturel.',
-    ingredients: [
-      '3 betteraves crues de couleurs variées',
-      '150g fraises fraîches',
-      '3 c.à.s vinaigre balsamique vieilli (12 ans)',
-      '2 c.à.s huile de cameline',
-      'Basilic frais, noix concassées',
-      'Fleur de sel, poivre'
-    ],
-    etapes: [
-      'Tranchez les betteraves crues très finement à la mandoline.',
-      'Disposez en rosace sur les assiettes, alternez les couleurs.',
-      'Coupez les fraises en deux, disposez entre les betteraves.',
-      'Arrosez d\'huile de cameline et vinaigre balsamique.',
-      'Réfrigérez 1h — les betteraves marinent légèrement. Parsemez de basilic et noix.'
-    ]
-  },
-  {
-    id: 160, cat: 'dejeuner', premium: true,
-    emoji: '🦈', nom: 'Tataki de thon rouge-sésame noir-sauce ponzu',
-    temps: '15 min', calories: 380, diff: 'Moyen',
-    tags: ['sg', 'sl'],
-    benefices: 'Technique japonaise : le thon est saisi 30 secondes par face, cru à cœur. Préserve tous les oméga-3. Le sésame noir est plus riche en antioxydants que le blanc. La sauce ponzu alcalinise l\'organisme.',
-    ingredients: [
-      '300g thon rouge qualité sushi',
-      '3 c.à.s graines de sésame noir',
-      '3 c.à.s tamari',
-      '2 c.à.s jus de yuzu ou citron',
-      '1 c.à.s mirin sg',
-      'Daikon râpé, gingembre mariné',
-      'Huile de sésame'
-    ],
-    etapes: [
-      'Mélangez tamari, jus de yuzu et mirin — c\'est la sauce ponzu.',
-      'Enrobez le thon de graines de sésame noir.',
-      'Faites chauffer une poêle à feu très vif avec l\'huile de sésame.',
-      'Saisissez le thon 30 secondes par face — cru à cœur.',
-      'Tranchez finement, servez avec la sauce ponzu et le daikon râpé.'
-    ]
-  },
-  {
-    id: 161, cat: 'snack', premium: true,
-    emoji: '🍵', nom: 'Matcha latte froid lait d\'avoine-miel de thym',
-    temps: '5 min', calories: 120, diff: 'Très facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le matcha grade cérémonie contient de la L-théanine qui améliore la concentration sans excitation — idéal TDAH. Ses catéchines sont les antioxydants les plus puissants du thé. Le miel de thym est antibactérien.',
-    ingredients: [
-      '1 c.à.c matcha grade cérémonie',
-      '300ml lait d\'avoine sg bien froid',
-      '1 c.à.s miel de thym',
-      '2 c.à.s eau chaude (70°C)',
-      'Glaçons',
-      '1 pincée de sel'
-    ],
-    etapes: [
-      'Tamisez le matcha dans un bol.',
-      'Ajoutez l\'eau chaude (pas bouillante — amèrerait le matcha).',
-      'Fouettez en zigzag jusqu\'à mousse verte brillante.',
-      'Ajoutez le miel de thym et la pincée de sel.',
-      'Versez sur les glaçons, complétez avec le lait d\'avoine froid. Ne pas mélanger — boire en strates.'
-    ]
-  },
-  {
-    id: 162, cat: 'diner', premium: true,
-    emoji: '🌸', nom: 'Velouté d\'asperges vertes-amande-huile de truffe',
-    temps: '30 min', calories: 260, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Les asperges sont riches en glutathion, le "maître antioxydant" du corps. Elles contiennent de l\'asparagine qui détoxifie les reins. L\'huile de truffe est anti-inflammatoire et transforme ce velouté en expérience gastronomique.',
-    ingredients: [
-      '500g asperges vertes',
-      '100ml lait d\'amande',
-      '1 oignon, 2 gousses d\'ail',
-      '500ml bouillon de légumes',
-      '1 c.à.s huile de truffe blanche',
-      '30g amandes effilées grillées',
-      'Sel Santé, poivre blanc'
-    ],
-    etapes: [
-      'Cassez les asperges — elles se brisent naturellement à l\'endroit tendre.',
-      'Faites revenir oignon et ail, ajoutez les asperges.',
-      'Couvrez de bouillon chaud. Cuisez 12 min — les asperges doivent rester vertes.',
-      'Mixez avec le lait d\'amande jusqu\'à texture soyeuse.',
-      'Servez avec un filet d\'huile de truffe et les amandes grillées.'
-    ]
-  },
-  {
-    id: 163, cat: 'dejeuner', premium: true,
-    emoji: '🏔️', nom: 'Salade de sarrasin kasha-agrumes-herbes fraîches-zaatar',
-    temps: '20 min', calories: 360, diff: 'Facile',
-    tags: ['sg', 'sl', 'vg'],
-    benefices: 'Le zaatar (mélange thym-sésame-sumac) est un condiment du Moyen-Orient aux propriétés antimicrobiennes et antioxydantes. Le sumac contient de l\'acide gallique, puissant anti-inflammatoire. Le kasha est du sarrasin torréfié — digestif et riche en magnésium.',
-    ingredients: [
-      '200g sarrasin grillé (kasha)',
-      '1 orange sanguine',
-      '1 pamplemousse rose',
-      '1 bouquet de menthe fraîche',
-      '1 bouquet de persil plat',
-      '2 c.à.s zaatar',
-      '3 c.à.s huile d\'olive, 1 citron'
-    ],
-    etapes: [
-      'Cuisez le kasha 10 min dans le double de son volume d\'eau. Égouttez.',
-      'Pelez à vif l\'orange sanguine et le pamplemousse. Coupez en suprêmes.',
-      'Mélangez le kasha tiède avec les herbes hachées.',
-      'Ajoutez les suprêmes d\'agrumes et le zaatar.',
-      'Assaisonnez avec huile d\'olive et citron. La salade se mange tiède.'
-    ]
-  }
-];
 
 // ============================
 // DATA — Jours & Repas
@@ -4046,6 +270,68 @@ let journal       = {};
 let agenda        = {};
 let isPremium     = false;
 let currentCatFilter = '';
+
+// ============================================================
+// SYSTÈME DE FAVORIS ❤️
+// ============================================================
+// Stockage : localStorage 'flora_favoris' = { recetteId: timestamp }
+var floraFavoris = {};
+var currentFavorisFilter = false; // true quand l'onglet "Favoris" est actif
+
+function loadFavoris() {
+  try {
+    floraFavoris = JSON.parse(localStorage.getItem('flora_favoris') || '{}');
+  } catch (e) {
+    floraFavoris = {};
+  }
+}
+
+function saveFavoris() {
+  try {
+    localStorage.setItem('flora_favoris', JSON.stringify(floraFavoris));
+  } catch (e) {
+    console.error('[Flōra] Erreur save favoris:', e);
+  }
+}
+
+function isFavori(id) {
+  return !!floraFavoris[id];
+}
+
+function toggleFavori(id, event) {
+  // Empêche le clic de remonter (sinon ouvre la recette quand on clique le cœur sur la carte)
+  if (event) {
+    event.stopPropagation();
+    event.preventDefault();
+  }
+  if (floraFavoris[id]) {
+    delete floraFavoris[id];
+  } else {
+    floraFavoris[id] = Date.now();
+  }
+  saveFavoris();
+
+  // Mise à jour visuelle ciblée du cœur cliqué
+  var hearts = document.querySelectorAll('[data-fav-id="' + id + '"]');
+  hearts.forEach(function(h) {
+    h.textContent = isFavori(id) ? '❤️' : '🤍';
+    h.classList.toggle('fav-active', isFavori(id));
+  });
+
+  // Si on est sur la liste des recettes en mode "favoris", re-render
+  if (currentFavorisFilter) {
+    renderRecettes();
+  }
+
+  // Vérifier si un badge s'est débloqué
+  if (typeof checkBadges === 'function') checkBadges();
+}
+
+function countFavoris() {
+  return Object.keys(floraFavoris).length;
+}
+
+
 let currentWeekOffset = 0;
 
 // ============================
@@ -4065,6 +351,45 @@ window.addEventListener('load', () => {
 });
 
 function loadState() {
+  // ============================
+  // MIGRATIONS LEGACY (suppression progressive des anciennes clés)
+  // ============================
+  try {
+    // 1. flora_profil (sans 'e') → flora_profile : récupérer cycleEnabled si manquant
+    const legacyProfil = localStorage.getItem('flora_profil');
+    if (legacyProfil) {
+      const legacyData = JSON.parse(legacyProfil);
+      if (legacyData && typeof legacyData.cycleEnabled !== 'undefined') {
+        const currentProfile = JSON.parse(localStorage.getItem('flora_profile') || '{}');
+        if (typeof currentProfile.cycleEnabled === 'undefined') {
+          currentProfile.cycleEnabled = legacyData.cycleEnabled;
+          localStorage.setItem('flora_profile', JSON.stringify(currentProfile));
+        }
+      }
+      localStorage.removeItem('flora_profil');
+    }
+    // 2. flora-medications (avec tiret) → flora_medications (avec underscore)
+    const legacyMeds = localStorage.getItem('flora-medications');
+    if (legacyMeds && !localStorage.getItem('flora_medications')) {
+      localStorage.setItem('flora_medications', legacyMeds);
+    }
+    if (legacyMeds) {
+      localStorage.removeItem('flora-medications');
+    }
+    // 3. caferenceFer → carenceFer (typo)
+    const profRaw = localStorage.getItem('flora_profile');
+    if (profRaw) {
+      const prof = JSON.parse(profRaw);
+      if (prof && typeof prof.caferenceFer !== 'undefined' && typeof prof.carenceFer === 'undefined') {
+        prof.carenceFer = prof.caferenceFer;
+        delete prof.caferenceFer;
+        localStorage.setItem('flora_profile', JSON.stringify(prof));
+      }
+    }
+  } catch(e) {
+    console.warn('[Flōra] Migration legacy:', e);
+  }
+
   try {
     profile      = JSON.parse(localStorage.getItem('flora_profile') || '{}');
     journal      = JSON.parse(localStorage.getItem('flora_journal') || '{}');
@@ -4210,7 +535,7 @@ function saveOnboarding() {
     sansGluten:  document.getElementById('ob-sg').checked,
     sansLactose: document.getElementById('ob-sl').checked,
     vegetarien:  document.getElementById('ob-sv').checked,
-    caferenceFer: document.getElementById('ob-fer').checked,
+    carenceFer:   document.getElementById('ob-fer').checked,
     tdah:         document.getElementById('ob-tdah').checked,
     sjsrFreq:     document.getElementById('ob-sjsr-freq').value,
     traitement:   document.getElementById('ob-traitement').value,
@@ -4226,8 +551,15 @@ function saveOnboarding() {
 }
 
 // ============================
-// NOTIFICATIONS PUSH
+// NOTIFICATIONS
 // ============================
+// Note technique : les notifications ne se déclenchent que pendant que l'app
+// est ouverte (les setTimeout meurent à la fermeture de l'onglet). Une vraie
+// notification PWA programmée nécessiterait un backend Push ou la
+// Notification Trigger API (encore expérimentale). En attendant :
+//  1. on programme un rappel pour la session courante si l'heure cible est à venir,
+//  2. à chaque ouverture de l'app après 21h sans entrée journal, on rappelle.
+
 function askNotificationPermission() {
   if (!('Notification' in window)) return;
   if (Notification.permission === 'granted') {
@@ -4240,7 +572,7 @@ function askNotificationPermission() {
     banner.style.cssText = 'position:fixed;bottom:80px;left:16px;right:16px;background:var(--green-deep);color:var(--white);border-radius:var(--radius-lg);padding:16px 18px;z-index:9999;box-shadow:0 8px 24px rgba(0,0,0,.25);';
     banner.innerHTML = `
       <div style="font-weight:600;margin-bottom:6px;">🌙 Rappels bien-être</div>
-      <div style="font-size:0.82rem;opacity:.85;margin-bottom:12px;">Activez les notifications pour votre rappel journal du soir et vos conseils anti-SJSR.</div>
+      <div style="font-size:0.82rem;opacity:.85;margin-bottom:12px;">Activez les rappels pour votre journal du soir (uniquement quand l'app est ouverte).</div>
       <div style="display:flex;gap:8px;">
         <button onclick="Notification.requestPermission().then(p=>{if(p==='granted')scheduleNotifications();});this.closest('[style]').remove();"
           style="flex:1;padding:9px;border:none;border-radius:var(--radius-md);background:var(--white);color:var(--green-deep);font-weight:600;font-family:var(--font-body);cursor:pointer;">
@@ -4258,31 +590,49 @@ function askNotificationPermission() {
 }
 
 function scheduleNotifications() {
-  if (!('serviceWorker' in navigator) || Notification.permission !== 'granted') return;
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
 
-  // Notification journal du soir (21h)
+  // 1. Si on est déjà après 21h aujourd'hui ET que le journal du jour est vide → notif immédiate
   const now = new Date();
-  const target = new Date();
-  target.setHours(21, 0, 0, 0);
-  if (target <= now) target.setDate(target.getDate() + 1);
+  const todayKey = dateKey(now);
+  const journalDuJour = journal[todayKey];
+  const journalRempli = journalDuJour && (
+    (journalDuJour.cycles && journalDuJour.cycles.length > 0) ||
+    (journalDuJour.douleurs && Object.values(journalDuJour.douleurs).some(v => v > 0)) ||
+    (journalDuJour.symptomes && journalDuJour.symptomes.length > 0) ||
+    (journalDuJour.notes && journalDuJour.notes.trim().length > 0)
+  );
 
-  const delay = target - now;
-  setTimeout(() => {
+  if (now.getHours() >= 21 && !journalRempli) {
     new Notification('Flōra 🌿', {
       body: 'C\'est l\'heure de votre journal du soir. Comment se sont passées vos jambes cette nuit ?',
       icon: '/Fl-ra/icon.svg',
       badge: '/Fl-ra/icon.svg',
       tag: 'flora-journal-soir'
     });
-    // Relancer chaque 24h
-    setInterval(() => {
-      new Notification('Flōra 🌿', {
-        body: 'Votre journal du soir vous attend 🌙',
-        icon: '/Fl-ra/icon.svg',
-        tag: 'flora-journal-soir'
-      });
-    }, 24 * 60 * 60 * 1000);
-  }, delay);
+  } else if (now.getHours() < 21) {
+    // 2. Sinon, programmer pour 21h aujourd'hui (uniquement si l'app reste ouverte)
+    const target = new Date();
+    target.setHours(21, 0, 0, 0);
+    const delay = target - now;
+    setTimeout(() => {
+      // Re-vérifier au moment du tir : peut-être que l'utilisatrice a rempli entre-temps
+      const updatedJournal = journal[dateKey(new Date())];
+      const stillEmpty = !updatedJournal || (
+        (!updatedJournal.cycles || updatedJournal.cycles.length === 0) &&
+        (!updatedJournal.symptomes || updatedJournal.symptomes.length === 0) &&
+        (!updatedJournal.notes || !updatedJournal.notes.trim())
+      );
+      if (stillEmpty && Notification.permission === 'granted') {
+        new Notification('Flōra 🌿', {
+          body: 'C\'est l\'heure de votre journal du soir. Comment se sont passées vos jambes cette nuit ?',
+          icon: '/Fl-ra/icon.svg',
+          badge: '/Fl-ra/icon.svg',
+          tag: 'flora-journal-soir'
+        });
+      }
+    }, delay);
+  }
 }
 
 function enableNotifications() {
@@ -4292,13 +642,16 @@ function enableNotifications() {
 // ============================
 // APP INIT
 // ============================
+// SYSTÈME D'ACCÈS BÊTA (pas un système d'authentification)
 // ============================
-// SYSTÈME DE CONNEXION
-// Comptes hardcodés (pas de serveur)
-// ============================
+// ⚠️ Ces "mots de passe" sont visibles dans le code source : ce sont des codes
+// d'accès partagés, pas des mots de passe sécurisés. Ils servent uniquement à
+// distinguer les rôles pendant la phase bêta. Le statut Premium se contourne
+// trivialement côté client (localStorage). Un vrai backend (Cloudflare Worker
+// + KV ou Stripe Customer Portal) sera nécessaire pour une monétisation réelle.
 
 const ACCOUNTS = {
-  // Compte administrateur (toi)
+  // Compte administrateur (Ketty)
   'ketty@flora.app': {
     password: 'Fl0ra#Ketty@2026!',
     role: 'admin',
@@ -4312,10 +665,7 @@ const ACCOUNTS = {
     name: 'Invité·e',
     premium: true
   },
-  // Comptes premium (abonnés Stripe)
-  // Format : email → { password, role:'premium', name, premium:true }
-  // Ajouter manuellement après chaque paiement Stripe
-  // ex: 'client@email.com': { password: 'FLORA-xxxxxxxx', role:'premium', name:'Prénom', premium:true }
+  // Comptes premium futurs : à gérer côté serveur, pas ici
 };
 
 let currentUser = null;
@@ -4406,18 +756,6 @@ function updateLoginButton() {
   }
 }
 
-// Admin : ajouter un compte premium
-function adminAddPremium(email, name, code) {
-  if (!currentUser || currentUser.role !== 'admin') return;
-  ACCOUNTS[email] = {
-    password: code,
-    role: 'premium',
-    name: name,
-    premium: true
-  };
-  alert(`✅ Compte ajouté : ${email}\nMot de passe : ${code}`);
-}
-
 function tryLoginOnEnter(e) {
   if (e.key === 'Enter') doLogin();
 }
@@ -4433,6 +771,241 @@ function initLogin() {
 }
 
 
+
+// ============================================================
+// LISTE DE COHÉRENCE FLŌRA — détection des aliments hors-contexte
+// ============================================================
+// Cette liste est ÉVOLUTIVE : tu peux ajouter/retirer des mots-clés ici
+// pour ajuster la sensibilité des alertes. Les correspondances se font
+// par mots-clés (substring casse-insensible) pour rattraper les variations.
+//
+// Niveaux :
+//   - bloquant   : strictement incompatible (gluten, lait animal)
+//   - inflammatoire : pro-inflammatoire à éviter (sucres raffinés, charcuterie...)
+//   - info       : juste une note (caféine, alcool)
+//
+// L'alerte demande TOUJOURS confirmation, jamais de refus net.
+
+var FLORA_INCOMPATIBLES = {
+  bloquant: {
+    label: 'gluten ou produit laitier animal',
+    icon: '🟥',
+    motsCles: [
+      // Gluten
+      'blé', 'ble ', 'farine de blé', 'farine de ble',
+      'seigle', 'orge', 'malt', 'kamut', 'épeautre', 'epeautre',
+      'semoule', 'couscous', 'boulgour', 'bulgur',
+      'pâtes ', 'pates ', 'spaghetti', 'tagliatelle', 'macaroni', 'lasagne', 'ravioli',
+      'pain ', 'baguette', 'brioche', 'biscotte', 'biscuit',
+      'croissant', 'viennoiserie', 'pâtisserie', 'patisserie',
+      // Lait animal
+      'lait de vache', 'lait de chèvre', 'lait de chevre', 'lait de brebis',
+      'lait demi-écrémé', 'lait écrémé', 'lait entier',
+      'beurre ', 'beurre demi', 'beurre doux',
+      'crème fraîche', 'creme fraiche', 'crème épaisse',
+      'yaourt nature', 'yaourt vache', 'yaourt grec', 'yaourt brassé', 'yaourt aux fruits',
+      'fromage blanc', 'fromage de vache', 'fromage râpé', 'fromage rape',
+      'gruyère', 'gruyere', 'emmental', 'comté', 'comte', 'parmesan', 'mozzarella',
+      'mascarpone', 'ricotta', 'feta', 'roquefort', 'camembert', 'brie',
+      'cancoillotte', 'reblochon'
+    ]
+  },
+  inflammatoire: {
+    label: 'pro-inflammatoire',
+    icon: '🟧',
+    motsCles: [
+      // Sucres raffinés
+      'sucre blanc', 'sucre roux', 'sucre en poudre', 'sucre cristal', 'sucre semoule',
+      'sirop de glucose', 'sirop de fructose', 'sirop de maïs', 'sirop de mais',
+      'soda', 'cola', 'limonade', 'boisson énergisante', 'boisson energisante',
+      // Charcuterie industrielle
+      'jambon blanc', 'jambon industriel', 'saucisson', 'salami', 'chorizo',
+      'lardons', 'lard fumé', 'lard fume', 'bacon',
+      'pâté ', 'pate ', 'rillettes', 'mortadelle',
+      'merguez', 'chipolata', 'saucisse fumée',
+      // Friture / huiles raffinées
+      'huile de tournesol raffinée', 'huile de palme', 'margarine',
+      'frites surgelées', 'frites surgelees', 'nuggets',
+      // Glutamate / additifs
+      'sauce soja classique', 'bouillon kub', 'maggi', 'glutamate',
+      'plat préparé', 'plat prepare', 'micro-ondable',
+      // Aliments ultra-transformés
+      'nutella', 'pâte à tartiner', 'pate a tartiner industrielle',
+      'céréales sucrées', 'cereales sucrees', 'corn flakes'
+    ]
+  },
+  info: {
+    label: 'note informative',
+    icon: '🟨',
+    motsCles: [
+      'café ', 'cafe ', 'expresso', 'espresso',
+      'thé noir', 'the noir', 'thé earl grey',
+      'vin ', 'champagne', 'bière', 'biere', 'rosé', 'rose ',
+      'whisky', 'vodka', 'rhum', 'gin', 'apéritif', 'aperitif'
+    ]
+  }
+};
+
+// Vérifie si un nom d'ingrédient ou recette contient un mot-clé hors-contexte.
+// Renvoie : null si rien | { niveau, label, icon, mot } si match
+function checkFloraCompat(text) {
+  if (!text) return null;
+  // Normalise : minuscules + espaces, on garde les apostrophes/tirets
+  var raw = String(text).toLowerCase().replace(/\s+/g, ' ');
+
+  // Strip les alternatives entre parenthèses commençant par "ou":
+  // "tofu ferme (ou feta)" → "tofu ferme"
+  // "extrait vanille (ou bouchon de rhum)" → "extrait vanille"
+  // Cela permet d'ignorer les ingrédients de remplacement non-Flōra.
+  var stripped = raw.replace(/\(\s*ou[^)]*\)/g, '');
+  // Retire aussi les notes explicatives "(alcool évaporé à la cuisson)" etc.
+  stripped = stripped.replace(/\(\s*alcool[^)]*\)/g, '');
+  stripped = stripped.replace(/\(\s*sans alcool[^)]*\)/g, '');
+
+  var t = ' ' + stripped + ' ';
+
+  // Skip global : si le texte indique explicitement "sans gluten", "sans lactose",
+  // "sans beurre", "végane", "vegan", c'est une recette adaptée Flōra
+  var skipPatterns = ['sans gluten', 'sans lactose', 'sans beurre', 'sans œuf',
+                      'sans oeuf', 'sans lait', 'sans laitage', 'sans fromage',
+                      ' sg ', ' sg/sl ', ' sg/', '/sl ', 'végane', 'vegane', 'vegan'];
+  for (var s = 0; s < skipPatterns.length; s++) {
+    if (t.indexOf(skipPatterns[s]) >= 0) return null;
+  }
+
+  // Exceptions ciblées : combinaisons de mots qui doivent être ignorées
+  // même si un mot-clé bloquant/inflammatoire est trouvé dedans.
+  var exceptions = [
+    'levure de bière',   // produit nutritionnel sans alcool
+    'levure de biere',
+    'levure maltée',     // dérivé sans alcool ni gluten
+    'levure maltee',
+    'sirop d\'érable',   // sucres naturels OK sur Flōra
+    'sirop d\'agave',
+    'sirop d\'orgeat',
+    'sirop de coco',
+    'yaourt de soja',    // alternatives végétales OK
+    'yaourt de coco',
+    'yaourt d\'amande',
+    'yaourt d\'avoine',
+    'yaourt végétal',
+    'lait de coco',
+    'lait d\'amande',
+    'lait d\'avoine',
+    'lait de riz',
+    'lait de noisette',
+    'lait de cajou',
+    'lait de chanvre',
+    'lait végétal',
+    'beurre de cacahuète',
+    'beurre de cacahuete',
+    'beurre d\'amande',
+    'beurre de cajou',
+    'beurre de coco',
+    'beurre de noix',
+    'beurre de noisette',
+    'beurre de sésame',
+    'beurre de tournesol',
+    'margarine végétale',  // alternative SL pour "comfort food" SG/SL
+    'margarine vegetale',
+    'margarine bio',
+    'margarine végane',
+    'crème de coco',
+    'creme de coco',
+    'crème d\'amande',
+    'crème d\'avoine',
+    'crème de soja',
+    'crème de riz',
+    'crème végétale',
+    'crème vegane',
+    'fromage végétal',
+    'fromage vegetal',
+    'fromage de soja',
+    'fromage de cajou',
+    'fromage d\'amande',
+    'fromage végane',
+    'feta végane',       // tofu en alternative
+    'feta vegane',
+    'feta végétale',
+    'feta de tofu',
+    // Pains et biscuits SG
+    'pain de sarrasin',
+    'pain de mie sg',
+    'pain de mie sans gluten',
+    'pain d\'épices sans gluten',
+    'pain d\'epices sans gluten',
+    'pain à hamburger sg',
+    'biscuit sans gluten',
+    'biscuit sg',
+    'pâtes sans gluten',
+    'pates sans gluten',
+    'pâtes de riz',
+    'pates de riz',
+    'pâtes de sarrasin',
+    'pates de sarrasin',
+    'pâtes de pois chiche',
+    'pates de pois chiche',
+    'pâtes de quinoa',
+    'pates de quinoa',
+    'mélange épices pain d\'épices', // épice en poudre, pas du pain
+    'melange epices pain d\'epices',
+    // Couleurs (pas de l'alcool ni de la viande)
+    'pamplemousse rose',
+    'pitaya rose',
+    'baies roses',
+    'baie rose',
+    'sel rose',
+    'poivre rose',
+    'rose blanche',
+    'rose comtesse',     // variété de pomme de terre
+    'eau de rose',
+    // Mélange épices (pour ras el hanout, etc.)
+    'cinq épices',
+    'cinq epices',
+    'quatre épices',
+    'quatre epices'
+  ];
+  for (var k = 0; k < exceptions.length; k++) {
+    if (t.indexOf(exceptions[k]) >= 0) return null;
+  }
+
+  // Mots-clés courts qui doivent matcher en MOT ENTIER (pour éviter
+  // que "gin" matche "gingembre", "vin" matche "vinaigre", etc.)
+  // On considère un mot entier comme délimité par espace, début/fin de chaîne,
+  // ou ponctuation simple.
+  var motsEntiers = ['gin', 'vin', 'rose', 'rhum', 'malt', 'pain', 'pates',
+                     'pâtes', 'cafe', 'café', 'orge', 'ble', 'blé', 'feta',
+                     'brie', 'comte', 'comté'];
+
+  // Ordre de priorité : bloquant > inflammatoire > info
+  var ordre = ['bloquant', 'inflammatoire', 'info'];
+  for (var i = 0; i < ordre.length; i++) {
+    var niveau = ordre[i];
+    var def = FLORA_INCOMPATIBLES[niveau];
+    for (var j = 0; j < def.motsCles.length; j++) {
+      var mot = def.motsCles[j].toLowerCase().trim();
+      var found = false;
+
+      if (motsEntiers.indexOf(mot) >= 0) {
+        // Match en mot entier : entouré d'espace ou début de texte
+        // Le texte t est déjà entouré d'espaces. On cherche " mot " ou " mot,"
+        // ou similaire. Plus simple : regex avec word boundary.
+        var re = new RegExp('(^|[\\s\',\\.\\-/\\(\\)])' + mot.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '($|[\\s\',\\.\\-/\\(\\)])', 'i');
+        found = re.test(t);
+      } else {
+        // Mots longs : substring classique
+        if (t.indexOf(' ' + mot) >= 0 || t.indexOf(mot + ' ') >= 0 || t.indexOf(mot) === 0) {
+          found = true;
+        }
+      }
+
+      if (found) {
+        return { niveau: niveau, label: def.label, icon: def.icon, mot: def.motsCles[j] };
+      }
+    }
+  }
+  return null;
+}
 
 const PLACARD_CATEGORIES = {
   '🥚 Protéines animales': [
@@ -4599,30 +1172,658 @@ let currentBudget = 80;
 let batchPlan = [];
 let batchCurrentStep = 0;
 
+// Liste des items personnalisés ajoutés par l'utilisatrice (catégorie → [items])
+var floraPlacardCustom = {};
+
+function loadPlacardCustom() {
+  try {
+    floraPlacardCustom = JSON.parse(localStorage.getItem('flora_placard_custom') || '{}');
+  } catch (e) {
+    floraPlacardCustom = {};
+  }
+}
+
+function savePlacardCustom() {
+  try {
+    localStorage.setItem('flora_placard_custom', JSON.stringify(floraPlacardCustom));
+  } catch (e) {
+    console.error('[Flōra] Erreur save placard custom:', e);
+  }
+}
+
+// Échappe les apostrophes pour insertion sûre dans onclick="..."
+function escAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 function renderPlacard() {
   const container = document.getElementById('placard-categories');
   if (!container) return;
 
-  container.innerHTML = Object.entries(PLACARD_CATEGORIES).map(([cat, items]) => `
-    <div class="placard-category">
-      <div class="placard-cat-title">${cat}</div>
-      <div class="placard-items">
-        ${items.map(item => `
-          <span class="placard-item ${placardItems[item] ? 'checked' : ''}"
-                onclick="togglePlacardItem('${item}', this)">
-            ${placardItems[item] ? '✓ ' : ''}${item}
-          </span>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
+  loadPlacardCustom();
+
+  // Fusion : pour chaque catégorie, items prédéfinis + items custom
+  var html = Object.entries(PLACARD_CATEGORIES).map(function(entry) {
+    var cat = entry[0];
+    var items = entry[1].slice(); // copie
+    var customItems = floraPlacardCustom[cat] || [];
+    var allItems = items.concat(customItems);
+
+    var itemsHTML = allItems.map(function(item) {
+      var isCustom = customItems.indexOf(item) >= 0;
+      var checked  = placardItems[item];
+      var safe = escAttr(item);
+      return (
+        '<span class="placard-item' + (checked ? ' checked' : '') + (isCustom ? ' placard-item-custom' : '') + '" ' +
+              'data-name="' + safe + '" ' +
+              'data-cat="' + escAttr(cat) + '" ' +
+              'onclick="togglePlacardItem(this.dataset.name, this)">' +
+          (checked ? '✓ ' : '') + item +
+          (isCustom ? '<button class="placard-item-del" onclick="removeCustomPlacardItem(event, this.parentElement)" aria-label="Supprimer">×</button>' : '') +
+        '</span>'
+      );
+    }).join('');
+
+    return (
+      '<div class="placard-category" data-cat-name="' + escAttr(cat) + '">' +
+        '<div class="placard-cat-title">' + cat + '</div>' +
+        '<div class="placard-items">' + itemsHTML + '</div>' +
+      '</div>'
+    );
+  }).join('');
+
+  container.innerHTML = html;
 }
 
 function togglePlacardItem(item, el) {
   placardItems[item] = !placardItems[item];
   el.classList.toggle('checked', placardItems[item]);
-  el.textContent = (placardItems[item] ? '✓ ' : '') + item;
+  // Reconstruire le contenu : ✓ + nom + (bouton × si custom)
+  var isCustom = el.classList.contains('placard-item-custom');
+  var prefix = placardItems[item] ? '✓ ' : '';
+  el.innerHTML = prefix + escAttr(item) +
+    (isCustom ? '<button class="placard-item-del" onclick="removeCustomPlacardItem(event, this.parentElement)" aria-label="Supprimer">×</button>' : '');
   localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+}
+
+// Filtre temps réel sur la recherche
+function filterPlacardItems(query) {
+  var q = (query || '').trim().toLowerCase();
+  var clearBtn = document.getElementById('placard-clear-btn');
+  if (clearBtn) clearBtn.classList.toggle('hidden', !q);
+
+  var categories = document.querySelectorAll('#placard-categories .placard-category');
+  categories.forEach(function(catEl) {
+    var items = catEl.querySelectorAll('.placard-item');
+    var anyVisible = false;
+    items.forEach(function(item) {
+      var name = (item.dataset.name || '').toLowerCase();
+      var match = !q || name.includes(q);
+      item.style.display = match ? '' : 'none';
+      if (match) anyVisible = true;
+    });
+    catEl.style.display = anyVisible ? '' : 'none';
+  });
+}
+
+function clearPlacardSearch() {
+  var input = document.getElementById('placard-search');
+  if (input) input.value = '';
+  filterPlacardItems('');
+  if (input) input.focus();
+}
+
+// === Ajout d'un ingrédient personnalisé ===
+function openPlacardAddModal() {
+  var existing = document.getElementById('placard-add-modal');
+  if (existing) existing.remove();
+
+  // Récupérer la liste des catégories pour le sélecteur
+  var catOptions = Object.keys(PLACARD_CATEGORIES).map(function(cat) {
+    return '<option value="' + escAttr(cat) + '">' + cat + '</option>';
+  }).join('');
+
+  var modal = document.createElement('div');
+  modal.id = 'placard-add-modal';
+  modal.className = 'quick-modal-overlay';
+  modal.onclick = function(e) {
+    if (e.target === modal) closePlacardAddModal();
+  };
+  modal.innerHTML =
+    '<div class="quick-modal" style="max-width:400px;">' +
+      '<div class="quick-modal-header">' +
+        '<div class="quick-modal-title">+ Ingrédient personnalisé</div>' +
+        '<button class="quick-modal-close" onclick="closePlacardAddModal()" aria-label="Fermer">✕</button>' +
+      '</div>' +
+      '<p class="quick-modal-sub">Ajoute un ingrédient qui n\'est pas dans la liste prédéfinie.</p>' +
+
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Nom de l\'ingrédient</div>' +
+        '<input type="text" id="placard-add-name" class="field" placeholder="Ex: Spiruline, Levure de bière…" autocomplete="off" />' +
+      '</div>' +
+
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Catégorie</div>' +
+        '<select id="placard-add-cat" class="field">' + catOptions + '</select>' +
+      '</div>' +
+
+      '<div id="placard-add-error" style="display:none;color:#c0614a;font-size:0.82rem;margin-bottom:10px;"></div>' +
+
+      '<div class="quick-modal-actions">' +
+        '<button class="quick-btn-cancel" onclick="closePlacardAddModal()">Annuler</button>' +
+        '<button class="quick-btn-save" onclick="confirmAddPlacardItem()">+ Ajouter</button>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+  setTimeout(function() {
+    var input = document.getElementById('placard-add-name');
+    if (input) input.focus();
+  }, 100);
+}
+
+function closePlacardAddModal() {
+  var modal = document.getElementById('placard-add-modal');
+  if (modal) modal.remove();
+}
+
+function confirmAddPlacardItem() {
+  var nameEl = document.getElementById('placard-add-name');
+  var catEl  = document.getElementById('placard-add-cat');
+  var errEl  = document.getElementById('placard-add-error');
+  if (!nameEl || !catEl) return;
+
+  var name = (nameEl.value || '').trim();
+  var cat  = catEl.value;
+
+  function showErr(msg) {
+    if (errEl) {
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+    }
+  }
+
+  if (!name) { showErr('Donne un nom à l\'ingrédient.'); return; }
+  if (name.length > 50) { showErr('Nom trop long (50 caractères max).'); return; }
+  if (!cat || !PLACARD_CATEGORIES[cat]) { showErr('Choisis une catégorie.'); return; }
+
+  // Doublons : vérifier qu'il n'existe pas déjà (toutes catégories confondues, casse-insensible)
+  var lname = name.toLowerCase();
+  var allItems = [];
+  Object.values(PLACARD_CATEGORIES).forEach(function(arr) {
+    arr.forEach(function(it) { allItems.push(it.toLowerCase()); });
+  });
+  loadPlacardCustom();
+  Object.values(floraPlacardCustom).forEach(function(arr) {
+    arr.forEach(function(it) { allItems.push(it.toLowerCase()); });
+  });
+  if (allItems.indexOf(lname) >= 0) {
+    showErr('« ' + name + ' » existe déjà dans la liste.');
+    return;
+  }
+
+  // Vérification de compatibilité avec les principes Flōra
+  var alerte = checkFloraCompat(name);
+  if (alerte) {
+    var msg = '';
+    if (alerte.niveau === 'bloquant') {
+      msg = alerte.icon + ' « ' + name + ' » contient ' + alerte.label + ' (mot-clé détecté : « ' + alerte.mot.trim() + ' »).\n\n' +
+            'Flōra est conçue pour une alimentation sans gluten et sans laitage animal. ' +
+            'Si tu l\'ajoutes, ce produit sera dans ton placard mais ira à l\'encontre de la philosophie de l\'app.\n\n' +
+            'Tu veux quand même l\'ajouter ?';
+    } else if (alerte.niveau === 'inflammatoire') {
+      msg = alerte.icon + ' « ' + name + ' » est ' + alerte.label + ' (mot-clé détecté : « ' + alerte.mot.trim() + ' »).\n\n' +
+            'Ce type d\'aliment peut aggraver les inflammations chroniques (SJSR, douleurs).\n\n' +
+            'Confirmer l\'ajout ?';
+    } else {
+      msg = alerte.icon + ' « ' + name + ' » : ' + alerte.label + '.\n\n' +
+            'À consommer avec modération si tu es sensible (sommeil, SJSR).\n\n' +
+            'Ajouter quand même ?';
+    }
+    if (!confirm(msg)) return;
+  }
+
+  // Ajout
+  if (!floraPlacardCustom[cat]) floraPlacardCustom[cat] = [];
+  floraPlacardCustom[cat].push(name);
+  savePlacardCustom();
+
+  // Cocher automatiquement le nouvel item (l'utilisatrice l'ajoute parce qu'elle l'a)
+  placardItems[name] = true;
+  localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+
+  closePlacardAddModal();
+  renderPlacard();
+
+  // Toast de confirmation
+  var toast = document.createElement('div');
+  toast.className = 'quick-save-toast';
+  toast.textContent = '✓ « ' + name + ' » ajouté à ' + cat;
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(-10px)';
+  }, 2200);
+  setTimeout(function() { toast.remove(); }, 2700);
+}
+
+// Suppression d'un ingrédient personnalisé (croix rouge)
+function removeCustomPlacardItem(event, itemEl) {
+  if (event) {
+    event.stopPropagation(); // ne pas toggler la coche
+    event.preventDefault();
+  }
+  var name = itemEl.dataset.name;
+  var cat  = itemEl.dataset.cat;
+  if (!name || !cat) return;
+  if (!confirm('Supprimer « ' + name + ' » du placard ?')) return;
+
+  loadPlacardCustom();
+  if (floraPlacardCustom[cat]) {
+    floraPlacardCustom[cat] = floraPlacardCustom[cat].filter(function(x) { return x !== name; });
+    if (!floraPlacardCustom[cat].length) delete floraPlacardCustom[cat];
+    savePlacardCustom();
+  }
+  // Décocher si coché
+  if (placardItems[name]) {
+    delete placardItems[name];
+    localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+  }
+  renderPlacard();
+}
+
+// ============================================================
+// MES RECETTES — recettes personnalisées éditables
+// ============================================================
+// Stockage : localStorage 'flora_my_recettes' = tableau des recettes
+// IDs custom à partir de MY_RECIPE_ID_BASE pour ne jamais collisionner
+// avec les 175 recettes officielles.
+
+var MY_RECIPE_ID_BASE = 100000;
+var floraMyRecettes = [];
+
+function loadMyRecettes() {
+  try {
+    floraMyRecettes = JSON.parse(localStorage.getItem('flora_my_recettes') || '[]');
+    if (!Array.isArray(floraMyRecettes)) floraMyRecettes = [];
+  } catch (e) {
+    floraMyRecettes = [];
+  }
+}
+
+function saveMyRecettes() {
+  try {
+    localStorage.setItem('flora_my_recettes', JSON.stringify(floraMyRecettes));
+  } catch (e) {
+    console.error('[Flōra] Erreur save mes recettes:', e);
+  }
+}
+
+// Fusionne les recettes perso dans le tableau global RECETTES
+// (mutation pour éviter de toucher aux 44 références à RECETTES dans le code)
+function mergeMyRecettesIntoGlobal() {
+  if (typeof RECETTES === 'undefined' || !Array.isArray(RECETTES)) return;
+  // Retirer d'abord toute recette perso précédemment ajoutée
+  for (var i = RECETTES.length - 1; i >= 0; i--) {
+    if (RECETTES[i].id >= MY_RECIPE_ID_BASE) RECETTES.splice(i, 1);
+  }
+  // Puis ré-ajouter les actuelles
+  floraMyRecettes.forEach(function(r) { RECETTES.push(r); });
+}
+
+// Génère un nouvel ID unique pour une recette perso
+function generateMyRecipeId() {
+  var maxId = MY_RECIPE_ID_BASE - 1;
+  floraMyRecettes.forEach(function(r) { if (r.id > maxId) maxId = r.id; });
+  return maxId + 1;
+}
+
+// Page liste "Mes recettes"
+function renderMyRecettes() {
+  loadMyRecettes();
+  var container = document.getElementById('my-recettes-container');
+  if (!container) return;
+
+  if (!floraMyRecettes.length) {
+    container.innerHTML =
+      '<button class="btn-primary full-width" onclick="openMyRecipeModal(null)" style="margin-bottom:16px;">+ Créer ma première recette</button>' +
+      '<div class="empty-state">' +
+        svgEmptyJournal() +
+        '<div class="empty-state-title">Aucune recette personnelle pour l\'instant</div>' +
+        '<div class="empty-state-text">Crée tes propres recettes pour les retrouver dans la recherche, le générateur de menu et tes favoris.</div>' +
+      '</div>';
+    return;
+  }
+
+  var html = '<button class="btn-primary full-width" onclick="openMyRecipeModal(null)" style="margin-bottom:16px;">+ Nouvelle recette</button>';
+  html += '<div class="recettes-grid">';
+  floraMyRecettes.forEach(function(r) {
+    html +=
+      '<div class="recette-card my-recipe-card">' +
+        '<div class="recette-emoji cat-' + r.cat + '" onclick="openRecette(' + r.id + ')">' + (r.emoji || '🥗') + '</div>' +
+        '<button class="my-recipe-edit-btn" onclick="openMyRecipeModal(' + r.id + ')" aria-label="Modifier">✎</button>' +
+        '<button class="my-recipe-delete-btn" onclick="deleteMyRecipe(' + r.id + ')" aria-label="Supprimer">×</button>' +
+        '<div class="recette-info" onclick="openRecette(' + r.id + ')">' +
+          '<div class="recette-name">' + escapeHtml(r.nom) + '</div>' +
+          '<div class="recette-meta">' +
+            '<span class="recette-time">⏱ ' + escapeHtml(r.temps || '—') + '</span>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// Modal de création / édition
+// id = null pour création, id existant pour édition
+function openMyRecipeModal(id) {
+  loadMyRecettes();
+  var existing = document.getElementById('my-recipe-modal');
+  if (existing) existing.remove();
+
+  var isEdit = id != null;
+  var r = isEdit ? floraMyRecettes.find(function(x) { return x.id === id; }) : null;
+  if (isEdit && !r) {
+    alert('Recette introuvable.');
+    return;
+  }
+
+  // Valeurs par défaut
+  var nom        = r ? r.nom : '';
+  var emoji      = r ? (r.emoji || '🥗') : '🥗';
+  var cat        = r ? r.cat : 'dejeuner';
+  var temps      = r ? (r.temps || '') : '';
+  var calories   = r ? (r.calories || '') : '';
+  var diff       = r ? (r.diff || 'Facile') : 'Facile';
+  var benefices  = r ? (r.benefices || '') : '';
+  var ingredients = r && r.ingredients ? r.ingredients.join('\n') : '';
+  var etapes      = r && r.etapes      ? r.etapes.join('\n')     : '';
+  var tagsArr    = r && r.tags ? r.tags : [];
+  var tagSg = tagsArr.indexOf('sg') >= 0;
+  var tagSl = tagsArr.indexOf('sl') >= 0;
+  var tagVg = tagsArr.indexOf('vg') >= 0;
+
+  var modal = document.createElement('div');
+  modal.id = 'my-recipe-modal';
+  modal.className = 'quick-modal-overlay';
+  modal.onclick = function(e) {
+    if (e.target === modal) closeMyRecipeModal();
+  };
+
+  // Petit set d'emojis fréquents pour la cuisine
+  var emojiChoices = ['🥗','🍲','🥘','🍝','🍜','🍛','🍱','🥑','🍳','🥞','🥐','🍞','🍰','🧁','🥧','🍫','🍪','🍮','🍯','🍓','🥝','🍌','🥭','🍎','🍊','🍋','🥥','🥕','🥔','🍅','🥒','🌽','🍆','🥬','🥦','🌶','🫑','🍄','🌰','🥜','🍤','🦐','🐟','🍣','🍱','🥩','🍗','🥚','🥛','🍵','☕','🍷'];
+  var emojiHTML = emojiChoices.map(function(e) {
+    return '<button type="button" class="emoji-pick' + (e === emoji ? ' active' : '') + '" onclick="selectMyRecipeEmoji(\'' + e + '\')">' + e + '</button>';
+  }).join('');
+
+  modal.innerHTML =
+    '<div class="quick-modal" style="max-width:520px;max-height:94vh;">' +
+      '<div class="quick-modal-header">' +
+        '<div class="quick-modal-title">' + (isEdit ? '✎ Modifier ma recette' : '+ Nouvelle recette') + '</div>' +
+        '<button class="quick-modal-close" onclick="closeMyRecipeModal()" aria-label="Fermer">✕</button>' +
+      '</div>' +
+
+      // Nom
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Nom de la recette *</div>' +
+        '<input type="text" id="myr-nom" class="field" placeholder="Ex: Curry doux pois chiches courge" maxlength="80" value="' + escapeHtml(nom) + '" />' +
+      '</div>' +
+
+      // Emoji
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Emoji</div>' +
+        '<div id="myr-emoji-current" class="myr-emoji-current">' + emoji + '</div>' +
+        '<div class="myr-emoji-grid">' + emojiHTML + '</div>' +
+      '</div>' +
+
+      // Catégorie + difficulté + temps + calories
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Catégorie *</div>' +
+        '<select id="myr-cat" class="field">' +
+          '<option value="petit-dejeuner"' + (cat==='petit-dejeuner'?' selected':'') + '>🌅 Petit-déjeuner</option>' +
+          '<option value="brunch"'         + (cat==='brunch'        ?' selected':'') + '>🥂 Brunch</option>' +
+          '<option value="dejeuner"'       + (cat==='dejeuner'      ?' selected':'') + '>☀️ Déjeuner</option>' +
+          '<option value="diner"'          + (cat==='diner'         ?' selected':'') + '>🌙 Dîner</option>' +
+          '<option value="snack"'          + (cat==='snack'         ?' selected':'') + '>🍎 Snack</option>' +
+        '</select>' +
+      '</div>' +
+
+      '<div class="quick-section" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">' +
+        '<div>' +
+          '<div class="quick-section-title">Temps</div>' +
+          '<input type="text" id="myr-temps" class="field" placeholder="20 min" value="' + escapeHtml(temps) + '" />' +
+        '</div>' +
+        '<div>' +
+          '<div class="quick-section-title">Calories</div>' +
+          '<input type="number" id="myr-calories" class="field" placeholder="400" value="' + escapeHtml(String(calories)) + '" min="0" max="2000" />' +
+        '</div>' +
+        '<div>' +
+          '<div class="quick-section-title">Difficulté</div>' +
+          '<select id="myr-diff" class="field">' +
+            '<option value="Très facile"'   + (diff==='Très facile'  ?' selected':'') + '>Très facile</option>' +
+            '<option value="Facile"'        + (diff==='Facile'       ?' selected':'') + '>Facile</option>' +
+            '<option value="Intermédiaire"' + (diff==='Intermédiaire'?' selected':'') + '>Intermédiaire</option>' +
+            '<option value="Avancée"'       + (diff==='Avancée'      ?' selected':'') + '>Avancée</option>' +
+          '</select>' +
+        '</div>' +
+      '</div>' +
+
+      // Tags
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Régime</div>' +
+        '<div class="myr-tags">' +
+          '<label class="myr-tag-label"><input type="checkbox" id="myr-tag-sg"' + (tagSg?' checked':'') + ' /> Sans gluten</label>' +
+          '<label class="myr-tag-label"><input type="checkbox" id="myr-tag-sl"' + (tagSl?' checked':'') + ' /> Sans lactose</label>' +
+          '<label class="myr-tag-label"><input type="checkbox" id="myr-tag-vg"' + (tagVg?' checked':'') + ' /> Végétarien</label>' +
+        '</div>' +
+      '</div>' +
+
+      // Ingrédients
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Ingrédients * <span style="font-weight:400;color:var(--text-light);font-size:0.7rem;">(un par ligne)</span></div>' +
+        '<textarea id="myr-ingredients" class="field" rows="6" placeholder="200g lentilles corail&#10;1 oignon&#10;2 c.à.s curcuma&#10;400ml lait de coco">' + escapeHtml(ingredients) + '</textarea>' +
+      '</div>' +
+
+      // Étapes
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Étapes * <span style="font-weight:400;color:var(--text-light);font-size:0.7rem;">(une par ligne)</span></div>' +
+        '<textarea id="myr-etapes" class="field" rows="6" placeholder="Émincer l\'oignon, le faire revenir.&#10;Ajouter les lentilles et l\'eau, cuire 15 min.&#10;Ajouter le lait de coco et les épices.">' + escapeHtml(etapes) + '</textarea>' +
+      '</div>' +
+
+      // Bénéfices
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">Bénéfices nutritionnels <span style="font-weight:400;color:var(--text-light);font-size:0.7rem;">(facultatif)</span></div>' +
+        '<textarea id="myr-benefices" class="field" rows="3" placeholder="Riche en fibres, anti-inflammatoire, source de fer.">' + escapeHtml(benefices) + '</textarea>' +
+      '</div>' +
+
+      // Erreur
+      '<div id="myr-error" style="display:none;color:#c0614a;font-size:0.82rem;margin-bottom:10px;padding:10px;background:#fde8e0;border-radius:8px;"></div>' +
+
+      // Boutons
+      '<div class="quick-modal-actions">' +
+        '<button class="quick-btn-cancel" onclick="closeMyRecipeModal()">Annuler</button>' +
+        '<button class="quick-btn-save" onclick="saveMyRecipe(' + (isEdit ? id : 'null') + ')">💾 ' + (isEdit ? 'Enregistrer' : 'Créer') + '</button>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+  modal.dataset.selectedEmoji = emoji;
+}
+
+function selectMyRecipeEmoji(e) {
+  var modal = document.getElementById('my-recipe-modal');
+  if (!modal) return;
+  modal.dataset.selectedEmoji = e;
+  var disp = document.getElementById('myr-emoji-current');
+  if (disp) disp.textContent = e;
+  // Mise à jour visuelle des chips
+  var btns = modal.querySelectorAll('.emoji-pick');
+  btns.forEach(function(b) {
+    b.classList.toggle('active', b.textContent === e);
+  });
+}
+
+function closeMyRecipeModal() {
+  var modal = document.getElementById('my-recipe-modal');
+  if (modal) modal.remove();
+}
+
+function saveMyRecipe(idOrNull) {
+  var modal = document.getElementById('my-recipe-modal');
+  var errEl = document.getElementById('myr-error');
+  function showErr(msg) {
+    if (errEl) {
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+    }
+  }
+  if (errEl) errEl.style.display = 'none';
+
+  var nom = (document.getElementById('myr-nom').value || '').trim();
+  if (!nom)             { showErr('Donne un nom à ta recette.'); return; }
+  if (nom.length > 80)  { showErr('Nom trop long (80 caractères max).'); return; }
+
+  var cat = document.getElementById('myr-cat').value;
+  var temps = (document.getElementById('myr-temps').value || '').trim();
+  var calories = parseInt(document.getElementById('myr-calories').value, 10) || 0;
+  var diff = document.getElementById('myr-diff').value;
+  var benefices = (document.getElementById('myr-benefices').value || '').trim();
+  var emoji = (modal && modal.dataset.selectedEmoji) || '🥗';
+
+  var ingredientsRaw = (document.getElementById('myr-ingredients').value || '').trim();
+  var ingredients = ingredientsRaw.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
+  if (!ingredients.length) { showErr('Ajoute au moins un ingrédient.'); return; }
+
+  var etapesRaw = (document.getElementById('myr-etapes').value || '').trim();
+  var etapes = etapesRaw.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
+  if (!etapes.length) { showErr('Ajoute au moins une étape.'); return; }
+
+  var tags = [];
+  if (document.getElementById('myr-tag-sg').checked) tags.push('sg');
+  if (document.getElementById('myr-tag-sl').checked) tags.push('sl');
+  if (document.getElementById('myr-tag-vg').checked) tags.push('vg');
+
+  // Vérification de cohérence Flōra : nom + chaque ingrédient
+  var alertes = [];
+  var nomAlerte = checkFloraCompat(nom);
+  if (nomAlerte) alertes.push({ where: 'le nom de la recette', text: nom, info: nomAlerte });
+  ingredients.forEach(function(ing) {
+    var a = checkFloraCompat(ing);
+    if (a) alertes.push({ where: 'l\'ingrédient « ' + ing + ' »', text: ing, info: a });
+  });
+
+  if (alertes.length) {
+    // Ne montrer que la première alerte la plus sévère, mais lister les mots-clés
+    var maxAlerte = alertes[0];
+    alertes.forEach(function(a) {
+      var rank = { bloquant: 3, inflammatoire: 2, info: 1 };
+      if (rank[a.info.niveau] > rank[maxAlerte.info.niveau]) maxAlerte = a;
+    });
+    var listeMots = alertes.map(function(a) { return a.info.mot.trim(); });
+    var listeMotsUniq = [];
+    listeMots.forEach(function(m) { if (listeMotsUniq.indexOf(m) < 0) listeMotsUniq.push(m); });
+
+    var msg = '';
+    if (maxAlerte.info.niveau === 'bloquant') {
+      msg = maxAlerte.info.icon + ' Cette recette contient des éléments qui contredisent les principes Flōra (gluten ou laitage animal).\n\n' +
+            'Mots-clés détectés : ' + listeMotsUniq.join(', ') + '\n\n' +
+            'Tu peux quand même l\'enregistrer (par exemple si tu cuisines pour quelqu\'un d\'autre).\n\n' +
+            'Vraiment enregistrer ?';
+    } else if (maxAlerte.info.niveau === 'inflammatoire') {
+      msg = maxAlerte.info.icon + ' Cette recette contient des aliments pro-inflammatoires.\n\n' +
+            'Mots-clés détectés : ' + listeMotsUniq.join(', ') + '\n\n' +
+            'Confirmer l\'enregistrement ?';
+    } else {
+      msg = maxAlerte.info.icon + ' Cette recette contient ' + listeMotsUniq.join(', ') + ' (à consommer avec modération).\n\n' +
+            'Enregistrer quand même ?';
+    }
+    if (!confirm(msg)) return;
+  }
+
+  loadMyRecettes();
+  var newRecipe;
+  if (idOrNull == null || idOrNull === 'null') {
+    // Création
+    newRecipe = {
+      id: generateMyRecipeId(),
+      cat: cat,
+      premium: false,
+      emoji: emoji,
+      nom: nom,
+      temps: temps,
+      calories: calories,
+      diff: diff,
+      tags: tags,
+      benefices: benefices,
+      ingredients: ingredients,
+      etapes: etapes,
+      isMyRecipe: true,    // marqueur
+      createdAt: Date.now()
+    };
+    floraMyRecettes.push(newRecipe);
+  } else {
+    // Édition
+    var idx = floraMyRecettes.findIndex(function(x) { return x.id === idOrNull; });
+    if (idx < 0) { showErr('Recette introuvable.'); return; }
+    floraMyRecettes[idx] = Object.assign({}, floraMyRecettes[idx], {
+      cat: cat, emoji: emoji, nom: nom, temps: temps,
+      calories: calories, diff: diff, tags: tags,
+      benefices: benefices, ingredients: ingredients, etapes: etapes,
+      updatedAt: Date.now()
+    });
+    newRecipe = floraMyRecettes[idx];
+  }
+  saveMyRecettes();
+  mergeMyRecettesIntoGlobal();
+
+  // Rafraîchir les vues qui dépendent de RECETTES
+  if (typeof renderRecettes === 'function') renderRecettes();
+  if (typeof updateRecipeCounters === 'function') updateRecipeCounters();
+  if (typeof checkBadges === 'function') checkBadges();
+
+  closeMyRecipeModal();
+  renderMyRecettes();
+
+  // Toast
+  var toast = document.createElement('div');
+  toast.className = 'quick-save-toast';
+  toast.textContent = (idOrNull == null || idOrNull === 'null') ? '✓ Recette « ' + nom + ' » créée' : '✓ Recette modifiée';
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(-10px)';
+  }, 2200);
+  setTimeout(function() { toast.remove(); }, 2700);
+}
+
+function deleteMyRecipe(id) {
+  loadMyRecettes();
+  var r = floraMyRecettes.find(function(x) { return x.id === id; });
+  if (!r) return;
+  if (!confirm('Supprimer la recette « ' + r.nom + ' » ?\n\nElle sera retirée de la recherche, du générateur et de tes favoris si applicable.')) return;
+  floraMyRecettes = floraMyRecettes.filter(function(x) { return x.id !== id; });
+  saveMyRecettes();
+  mergeMyRecettesIntoGlobal();
+  // Retirer aussi du système favoris s'il y était
+  if (typeof floraFavoris !== 'undefined' && floraFavoris[id]) {
+    delete floraFavoris[id];
+    if (typeof saveFavoris === 'function') saveFavoris();
+  }
+  // Rafraîchir les vues
+  if (typeof renderRecettes === 'function') renderRecettes();
+  if (typeof updateRecipeCounters === 'function') updateRecipeCounters();
+  renderMyRecettes();
+}
+
+function updateMyRecipesSummary() {
+  loadMyRecettes();
+  var line = document.getElementById('my-recipes-summary-line');
+  if (!line) return;
+  var n = floraMyRecettes.length;
+  if (n === 0)      line.textContent = 'Tes créations personnelles →';
+  else if (n === 1) line.textContent = '1 recette créée →';
+  else              line.textContent = n + ' recettes créées →';
 }
 
 function setBudget(amount) {
@@ -4944,6 +2145,21 @@ const BATCH_STEPS_LIBRARY = [
   }
 ];
 
+// Sélection d'un chip dans un groupe batch (jour ou durée)
+// group : préfixe identifiant le groupe (batch-day, batch-time)
+// value : valeur du chip cliqué (sert de marqueur, non utilisée pour le moment)
+function selectSleepChip(el, group, value) {
+  if (!el) return;
+  // Désactiver les chips du même groupe (mêmes attributs onclick)
+  var siblings = el.parentElement ? el.parentElement.querySelectorAll('.sleep-chip') : [];
+  siblings.forEach(function(s) {
+    if (s.getAttribute('onclick') && s.getAttribute('onclick').indexOf(group) >= 0) {
+      s.classList.remove('active');
+    }
+  });
+  el.classList.add('active');
+}
+
 function generateBatch() {
   // Récupérer le chip temps actif dans la page batch
   const timeChips = document.querySelectorAll('#page-batch .sleep-chip');
@@ -5045,6 +2261,7 @@ function importBatchToAgenda() {
   }
 
   saveState();
+  if (typeof checkBadges === 'function') checkBadges();
   showPage('agenda');
 
   const msg = document.createElement('div');
@@ -5056,6 +2273,7 @@ function importBatchToAgenda() {
 
 function initPlacard() {
   placardItems = JSON.parse(localStorage.getItem('flora_placard') || '{}');
+  loadPlacardCustom();
   renderPlacard();
 }
 
@@ -5064,16 +2282,33 @@ function initApp() {
   loadState();
   initLogin();
   initPlacard();
+  loadBadges();
+  loadFavoris();
+  loadMyRecettes();
+  mergeMyRecettesIntoGlobal();
   updateDashboard();
   renderRecettes();
   renderAgenda();
   loadProfil();
   setJournalDate();
   updateRecipeCounters();
+  checkBadges(true); // vérification silencieuse au démarrage
 
   // Recette du jour — change chaque jour, cliquable directement
-  const free = RECETTES.filter(r => !r.premium);
-  const rdj  = free[new Date().getDate() % free.length];
+  // Personnalisée selon le profil : carence en fer ou TDAH → priorité fer/dopamine
+  let rdjPool = RECETTES.filter(r => !r.premium);
+  if (profile.carenceFer || profile.tdah) {
+    const motsFer = ['lentille', 'pois chiche', 'haricot', 'épinard', 'persil',
+                     'tofu', 'sardine', 'thon', 'maquereau', 'graine de courge',
+                     'sésame', 'amande', 'noix', 'cacao', 'spiruline'];
+    const ferRich = rdjPool.filter(r =>
+      r.ingredients && r.ingredients.some(ing =>
+        motsFer.some(mot => ing.toLowerCase().includes(mot))
+      )
+    );
+    if (ferRich.length > 0) rdjPool = ferRich;
+  }
+  const rdj  = rdjPool[new Date().getDate() % rdjPool.length];
   const rdjEl = document.getElementById('recette-du-jour');
   const rdjEmoji = document.getElementById('rdj-emoji');
   if (rdjEl)    rdjEl.textContent = rdj.nom;
@@ -5111,7 +2346,9 @@ function showPage(page) {
   if (page === 'journal')    { setJournalDate(); loadJournalEntry(); renderJournalToday(); }
   if (page === 'recettes')   renderRecettes();
   if (page === 'agenda')     renderAgenda();
-  if (page === 'profil')     { loadProfil(); }
+  if (page === 'profil')     { loadProfil(); checkBadges(true); updateMyRecipesSummary(); }
+  if (page === 'badges')     renderBadges();
+  if (page === 'mes-recettes') renderMyRecettes();
   if (page === 'apropos')    { /* static */ }
   if (page === 'batch')      { /* batch s'initialise via generateBatch() */ }
   if (page === 'generateur') {
@@ -5169,6 +2406,12 @@ function updateDashboard() {
     }
   }
 
+  // Bloc "À manger aujourd'hui"
+  renderTodayMeals();
+
+  // Bandeau d'incitation à saisir le journal (si pertinent)
+  renderJournalNudge();
+
   // Week chart
   renderWeekChart();
 }
@@ -5198,6 +2441,322 @@ function renderWeekChart() {
     `;
     container.appendChild(wrap);
   }
+}
+
+// ============================================================
+// VUE "À MANGER AUJOURD'HUI" (sur l'accueil)
+// ============================================================
+// Affiche les repas planifiés du jour en lien direct vers les recettes.
+// Si aucun repas planifié, le bloc reste masqué.
+function renderTodayMeals() {
+  var block = document.getElementById('today-meals-block');
+  var list  = document.getElementById('today-meals-list');
+  if (!block || !list) return;
+
+  var todayKey = dateKey(new Date());
+  var entry = agenda[todayKey];
+
+  // Configuration des slots dans l'ordre chronologique
+  var slots = [
+    { key: 'petitdej', emoji: '🌅', label: 'Petit-déjeuner' },
+    { key: 'dejeuner', emoji: '☀️', label: 'Déjeuner' },
+    { key: 'snack',    emoji: '🍎', label: 'Collation' },
+    { key: 'diner',    emoji: '🌙', label: 'Dîner' }
+  ];
+
+  // Construction des items remplis
+  var items = [];
+  if (entry) {
+    slots.forEach(function(slot) {
+      var v = entry[slot.key];
+      var rId = (typeof v === 'number') ? v : (v && v.recetteId);
+      if (!rId) return;
+      var r = RECETTES.find(function(x) { return x.id === rId; });
+      if (!r) return;
+      items.push({ slot: slot, recette: r });
+    });
+  }
+
+  // Si aucun repas planifié → masquer le bloc
+  if (!items.length) {
+    block.classList.add('hidden');
+    list.innerHTML = '';
+    return;
+  }
+
+  // Sinon construire la liste
+  block.classList.remove('hidden');
+  var html = '';
+  items.forEach(function(it) {
+    var r = it.recette;
+    var locked = r.premium && !isPremium;
+    var fnCall = locked ? 'openRecettePreview(' + r.id + ')' : 'openRecette(' + r.id + ')';
+    html += '<div class="today-meal-item" onclick="' + fnCall + '">';
+    html +=   '<div class="today-meal-emoji">' + r.emoji + '</div>';
+    html +=   '<div class="today-meal-info">';
+    html +=     '<div class="today-meal-slot">' + it.slot.emoji + ' ' + it.slot.label + '</div>';
+    html +=     '<div class="today-meal-name">' + r.nom + '</div>';
+    html +=     '<div class="today-meal-meta">⏱ ' + r.temps + (r.calories ? ' · ' + r.calories + ' kcal' : '') + '</div>';
+    html +=   '</div>';
+    html +=   '<div class="today-meal-arrow">›</div>';
+    html += '</div>';
+  });
+  list.innerHTML = html;
+}
+
+// ============================================================
+// BANDEAU D'INCITATION À SAISIR LE JOURNAL
+// ============================================================
+// Affiche un bandeau contextuel sur l'accueil :
+//  - matin tôt (avant 9h) : rien (laisser tranquille au réveil)
+//  - pas saisi + série en cours ≥ 3j : bandeau urgent (préservation streak)
+//  - pas saisi (après 9h) : bandeau doux d'encouragement
+//  - saisi aujourd'hui : bandeau discret de confirmation
+function renderJournalNudge() {
+  var nudge = document.getElementById('journal-nudge');
+  if (!nudge) return;
+
+  var now = new Date();
+  var hour = now.getHours();
+  var todayKey = dateKey(now);
+  var saisiAujourdhui = !!journal[todayKey];
+
+  // Calcul de la série préservable : jours consécutifs en remontant depuis HIER
+  // (utilisé pour afficher "tu as N jours, ne casse pas la série")
+  function getActiveStreak() {
+    var d = new Date();
+    d.setDate(d.getDate() - 1); // commencer hier
+    var s = 0;
+    while (journal[dateKey(d)]) {
+      s++;
+      d.setDate(d.getDate() - 1);
+    }
+    return s;
+  }
+
+  // — Cas 1 : saisi aujourd'hui → confirmation discrète
+  if (saisiAujourdhui) {
+    var streakNow = (typeof getStreak === 'function') ? getStreak() : 0;
+    var msg = streakNow >= 7
+      ? '✨ Journal saisi · ' + streakNow + ' jours de suite — superbe !'
+      : '✨ Journal du jour saisi · merci d\'avoir pris ce temps';
+    nudge.className = 'journal-nudge journal-nudge-done';
+    nudge.innerHTML = '<span class="nudge-icon">✨</span><span class="nudge-text">' + msg + '</span>';
+    nudge.classList.remove('hidden');
+    return;
+  }
+
+  // — Cas 2 : avant 9h, pas saisi → silence respectueux
+  if (hour < 9) {
+    nudge.classList.add('hidden');
+    nudge.innerHTML = '';
+    return;
+  }
+
+  // — Cas 3 : pas saisi, série préservable ≥ 3 jours → bandeau urgent
+  var activeStreak = getActiveStreak();
+  if (activeStreak >= 3) {
+    nudge.className = 'journal-nudge journal-nudge-urgent';
+    nudge.innerHTML =
+      '<span class="nudge-icon">🔥</span>' +
+      '<span class="nudge-text"><strong>' + activeStreak + ' jours de suite</strong> — ne casse pas ta série, prends 2 min</span>' +
+      '<span class="nudge-arrow">→</span>';
+    nudge.classList.remove('hidden');
+    return;
+  }
+
+  // — Cas 4 : pas saisi, ni urgent → bandeau doux
+  var icon, text;
+  if (hour < 14) {
+    icon = '🌿';
+    text = 'Comment s\'est passée ta nuit ? Note ton ressenti';
+  } else if (hour < 20) {
+    icon = '☀️';
+    text = 'Pense à noter ton journal du jour quand tu auras un moment';
+  } else {
+    icon = '🌙';
+    text = 'Avant la nuit, prends 2 min pour ton journal';
+  }
+  nudge.className = 'journal-nudge journal-nudge-soft';
+  nudge.innerHTML =
+    '<span class="nudge-icon">' + icon + '</span>' +
+    '<span class="nudge-text">' + text + '</span>' +
+    '<span class="nudge-arrow">→</span>';
+  nudge.classList.remove('hidden');
+}
+
+// ============================================================
+// MODE RAPIDE DU JOURNAL
+// ============================================================
+// Modal compact : qualité du sommeil, douleur globale, humeur.
+// Ne touche PAS aux autres champs déjà saisis (cycles, repas, médicaments...).
+// Conçu pour les jours où l'utilisatrice n'a pas le temps de tout détailler.
+
+function openQuickJournal() {
+  // S'assure que les variables _journalX correspondent à l'entrée du jour courant
+  // (loadJournalEntry est normalement déjà appelée à l'ouverture de l'onglet,
+  // mais on la rappelle au cas où)
+  if (typeof loadJournalEntry === 'function') loadJournalEntry();
+
+  var existing = document.getElementById('quick-journal-modal');
+  if (existing) existing.remove();
+
+  // Calcul de la douleur globale = max des 3 mesures (réveil/jour/nuit)
+  var dGlobal = Math.max(
+    _journalDouleurs.reveil || 0,
+    _journalDouleurs.jour   || 0,
+    _journalDouleurs.nuit   || 0
+  );
+
+  var modal = document.createElement('div');
+  modal.id = 'quick-journal-modal';
+  modal.className = 'quick-modal-overlay';
+  modal.onclick = function(e) {
+    if (e.target === modal) closeQuickJournal();
+  };
+
+  modal.innerHTML =
+    '<div class="quick-modal">' +
+      '<div class="quick-modal-header">' +
+        '<div class="quick-modal-title">⚡ Mode rapide</div>' +
+        '<button class="quick-modal-close" onclick="closeQuickJournal()" aria-label="Fermer">✕</button>' +
+      '</div>' +
+      '<p class="quick-modal-sub">Note l\'essentiel en 30 secondes. Tu pourras compléter plus tard si besoin.</p>' +
+
+      // Qualité sommeil
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">⭐ Qualité du sommeil</div>' +
+        '<div class="quick-stars" id="quick-stars">' + buildQuickStarsHTML(_journalQualite) + '</div>' +
+      '</div>' +
+
+      // Douleur globale
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">🦵 Douleurs SJSR (globales)</div>' +
+        '<div class="quick-douleur-display">' +
+          '<span class="quick-douleur-val" id="quick-douleur-val">' + dGlobal + '</span><span class="quick-douleur-max">/10</span>' +
+        '</div>' +
+        '<input type="range" min="0" max="10" value="' + dGlobal + '" id="quick-douleur-slider" oninput="updateQuickDouleur(this.value)" class="quick-slider" />' +
+        '<div class="quick-douleur-scale">' +
+          '<span>0 · aucune</span><span>10 · insupportable</span>' +
+        '</div>' +
+      '</div>' +
+
+      // Humeur
+      '<div class="quick-section">' +
+        '<div class="quick-section-title">💚 Humeur du jour</div>' +
+        '<div class="quick-moods" id="quick-moods">' + buildQuickMoodsHTML(_journalMood) + '</div>' +
+      '</div>' +
+
+      // Boutons
+      '<div class="quick-modal-actions">' +
+        '<button class="quick-btn-cancel" onclick="closeQuickJournal()">Annuler</button>' +
+        '<button class="quick-btn-save" onclick="saveQuickJournal()">💾 Enregistrer</button>' +
+      '</div>' +
+    '</div>';
+
+  document.body.appendChild(modal);
+  // Mémoriser la valeur initiale pour comparaison à la fermeture
+  modal.dataset.initDouleur = dGlobal;
+  modal.dataset.initQualite = _journalQualite || 0;
+  modal.dataset.initMood    = _journalMood    || '';
+}
+
+function buildQuickStarsHTML(currentQualite) {
+  var html = '';
+  for (var i = 1; i <= 5; i++) {
+    var active = i <= (currentQualite || 0);
+    html += '<button class="quick-star ' + (active ? 'active' : '') + '" data-star="' + i + '" onclick="setQuickStars(' + i + ')" aria-label="' + i + ' étoile' + (i > 1 ? 's' : '') + '">' +
+      (active ? '★' : '☆') +
+    '</button>';
+  }
+  return html;
+}
+
+function buildQuickMoodsHTML(currentMood) {
+  var moods = [
+    { v: 'epuisee', e: '😫', l: 'Épuisée' },
+    { v: 'fatiguee', e: '😔', l: 'Fatiguée' },
+    { v: 'correcte', e: '😐', l: 'Correcte' },
+    { v: 'bien', e: '🙂', l: 'Bien' },
+    { v: 'reposee', e: '😊', l: 'Reposée' },
+    { v: 'excellente', e: '🤩', l: 'Excellente' }
+  ];
+  return moods.map(function(m) {
+    var sel = currentMood === m.v;
+    return '<button class="quick-mood ' + (sel ? 'active' : '') + '" onclick="setQuickMood(\'' + m.v + '\')" aria-label="' + m.l + '">' +
+      '<span class="quick-mood-emoji">' + m.e + '</span>' +
+      '<span class="quick-mood-label">' + m.l + '</span>' +
+    '</button>';
+  }).join('');
+}
+
+function setQuickStars(n) {
+  _journalQualite = n;
+  var container = document.getElementById('quick-stars');
+  if (container) container.innerHTML = buildQuickStarsHTML(n);
+}
+
+function updateQuickDouleur(val) {
+  var v = parseInt(val, 10) || 0;
+  // En mode rapide, on applique la même valeur aux 3 mesures
+  // (pour rester compatible avec l'analyse v2 qui calcule la moyenne)
+  _journalDouleurs.reveil = v;
+  _journalDouleurs.jour   = v;
+  _journalDouleurs.nuit   = v;
+  var disp = document.getElementById('quick-douleur-val');
+  if (disp) disp.textContent = v;
+}
+
+function setQuickMood(v) {
+  _journalMood = v;
+  var container = document.getElementById('quick-moods');
+  if (container) container.innerHTML = buildQuickMoodsHTML(v);
+}
+
+function closeQuickJournal() {
+  var modal = document.getElementById('quick-journal-modal');
+  if (!modal) return;
+  // Si l'utilisatrice a modifié quelque chose sans enregistrer, on restaure
+  // les valeurs initiales pour ne pas polluer l'état du formulaire détaillé.
+  var initD = parseInt(modal.dataset.initDouleur || '0', 10);
+  var initQ = parseInt(modal.dataset.initQualite || '0', 10);
+  var initM = modal.dataset.initMood || '';
+  // On ne restaure que si l'utilisatrice annule (clic Annuler ou fermeture)
+  // → l'enregistrement appelle saveQuickJournal qui ferme aussi mais via _saved=true
+  if (!modal.dataset._saved) {
+    _journalDouleurs.reveil = initD;
+    _journalDouleurs.jour   = initD;
+    _journalDouleurs.nuit   = initD;
+    _journalQualite = initQ;
+    _journalMood    = initM || null;
+  }
+  modal.remove();
+}
+
+function saveQuickJournal() {
+  var modal = document.getElementById('quick-journal-modal');
+  if (modal) modal.dataset._saved = '1';
+
+  // Réutilise saveJournal existante : préserve les autres champs (cycles, repas,
+  // médicaments...) parce que saveJournal sérialise les variables _journalX en mémoire,
+  // qui n'ont pas été touchées hors qualité / douleur / humeur.
+  if (typeof saveJournal === 'function') saveJournal();
+
+  // Re-render l'onglet Aujourd'hui pour que les changements soient visibles
+  if (typeof renderJournalToday === 'function') renderJournalToday();
+
+  // Toast de confirmation
+  var toast = document.createElement('div');
+  toast.className = 'quick-save-toast';
+  toast.textContent = '✨ Saisie rapide enregistrée';
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(-10px)';
+  }, 2200);
+  setTimeout(function() { toast.remove(); }, 2700);
+
+  closeQuickJournal();
 }
 
 // ============================
@@ -5230,6 +2789,8 @@ let _journalCafeine = { tasses: 0, heureDerniere: '' };
 let _journalAlcool = 0;
 let _journalSymptomes = [];
 let _journalCycle = { phase: '', flux: '' };
+// Repas du jour : 4 créneaux, chacun null | {type:'recette',recetteId:N} | {type:'libre',titre,ingredients[]} | {type:'saute'}
+let _journalRepas = { 'petit-dejeuner': null, 'dejeuner': null, 'diner': null, 'snack': null };
 let _statsPeriod = 14;
 
 // Couleurs et thème
@@ -5331,6 +2892,7 @@ function loadJournalEntry() {
     _journalAlcool = entry.alcool || 0;
     _journalSymptomes = entry.symptomes || [];
     _journalCycle = entry.cycleMenstruel || { phase: '', flux: '' };
+    _journalRepas = entry.repas || { 'petit-dejeuner': null, 'dejeuner': null, 'diner': null, 'snack': null };
   } else {
     _journalCycles = [{ couche: '23:00', leve: '07:00' }];
     _journalLevers = 0;
@@ -5347,7 +2909,37 @@ function loadJournalEntry() {
     _journalAlcool = 0;
     _journalSymptomes = [];
     _journalCycle = { phase: '', flux: '' };
+    _journalRepas = { 'petit-dejeuner': null, 'dejeuner': null, 'diner': null, 'snack': null };
   }
+
+  // Pré-remplir les slots Repas vides depuis l'agenda du jour (suggestion modifiable)
+  prefillRepasFromAgenda(dk);
+}
+
+// Pré-remplit les créneaux Repas vides depuis l'agenda du jour
+function prefillRepasFromAgenda(dk) {
+  const dayAgenda = agenda[dk];
+  if (!dayAgenda) return;
+  // Mapping slug agenda → clé journal
+  const slugToKey = {
+    'petitdej': 'petit-dejeuner',
+    'dejeuner': 'dejeuner',
+    'diner':    'diner'
+  };
+  Object.keys(slugToKey).forEach(slug => {
+    const journalKey = slugToKey[slug];
+    // Ne pas écraser si l'utilisatrice a déjà saisi quelque chose
+    if (_journalRepas[journalKey]) return;
+    const recId = dayAgenda[slug];
+    if (!recId) return;
+    // Validation : la recette existe dans la base
+    if (typeof recId === 'number' || (typeof recId === 'string' && !recId.startsWith('custom_'))) {
+      const numId = parseInt(recId);
+      if (!isNaN(numId) && RECETTES.some(r => r.id === numId)) {
+        _journalRepas[journalKey] = { type: 'recette', recetteId: numId, fromAgenda: true };
+      }
+    }
+  });
 }
 
 // Rendre l'UI complète du journal
@@ -5461,8 +3053,8 @@ function renderJournalToday() {
           '<div style="font-size:0.68rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:2px;">' + d.sub + '</div>' +
         '</div>' +
       '</div>' +
-      '<div style="text-align:center;font-family:Playfair Display,serif;font-size:1.1rem;font-weight:600;margin:8px 0;color:' + dl.color + ';">' + v + ' — ' + dl.label + '</div>' +
-      '<input type="range" min="0" max="10" step="1" value="' + v + '" oninput="updateJDouleur(\'' + d.key + '\',this.value)" style="width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;" class="slider-douleur-j">' +
+      '<div class="douleur-label-' + d.key + '" data-douleur-label="' + d.key + '" style="text-align:center;font-family:Playfair Display,serif;font-size:1.1rem;font-weight:600;margin:8px 0;color:' + dl.color + ';">' + v + ' — ' + dl.label + '</div>' +
+      '<input type="range" min="0" max="10" step="1" value="' + v + '" aria-label="Douleur ' + d.label + '" aria-valuetext="' + v + ' sur 10, ' + dl.label + '" oninput="updateJDouleur(\'' + d.key + '\',this.value)" style="width:100%;height:8px;border-radius:99px;background:linear-gradient(to right,#4caf50 0%,#ff9800 50%,#f44336 100%);outline:none;cursor:pointer;-webkit-appearance:none;appearance:none;" class="slider-douleur-j">' +
       '<div style="display:flex;justify-content:space-between;font-size:0.68rem;color:#8a9e96;margin-top:5px;">' +
         '<span>0 · Aucune</span><span>5 · Modérée</span><span>10 · Insupportable</span>' +
       '</div>' +
@@ -5484,6 +3076,12 @@ function renderJournalToday() {
 
   // Construire le HTML final
   container.innerHTML = (
+    // BOUTON MODE RAPIDE
+    '<button class="journal-quick-btn" onclick="openQuickJournal()" aria-label="Saisie rapide du journal">' +
+      '<span class="quick-btn-icon">⚡</span>' +
+      '<span class="quick-btn-label">Mode rapide · 30 secondes</span>' +
+      '<span class="quick-btn-arrow">→</span>' +
+    '</button>' +
     // CYCLES
     '<div class="journal-block">' +
       '<div class="jblock-title">🌙 Cycles de sommeil</div>' +
@@ -5550,6 +3148,9 @@ function renderJournalToday() {
     // HABITUDES DU JOUR (nouveau bloc)
     renderHabitudesBlock() +
 
+    // REPAS DU JOUR (recette Flōra ou saisie libre)
+    renderRepasBlock() +
+
     // SYMPTÔMES (nouveau bloc)
     renderSymptomesBlock() +
 
@@ -5584,223 +3185,6 @@ function renderJournalToday() {
   });
 }
 
-// === Nouveaux blocs : Habitudes du jour & Symptômes ===
-
-function renderHabitudesBlock() {
-  // Hydratation : 8 verres = jauge cliquable
-  const eauTotal = 8;
-  let eauHTML = '';
-  for (let i = 0; i < eauTotal; i++) {
-    const filled = i < _journalEau;
-    eauHTML += '<button onclick="setJEau(' + (i + 1) + ')" aria-label="Verre ' + (i + 1) + '" style="background:none;border:none;cursor:pointer;font-size:1.5rem;padding:4px;line-height:1;opacity:' + (filled ? '1' : '0.25') + ';transition:opacity 0.15s;">💧</button>';
-  }
-  const eauLabel = _journalEau === 0 ? 'Aucun verre' : _journalEau + ' verre' + (_journalEau > 1 ? 's' : '') + (_journalEau >= 6 ? ' ✓' : '');
-
-  // Caféine : compteur + heure
-  const cafTasses = _journalCafeine.tasses || 0;
-  const cafHeure = _journalCafeine.heureDerniere || '';
-  const cafAlerte = cafHeure && parseInt(cafHeure.split(':')[0]) >= 14;
-
-  // Alcool : compteur simple
-  const alcoolLabel = _journalAlcool === 0 ? 'Aucun verre' : _journalAlcool + ' verre' + (_journalAlcool > 1 ? 's' : '');
-
-  // Cycle menstruel — affiché seulement si profil féminin (par défaut on l'affiche)
-  const phasesOpts = [
-    { v: '', l: '— Non concernée —' },
-    { v: 'regles', l: '🩸 Règles' },
-    { v: 'folliculaire', l: '🌱 Folliculaire' },
-    { v: 'ovulation', l: '🌸 Ovulation' },
-    { v: 'luteale', l: '🌙 Lutéale' },
-    { v: 'spm', l: '⚠️ SPM (avant règles)' }
-  ].map(o => '<option value="' + o.v + '"' + (o.v === _journalCycle.phase ? ' selected' : '') + '>' + o.l + '</option>').join('');
-
-  const fluxOpts = [
-    { v: '', l: '—' },
-    { v: 'leger', l: 'Léger' },
-    { v: 'modere', l: 'Modéré' },
-    { v: 'abondant', l: 'Abondant' }
-  ].map(o => '<option value="' + o.v + '"' + (o.v === _journalCycle.flux ? ' selected' : '') + '>' + o.l + '</option>').join('');
-
-  const fluxVisible = _journalCycle.phase === 'regles';
-
-  return (
-    '<div class="journal-block">' +
-      '<div class="jblock-title">🌿 Habitudes du jour</div>' +
-
-      // HYDRATATION
-      '<div style="margin:14px 0 18px;">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">' +
-          '<span style="font-size:0.85rem;font-weight:600;color:#2d4a3e;">💧 Hydratation</span>' +
-          '<span style="font-size:0.8rem;color:#6c8278;font-weight:500;">' + eauLabel + '</span>' +
-        '</div>' +
-        '<div style="display:flex;flex-wrap:wrap;gap:2px;justify-content:center;background:#f7f3ee;padding:8px;border-radius:12px;">' + eauHTML + '</div>' +
-        '<div style="font-size:0.7rem;color:#8a9e96;text-align:center;margin-top:6px;font-style:italic;">Objectif : 6-8 verres / jour</div>' +
-      '</div>' +
-
-      // CAFÉINE
-      '<div style="margin:14px 0;padding:12px 14px;background:#f7f3ee;border-radius:12px;">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">' +
-          '<span style="font-size:0.85rem;font-weight:600;color:#2d4a3e;">☕ Caféine</span>' +
-          '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<button onclick="changeJCafeine(-1)" aria-label="Moins" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">−</button>' +
-            '<span style="font-size:1rem;font-weight:700;color:#2d4a3e;min-width:24px;text-align:center;">' + cafTasses + '</span>' +
-            '<button onclick="changeJCafeine(1)" aria-label="Plus" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">+</button>' +
-          '</div>' +
-        '</div>' +
-        (cafTasses > 0 ?
-          '<div style="display:flex;align-items:center;gap:8px;">' +
-            '<label style="font-size:0.78rem;color:#4a5e54;flex:1;">Heure dernière prise :</label>' +
-            '<input type="time" value="' + cafHeure + '" onchange="setJCafeineHeure(this.value)" style="padding:6px 10px;border:1.5px solid #ede8e0;border-radius:10px;background:#fff;font-family:DM Sans,sans-serif;font-size:0.85rem;color:#2d4a3e;" />' +
-          '</div>'
-          : '') +
-        (cafAlerte ?
-          '<div style="margin-top:8px;padding:8px 10px;background:rgba(212,168,67,0.15);border-left:3px solid #d4a843;border-radius:8px;font-size:0.75rem;color:#5a4a30;line-height:1.4;">⚠️ Caféine après 14h : peut aggraver le SJSR (demi-vie ~6h)</div>'
-          : '') +
-      '</div>' +
-
-      // ALCOOL
-      '<div style="margin:14px 0;padding:12px 14px;background:#f7f3ee;border-radius:12px;">' +
-        '<div style="display:flex;align-items:center;justify-content:space-between;">' +
-          '<div>' +
-            '<div style="font-size:0.85rem;font-weight:600;color:#2d4a3e;">🍷 Alcool</div>' +
-            '<div style="font-size:0.75rem;color:#8a9e96;margin-top:2px;">' + alcoolLabel + '</div>' +
-          '</div>' +
-          '<div style="display:flex;align-items:center;gap:6px;">' +
-            '<button onclick="changeJAlcool(-1)" aria-label="Moins" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">−</button>' +
-            '<span style="font-size:1rem;font-weight:700;color:#2d4a3e;min-width:24px;text-align:center;">' + _journalAlcool + '</span>' +
-            '<button onclick="changeJAlcool(1)" aria-label="Plus" style="width:30px;height:30px;border-radius:50%;background:#fff;border:1.5px solid #ede8e0;font-size:1rem;cursor:pointer;color:#4a5e54;">+</button>' +
-          '</div>' +
-        '</div>' +
-        (_journalAlcool > 0 ?
-          '<div style="margin-top:8px;padding:8px 10px;background:rgba(212,168,67,0.1);border-left:3px solid #d4a843;border-radius:8px;font-size:0.72rem;color:#5a4a30;line-height:1.4;">L\'alcool fragmente le sommeil et peut aggraver le SJSR la même nuit.</div>'
-          : '') +
-      '</div>' +
-
-      // CYCLE MENSTRUEL
-      '<div style="margin:14px 0 4px;padding:12px 14px;background:#f7f3ee;border-radius:12px;">' +
-        '<div style="font-size:0.85rem;font-weight:600;color:#2d4a3e;margin-bottom:8px;">🌸 Cycle menstruel</div>' +
-        '<select onchange="setJCyclePhase(this.value)" class="field" style="margin-bottom:' + (fluxVisible ? '8px' : '0') + ';">' + phasesOpts + '</select>' +
-        (fluxVisible ?
-          '<select onchange="setJCycleFlux(this.value)" class="field"><option value="">Flux —</option>' + fluxOpts + '</select>'
-          : '') +
-        '<div style="font-size:0.7rem;color:#8a9e96;margin-top:6px;font-style:italic;">Le SJSR peut s\'aggraver en phase lutéale et pendant les règles (lien ferritine).</div>' +
-      '</div>' +
-
-    '</div>'
-  );
-}
-
-function renderSymptomesBlock() {
-  // Liste organisée par catégories
-  const groupes = [
-    {
-      titre: 'Énergie & cognition',
-      items: [
-        { id: 'fatigue', label: 'Fatigue' },
-        { id: 'brouillard', label: 'Brouillard mental' },
-        { id: 'concentration', label: 'Concentration ↓' },
-        { id: 'hyperfocus', label: 'Hyperfocus' },
-        { id: 'procrastination', label: 'Procrastination' }
-      ]
-    },
-    {
-      titre: 'Émotionnel',
-      items: [
-        { id: 'anxiete', label: 'Anxiété' },
-        { id: 'irritabilite', label: 'Irritabilité' },
-        { id: 'surcharge', label: 'Surcharge sensorielle' }
-      ]
-    },
-    {
-      titre: 'Physique',
-      items: [
-        { id: 'crampes', label: 'Crampes' },
-        { id: 'fourmillements', label: 'Fourmillements' },
-        { id: 'jambes-lourdes', label: 'Jambes lourdes' },
-        { id: 'maux-tete', label: 'Maux de tête' },
-        { id: 'douleurs-art', label: 'Douleurs articulaires' },
-        { id: 'bouffees', label: 'Bouffées de chaleur' }
-      ]
-    },
-    {
-      titre: 'Digestif',
-      items: [
-        { id: 'ballonnements', label: 'Ballonnements' },
-        { id: 'rgo', label: 'Reflux / RGO' },
-        { id: 'transit', label: 'Transit perturbé' }
-      ]
-    }
-  ];
-
-  const groupesHTML = groupes.map(g => {
-    const chipsHTML = g.items.map(item => {
-      const active = _journalSymptomes.includes(item.id);
-      return '<button onclick="toggleJSymptome(\'' + item.id + '\')" style="padding:7px 13px;background:' + (active ? '#c8e6d4' : '#fff') + ';border:1.5px solid ' + (active ? '#3d6b58' : '#ede8e0') + ';border-radius:99px;font-size:0.8rem;font-weight:' + (active ? '600' : '500') + ';color:' + (active ? '#2d4a3e' : '#4a5e54') + ';cursor:pointer;font-family:DM Sans,sans-serif;transition:all 0.15s;min-height:34px;">' + item.label + '</button>';
-    }).join('');
-
-    return '<div style="margin-bottom:14px;">' +
-      '<div style="font-size:0.72rem;font-weight:700;color:#6c8278;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;">' + g.titre + '</div>' +
-      '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + chipsHTML + '</div>' +
-    '</div>';
-  }).join('');
-
-  const total = _journalSymptomes.length;
-
-  return (
-    '<div class="journal-block">' +
-      '<div class="jblock-title" style="display:flex;align-items:center;justify-content:space-between;">' +
-        '<span>🩺 Symptômes ressentis</span>' +
-        (total > 0 ? '<span style="font-size:0.72rem;font-weight:600;background:rgba(61,107,88,0.15);color:#2d4a3e;padding:3px 10px;border-radius:99px;">' + total + ' coché' + (total > 1 ? 's' : '') + '</span>' : '') +
-      '</div>' +
-      '<div style="margin-top:14px;">' + groupesHTML + '</div>' +
-    '</div>'
-  );
-}
-
-// === Handlers : Habitudes ===
-function setJEau(n) {
-  // Cliquer sur le verre déjà rempli = décrémente
-  _journalEau = (_journalEau === n) ? n - 1 : n;
-  renderJournalToday();
-}
-
-function changeJCafeine(delta) {
-  _journalCafeine.tasses = Math.max(0, (_journalCafeine.tasses || 0) + delta);
-  if (_journalCafeine.tasses === 0) _journalCafeine.heureDerniere = '';
-  renderJournalToday();
-}
-
-function setJCafeineHeure(heure) {
-  _journalCafeine.heureDerniere = heure;
-  renderJournalToday();
-}
-
-function changeJAlcool(delta) {
-  _journalAlcool = Math.max(0, _journalAlcool + delta);
-  renderJournalToday();
-}
-
-function setJCyclePhase(phase) {
-  _journalCycle.phase = phase;
-  if (phase !== 'regles') _journalCycle.flux = '';
-  renderJournalToday();
-}
-
-function setJCycleFlux(flux) {
-  _journalCycle.flux = flux;
-  renderJournalToday();
-}
-
-function toggleJSymptome(id) {
-  const idx = _journalSymptomes.indexOf(id);
-  if (idx === -1) {
-    _journalSymptomes.push(id);
-  } else {
-    _journalSymptomes.splice(idx, 1);
-  }
-  renderJournalToday();
-}
-
 // === Handlers ===
 function addJCycle() {
   const last = _journalCycles[_journalCycles.length - 1];
@@ -5810,6 +3194,9 @@ function addJCycle() {
 
 function removeJCycle(i) {
   if (_journalCycles.length <= 1) return;
+  var c = _journalCycles[i] || {};
+  var detail = (c.couche && c.leve) ? ' (' + c.couche + ' → ' + c.leve + ')' : '';
+  if (!confirm('Supprimer ce cycle de sommeil' + detail + ' ?')) return;
   _journalCycles.splice(i, 1);
   renderJournalToday();
 }
@@ -5840,11 +3227,27 @@ function updateJSieste(v) {
 }
 
 function updateJDouleur(key, val) {
-  _journalDouleurs[key] = parseInt(val) || 0;
-  // Mettre à jour seulement le label sans tout re-render (perte de focus slider)
-  const labels = document.querySelectorAll('#journal-today-container input[type=range]');
-  // En fait on re-render minimaliste — le slider reste utilisable
-  renderJournalToday();
+  const v = parseInt(val) || 0;
+  _journalDouleurs[key] = v;
+
+  // Calcul label/couleur (même logique que dans renderJournalToday)
+  let label, color;
+  if (v === 0)       { label = 'Aucune douleur'; color = '#3d6b58'; }
+  else if (v <= 3)   { label = 'Légère';         color = '#3d6b58'; }
+  else if (v <= 6)   { label = 'Modérée';        color = '#d97706'; }
+  else if (v <= 8)   { label = 'Intense';        color = '#d97706'; }
+  else               { label = 'Insupportable';  color = '#c0614a'; }
+
+  // Update ciblé du label uniquement (pas de re-render global)
+  const labelEl = document.querySelector('.douleur-label-' + key);
+  if (labelEl) {
+    labelEl.textContent = v + ' — ' + label;
+    labelEl.style.color = color;
+  }
+
+  // Update aria-valuetext sur le slider lui-même pour l'accessibilité
+  const sliderEl = document.querySelector('input[type=range][aria-valuetext^="' + v + ' sur 10"], .slider-douleur-j');
+  // (Le slider conserve sa valeur native, pas besoin de la repousser)
 }
 
 function toggleJMed(m) {
@@ -5889,6 +3292,7 @@ function saveJournal() {
     alcool: _journalAlcool,
     symptomes: _journalSymptomes,
     cycleMenstruel: _journalCycle,
+    repas: _journalRepas,
     totalSleep: totalSleep,
     // Compatibilité avec l'ancien format pour stats/streak
     duree: totalSleep / 60,
@@ -5902,6 +3306,7 @@ function saveJournal() {
 
   saveState();
   updateDashboard();
+  if (typeof checkBadges === 'function') checkBadges();
 
   const c = document.getElementById('save-confirm');
   if (c) {
@@ -5912,7 +3317,7 @@ function saveJournal() {
 
 // Tabs
 function switchJTab(tab, btn) {
-  ['today','stats','historique'].forEach(t => {
+  ['today','stats','calendrier','historique'].forEach(t => {
     const el = document.getElementById('jtab-' + t);
     if (el) el.classList.add('hidden');
   });
@@ -5928,6 +3333,7 @@ function switchJTab(tab, btn) {
     renderJournalToday();
   }
   if (tab === 'stats') renderJournalStats();
+  if (tab === 'calendrier') renderJournalCalendar();
   if (tab === 'historique') renderHistorique();
 }
 
@@ -5958,10 +3364,12 @@ function renderJournalStats() {
   );
 
   if (entries.length === 0) {
-    container.innerHTML = tabsHTML + '<div class="journal-block" style="text-align:center;color:#8a9e96;padding:32px 16px;">' +
-      '<div style="font-size:2rem;">🌙</div>' +
-      '<p>Aucune entrée sur cette période.<br>Commencez à remplir votre journal !</p>' +
-    '</div>';
+    container.innerHTML = tabsHTML +
+      '<div class="empty-state journal-block">' +
+        svgEmptyJournal() +
+        '<div class="empty-state-title">Aucune entrée sur cette période</div>' +
+        '<div class="empty-state-text">Commencez à remplir votre journal !</div>' +
+      '</div>';
     return;
   }
 
@@ -6091,136 +3499,812 @@ function setJStatsPeriod(p) {
   renderJournalStats();
 }
 
+// ============================================================
+// VUE CALENDRIER MENSUEL DU JOURNAL
+// ============================================================
+var _calendarMonth = null; // {year, month} — initialisé à la 1re ouverture
+
+function calendarScore(entry) {
+  // Renvoie un score de 0 (excellent) à 1 (très difficile), ou null si vide
+  if (!entry) return null;
+  // Douleur dominante (la plus haute des 3 mesures)
+  var dr = (entry.douleurs && entry.douleurs.reveil) || 0;
+  var dj = (entry.douleurs && entry.douleurs.jour)   || 0;
+  var dn = (entry.douleurs && entry.douleurs.nuit)   || 0;
+  var douleurMax = Math.max(dr, dj, dn);
+  // Fallback ancien format
+  if (douleurMax === 0 && (entry.douleur || 0) > 0) douleurMax = entry.douleur;
+
+  // Qualité du sommeil 0-5
+  var qual = entry.qualite2 || entry.qualite || 0;
+
+  // Si rien n'a été saisi (ni douleur ni qualité), considérer comme jour vide
+  if (douleurMax === 0 && qual === 0) return null;
+
+  var douleurFact = douleurMax / 10;                       // 0 = aucune, 1 = insupportable
+  var qualFact    = qual ? (5 - qual) / 5 : 0.5;            // 0 = excellent, 1 = mauvais
+  return douleurFact * 0.65 + qualFact * 0.35;
+}
+
+function calendarColor(score) {
+  if (score == null) return { bg: '#f7f3ee', border: '#ede8e0', text: '#c0c0b8' }; // vide
+  if (score <= 0.25)  return { bg: '#dcefe0', border: '#a8cfb1', text: '#2d4a3e' }; // bon
+  if (score <= 0.45)  return { bg: '#f3e9c8', border: '#d9c97f', text: '#7a5e1e' }; // correct
+  if (score <= 0.65)  return { bg: '#f4d6b8', border: '#d49d6b', text: '#7a4a1e' }; // modéré
+  return                { bg: '#e9b7a8', border: '#c0614a', text: '#6b2917' };       // difficile
+}
+
+function renderJournalCalendar() {
+  var container = document.getElementById('calendar-journal-container');
+  if (!container) return;
+
+  // Initialisation : mois courant
+  if (!_calendarMonth) {
+    var now = new Date();
+    _calendarMonth = { year: now.getFullYear(), month: now.getMonth() };
+  }
+
+  var year  = _calendarMonth.year;
+  var month = _calendarMonth.month; // 0-11
+
+  // Bornes du mois affiché
+  var firstOfMonth = new Date(year, month, 1);
+  var lastOfMonth  = new Date(year, month + 1, 0);
+
+  // Premier lundi à afficher (peut être dans le mois précédent)
+  // En France, semaine commence lundi → getDay() : 0=dim, 1=lun ... 6=sam
+  var firstWeekday = firstOfMonth.getDay();
+  var offsetStart  = firstWeekday === 0 ? 6 : firstWeekday - 1; // jours à reculer
+  var gridStart = new Date(year, month, 1 - offsetStart);
+
+  // Dernier dimanche à afficher
+  var lastWeekday = lastOfMonth.getDay();
+  var offsetEnd   = lastWeekday === 0 ? 0 : 7 - lastWeekday;
+  var gridEnd = new Date(year, month, lastOfMonth.getDate() + offsetEnd);
+
+  // Construction des cases
+  var todayKey = dateKey(new Date());
+  var monthLabel = firstOfMonth.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+
+  // Stats du mois (uniquement vrais jours du mois saisis)
+  var entriesMois = [];
+  for (var d = new Date(firstOfMonth); d <= lastOfMonth; d.setDate(d.getDate() + 1)) {
+    var k = dateKey(d);
+    if (journal[k]) entriesMois.push(journal[k]);
+  }
+  var nSaisis = entriesMois.length;
+  var totalJours = lastOfMonth.getDate();
+
+  function douleurMoy(e) {
+    if (e.douleurs) {
+      return ((e.douleurs.reveil || 0) + (e.douleurs.jour || 0) + (e.douleurs.nuit || 0)) / 3;
+    }
+    return e.douleur || 0;
+  }
+  var avgDouleur = nSaisis ? entriesMois.reduce(function(s, e) { return s + douleurMoy(e); }, 0) / nSaisis : 0;
+  var avgQual = 0, qCount = 0;
+  entriesMois.forEach(function(e) {
+    var q = e.qualite2 || e.qualite || 0;
+    if (q) { avgQual += q; qCount++; }
+  });
+  avgQual = qCount ? avgQual / qCount : 0;
+
+  // Compteur par catégorie
+  var catCount = { bon: 0, correct: 0, modere: 0, difficile: 0 };
+  entriesMois.forEach(function(e) {
+    var s = calendarScore(e);
+    if (s == null) return;
+    if (s <= 0.25) catCount.bon++;
+    else if (s <= 0.45) catCount.correct++;
+    else if (s <= 0.65) catCount.modere++;
+    else catCount.difficile++;
+  });
+
+  // === HTML ===
+  var html = '';
+
+  // Header navigation mois
+  html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;background:#fff;border-radius:14px;padding:10px 14px;box-shadow:0 2px 8px rgba(45,74,62,0.08);">';
+  html +=   '<button onclick="changeJournalCalendarMonth(-1)" style="background:none;border:none;font-size:1.4rem;color:#3d6b58;cursor:pointer;padding:4px 10px;" aria-label="Mois précédent">‹</button>';
+  html +=   '<div style="font-family:Playfair Display,Georgia,serif;font-size:1.05rem;font-weight:600;color:#2d4a3e;text-transform:capitalize;">' + monthLabel + '</div>';
+  html +=   '<button onclick="changeJournalCalendarMonth(1)" style="background:none;border:none;font-size:1.4rem;color:#3d6b58;cursor:pointer;padding:4px 10px;" aria-label="Mois suivant">›</button>';
+  html += '</div>';
+
+  // En-têtes jours de la semaine
+  var jours = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;">';
+  jours.forEach(function(j) {
+    html += '<div style="text-align:center;font-size:0.7rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.05em;padding:4px 0;">' + j + '</div>';
+  });
+  html += '</div>';
+
+  // Grille
+  html += '<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;">';
+  var cur = new Date(gridStart);
+  while (cur <= gridEnd) {
+    var k = dateKey(cur);
+    var inMonth = cur.getMonth() === month;
+    var entry = journal[k] || null;
+    var score = calendarScore(entry);
+    var col = calendarColor(score);
+    var isToday = k === todayKey;
+    var isFuture = cur > new Date();
+
+    var opacity = inMonth ? 1 : 0.35;
+    var borderStyle = isToday ? '2px solid #3d6b58' : '1px solid ' + col.border;
+    var clickable = !isFuture;
+
+    var dayNum = cur.getDate();
+    var titleAttr = '';
+    if (entry) {
+      var dr = (entry.douleurs && entry.douleurs.reveil) || 0;
+      var dj = (entry.douleurs && entry.douleurs.jour)   || 0;
+      var dn = (entry.douleurs && entry.douleurs.nuit)   || 0;
+      var qual = entry.qualite2 || entry.qualite || 0;
+      titleAttr = ' title="Douleurs R:' + dr + ' J:' + dj + ' N:' + dn + ' · Qualité ' + qual + '/5"';
+    } else if (!isFuture && inMonth) {
+      titleAttr = ' title="Pas d&apos;entrée pour ce jour"';
+    }
+
+    var emoji = '';
+    if (entry && entry.mood) {
+      var moodEmoji = { epuisee:'😫', fatiguee:'😔', correcte:'😐', bien:'🙂', reposee:'😊', excellente:'🤩' };
+      emoji = moodEmoji[entry.mood] || '';
+    }
+
+    var clickAttr = clickable ? ' onclick="openJournalDay(\'' + k + '\')"' : '';
+    var cursorStyle = clickable ? 'cursor:pointer;' : 'cursor:default;';
+
+    html += '<div' + clickAttr + titleAttr + ' style="' + cursorStyle +
+            'background:' + col.bg + ';border:' + borderStyle + ';border-radius:10px;' +
+            'padding:6px 4px;min-height:48px;display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+            'opacity:' + opacity + ';transition:transform 0.15s;" ' +
+            (clickable ? 'onmouseover="this.style.transform=\'scale(1.04)\'" onmouseout="this.style.transform=\'scale(1)\'"' : '') + '>';
+    html +=   '<div style="font-size:0.82rem;font-weight:600;color:' + col.text + ';">' + dayNum + '</div>';
+    if (emoji) html += '<div style="font-size:0.85rem;line-height:1;margin-top:1px;">' + emoji + '</div>';
+    html += '</div>';
+
+    cur.setDate(cur.getDate() + 1);
+  }
+  html += '</div>';
+
+  // Légende couleurs
+  html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding:10px 12px;background:#fff;border-radius:12px;font-size:0.72rem;color:#4a5e54;">';
+  var legende = [
+    { c: '#dcefe0', b: '#a8cfb1', label: 'Bon' },
+    { c: '#f3e9c8', b: '#d9c97f', label: 'Correct' },
+    { c: '#f4d6b8', b: '#d49d6b', label: 'Modéré' },
+    { c: '#e9b7a8', b: '#c0614a', label: 'Difficile' },
+    { c: '#f7f3ee', b: '#ede8e0', label: 'Vide' }
+  ];
+  legende.forEach(function(l) {
+    html += '<div style="display:flex;align-items:center;gap:5px;">';
+    html +=   '<div style="width:14px;height:14px;background:' + l.c + ';border:1px solid ' + l.b + ';border-radius:3px;"></div>';
+    html +=   '<span>' + l.label + '</span>';
+    html += '</div>';
+  });
+  html += '</div>';
+
+  // Stats du mois
+  html += '<div style="margin-top:14px;background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(45,74,62,0.08);">';
+  html +=   '<div style="font-size:0.72rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:10px;">Bilan du mois</div>';
+  html +=   '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px;">';
+  html +=     '<div style="background:#f7f3ee;border-radius:10px;padding:10px 6px;text-align:center;">';
+  html +=       '<div style="font-family:Playfair Display,serif;font-size:1.15rem;font-weight:600;color:#2d4a3e;">' + nSaisis + '/' + totalJours + '</div>';
+  html +=       '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:3px;">JOURS<br>SAISIS</div>';
+  html +=     '</div>';
+  html +=     '<div style="background:#f7f3ee;border-radius:10px;padding:10px 6px;text-align:center;">';
+  html +=       '<div style="font-family:Playfair Display,serif;font-size:1.15rem;font-weight:600;color:#c0614a;">' + (avgDouleur ? (Math.round(avgDouleur * 10) / 10).toString().replace('.', ',') : '—') + '</div>';
+  html +=       '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:3px;">DOULEUR<br>MOY /10</div>';
+  html +=     '</div>';
+  html +=     '<div style="background:#f7f3ee;border-radius:10px;padding:10px 6px;text-align:center;">';
+  html +=       '<div style="font-family:Playfair Display,serif;font-size:1.15rem;font-weight:600;color:#f0b429;">' + (avgQual ? (Math.round(avgQual * 10) / 10).toString().replace('.', ',') : '—') + '</div>';
+  html +=       '<div style="font-size:0.62rem;color:#8a9e96;text-transform:uppercase;letter-spacing:0.04em;margin-top:3px;">QUALITÉ<br>MOY /5</div>';
+  html +=     '</div>';
+  html +=   '</div>';
+  // Répartition des jours
+  if (nSaisis > 0) {
+    html += '<div style="display:flex;gap:6px;font-size:0.72rem;color:#4a5e54;flex-wrap:wrap;">';
+    html +=   '<span>🟢 ' + catCount.bon + ' bon' + (catCount.bon > 1 ? 's' : '') + '</span>';
+    html +=   '<span>🟡 ' + catCount.correct + ' correct' + (catCount.correct > 1 ? 's' : '') + '</span>';
+    html +=   '<span>🟠 ' + catCount.modere + ' modéré' + (catCount.modere > 1 ? 's' : '') + '</span>';
+    html +=   '<span>🔴 ' + catCount.difficile + ' difficile' + (catCount.difficile > 1 ? 's' : '') + '</span>';
+    html += '</div>';
+  }
+  html += '</div>';
+
+  html += '<div style="margin-top:10px;font-size:0.72rem;color:#8a9e96;text-align:center;font-style:italic;">Tape sur un jour pour ouvrir l\'entrée du journal</div>';
+
+  container.innerHTML = html;
+}
+
+function changeJournalCalendarMonth(delta) {
+  if (!_calendarMonth) return;
+  var d = new Date(_calendarMonth.year, _calendarMonth.month + delta, 1);
+  _calendarMonth = { year: d.getFullYear(), month: d.getMonth() };
+  renderJournalCalendar();
+}
+
+function openJournalDay(dk) {
+  // Parse YYYY-MM-DD vers Date locale
+  var parts = dk.split('-');
+  if (parts.length !== 3) return;
+  currentJournalDate = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+  // Bascule sur l'onglet Aujourd'hui
+  var btn = document.querySelector('#page-journal .jtab');
+  switchJTab('today', btn);
+}
+
+// ============================================================
+// SYSTÈME DE BADGES
+// ============================================================
+//
+// Catalogue des badges. Chaque badge a :
+// - id, emoji, titre, description
+// - hint : ce qu'il faut faire pour le débloquer (affiché grisé)
+// - check(ctx) : fonction qui renvoie true si débloqué
+//                ctx = { journal, agenda, RECETTES }
+//
+// Stockage : localStorage 'flora_badges' = { id: { unlockedAt: ms } }
+
+var BADGES_CATALOG = [
+  // — Démarrage
+  {
+    id: 'first-entry', emoji: '🌱', cat: 'Démarrage',
+    titre: 'Première entrée',
+    description: 'Tu as ouvert ton journal pour la première fois.',
+    hint: 'Remplis une entrée dans ton journal.',
+    check: function(ctx) { return Object.keys(ctx.journal).length >= 1; }
+  },
+
+  // — Régularité de saisie
+  {
+    id: 'streak-7', emoji: '🌿', cat: 'Régularité',
+    titre: 'Semaine fidèle',
+    description: '7 jours consécutifs de saisie. La constance paie.',
+    hint: 'Saisis ton journal 7 jours de suite.',
+    check: function(ctx) { return badgeStreakAtLeast(ctx.journal, 7); }
+  },
+  {
+    id: 'streak-30', emoji: '🌳', cat: 'Régularité',
+    titre: 'Mois fidèle',
+    description: '30 jours consécutifs. Tu prends vraiment soin de toi.',
+    hint: 'Saisis ton journal 30 jours de suite.',
+    check: function(ctx) { return badgeStreakAtLeast(ctx.journal, 30); }
+  },
+
+  // — Sommeil
+  {
+    id: 'good-night', emoji: '😴', cat: 'Sommeil',
+    titre: 'Bonne nuit',
+    description: 'Première nuit ≥ 7h avec une qualité ≥ 4/5.',
+    hint: 'Une nuit de 7h ou plus avec qualité ≥ 4/5.',
+    check: function(ctx) {
+      return Object.values(ctx.journal).some(function(e) {
+        var sleep = e.totalSleep || (e.duree ? e.duree * 60 : 0);
+        var qual = e.qualite2 || e.qualite || 0;
+        return sleep >= 420 && qual >= 4;
+      });
+    }
+  },
+  {
+    id: 'seven-stars', emoji: '⭐', cat: 'Sommeil',
+    titre: 'Sept étoiles',
+    description: '7 nuits de qualité 4 ou 5 étoiles.',
+    hint: 'Cumule 7 nuits avec qualité ≥ 4/5.',
+    check: function(ctx) {
+      var n = Object.values(ctx.journal).filter(function(e) {
+        return (e.qualite2 || e.qualite || 0) >= 4;
+      }).length;
+      return n >= 7;
+    }
+  },
+
+  // — Santé / Douleurs
+  {
+    id: 'apaisement', emoji: '🦵', cat: 'Apaisement',
+    titre: 'Vague d\'apaisement',
+    description: '5 jours consécutifs avec douleur max ≤ 3/10.',
+    hint: 'Une période de 5 jours douleur max ≤ 3/10.',
+    check: function(ctx) { return badgeApaisement(ctx.journal, 5); }
+  },
+
+  // — Cuisine
+  {
+    id: 'first-recipe', emoji: '🍽️', cat: 'Cuisine',
+    titre: 'Premier pas',
+    description: 'Tu as planifié ta première recette dans l\'agenda.',
+    hint: 'Ajoute une recette à ton agenda.',
+    check: function(ctx) { return badgeRecettesUtilisees(ctx.agenda).length >= 1; }
+  },
+  {
+    id: 'coup-coeur', emoji: '❤️', cat: 'Cuisine',
+    titre: 'Coup de cœur',
+    description: 'Tu as ajouté ta première recette favorite.',
+    hint: 'Touche le cœur d\'une recette pour la mémoriser.',
+    check: function(ctx) {
+      return typeof countFavoris === 'function' && countFavoris() >= 1;
+    }
+  },
+  {
+    id: 'curieuse-10', emoji: '🥗', cat: 'Cuisine',
+    titre: 'Curieuse',
+    description: '10 recettes différentes essayées (planifiées).',
+    hint: 'Planifie 10 recettes différentes.',
+    check: function(ctx) { return badgeRecettesUtilisees(ctx.agenda).length >= 10; }
+  },
+  {
+    id: 'exploratrice-30', emoji: '🌶️', cat: 'Cuisine',
+    titre: 'Exploratrice',
+    description: '30 recettes différentes essayées. Tu connais bien Flōra !',
+    hint: 'Planifie 30 recettes différentes.',
+    check: function(ctx) { return badgeRecettesUtilisees(ctx.agenda).length >= 30; }
+  },
+
+  // — Planification
+  {
+    id: 'semaine-planifiee', emoji: '📅', cat: 'Planification',
+    titre: 'Semaine planifiée',
+    description: 'Une semaine complète avec 5 jours × 3 repas planifiés.',
+    hint: 'Planifie 5 jours d\'affilée avec petit-déj, déjeuner et dîner.',
+    check: function(ctx) { return badgeSemainePlanifiee(ctx.agenda); }
+  }
+];
+
+// — Helpers de check
+function badgeStreakAtLeast(journal, n) {
+  // Cherche n'importe quelle séquence de n jours consécutifs saisis
+  var keys = Object.keys(journal).sort();
+  if (keys.length < n) return false;
+  var streak = 1;
+  for (var i = 1; i < keys.length; i++) {
+    var prev = new Date(keys[i - 1]);
+    var cur  = new Date(keys[i]);
+    var diff = (cur - prev) / 86400000;
+    if (Math.round(diff) === 1) {
+      streak++;
+      if (streak >= n) return true;
+    } else {
+      streak = 1;
+    }
+  }
+  return streak >= n;
+}
+
+function badgeApaisement(journal, n) {
+  var keys = Object.keys(journal).sort();
+  function dMax(e) {
+    if (e.douleurs) {
+      return Math.max(e.douleurs.reveil || 0, e.douleurs.jour || 0, e.douleurs.nuit || 0);
+    }
+    return e.douleur || 0;
+  }
+  var streak = 0;
+  for (var i = 0; i < keys.length; i++) {
+    var e = journal[keys[i]];
+    if (dMax(e) <= 3) {
+      // Vérifier consécutif si i > 0
+      if (i > 0) {
+        var prev = new Date(keys[i - 1]);
+        var cur  = new Date(keys[i]);
+        if (Math.round((cur - prev) / 86400000) !== 1) streak = 0;
+      }
+      streak++;
+      if (streak >= n) return true;
+    } else {
+      streak = 0;
+    }
+  }
+  return false;
+}
+
+function badgeRecettesUtilisees(agenda) {
+  // Renvoie un tableau d'IDs uniques de recettes planifiées
+  var seen = {};
+  Object.keys(agenda || {}).forEach(function(dk) {
+    var d = agenda[dk] || {};
+    ['petitdej', 'dejeuner', 'diner', 'snack'].forEach(function(slot) {
+      var v = d[slot];
+      if (typeof v === 'number') seen[v] = true;
+      else if (v && v.recetteId) seen[v.recetteId] = true;
+    });
+  });
+  return Object.keys(seen);
+}
+
+function badgeSemainePlanifiee(agenda) {
+  // Cherche 5 jours consécutifs avec petitdej + dejeuner + diner planifiés
+  var keys = Object.keys(agenda || {}).filter(function(k) {
+    var d = agenda[k] || {};
+    return d.petitdej && d.dejeuner && d.diner;
+  }).sort();
+  if (keys.length < 5) return false;
+  var streak = 1;
+  for (var i = 1; i < keys.length; i++) {
+    var prev = new Date(keys[i - 1]);
+    var cur  = new Date(keys[i]);
+    if (Math.round((cur - prev) / 86400000) === 1) {
+      streak++;
+      if (streak >= 5) return true;
+    } else {
+      streak = 1;
+    }
+  }
+  return false;
+}
+
+// — État des badges (chargé depuis localStorage)
+var floraBadges = {};
+
+function loadBadges() {
+  try {
+    floraBadges = JSON.parse(localStorage.getItem('flora_badges') || '{}');
+  } catch (e) {
+    floraBadges = {};
+  }
+}
+
+function saveBadges() {
+  try {
+    localStorage.setItem('flora_badges', JSON.stringify(floraBadges));
+  } catch (e) {
+    console.error('[Flōra] Erreur save badges:', e);
+  }
+}
+
+// — Vérification + déclenchement notifications
+function checkBadges(silent) {
+  loadBadges();
+  var ctx = { journal: journal || {}, agenda: agenda || {}, RECETTES: RECETTES };
+  var newlyUnlocked = [];
+
+  BADGES_CATALOG.forEach(function(b) {
+    if (floraBadges[b.id]) return; // déjà débloqué
+    try {
+      if (b.check(ctx)) {
+        floraBadges[b.id] = { unlockedAt: Date.now() };
+        newlyUnlocked.push(b);
+      }
+    } catch (e) {
+      // Si le check plante, on ignore silencieusement
+    }
+  });
+
+  if (newlyUnlocked.length) {
+    saveBadges();
+    if (!silent) {
+      // Afficher un toast par badge, espacés de 600ms
+      newlyUnlocked.forEach(function(b, i) {
+        setTimeout(function() { showBadgeToast(b); }, i * 600);
+      });
+    }
+  }
+
+  // Mise à jour de la ligne de résumé sur le profil si présente
+  var summary = document.getElementById('badges-summary-line');
+  if (summary) {
+    var total = BADGES_CATALOG.length;
+    var done = Object.keys(floraBadges).length;
+    summary.textContent = done + ' / ' + total + ' débloqués →';
+  }
+
+  return newlyUnlocked;
+}
+
+// — Toast lors d'un déblocage
+function showBadgeToast(badge) {
+  var toast = document.createElement('div');
+  toast.style.cssText =
+    'position:fixed;top:80px;left:50%;transform:translateX(-50%);' +
+    'background:linear-gradient(135deg, #2d4a3e, #3d6b58);color:#fff;' +
+    'padding:14px 18px;border-radius:14px;z-index:9999;' +
+    'box-shadow:0 6px 24px rgba(45,74,62,0.35);' +
+    'font-family:Georgia,serif;display:flex;align-items:center;gap:12px;' +
+    'max-width:90vw;animation:badgeSlideIn 0.4s ease-out;';
+  toast.innerHTML =
+    '<div style="font-size:2rem;line-height:1;">' + badge.emoji + '</div>' +
+    '<div>' +
+      '<div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em;opacity:0.85;">Badge débloqué !</div>' +
+      '<div style="font-weight:600;font-size:1rem;">' + badge.titre + '</div>' +
+    '</div>';
+  document.body.appendChild(toast);
+  setTimeout(function() {
+    toast.style.transition = 'opacity 0.4s, transform 0.4s';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateX(-50%) translateY(-10px)';
+  }, 3500);
+  setTimeout(function() { toast.remove(); }, 4000);
+}
+
+// — Page Mes badges
+function renderBadges() {
+  loadBadges();
+  var container = document.getElementById('badges-container');
+  if (!container) return;
+
+  // Re-vérifier silencieusement (au cas où l'utilisatrice arrive directement)
+  checkBadges(true);
+
+  var total = BADGES_CATALOG.length;
+  var done = Object.keys(floraBadges).length;
+  var progressPct = total ? Math.round((done / total) * 100) : 0;
+
+  // Regrouper par catégorie
+  var byCat = {};
+  BADGES_CATALOG.forEach(function(b) {
+    if (!byCat[b.cat]) byCat[b.cat] = [];
+    byCat[b.cat].push(b);
+  });
+
+  var html = '';
+
+  // En-tête progression
+  html += '<div style="background:linear-gradient(135deg,#2d4a3e,#3d6b58);color:#fff;border-radius:18px;padding:18px;margin-bottom:18px;">';
+  html +=   '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">';
+  html +=     '<div>';
+  html +=       '<div style="font-family:Playfair Display,Georgia,serif;font-size:1.3rem;">' + done + ' / ' + total + '</div>';
+  html +=       '<div style="font-size:0.8rem;opacity:0.85;">badges débloqués</div>';
+  html +=     '</div>';
+  html +=     '<div style="font-size:2.4rem;">🏅</div>';
+  html +=   '</div>';
+  html +=   '<div style="background:rgba(255,255,255,0.2);height:8px;border-radius:99px;overflow:hidden;">';
+  html +=     '<div style="background:#f0d896;height:100%;width:' + progressPct + '%;border-radius:99px;transition:width 0.4s;"></div>';
+  html +=   '</div>';
+  html += '</div>';
+
+  // Liste par catégorie
+  Object.keys(byCat).forEach(function(cat) {
+    html += '<div style="margin-bottom:18px;">';
+    html +=   '<div style="font-size:0.72rem;font-weight:700;color:#8a9e96;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:10px;padding-left:4px;">' + cat + '</div>';
+    html +=   '<div style="display:grid;grid-template-columns:1fr;gap:8px;">';
+
+    byCat[cat].forEach(function(b) {
+      var unlocked = !!floraBadges[b.id];
+      var unlockDate = '';
+      if (unlocked && floraBadges[b.id].unlockedAt) {
+        var dt = new Date(floraBadges[b.id].unlockedAt);
+        unlockDate = ' · ' + dt.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' });
+      }
+      var bg     = unlocked ? '#fff' : '#f7f3ee';
+      var emo    = unlocked ? b.emoji : '🔒';
+      var titreCol  = unlocked ? '#2d4a3e' : '#a8a8a0';
+      var descCol   = unlocked ? '#4a5e54' : '#a8a8a0';
+      var border = unlocked ? '1px solid #dcefe0' : '1px solid #ede8e0';
+      var emoBg  = unlocked ? '#dcefe0' : '#ede8e0';
+
+      html += '<div style="background:' + bg + ';border:' + border + ';border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:14px;' + (unlocked ? 'box-shadow:0 2px 8px rgba(45,74,62,0.06);' : '') + '">';
+      html +=   '<div style="width:46px;height:46px;background:' + emoBg + ';border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;">' + emo + '</div>';
+      html +=   '<div style="flex:1;min-width:0;">';
+      html +=     '<div style="font-weight:600;color:' + titreCol + ';font-size:0.92rem;">' + b.titre;
+      if (unlocked) html += ' <span style="font-size:0.7rem;color:#8a9e96;font-weight:400;">' + unlockDate + '</span>';
+      html +=     '</div>';
+      html +=     '<div style="font-size:0.78rem;color:' + descCol + ';margin-top:2px;line-height:1.35;">' + (unlocked ? b.description : b.hint) + '</div>';
+      html +=   '</div>';
+      html += '</div>';
+    });
+
+    html +=   '</div>';
+    html += '</div>';
+  });
+
+  // Petit message au pied
+  if (done < total) {
+    html += '<div style="text-align:center;font-size:0.78rem;color:#8a9e96;font-style:italic;margin-top:14px;">Continue à prendre soin de toi à ton rythme 🌿</div>';
+  } else {
+    html += '<div style="text-align:center;font-size:0.85rem;color:#3d6b58;font-weight:600;margin-top:14px;">🎉 Tu as débloqué tous les badges ! Bravo.</div>';
+  }
+
+  container.innerHTML = html;
+}
+
 
 
 function exportJournalPDF() {
-  const entries = Object.entries(journal).sort((a,b) => a[0].localeCompare(b[0]));
+  // 1. Tri des entrées + filtre optionnel par mois
+  var allEntries = Object.entries(journal).sort(function(a, b) {
+    return a[0].localeCompare(b[0]);
+  });
 
-  if (!entries.length) {
+  if (!allEntries.length) {
     alert('Aucune entrée à exporter. Commencez par remplir votre journal !');
     return;
   }
 
-  const name = profile.name || 'Utilisateur·trice';
-  const today = new Date().toLocaleDateString('fr-FR', { day:'numeric', month:'long', year:'numeric' });
+  // Si plus d'un mois, demander à l'utilisatrice
+  var mois = {};
+  allEntries.forEach(function(e) { mois[e[0].slice(0, 7)] = true; });
+  var moisListe = Object.keys(mois).sort();
+  var entries = allEntries;
+  var titreMois = '';
 
-  const rows = entries.map(([date, e]) => {
-    const d = new Date(date + 'T12:00:00');
-    const label = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
-    const stars = '★'.repeat(e.qualite||0) + '☆'.repeat(5-(e.qualite||0));
-    const sleep = e.coucher && e.lever
-      ? `${e.coucher} → ${e.lever} (${e.duree}h, ${e.cycles||'?'} cycles)`
-      : `${e.duree||'—'}h`;
-    const sjsrLabels = ['Aucun','Léger','Modéré','Fort','Très fort','Insupportable'];
-    const sjsrLabel = sjsrLabels[e.sjsr||0] || '—';
-    const symp = e.symptoms?.length ? e.symptoms.join(', ') : '—';
-    const meds = e.meds?.length ? e.meds.join(', ') : '—';
-
-    return `
-      <tr style="border-bottom:1px solid #e8e8e0;">
-        <td style="padding:10px 8px;font-weight:600;color:#2d4a3e;white-space:nowrap;">${label}</td>
-        <td style="padding:10px 8px;text-align:center;">${sleep}<br><small>${stars}</small></td>
-        <td style="padding:10px 8px;text-align:center;">${e.energie||'—'}/10</td>
-        <td style="padding:10px 8px;text-align:center;">${e.douleur||'—'}/10</td>
-        <td style="padding:10px 8px;text-align:center;color:${(e.sjsr||0)>2?'#c0614a':'#3d6b58'};">${sjsrLabel}</td>
-        <td style="padding:10px 8px;font-size:0.85em;color:#4a5e54;">${symp}</td>
-        <td style="padding:10px 8px;font-size:0.82em;font-style:italic;color:#8a9e96;">${e.notes||''}</td>
-      </tr>
-    `;
-  }).join('');
-
-  const avgEnergie = entries.length
-    ? (entries.reduce((s,[,e])=>s+(e.energie||0),0)/entries.length).toFixed(1) : '—';
-  const avgDouleur = entries.length
-    ? (entries.reduce((s,[,e])=>s+(e.douleur||0),0)/entries.length).toFixed(1) : '—';
-  const nuitsSjsr = entries.filter(([,e])=>(e.sjsr||0)>0).length;
-  const streak = getStreak();
-
-  const html = `<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8"/>
-  <title>Journal Flōra — ${name}</title>
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family: Georgia, serif; color: #1e2d26; background: #fff; padding: 40px; }
-    h1 { font-size: 2rem; color: #2d4a3e; margin-bottom: 4px; }
-    .subtitle { color: #8a9e96; font-size: 0.9rem; margin-bottom: 32px; }
-    .summary { display: flex; gap: 24px; margin-bottom: 32px; }
-    .sum-card { background: #f7f3ee; border-radius: 12px; padding: 16px 20px; flex: 1; text-align: center; }
-    .sum-val { font-size: 1.8rem; font-weight: 700; color: #2d4a3e; }
-    .sum-label { font-size: 0.78rem; color: #8a9e96; margin-top: 4px; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
-    thead tr { background: #2d4a3e; color: #fff; }
-    thead th { padding: 10px 8px; text-align: left; font-weight: 600; font-size: 0.8rem; }
-    tbody tr:nth-child(even) { background: #f7f3ee; }
-    .footer { margin-top: 32px; text-align: center; font-size: 0.78rem; color: #8a9e96; border-top: 1px solid #ede8e0; padding-top: 16px; }
-    @media print {
-      body { padding: 20px; }
-      .no-print { display: none; }
+  if (moisListe.length > 1) {
+    var label = '';
+    moisListe.forEach(function(m, i) {
+      var d = new Date(m + '-01T12:00:00');
+      label += (i + 1) + '. ' + d.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }) + '\n';
+    });
+    var choix = prompt(
+      'Quel mois exporter ?\n\n' + label + '\n0. Tous les mois\n\nTapez le numéro :',
+      '0'
+    );
+    if (choix === null) return; // annulé
+    var n = parseInt(choix, 10);
+    if (n >= 1 && n <= moisListe.length) {
+      var moisChoisi = moisListe[n - 1];
+      entries = allEntries.filter(function(e) { return e[0].slice(0, 7) === moisChoisi; });
+      var dM = new Date(moisChoisi + '-01T12:00:00');
+      titreMois = ' — ' + dM.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
     }
-  </style>
-</head>
-<body>
-  <h1>Flōra 🌿 — Journal de bien-être</h1>
-  <div class="subtitle">
-    ${name} · Exporté le ${today} · ${entries.length} entrée${entries.length>1?'s':''}
-  </div>
+  } else if (moisListe.length === 1) {
+    var dU = new Date(moisListe[0] + '-01T12:00:00');
+    titreMois = ' — ' + dU.toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' });
+  }
 
-  <div class="summary">
-    <div class="sum-card">
-      <div class="sum-val">${avgEnergie}</div>
-      <div class="sum-label">Énergie moyenne /10</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-val">${avgDouleur}</div>
-      <div class="sum-label">Douleur moyenne /10</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-val">${nuitsSjsr}</div>
-      <div class="sum-label">Nuits SJSR</div>
-    </div>
-    <div class="sum-card">
-      <div class="sum-val">${streak}</div>
-      <div class="sum-label">Jours consécutifs</div>
-    </div>
-  </div>
+  if (!entries.length) {
+    alert('Aucune entrée pour ce mois.');
+    return;
+  }
 
-  <table>
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Sommeil</th>
-        <th>Énergie</th>
-        <th>Douleur</th>
-        <th>SJSR</th>
-        <th>Symptômes</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>${rows}</tbody>
-  </table>
+  // 2. Helpers
+  var name = (typeof profile !== 'undefined' && profile && profile.name) ? profile.name : 'Utilisateur·trice';
+  var today = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
 
-  <div class="footer">
-    Flōra — Application bien-être SJSR/TDAH anti-inflammatoire · kettyburel-art.github.io/Fl-ra/<br>
-    Document généré automatiquement · À partager avec votre médecin si besoin
-  </div>
+  function escapeHtmlSafe(s) {
+    if (s == null) return '';
+    return String(s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
 
-  <script>window.onload = () => window.print();</script>
-</body>
-</html>`;
+  function fmtSleep(min) {
+    if (!min) return '—';
+    var h = Math.floor(min / 60);
+    var m = Math.round(min % 60);
+    if (m === 0) return h + 'h';
+    return h + 'h' + (m < 10 ? '0' : '') + m;
+  }
 
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const win  = window.open(url, '_blank');
+  function douleurMoy(e) {
+    if (e.douleurs) {
+      var dr = e.douleurs.reveil || 0;
+      var dj = e.douleurs.jour   || 0;
+      var dn = e.douleurs.nuit   || 0;
+      return Math.round(((dr + dj + dn) / 3) * 10) / 10;
+    }
+    return e.douleur || 0;
+  }
+
+  var moodEmoji = {
+    epuisee: '😫', fatiguee: '😔', correcte: '😐',
+    bien: '🙂', reposee: '😊', excellente: '🤩'
+  };
+
+  // 3. Construction des lignes du tableau (concaténation)
+  var rows = '';
+  entries.forEach(function(pair) {
+    var date = pair[0], e = pair[1];
+    var d = new Date(date + 'T12:00:00');
+    var label = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+
+    var qual = e.qualite2 || e.qualite || 0;
+    var stars = '★'.repeat(qual) + '☆'.repeat(Math.max(0, 5 - qual));
+
+    var totalSleep = e.totalSleep || (e.duree ? e.duree * 60 : 0);
+    var levers = (typeof e.levers2 === 'number') ? e.levers2 : (e.levers || 0);
+    var sommeilTxt = fmtSleep(totalSleep);
+    if (levers > 0) sommeilTxt += '<br><small style="color:#8a9e96;">' + levers + ' lever' + (levers > 1 ? 's' : '') + '</small>';
+
+    var dr = (e.douleurs && e.douleurs.reveil) || 0;
+    var dj = (e.douleurs && e.douleurs.jour)   || 0;
+    var dn = (e.douleurs && e.douleurs.nuit)   || 0;
+    var dMoy = douleurMoy(e);
+    var dColor = dMoy > 5 ? '#c0614a' : (dMoy > 2 ? '#d4a574' : '#3d6b58');
+
+    var moodIcon = e.mood ? (moodEmoji[e.mood] || e.mood) : '—';
+
+    var meds = (e.meds2 && e.meds2.length) ? e.meds2.join(', ')
+              : (e.meds && e.meds.length ? e.meds.join(', ') : '—');
+    var symp = (e.symptomes && e.symptomes.length) ? e.symptomes.join(', ')
+              : (e.symptoms && e.symptoms.length ? e.symptoms.join(', ') : '—');
+    var notes = e.notes2 || e.notes || '';
+    var sieste = e.sieste ? (e.sieste + ' min') : '';
+
+    rows += '<tr style="border-bottom:1px solid #e8e8e0;">';
+    rows +=   '<td style="padding:10px 8px;font-weight:600;color:#2d4a3e;white-space:nowrap;">' + escapeHtmlSafe(label) + '</td>';
+    rows +=   '<td style="padding:10px 8px;text-align:center;">' + sommeilTxt + '<br><small>' + stars + '</small>' + (sieste ? '<br><small style="color:#8a9e96;">+ sieste ' + sieste + '</small>' : '') + '</td>';
+    rows +=   '<td style="padding:10px 8px;text-align:center;font-size:1.3rem;">' + moodIcon + '</td>';
+    rows +=   '<td style="padding:10px 8px;text-align:center;color:' + dColor + ';font-weight:600;">' + (dMoy ? dMoy + '/10' : '—') + '<br><small style="color:#8a9e96;font-weight:400;">R:' + dr + ' J:' + dj + ' N:' + dn + '</small></td>';
+    rows +=   '<td style="padding:10px 8px;font-size:0.82em;color:#4a5e54;">' + escapeHtmlSafe(symp) + '</td>';
+    rows +=   '<td style="padding:10px 8px;font-size:0.82em;color:#4a5e54;">' + escapeHtmlSafe(meds) + '</td>';
+    rows +=   '<td style="padding:10px 8px;font-size:0.8em;font-style:italic;color:#8a9e96;max-width:220px;">' + escapeHtmlSafe(notes) + '</td>';
+    rows += '</tr>';
+  });
+
+  // 4. Statistiques résumé
+  var n = entries.length;
+  var totalSleepSum = 0, qualSum = 0, qualCount = 0, douleurSum = 0, douleurCount = 0;
+  entries.forEach(function(p) {
+    var e = p[1];
+    totalSleepSum += (e.totalSleep || (e.duree ? e.duree * 60 : 0));
+    var q = e.qualite2 || e.qualite || 0;
+    if (q) { qualSum += q; qualCount++; }
+    var dm = douleurMoy(e);
+    if (dm) { douleurSum += dm; douleurCount++; }
+  });
+  var avgSleepMin = totalSleepSum / n;
+  var avgQual = qualCount ? (qualSum / qualCount).toFixed(1) : '—';
+  var avgDouleur = douleurCount ? (douleurSum / douleurCount).toFixed(1) : '—';
+  var streak = (typeof getStreak === 'function') ? getStreak() : 0;
+
+  // 5. HTML complet (concaténation)
+  var html = '';
+  html += '<!DOCTYPE html><html lang="fr"><head>';
+  html += '<meta charset="UTF-8"/>';
+  html += '<title>Journal Flōra — ' + escapeHtmlSafe(name) + '</title>';
+  html += '<style>';
+  html += '* { margin:0; padding:0; box-sizing:border-box; }';
+  html += 'body { font-family: Georgia, serif; color: #1e2d26; background: #fff; padding: 40px; }';
+  html += 'h1 { font-size: 1.9rem; color: #2d4a3e; margin-bottom: 4px; font-family: "Playfair Display", Georgia, serif; }';
+  html += '.subtitle { color: #8a9e96; font-size: 0.9rem; margin-bottom: 28px; }';
+  html += '.summary { display: flex; gap: 16px; margin-bottom: 28px; flex-wrap: wrap; }';
+  html += '.sum-card { background: #f7f3ee; border-radius: 12px; padding: 14px 18px; flex: 1; min-width: 130px; text-align: center; }';
+  html += '.sum-val { font-size: 1.5rem; font-weight: 700; color: #2d4a3e; font-family: "Playfair Display", Georgia, serif; }';
+  html += '.sum-label { font-size: 0.72rem; color: #8a9e96; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.04em; }';
+  html += 'table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }';
+  html += 'thead tr { background: #2d4a3e; color: #fff; }';
+  html += 'thead th { padding: 10px 8px; text-align: left; font-weight: 600; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }';
+  html += 'tbody tr:nth-child(even) { background: #f7f3ee; }';
+  html += '.legende { font-size: 0.78rem; color: #8a9e96; margin-top: 14px; padding: 10px 14px; background: #f7f3ee; border-radius: 8px; }';
+  html += '.footer { margin-top: 28px; text-align: center; font-size: 0.76rem; color: #8a9e96; border-top: 1px solid #ede8e0; padding-top: 14px; font-style: italic; }';
+  html += '.print-btn { position: fixed; top: 12px; right: 12px; padding: 10px 16px; background: #3d6b58; color: white; border: none; border-radius: 8px; font-size: 0.92rem; cursor: pointer; font-family: Georgia, serif; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 999; }';
+  html += '@page { size: A4 landscape; margin: 14mm; }';
+  html += '@media print { body { padding: 0; } .print-btn { display: none; } }';
+  html += '</style></head><body>';
+
+  html += '<button class="print-btn" onclick="window.print()">🖨️ Imprimer / Enregistrer en PDF</button>';
+  html += '<h1>Flōra 🌿 — Journal de bien-être' + escapeHtmlSafe(titreMois) + '</h1>';
+  html += '<div class="subtitle">' + escapeHtmlSafe(name) + ' · Exporté le ' + today + ' · ' + n + ' entrée' + (n > 1 ? 's' : '') + '</div>';
+
+  html += '<div class="summary">';
+  html +=   '<div class="sum-card"><div class="sum-val">' + fmtSleep(avgSleepMin) + '</div><div class="sum-label">Sommeil moyen</div></div>';
+  html +=   '<div class="sum-card"><div class="sum-val">' + avgQual + '/5</div><div class="sum-label">Qualité moy.</div></div>';
+  html +=   '<div class="sum-card"><div class="sum-val">' + avgDouleur + '/10</div><div class="sum-label">Douleur moy.</div></div>';
+  html +=   '<div class="sum-card"><div class="sum-val">' + streak + '</div><div class="sum-label">Jours consécutifs</div></div>';
+  html += '</div>';
+
+  html += '<table>';
+  html +=   '<thead><tr>';
+  html +=     '<th>Date</th>';
+  html +=     '<th>Sommeil & qualité</th>';
+  html +=     '<th>Humeur</th>';
+  html +=     '<th>Douleurs SJSR</th>';
+  html +=     '<th>Symptômes</th>';
+  html +=     '<th>Médicaments / suppléments</th>';
+  html +=     '<th>Notes</th>';
+  html +=   '</tr></thead>';
+  html +=   '<tbody>' + rows + '</tbody>';
+  html += '</table>';
+
+  html += '<div class="legende"><strong>Légende douleurs :</strong> R = au réveil · J = en journée · N = pendant la nuit · Échelle 0-10. ';
+  html += '<strong>Qualité du sommeil :</strong> 1 à 5 étoiles.</div>';
+
+  html += '<div class="footer">Flōra — Application bien-être SJSR/TDAH anti-inflammatoire · kettyburel-art.github.io/Fl-ra/<br>';
+  html += 'Document généré automatiquement · À partager avec votre médecin si besoin</div>';
+
+  html += '<scr' + 'ipt>setTimeout(function(){ window.print(); }, 600);</scr' + 'ipt>';
+  html += '</body></html>';
+
+  // 6. Ouverture
+  var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+  var url  = URL.createObjectURL(blob);
+  var win  = window.open(url, '_blank');
   if (!win) {
-    // Fallback si popup bloqué
-    const a = document.createElement('a');
+    var a = document.createElement('a');
     a.href = url;
-    a.download = `flora-journal-${dateKey(new Date())}.html`;
+    a.download = 'flora-journal-' + dateKey(new Date()) + '.html';
     a.click();
   }
-  setTimeout(() => URL.revokeObjectURL(url), 5000);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 8000);
 }
 
 
@@ -6229,7 +4313,12 @@ function renderHistorique() {
   const entries   = Object.entries(journal).sort((a, b) => b[0].localeCompare(a[0]));
 
   if (!entries.length) {
-    container.innerHTML = '<p style="text-align:center;color:var(--text-light);margin-top:32px;">Aucune entrée pour l\'instant.</p>';
+    container.innerHTML =
+      '<div class="empty-state">' +
+        svgEmptyJournal() +
+        '<div class="empty-state-title">Aucune entrée pour l\'instant</div>' +
+        '<div class="empty-state-text">Tes entrées apparaîtront ici, classées par date.</div>' +
+      '</div>';
     return;
   }
 
@@ -6264,6 +4353,7 @@ function renderRecettes() {
 
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
+    if (currentFavorisFilter && !isFavori(r.id)) return false;
     if (search && !r.nom.toLowerCase().includes(search)) return false;
     // Filtre nutritionnel
     if (currentNutriFilter) {
@@ -6308,7 +4398,7 @@ function renderRecettes() {
     if (locked) {
       return `
         <div class="recette-card recette-card-locked" onclick="openRecettePreview(${r.id})">
-          <div class="recette-emoji recette-emoji-blurred">${r.emoji}</div>
+          <div class="recette-emoji recette-emoji-blurred cat-${r.cat}">${r.emoji}</div>
           <div class="recette-lock-overlay">
             <div class="recette-lock-icon">⭐</div>
             <div class="recette-lock-label">Premium</div>
@@ -6326,7 +4416,11 @@ function renderRecettes() {
     // Carte normale déverrouillée
     return `
       <div class="recette-card" onclick="openRecette(${r.id})">
-        <div class="recette-emoji">${r.emoji}</div>
+        <div class="recette-emoji cat-${r.cat}">${r.emoji}</div>
+        <button class="recette-fav-btn ${isFavori(r.id) ? 'fav-active' : ''}"
+                data-fav-id="${r.id}"
+                onclick="toggleFavori(${r.id}, event)"
+                aria-label="${isFavori(r.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFavori(r.id) ? '❤️' : '🤍'}</button>
         <div class="recette-info">
           <div class="recette-name">${r.nom}</div>
           <div class="recette-meta">
@@ -6337,16 +4431,27 @@ function renderRecettes() {
   }).join('');
 
   if (!recettes.length) {
-    grid.innerHTML = `
-      <div style="grid-column:1/-1;text-align:center;padding:32px;">
-        <div style="font-size:2rem;margin-bottom:8px;">🔍</div>
-        <div style="color:var(--text-light);font-size:0.88rem;">Aucune recette trouvée.</div>
-        ${window._placardFilter?.length ? `
-          <button onclick="window._placardFilter=null;renderRecettes();"
-            style="margin-top:12px;padding:8px 16px;border:none;border-radius:99px;background:var(--green-pale);color:var(--green-deep);font-size:0.82rem;cursor:pointer;">
-            Effacer le filtre placard
-          </button>` : ''}
-      </div>`;
+    var emptyMsg = '';
+    if (currentFavorisFilter) {
+      emptyMsg =
+        '<div class="empty-state" style="grid-column:1/-1;">' +
+          svgEmptyFavoris() +
+          '<div class="empty-state-title">Aucune recette en favoris</div>' +
+          '<div class="empty-state-text">Touche le cœur d\'une recette pour la mémoriser ici.</div>' +
+        '</div>';
+    } else {
+      emptyMsg =
+        '<div class="empty-state" style="grid-column:1/-1;">' +
+          '<div style="font-size:2.4rem;margin-bottom:8px;">🔍</div>' +
+          '<div class="empty-state-title">Aucune recette trouvée</div>' +
+          (window._placardFilter && window._placardFilter.length
+            ? '<button onclick="window._placardFilter=null;renderRecettes();" ' +
+              'style="margin-top:12px;padding:8px 16px;border:none;border-radius:99px;background:var(--green-pale);color:var(--green-deep);font-size:0.82rem;cursor:pointer;">' +
+              'Effacer le filtre placard</button>'
+            : '') +
+        '</div>';
+    }
+    grid.innerHTML = emptyMsg;
   }
 }
 
@@ -6363,7 +4468,7 @@ function openRecettePreview(id) {
   const ingCaches    = r.ingredients.slice(2);
 
   content.innerHTML = `
-    <div class="modal-recipe-header">
+    <div class="modal-recipe-header cat-${r.cat}">
       <div class="modal-recipe-emoji">${r.emoji}</div>
       <div class="modal-recipe-title">${r.nom}</div>
       <div class="recipe-meta-row">
@@ -6484,7 +4589,11 @@ function openRecette(id) {
 
   content.innerHTML = `
     <!-- En-tête -->
-    <div class="modal-recipe-header">
+    <div class="modal-recipe-header cat-${r.cat}">
+      <button class="modal-fav-btn ${isFavori(r.id) ? 'fav-active' : ''}"
+              data-fav-id="${r.id}"
+              onclick="toggleFavori(${r.id}, event)"
+              aria-label="${isFavori(r.id) ? 'Retirer des favoris' : 'Ajouter aux favoris'}">${isFavori(r.id) ? '❤️' : '🤍'}</button>
       <div class="modal-recipe-emoji">${r.emoji}</div>
       <div class="modal-recipe-title">${r.nom}</div>
 
@@ -6550,7 +4659,10 @@ function openRecette(id) {
       <button class="btn-primary" style="flex:1;" onclick="addToAgenda(${r.id})">
         📅 Agenda
       </button>
-      <button class="btn-primary" style="padding:14px 16px;background:var(--green-mid);" onclick="shareRecette(${r.id})" title="Partager">
+      <button class="btn-primary" style="padding:14px 16px;background:var(--green-mid);" onclick="printRecette(${r.id})" title="Imprimer / PDF" aria-label="Imprimer ou enregistrer en PDF">
+        🖨️
+      </button>
+      <button class="btn-primary" style="padding:14px 16px;background:var(--green-mid);" onclick="shareRecette(${r.id})" title="Partager" aria-label="Partager">
         📤
       </button>
     </div>
@@ -6565,6 +4677,78 @@ function closeModal() {
 
 // Alias pour compatibilité vue jour Sérénité
 function closeRecette() { closeModal(); }
+
+// Imprimer / enregistrer en PDF une recette (utile pour la cuisine sans téléphone)
+function printRecette(id) {
+  const r = RECETTES.find(x => x.id === id);
+  if (!r) return;
+
+  // Construire les sections d'ingrédients (avec gestion des séparateurs '— SECTION —')
+  const ingsHTML = (r.ingredients || []).map(ing => {
+    if (/^[—-]/.test(ing.trim())) {
+      return '</ul><h3 style="margin:14px 0 6px;font-size:0.95rem;color:#3d6b58;border-bottom:1px solid #ccc;padding-bottom:3px;">' +
+             escapeHtml(ing.replace(/^[—-]\s*|\s*[—-]$/g, '')) + '</h3><ul>';
+    }
+    return '<li>' + escapeHtml(ing) + '</li>';
+  }).join('');
+
+  const etapesHTML = (r.etapes || []).map((e, i) =>
+    '<li><strong>Étape ' + (i+1) + '.</strong> ' + escapeHtml(e) + '</li>'
+  ).join('');
+
+  const tagsHTML = (r.tags || []).map(t => {
+    const labels = { sg: 'Sans gluten', sl: 'Sans lactose', vg: 'Végétarien' };
+    return '<span style="display:inline-block;padding:3px 10px;background:#e8f0e8;color:#3d6b58;border-radius:99px;font-size:0.78rem;margin-right:5px;">' + (labels[t] || t) + '</span>';
+  }).join('');
+
+  // Ouvrir une nouvelle fenêtre avec un document propre dédié à l'impression
+  const w = window.open('', '_blank');
+  if (!w) {
+    alert('Veuillez autoriser les pop-ups pour imprimer la recette.');
+    return;
+  }
+
+  const html = '<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8">' +
+    '<title>' + escapeHtml(r.nom) + ' — Flōra</title>' +
+    '<style>' +
+      '@page { size: A4; margin: 18mm 16mm; }' +
+      'body { font-family: Georgia, serif; color: #2d4a3e; line-height: 1.55; max-width: 720px; margin: 0 auto; padding: 20px; }' +
+      'h1 { font-family: "Playfair Display", Georgia, serif; font-size: 1.8rem; color: #2d4a3e; margin: 0 0 6px; line-height: 1.2; }' +
+      '.subtitle { color: #8a9e96; font-size: 0.92rem; margin-bottom: 16px; }' +
+      '.meta { display: flex; flex-wrap: wrap; gap: 14px; padding: 10px 14px; background: #f7f3ee; border-radius: 8px; margin-bottom: 18px; font-size: 0.88rem; }' +
+      '.meta strong { color: #3d6b58; }' +
+      '.benef { padding: 12px 14px; background: #f1f8f1; border-left: 4px solid #3d6b58; border-radius: 4px; margin-bottom: 18px; font-size: 0.9rem; font-style: italic; }' +
+      'h2 { font-family: "Playfair Display", Georgia, serif; font-size: 1.2rem; color: #3d6b58; margin: 22px 0 8px; border-bottom: 2px solid #ede8e0; padding-bottom: 4px; }' +
+      'h3 { font-family: "Playfair Display", Georgia, serif; }' +
+      'ul, ol { padding-left: 22px; }' +
+      'li { margin-bottom: 6px; }' +
+      'ol li { margin-bottom: 10px; }' +
+      'footer { margin-top: 30px; padding-top: 14px; border-top: 1px solid #ede8e0; color: #8a9e96; font-size: 0.78rem; text-align: center; font-style: italic; }' +
+      '.print-btn { position: fixed; top: 12px; right: 12px; padding: 10px 16px; background: #3d6b58; color: white; border: none; border-radius: 8px; font-size: 0.92rem; cursor: pointer; font-family: Georgia, serif; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }' +
+      '@media print { .print-btn { display: none; } }' +
+    '</style>' +
+    '</head><body>' +
+    '<button class="print-btn" onclick="window.print()">🖨️ Imprimer / Enregistrer en PDF</button>' +
+    '<h1>' + r.emoji + ' ' + escapeHtml(r.nom) + '</h1>' +
+    '<div class="subtitle">' + tagsHTML + '</div>' +
+    '<div class="meta">' +
+      '<span>⏱ <strong>' + escapeHtml(r.temps) + '</strong></span>' +
+      '<span>🔥 <strong>' + r.calories + ' kcal</strong></span>' +
+      '<span>📊 <strong>' + escapeHtml(r.diff) + '</strong></span>' +
+    '</div>' +
+    (r.benefices ? '<div class="benef">💡 ' + escapeHtml(r.benefices) + '</div>' : '') +
+    '<h2>Ingrédients</h2>' +
+    '<ul>' + ingsHTML + '</ul>' +
+    '<h2>Préparation</h2>' +
+    '<ol>' + etapesHTML + '</ol>' +
+    '<footer>Recette extraite de Flōra · Application bien-être SJSR & TDAH · Recette #' + r.id + '</footer>' +
+    '<scr' + 'ipt>setTimeout(function(){ window.print(); }, 500);</scr' + 'ipt>' +
+    '</body></html>';
+
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
 
 function shareRecette(id) {
   const r = RECETTES.find(x => x.id === id);
@@ -6597,105 +4781,42 @@ function filterNutri(nutri, el) {
 
 function filterCat(cat, el) {
   currentCatFilter = cat;
+  // Cliquer sur une catégorie désactive le filtre favoris (modes exclusifs)
+  currentFavorisFilter = false;
   document.querySelectorAll('#cat-filters .chip').forEach(c => c.classList.remove('active'));
   el.classList.add('active');
+  renderRecettes();
+}
+
+// Bascule du filtre "❤️ Favoris" — exclusif des autres catégories
+function toggleFavorisFilter(el) {
+  currentFavorisFilter = !currentFavorisFilter;
+  if (currentFavorisFilter) {
+    // Activer favoris : désactiver toutes les autres catégories
+    currentCatFilter = '';
+    document.querySelectorAll('#cat-filters .chip').forEach(c => c.classList.remove('active'));
+    if (el) el.classList.add('active');
+  } else {
+    // Revenir à "Toutes"
+    if (el) el.classList.remove('active');
+    currentCatFilter = '';
+    var allChip = document.querySelector('#cat-filters .chip');
+    if (allChip) allChip.classList.add('active');
+  }
   renderRecettes();
 }
 
 // ============================
 // STATISTIQUES BIEN-ÊTRE
 // ============================
+// Note : la vraie fonction de stats du journal est renderJournalStats(),
+// affichée dans l'onglet "Statistiques" du journal (#stats-journal-container).
+// renderStats() est conservée comme alias défensif — si du code historique
+// l'appelle encore, on bascule sur la bonne implémentation.
 function renderStats() {
-  const statsEl = document.getElementById('stats-container');
-  if (!statsEl) return;
-
-  const days = 30;
-  const today = new Date();
-  const entries = [];
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    entries.push({ date: dateKey(d), data: journal[dateKey(d)] || null, d });
+  if (typeof renderJournalStats === 'function') {
+    return renderJournalStats();
   }
-
-  const filled = entries.filter(e => e.data);
-  const avgEnergie = filled.length
-    ? Math.round(filled.reduce((s, e) => s + (e.data.energie || 0), 0) / filled.length * 10) / 10 : 0;
-  const avgDouleur = filled.length
-    ? Math.round(filled.reduce((s, e) => s + (e.data.douleur || 0), 0) / filled.length * 10) / 10 : 0;
-  const nuitsSjsr = filled.filter(e => e.data.sjsr > 0).length;
-
-  const visible = isPremium ? entries : entries.slice(-7);
-
-  statsEl.innerHTML = `
-    <div class="stats-summary-grid">
-      <div class="stats-summary-card">
-        <div class="stats-summary-val">${avgEnergie || '—'}</div>
-        <div class="stats-summary-label">Énergie moy.<br>/10</div>
-      </div>
-      <div class="stats-summary-card">
-        <div class="stats-summary-val">${avgDouleur || '—'}</div>
-        <div class="stats-summary-label">Douleur moy.<br>/10</div>
-      </div>
-      <div class="stats-summary-card">
-        <div class="stats-summary-val">${nuitsSjsr}</div>
-        <div class="stats-summary-label">Nuits SJSR<br>${isPremium ? '30j' : '7j'}</div>
-      </div>
-    </div>
-
-    <div class="stats-section" style="margin-top:16px;">
-      <div class="stats-section-title">⚡ Énergie & Douleur — ${isPremium ? '30 derniers jours' : '7 derniers jours'}</div>
-      <div class="stats-chart-wrap">
-        <div class="stats-chart-bars">
-          ${visible.map(e => {
-            const en  = e.data ? Math.round((e.data.energie || 0) / 10 * 70) : 0;
-            const do_ = e.data ? Math.round((e.data.douleur  || 0) / 10 * 70) : 0;
-            const day = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
-            return `<div class="stats-bar-wrap">
-              <div style="display:flex;gap:2px;align-items:flex-end;height:70px;justify-content:center;">
-                <div class="stats-bar energie" style="height:${en}px;width:45%;"></div>
-                <div class="stats-bar douleur" style="height:${do_}px;width:45%;"></div>
-              </div>
-              <div class="stats-day-label">${day}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div class="stats-legend">
-          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--green-mid)"></div> Énergie</div>
-          <div class="stats-legend-item"><div class="stats-legend-dot" style="background:var(--red-soft)"></div> Douleur</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="stats-section">
-      <div class="stats-section-title">🦵 Nuits SJSR</div>
-      <div class="stats-chart-wrap">
-        <div class="stats-chart-bars">
-          ${visible.map(e => {
-            const sjsr = e.data ? Math.round((e.data.sjsr || 0) / 5 * 70) : 0;
-            const day  = e.d.toLocaleDateString('fr-FR', { weekday: 'short' }).slice(0,3);
-            return `<div class="stats-bar-wrap">
-              <div style="height:70px;display:flex;align-items:flex-end;justify-content:center;">
-                <div class="stats-bar sjsr" style="height:${sjsr}px;width:80%;"></div>
-              </div>
-              <div class="stats-day-label">${day}</div>
-            </div>`;
-          }).join('')}
-        </div>
-        <div style="font-size:0.75rem;color:var(--text-light);margin-top:6px;">0 = aucun · 5 = insupportable</div>
-      </div>
-    </div>
-
-    ${!isPremium ? `
-    <div class="stats-premium-wall">
-      <div style="font-size:1.8rem;">📊</div>
-      <p>Débloquez l'historique complet sur <strong>30 jours</strong>, les tendances et l'export PDF.</p>
-      <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank"
-         class="btn-premium" style="display:block;text-align:center;text-decoration:none;">
-        ⭐ Passer à Premium — 4,99€/mois
-      </a>
-    </div>` : ''}
-  `;
 }
 
 // ============================
@@ -7286,78 +5407,33 @@ function switchGenTab(tab, el) {
   if (tab === 'brunch')  renderBrunchList();
 }
 
-// Plan mensuel Avril 2026
-const PLAN_MENSUEL_AVRIL = [
-  // Semaine 1 — Focus Fer & SJSR
-  { j:1,  pdc:1,  dej:51, din:75, snack:129, theme:'🩸 Boost Fer' },
-  { j:2,  pdc:2,  dej:52, din:76, snack:80,  theme:'🌿 Anti-inflam' },
-  { j:3,  pdc:3,  dej:53, din:77, snack:81,  theme:'🧠 Focus TDAH' },
-  { j:4,  pdc:4,  dej:54, din:78, snack:82,  theme:'🦵 Jambes légères' },
-  { j:5,  pdc:5,  dej:55, din:79, snack:83,  theme:'⚡ Énergie' },
-  { j:6,  pdc:6,  dej:56, din:112,snack:84,  theme:'🥂 Week-end' },
-  { j:7,  pdc:7,  dej:57, din:113,snack:85,  theme:'🛌 Sommeil' },
-  // Semaine 2 — Focus Magnésium
-  { j:8,  pdc:8,  dej:58, din:114,snack:86,  theme:'💊 Magnésium' },
-  { j:9,  pdc:9,  dej:59, din:115,snack:87,  theme:'🌙 Nuit calme' },
-  { j:10, pdc:10, dej:60, din:116,snack:88,  theme:'🧠 Focus TDAH' },
-  { j:11, pdc:11, dej:61, din:117,snack:89,  theme:'🩸 Boost Fer' },
-  { j:12, pdc:12, dej:62, din:118,snack:90,  theme:'🌿 Anti-inflam' },
-  { j:13, pdc:13, dej:63, din:119,snack:91,  theme:'🥂 Week-end' },
-  { j:14, pdc:14, dej:64, din:120,snack:92,  theme:'🛌 Sommeil' },
-  // Semaine 3 — Focus Oméga-3
-  { j:15, pdc:15, dej:65, din:121,snack:93,  theme:'🐟 Oméga-3' },
-  { j:16, pdc:16, dej:66, din:122,snack:94,  theme:'🦵 Jambes légères' },
-  { j:17, pdc:17, dej:67, din:123,snack:95,  theme:'⚡ Énergie' },
-  { j:18, pdc:18, dej:68, din:75, snack:96,  theme:'🌿 Anti-inflam' },
-  { j:19, pdc:19, dej:69, din:76, snack:97,  theme:'🧠 Focus TDAH' },
-  { j:20, pdc:20, dej:70, din:77, snack:98,  theme:'🥂 Week-end' },
-  { j:21, pdc:21, dej:71, din:78, snack:99,  theme:'🛌 Sommeil' },
-  // Semaine 4 — Focus Intestin & Probiotiques
-  { j:22, pdc:22, dej:72, din:79, snack:100, theme:'🫘 Intestin' },
-  { j:23, pdc:23, dej:73, din:112,snack:101, theme:'🩸 Boost Fer' },
-  { j:24, pdc:24, dej:74, din:113,snack:102, theme:'🌿 Anti-inflam' },
-  { j:25, pdc:25, dej:104,din:114,snack:103, theme:'🦵 Jambes légères' },
-  { j:26, pdc:26, dej:105,din:115,snack:104, theme:'⚡ Énergie' },
-  { j:27, pdc:1,  dej:106,din:116,snack:105, theme:'🥂 Week-end' },
-  { j:28, pdc:2,  dej:107,din:117,snack:106, theme:'🛌 Sommeil' },
-  { j:29, pdc:3,  dej:108,din:118,snack:107, theme:'🧠 Focus TDAH' },
-  { j:30, pdc:4,  dej:109,din:119,snack:108, theme:'🌟 Bilan mensuel' },
-];
+// Bascule entre les onglets Recettes et Compléments de la page Recettes
+function switchRecettesTab(tab, btn) {
+  var tabs = ['recettes', 'complements'];
+  tabs.forEach(function(t) {
+    var el = document.getElementById(t + '-tab-content');
+    if (el) el.classList.add('hidden');
+  });
+  var target = document.getElementById(tab + '-tab-content');
+  if (target) target.classList.remove('hidden');
 
-// Plan mensuel Mai 2026
-const PLAN_MENSUEL_MAI = [
-  { j:1,  pdc:1,   dej:104, din:156, snack:161, theme:'🌸 1er mai · Détox' },
-  { j:2,  pdc:2,   dej:105, din:75,  snack:80,  theme:'🩸 Boost Fer' },
-  { j:3,  pdc:96,  dej:106, din:76,  snack:81,  theme:'🧠 Focus TDAH' },
-  { j:4,  pdc:97,  dej:107, din:157, snack:82,  theme:'🦵 Jambes légères' },
-  { j:5,  pdc:98,  dej:108, din:77,  snack:83,  theme:'⚡ Énergie' },
-  { j:6,  pdc:99,  dej:109, din:78,  snack:161, theme:'🥂 Week-end Brunch' },
-  { j:7,  pdc:100, dej:110, din:79,  snack:84,  theme:'🛌 Sommeil profond' },
-  { j:8,  pdc:101, dej:111, din:112, snack:85,  theme:'💊 Magnésium' },
-  { j:9,  pdc:102, dej:104, din:113, snack:128, theme:'🌙 Nuit calme' },
-  { j:10, pdc:103, dej:105, din:114, snack:88,  theme:'🧠 Focus TDAH' },
-  { j:11, pdc:131, dej:106, din:162, snack:89,  theme:'🌿 Anti-inflam' },
-  { j:12, pdc:1,   dej:107, din:115, snack:90,  theme:'🩸 Boost Fer' },
-  { j:13, pdc:66,  dej:108, din:116, snack:91,  theme:'🥂 Brunch printemps' },
-  { j:14, pdc:67,  dej:109, din:117, snack:92,  theme:'🛌 Récupération' },
-  { j:15, pdc:68,  dej:110, din:118, snack:93,  theme:'🫘 Microbiote' },
-  { j:16, pdc:69,  dej:111, din:119, snack:94,  theme:'🦵 Circulation' },
-  { j:17, pdc:96,  dej:60,  din:120, snack:95,  theme:'⚡ Vitalité' },
-  { j:18, pdc:97,  dej:61,  din:121, snack:124, theme:'🌿 Légèreté' },
-  { j:19, pdc:98,  dej:70,  din:122, snack:125, theme:'🧠 Concentration' },
-  { j:20, pdc:99,  dej:71,  din:123, snack:126, theme:'🥂 Brunch gourmand' },
-  { j:21, pdc:100, dej:72,  din:134, snack:127, theme:'🌸 Bien-être total' },
-  { j:22, pdc:101, dej:73,  din:135, snack:128, theme:'🩸 Fer héminique' },
-  { j:23, pdc:102, dej:74,  din:155, snack:129, theme:'🦵 SJSR nuit calme' },
-  { j:24, pdc:103, dej:154, din:75,  snack:130, theme:'🌿 Anti-inflam' },
-  { j:25, pdc:131, dej:158, din:76,  snack:80,  theme:'⚡ Énergie durable' },
-  { j:26, pdc:1,   dej:160, din:77,  snack:81,  theme:'🧠 TDAH focus' },
-  { j:27, pdc:66,  dej:163, din:78,  snack:82,  theme:'🥂 Brunch estival' },
-  { j:28, pdc:67,  dej:104, din:79,  snack:83,  theme:'🛌 Sommeil réparateur' },
-  { j:29, pdc:68,  dej:105, din:112, snack:84,  theme:'🌸 Bilan semaine 4' },
-  { j:30, pdc:69,  dej:106, din:113, snack:85,  theme:'💪 Récap mai' },
-  { j:31, pdc:96,  dej:107, din:114, snack:161, theme:'🎉 Dernier jour mai' },
-];
+  document.querySelectorAll('#page-recettes .jtab').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  if (btn) btn.classList.add('active');
+
+  // Remplir la liste des compléments à la première ouverture
+  if (tab === 'complements' && typeof renderComplementsList === 'function') {
+    var listEl = document.getElementById('complements-list');
+    if (listEl && !listEl.dataset.rendered) {
+      renderComplementsList('complements-list');
+      listEl.dataset.rendered = 'true';
+    }
+  }
+}
+
+// Plans mensuels → définis dans flora_plans.js, chargé avant app.js dans index.html
+
 
 const JOURS_SEMAINE = ['Dim','Lun','Mar','Mer','Jeu','Ven','Sam'];
 const MOIS = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','nov','déc'];
@@ -7365,7 +5441,18 @@ const MOIS = ['jan','fév','mar','avr','mai','juin','juil','août','sep','oct','
 function renderPlanMensuel() {
   const now = new Date();
   const moisNum = now.getMonth(); // 3=avril, 4=mai
-  renderPlanMoisSpec(moisNum === 3 ? 3 : 4);
+  // Plans disponibles pour 2026
+  const plansDisponibles = [3, 4]; // avril, mai
+  let moisAffiche;
+  if (plansDisponibles.includes(moisNum)) {
+    moisAffiche = moisNum;
+  } else {
+    // Hors avril/mai : afficher le plus proche du mois courant
+    moisAffiche = plansDisponibles.reduce((a, b) =>
+      Math.abs(b - moisNum) < Math.abs(a - moisNum) ? b : a
+    );
+  }
+  renderPlanMoisSpec(moisAffiche);
 }
 
 function renderPlanMoisSpec(moisIdx) {
@@ -7500,94 +5587,266 @@ function checkGenAccess() {
   // Rien à faire — le mur premium est géré dans generateMenu
 }
 
+// ============================================================
+// GÉNÉRATEUR DE MENU INTELLIGENT
+// ============================================================
+//
+// Contraintes appliquées en cascade :
+//  1. Filtres durs : profil (sg/sl/vg), accès premium
+//  2. Boost nutritionnel selon priorité utilisatrice
+//  3. Anti-répétition stricte (aucun même plat dans la semaine)
+//  4. Anti-monotonie : pas le même type d'ingrédient principal 2 jours
+//     d'affilée (poisson, légumineuse, volaille, œuf, tofu, autre)
+//  5. Équilibre semaine sur les dîners : viser ≥ 2 poissons gras
+//     (oméga-3) et ≥ 1 légumineuse sur la semaine
+
+// Détection du type d'ingrédient principal d'une recette
+function detectMainType(recette) {
+  var allText = ((recette.ingredients || []).join(' ') + ' ' + (recette.nom || '')).toLowerCase();
+  // Ordre = priorité (poisson gras avant poisson maigre)
+  if (/saumon|maquereau|sardine|hareng|truite/.test(allText))         return 'poisson-gras';
+  if (/cabillaud|colin|dorade|lieu|merlu|bar\b|sole/.test(allText))   return 'poisson-maigre';
+  if (/lentille|pois chiche|haricot|fève|edamame/.test(allText))      return 'legumineuse';
+  if (/poulet|dinde|volaille/.test(allText))                          return 'volaille';
+  if (/agneau|bœuf|boeuf|veau|porc/.test(allText))                    return 'viande-rouge';
+  if (/tofu|tempeh|seitan/.test(allText))                             return 'tofu';
+  if (/œuf|oeuf/.test(allText))                                       return 'oeuf';
+  if (/quinoa|sarrasin|riz|millet|polenta/.test(allText))             return 'cereale';
+  return 'autre';
+}
+
+// Score nutritionnel selon la priorité (0 à 1)
+function scorePriority(recette, priorite) {
+  var text = ((recette.benefices || '') + ' ' + (recette.ingredients || []).join(' ') + ' ' + (recette.nom || '')).toLowerCase();
+  if (priorite === 'sommeil') {
+    var motsSommeil = ['magnésium', 'magnesium', 'tryptophane', 'mélatonine', 'melatonine', 'sommeil',
+                       'sarrasin', 'amande', 'noix', 'banane', 'cerise', 'chocolat', 'cacao', 'avoine'];
+    return motsSommeil.filter(function(m) { return text.includes(m); }).length / 4;
+  }
+  if (priorite === 'energie') {
+    var motsEnergie = ['fer', 'protéine', 'proteine', 'tyrosine', 'dopamine', 'énergie', 'energie',
+                       'lentille', 'pois chiche', 'sardine', 'maquereau', 'persil', 'épinard', 'epinard',
+                       'graine de courge', 'spiruline', 'cacao'];
+    return motsEnergie.filter(function(m) { return text.includes(m); }).length / 4;
+  }
+  if (priorite === 'digestion') {
+    var motsDigest = ['microbiote', 'fibre', 'digestion', 'probiotique', 'fenouil', 'gingembre',
+                      'curcuma', 'menthe', 'aneth', 'cumin'];
+    var bonus = (recette.tags && recette.tags.indexOf('vg') >= 0) ? 0.4 : 0;
+    return Math.min(1, motsDigest.filter(function(m) { return text.includes(m); }).length / 3 + bonus);
+  }
+  // anti-inflammatoire (par défaut)
+  var motsAI = ['oméga', 'omega', 'curcuma', 'gingembre', 'anti-inflammatoire', 'antioxydant',
+                'chia', 'lin', 'saumon', 'maquereau', 'sardine', 'noix', 'olive', 'avocat'];
+  return motsAI.filter(function(m) { return text.includes(m); }).length / 4;
+}
+
+// Filtre dur d'un pool selon le profil utilisateur
+function applyProfileFilter(pool) {
+  return pool.filter(function(r) {
+    if (profile.sansGluten  && !(r.tags || []).includes('sg')) return false;
+    if (profile.sansLactose && !(r.tags || []).includes('sl')) return false;
+    if (profile.vegetarien  && !(r.tags || []).includes('vg')) return false;
+    return true;
+  });
+}
+
+// Choix pondéré : score = base aléatoire + bonus priorité − pénalité contraintes
+function pickWeighted(pool, priorite, used, prevType) {
+  if (!pool.length) return null;
+  // Filtrer ce qui a déjà été utilisé cette semaine
+  var available = pool.filter(function(r) { return !used[r.id]; });
+  if (!available.length) available = pool; // fallback si épuisé
+
+  var scored = available.map(function(r) {
+    var s = Math.random() * 0.5;          // base aléatoire (variété)
+    s += scorePriority(r, priorite) * 0.6; // boost priorité
+    if (typeof isFavori === 'function' && isFavori(r.id)) s += 0.35; // boost favori
+    if (prevType && detectMainType(r) === prevType) s -= 0.4; // pénalité monotonie
+    return { r: r, score: s };
+  });
+  scored.sort(function(a, b) { return b.score - a.score; });
+  return scored[0].r;
+}
+
 function generateMenu() {
-  const duree    = parseInt(document.getElementById('gen-duree').value);
-  const priorite = document.getElementById('gen-priorite').value;
+  var duree    = parseInt(document.getElementById('gen-duree').value, 10);
+  var priorite = document.getElementById('gen-priorite').value;
 
   if (!isPremium && duree > 3) {
     document.getElementById('generated-menu').classList.add('hidden');
     document.getElementById('gen-premium-wall').classList.remove('hidden');
     return;
   }
-
   document.getElementById('gen-premium-wall').classList.add('hidden');
 
-  const petitsDej = RECETTES.filter(r => r.cat === 'petit-dejeuner' && (!r.premium || isPremium));
-  const brunchs   = RECETTES.filter(r => r.cat === 'brunch'         && (!r.premium || isPremium));
-  const dejeuners = RECETTES.filter(r => r.cat === 'dejeuner'       && (!r.premium || isPremium));
-  const diners    = RECETTES.filter(r => r.cat === 'diner'           && (!r.premium || isPremium));
-  const snacks    = RECETTES.filter(r => r.cat === 'snack'           && (!r.premium || isPremium));
+  // 1. Pools filtrés par accès et profil
+  function pool(cat) {
+    var arr = RECETTES.filter(function(r) {
+      return r.cat === cat && (!r.premium || isPremium);
+    });
+    var filtered = applyProfileFilter(arr);
+    return filtered.length ? filtered : arr; // fallback si profil trop strict
+  }
+  var petitsDej = pool('petit-dejeuner');
+  var brunchs   = pool('brunch');
+  var dejeuners = pool('dejeuner');
+  var diners    = pool('diner');
+  var snacks    = pool('snack');
 
-  const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+  // 2. Détection si profil restrictif a forcé un fallback (pour avertir)
+  var stricteFallback = false;
+  ['petit-dejeuner', 'dejeuner', 'diner', 'snack'].forEach(function(c) {
+    var raw = RECETTES.filter(function(r) { return r.cat === c && (!r.premium || isPremium); });
+    var filt = applyProfileFilter(raw);
+    if (raw.length && !filt.length) stricteFallback = true;
+  });
 
-  // Filtre par priorité — basé sur nutri et benefices (les tags sg/sl/vg n'incluent pas fer)
-  const filterPriority = (arr) => {
-    if (!arr || !arr.length) return arr;
-    if (priorite === 'energie') {
-      const filtered = arr.filter(r => r.nutri?.fer || r.nutri?.proteines || r.calories > 350);
-      return filtered.length ? filtered : arr;
-    }
-    if (priorite === 'sommeil') {
-      const filtered = arr.filter(r => r.benefices?.toLowerCase().includes('sommeil') || r.nutri?.magnesium);
-      return filtered.length ? filtered : arr;
-    }
-    if (priorite === 'digestion') {
-      const filtered = arr.filter(r => r.tags?.includes('vg') || r.benefices?.toLowerCase().includes('microbiot') || r.benefices?.toLowerCase().includes('digest'));
-      return filtered.length ? filtered : arr;
-    }
-    return arr; // anti-inflammatoire = tout
-  };
+  // 3. Génération jour par jour avec mémoire des contraintes
+  var today = new Date();
+  var used = {}; // recette.id → true si déjà utilisée
+  var jours = [];
+  var prevDejType = null, prevDinType = null;
 
-  const today = new Date();
-  let html = '';
-
-  for (let i = 0; i < duree; i++) {
-    const d = new Date(today);
+  for (var i = 0; i < duree; i++) {
+    var d = new Date(today);
     d.setDate(today.getDate() + i);
-    const label    = d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-    const jourSem  = d.getDay(); // 0=dim, 6=sam
-    const isWeekend = jourSem === 0 || jourSem === 6;
+    var jourSem = d.getDay(); // 0=dim, 6=sam
+    var isWeekend = jourSem === 0 || jourSem === 6;
 
-    // Week-end : possibilité brunch à la place du petit-déj
-    const pDejArr = isWeekend && brunchs.length ? brunchs : petitsDej;
-    const pDej    = pick(filterPriority(pDejArr));
-    const dej     = pick(filterPriority(dejeuners));
-    const din     = pick(filterPriority(diners));
-    const snack   = pick(snacks);
+    var pDejPool = (isWeekend && brunchs.length) ? brunchs : petitsDej;
+    var pDej  = pickWeighted(pDejPool,  priorite, used, null);
+    var dej   = pickWeighted(dejeuners, priorite, used, prevDejType);
+    // Pour le dîner : éviter le type du déjeuner du jour ET du dîner de la veille
+    var dejTypeToday = dej ? detectMainType(dej) : null;
+    var dinAvoidType = (prevDinType && Math.random() < 0.5) ? prevDinType : dejTypeToday;
+    var din   = pickWeighted(diners,    priorite, used, dinAvoidType);
+    var snack = pickWeighted(snacks,    priorite, used, null);
 
-    const pDejLabel = isWeekend && pDejArr === brunchs ? '🥂 Brunch' : '🌅 Petit-déj';
+    [pDej, dej, din, snack].forEach(function(r) { if (r) used[r.id] = true; });
+    if (dej) prevDejType = detectMainType(dej);
+    if (din) prevDinType = detectMainType(din);
 
-    html += `
-      <div class="gen-day-block" data-pdej="${pDej?.id}" data-dej="${dej?.id}" data-din="${din?.id}">
-        <div class="gen-day-title">📅 ${label}${isWeekend ? ' 🌿' : ''}</div>
-        <div class="gen-meal" onclick="openRecette(${pDej?.id})" style="cursor:pointer;">
-          <div class="gen-meal-label">${pDejLabel}</div>
-          <div class="gen-meal-name">${pDej?.emoji} ${pDej?.nom}</div>
-        </div>
-        <div class="gen-meal" onclick="openRecette(${dej?.id})" style="cursor:pointer;">
-          <div class="gen-meal-label">☀️ Déjeuner</div>
-          <div class="gen-meal-name">${dej?.emoji} ${dej?.nom}</div>
-        </div>
-        <div class="gen-meal" onclick="openRecette(${din?.id})" style="cursor:pointer;">
-          <div class="gen-meal-label">🌙 Dîner</div>
-          <div class="gen-meal-name">${din?.emoji} ${din?.nom}</div>
-        </div>
-        ${snack ? `
-        <div class="gen-meal" onclick="openRecette(${snack.id})" style="cursor:pointer;opacity:0.8;">
-          <div class="gen-meal-label">🍎 Snack</div>
-          <div class="gen-meal-name">${snack.emoji} ${snack.nom}</div>
-        </div>` : ''}
-      </div>`;
+    jours.push({
+      d: d, isWeekend: isWeekend,
+      pDej: pDej, dej: dej, din: din, snack: snack,
+      isBrunch: pDejPool === brunchs && isWeekend
+    });
   }
 
-  const generated = document.getElementById('generated-menu');
-  generated.innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-      <div style="font-family:var(--font-display);color:var(--green-deep);font-size:1.1rem;">Menu généré ✨</div>
-      <button class="btn-primary" onclick="generateMenu()" style="padding:8px 16px;font-size:0.82rem;">🔄 Régénérer</button>
-    </div>
-    ${html}
-    <button class="btn-primary full-width" onclick="applyMenuToAgenda()">📅 Importer dans l'agenda</button>`;
+  // 4. Équilibre semaine sur les dîners (≥ 2 poissons gras, ≥ 1 légumineuse si duree ≥ 5)
+  if (duree >= 5) {
+    var dinTypes = jours.map(function(j) { return j.din ? detectMainType(j.din) : null; });
+    var nbPoissonGras = dinTypes.filter(function(t) { return t === 'poisson-gras'; }).length;
+    var nbLegumineuse = dinTypes.filter(function(t) { return t === 'legumineuse'; }).length;
+
+    function trySwap(targetType, minNeeded, count) {
+      while (count < minNeeded) {
+        var candidat = diners.filter(function(r) { return detectMainType(r) === targetType && !used[r.id]; });
+        if (!candidat.length) return count; // pool épuisé
+        // Trouver le jour à remplacer : un jour dont le dîner n'est PAS le type cible et qui a un type abondant
+        var idxRemplacable = -1;
+        for (var k = 0; k < jours.length; k++) {
+          var t = jours[k].din ? detectMainType(jours[k].din) : null;
+          if (t !== targetType && t !== 'legumineuse' && t !== 'poisson-gras') {
+            idxRemplacable = k; break;
+          }
+        }
+        if (idxRemplacable < 0) {
+          // dernier recours : remplacer un type déjà sur-représenté
+          for (var k2 = 0; k2 < jours.length; k2++) {
+            var t2 = jours[k2].din ? detectMainType(jours[k2].din) : null;
+            if (t2 !== targetType) { idxRemplacable = k2; break; }
+          }
+        }
+        if (idxRemplacable < 0) return count;
+        var newDin = candidat[Math.floor(Math.random() * candidat.length)];
+        if (jours[idxRemplacable].din) used[jours[idxRemplacable].din.id] = false;
+        used[newDin.id] = true;
+        jours[idxRemplacable].din = newDin;
+        count++;
+      }
+      return count;
+    }
+    nbPoissonGras = trySwap('poisson-gras', 2, nbPoissonGras);
+    nbLegumineuse = trySwap('legumineuse', 1, nbLegumineuse);
+  }
+
+  // 5. Construction du HTML
+  var html = '';
+  jours.forEach(function(j) {
+    var label    = j.d.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+    var pDejLab  = j.isBrunch ? '🥂 Brunch' : '🌅 Petit-déj';
+    var pDejId = j.pDej ? j.pDej.id : '';
+    var dejId  = j.dej  ? j.dej.id  : '';
+    var dinId  = j.din  ? j.din.id  : '';
+    var snId   = j.snack ? j.snack.id : '';
+
+    html += '<div class="gen-day-block" data-pdej="' + pDejId + '" data-dej="' + dejId + '" data-din="' + dinId + '" data-snack="' + snId + '">';
+    html +=   '<div class="gen-day-title">📅 ' + label + (j.isWeekend ? ' 🌿' : '') + '</div>';
+    if (j.pDej) {
+      html += '<div class="gen-meal" onclick="openRecette(' + j.pDej.id + ')" style="cursor:pointer;">';
+      html +=   '<div class="gen-meal-label">' + pDejLab + '</div>';
+      html +=   '<div class="gen-meal-name">' + j.pDej.emoji + ' ' + j.pDej.nom + '</div>';
+      html += '</div>';
+    }
+    if (j.dej) {
+      html += '<div class="gen-meal" onclick="openRecette(' + j.dej.id + ')" style="cursor:pointer;">';
+      html +=   '<div class="gen-meal-label">☀️ Déjeuner</div>';
+      html +=   '<div class="gen-meal-name">' + j.dej.emoji + ' ' + j.dej.nom + '</div>';
+      html += '</div>';
+    }
+    if (j.din) {
+      html += '<div class="gen-meal" onclick="openRecette(' + j.din.id + ')" style="cursor:pointer;">';
+      html +=   '<div class="gen-meal-label">🌙 Dîner</div>';
+      html +=   '<div class="gen-meal-name">' + j.din.emoji + ' ' + j.din.nom + '</div>';
+      html += '</div>';
+    }
+    if (j.snack) {
+      html += '<div class="gen-meal" onclick="openRecette(' + j.snack.id + ')" style="cursor:pointer;opacity:0.85;">';
+      html +=   '<div class="gen-meal-label">🍎 Collation</div>';
+      html +=   '<div class="gen-meal-name">' + j.snack.emoji + ' ' + j.snack.nom + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+  });
+
+  // 6. Bilan équilibre (info utilisatrice)
+  var bilanHtml = '';
+  if (duree >= 5) {
+    var typesD = jours.map(function(j) { return j.din ? detectMainType(j.din) : null; }).filter(Boolean);
+    var nbPG = typesD.filter(function(t) { return t === 'poisson-gras'; }).length;
+    var nbLeg = typesD.filter(function(t) { return t === 'legumineuse'; }).length;
+    var allRecettes = [];
+    jours.forEach(function(j) { ['pDej','dej','din','snack'].forEach(function(k) { if (j[k]) allRecettes.push(j[k].id); }); });
+    var nbDistinctes = Object.keys(allRecettes.reduce(function(o, id) { o[id] = 1; return o; }, {})).length;
+
+    bilanHtml = '<div style="background:#f1f8f1;border-left:4px solid #3d6b58;border-radius:8px;padding:12px 14px;margin:12px 0;font-size:0.82rem;color:#2d4a3e;">';
+    bilanHtml +=   '<div style="font-weight:600;margin-bottom:6px;">🌿 Bilan de la semaine</div>';
+    bilanHtml +=   '<div>· ' + nbDistinctes + ' recettes différentes sur ' + allRecettes.length + ' repas</div>';
+    bilanHtml +=   '<div>· ' + nbPG + ' dîner' + (nbPG > 1 ? 's' : '') + ' avec poisson gras (oméga-3)</div>';
+    bilanHtml +=   '<div>· ' + nbLeg + ' dîner' + (nbLeg > 1 ? 's' : '') + ' légumineuse (fer + fibres)</div>';
+    bilanHtml += '</div>';
+  }
+
+  // 7. Avertissement profil restrictif
+  var fallbackHtml = '';
+  if (stricteFallback) {
+    fallbackHtml = '<div style="background:#fef6e7;border-left:4px solid #d4a574;border-radius:8px;padding:10px 14px;margin:12px 0;font-size:0.78rem;color:#7a5e1e;">';
+    fallbackHtml +=  '⚠️ Certaines catégories n\'avaient pas assez de recettes compatibles avec ton profil. Quelques choix peuvent ne pas respecter tous tes filtres.';
+    fallbackHtml += '</div>';
+  }
+
+  var generated = document.getElementById('generated-menu');
+  generated.innerHTML =
+    '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
+      '<div style="font-family:var(--font-display);color:var(--green-deep);font-size:1.1rem;">Menu généré ✨</div>' +
+      '<button class="btn-primary" onclick="generateMenu()" style="padding:8px 16px;font-size:0.82rem;">🔄 Régénérer</button>' +
+    '</div>' +
+    fallbackHtml +
+    bilanHtml +
+    html +
+    '<button class="btn-primary full-width" onclick="applyMenuToAgenda()">📅 Importer dans l\'agenda</button>';
 
   generated.classList.remove('hidden');
   generated.dataset.duree = duree;
@@ -7613,14 +5872,17 @@ function applyMenuToAgenda() {
     const pDejId = parseInt(block.dataset.pdej);
     const dejId  = parseInt(block.dataset.dej);
     const dinId  = parseInt(block.dataset.din);
+    const snId   = parseInt(block.dataset.snack);
 
     if (!agenda[dk]) agenda[dk] = {};
     if (pDejId) agenda[dk]['petitdej'] = pDejId;
     if (dejId)  agenda[dk]['dejeuner'] = dejId;
     if (dinId)  agenda[dk]['diner']    = dinId;
+    if (snId)   agenda[dk]['snack']    = snId;
   });
 
   saveState();
+  if (typeof checkBadges === 'function') checkBadges();
   showPage('agenda');
 
   // Toast confirmation
@@ -7673,13 +5935,6 @@ function saveProfil(btn) {
   if (cycleEl) {
     profile.cycleEnabled = cycleEl.checked;
   }
-  
-  // Aussi dans flora_profil pour shouldShowCycle()
-  try {
-    const stored = JSON.parse(localStorage.getItem('flora_profil') || '{}');
-    stored.cycleEnabled = profile.cycleEnabled;
-    localStorage.setItem('flora_profil', JSON.stringify(stored));
-  } catch(e) {}
 
   saveState();
   updateDashboard();
@@ -7755,250 +6010,6 @@ function activatePremium() {
 // SERVICE WORKER
 // ============================
 
-// ============================
-// COMPLÉMENTS ALIMENTAIRES SJSR/TDAH
-// ============================
-const COMPLEMENTS_SJSR = [
-  // ===== TIER 1 — EVIDENCE FORTE =====
-  {
-    nom: 'Magnésium bisglycinate',
-    icon: '💊',
-    tier: 1,
-    benefit: 'Réduit significativement les impatiences nocturnes et améliore la qualité du sommeil',
-    dosage: '300–400 mg/jour, le soir 30 min avant le coucher',
-    duree: '4 à 8 semaines pour effet optimal',
-    interactions: 'Espacer de 2h des comprimés thyroïdiens',
-    forme: 'Bisglycinate (mieux assimilé) ou citrate',
-    science: 'Études cliniques 2018-2023 — réduction 40% des symptômes SJSR',
-    color: '#3d6b58',
-    bg: '#e8f5d9'
-  },
-  {
-    nom: 'Fer (bisglycinate)',
-    icon: '🩸',
-    tier: 1,
-    benefit: 'Indispensable si ferritine < 75 ng/mL — corrige la cause principale du SJSR',
-    dosage: '14–28 mg/jour selon prescription, à jeun avec vitamine C',
-    duree: '3 à 6 mois minimum, contrôle ferritine à 3 mois',
-    interactions: 'Éviter avec thé/café/calcium (espacer 2h). Vitamine C multiplie l\'absorption x3',
-    forme: 'Bisglycinate de fer (mieux toléré digestivement)',
-    science: 'Recommandation IRLSSG — cible ferritine > 100 ng/mL',
-    color: '#c2547a',
-    bg: '#fdf0f8'
-  },
-  {
-    nom: 'Vitamine D3',
-    icon: '☀️',
-    tier: 1,
-    benefit: 'Carence très fréquente dans le SJSR — supplémentation réduit la sévérité',
-    dosage: '2000–4000 UI/jour selon dosage sanguin',
-    duree: 'Continue (cible 50–80 ng/mL)',
-    interactions: 'Synergique avec magnésium et K2',
-    forme: 'D3 (cholécalciférol) en gouttes huileuses',
-    science: 'Méta-analyses 2020 — corrélation forte SJSR/déficit vitD',
-    color: '#d97706',
-    bg: '#fef3c7'
-  },
-  {
-    nom: 'Oméga-3 (EPA/DHA)',
-    icon: '🐟',
-    tier: 1,
-    benefit: 'Anti-inflammatoire puissant, réduit douleurs neurogènes, soutien dopaminergique',
-    dosage: '1000–2000 mg EPA+DHA/jour pendant les repas',
-    duree: '8 à 12 semaines pour effet anti-inflammatoire',
-    interactions: 'Anticoagulants — demander avis médical',
-    forme: 'Huile de poisson sauvage (TG ou rTG), label IFOS',
-    science: 'Études 2021 — modulation positive de la dopamine',
-    color: '#3d6b58',
-    bg: '#e8f5d9'
-  },
-
-  // ===== TIER 2 — EVIDENCE MODÉRÉE =====
-  {
-    nom: 'L-Tyrosine',
-    icon: '🧠',
-    tier: 2,
-    benefit: 'Précurseur de la dopamine — utile en TDAH et fatigue mentale',
-    dosage: '500–1000 mg le matin à jeun',
-    duree: 'Cures de 4 à 6 semaines',
-    interactions: 'Ne pas associer à L-DOPA, IMAO. Éviter le soir (énergie)',
-    forme: 'L-Tyrosine pure en gélules',
-    science: 'Études TDAH 2019 — soutien attention et motivation',
-    color: '#7a4e8a',
-    bg: '#f0e8f5'
-  },
-  {
-    nom: 'Méthylfolate (B9 active)',
-    icon: '🌿',
-    tier: 2,
-    benefit: 'Forme active de la B9 — cofacteur synthèse dopamine/sérotonine',
-    dosage: '400–800 µg/jour le matin',
-    duree: 'Continue',
-    interactions: 'Couplé idéalement avec B12 méthylcobalamine',
-    forme: '5-MTHF (méthylfolate) — pas d\'acide folique synthétique',
-    science: 'Particulièrement utile chez porteurs de mutation MTHFR',
-    color: '#3d6b58',
-    bg: '#e8f5d9'
-  },
-  {
-    nom: 'Zinc',
-    icon: '🌾',
-    tier: 2,
-    benefit: 'Cofacteur de la dopamine et du système immunitaire',
-    dosage: '15–25 mg/jour avec un repas',
-    duree: 'Cures de 2 à 3 mois',
-    interactions: 'Espacer du fer et du calcium (compétition d\'absorption)',
-    forme: 'Bisglycinate ou picolinate de zinc',
-    science: 'Carence corrélée avec sévérité SJSR et TDAH',
-    color: '#a0735c',
-    bg: '#f5e8db'
-  },
-  {
-    nom: 'Mélatonine',
-    icon: '🌙',
-    tier: 2,
-    benefit: 'Régule le rythme veille-sommeil — utile si endormissement difficile',
-    dosage: '0.5–2 mg, 30–60 min avant coucher',
-    duree: 'Cures courtes (max 3 mois) puis pause',
-    interactions: 'Anti-dépresseurs, anticoagulants — avis médical',
-    forme: 'LP (libération prolongée) si réveils nocturnes',
-    science: 'Étude 2022 — amélioration latence d\'endormissement',
-    color: '#7a4e8a',
-    bg: '#f0e8f5'
-  },
-
-  // ===== TIER 3 — COMPLÉMENTAIRES =====
-  {
-    nom: 'L-Théanine',
-    icon: '🍵',
-    tier: 3,
-    benefit: 'Apaisant — réduit anxiété sans somnolence',
-    dosage: '200 mg en fin de journée',
-    duree: 'Au besoin',
-    interactions: 'Synergique avec magnésium',
-    forme: 'Suntheanine pure',
-    science: 'Réduction du stress anticipatoire',
-    color: '#3d6b58',
-    bg: '#e8f5d9'
-  },
-  {
-    nom: 'Curcumine + Pipérine',
-    icon: '🟡',
-    tier: 3,
-    benefit: 'Anti-inflammatoire systémique — soulage douleurs chroniques',
-    dosage: '500–1000 mg curcumine avec pipérine, 2x/jour aux repas',
-    duree: 'Cures de 2 à 3 mois',
-    interactions: 'Anticoagulants — espacer',
-    forme: 'Standardisé à 95% curcuminoïdes + pipérine',
-    science: 'Effet anti-inflammatoire comparable à AINS',
-    color: '#d97706',
-    bg: '#fef3c7'
-  }
-];
-
-function switchRecettesTab(tab, btn) {
-  console.log('[Flōra] switchRecettesTab called:', tab);
-  // Cacher tous les contenus
-  ['recettes','complements'].forEach(function(t) {
-    const el = document.getElementById(t + '-tab-content');
-    if (el) {
-      el.classList.add('hidden');
-      el.style.display = 'none'; // double protection
-    }
-  });
-  // Afficher le bon
-  const target = document.getElementById(tab + '-tab-content');
-  if (target) {
-    target.classList.remove('hidden');
-    target.style.display = ''; // reset le display inline
-    console.log('[Flōra] Showing tab:', tab);
-  } else {
-    console.error('[Flōra] Tab content not found:', tab + '-tab-content');
-  }
-
-  // Update boutons actifs
-  document.querySelectorAll('#page-recettes .jtab').forEach(function(b) {
-    b.classList.remove('active');
-  });
-  if (btn) btn.classList.add('active');
-
-  if (tab === 'complements') {
-    // Nouveau système (depuis flora_interactions.js) — fallback sur l'ancien si non chargé
-    if (typeof renderComplementsList === 'function') {
-      renderComplementsList('complements-list');
-      if (typeof updateComplementsBanner === 'function') {
-        updateComplementsBanner();
-      }
-    } else {
-      renderComplements();
-    }
-  }
-}
-
-function renderComplements() {
-  const container = document.getElementById('complements-list');
-  if (!container) return;
-
-  // Grouper par tier
-  const byTier = { 1: [], 2: [], 3: [] };
-  COMPLEMENTS_SJSR.forEach(function(c) {
-    byTier[c.tier].push(c);
-  });
-
-  const tierLabels = {
-    1: { l: '⭐ Recommandés en 1ère intention', sub: 'Evidence scientifique forte' },
-    2: { l: '✓ Soutien complémentaire', sub: 'Evidence modérée — selon profil' },
-    3: { l: '🌿 Optionnels', sub: 'Au cas par cas' }
-  };
-
-  let html = '';
-
-  [1, 2, 3].forEach(function(tier) {
-    if (byTier[tier].length === 0) return;
-    const t = tierLabels[tier];
-    html += '<div style="margin-bottom:24px;">' +
-      '<div style="font-size:0.78rem;font-weight:700;color:#2d4a3e;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">' + t.l + '</div>' +
-      '<div style="font-size:0.78rem;color:#8a9e96;font-style:italic;margin-bottom:14px;">' + t.sub + '</div>';
-
-    byTier[tier].forEach(function(c, idx) {
-      const id = 'comp-' + tier + '-' + idx;
-      html += '<div class="comp-card" id="' + id + '" onclick="toggleComp(\'' + id + '\')">' +
-        '<div class="comp-header">' +
-          '<div class="comp-icon-circle" style="background:' + c.bg + ';">' + c.icon + '</div>' +
-          '<div style="flex:1;min-width:0;">' +
-            '<div class="comp-name">' + c.nom + '</div>' +
-            '<div class="comp-benefit">' + c.benefit + '</div>' +
-          '</div>' +
-          '<span class="comp-arrow">›</span>' +
-        '</div>' +
-        '<div class="comp-details">' +
-          '<div class="comp-detail-row"><span class="comp-detail-label">💊 Dosage</span><span class="comp-detail-val">' + c.dosage + '</span></div>' +
-          '<div class="comp-detail-row"><span class="comp-detail-label">⏱ Durée</span><span class="comp-detail-val">' + c.duree + '</span></div>' +
-          '<div class="comp-detail-row"><span class="comp-detail-label">🧬 Forme</span><span class="comp-detail-val">' + c.forme + '</span></div>' +
-          '<div class="comp-detail-row"><span class="comp-detail-label">⚠️ Interactions</span><span class="comp-detail-val">' + c.interactions + '</span></div>' +
-          '<div class="comp-science">📚 ' + c.science + '</div>' +
-        '</div>' +
-      '</div>';
-    });
-
-    html += '</div>';
-  });
-
-  // Disclaimer
-  html += '<div style="background:#fef6f4;border-left:3px solid #c0614a;border-radius:8px;padding:12px 14px;margin-top:8px;font-size:0.82rem;color:#5a4e44;line-height:1.5;">' +
-    '<strong>⚠️ Important :</strong> Ces informations sont fournies à titre éducatif. Toute supplémentation doit être validée par votre médecin, surtout si vous prenez d\'autres traitements. Un bilan sanguin (ferritine, vitamine D, B12) est recommandé avant toute cure.' +
-  '</div>';
-
-  container.innerHTML = html;
-}
-
-function toggleComp(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.toggle('expanded');
-}
-
-
-
 // Fix tabs Recettes/Compléments — bind explicite au DOMContentLoaded
 (function() {
   function bindRecettesTabs() {
@@ -8017,7 +6028,6 @@ function toggleComp(id) {
         }
       });
     });
-    console.log('[Flōra] Tabs recettes bindés:', tabs.length);
   }
   
   if (document.readyState === 'loading') {
@@ -8246,16 +6256,403 @@ function toggleSymptome(id) {
   renderJournalToday();
 }
 
+// ============================================================
+// BLOC REPAS DU JOUR — saisie libre + recettes Flōra
+// ============================================================
+
+const REPAS_SLOTS = [
+  { key: 'petit-dejeuner', label: 'Petit-déj', emoji: '🌅' },
+  { key: 'dejeuner',       label: 'Déjeuner', emoji: '☀️' },
+  { key: 'diner',          label: 'Dîner',    emoji: '🌙' },
+  { key: 'snack',          label: 'Snack',    emoji: '🍎' }
+];
+
+function renderRepasBlock() {
+  const slotsHTML = REPAS_SLOTS.map(s => {
+    const r = _journalRepas[s.key];
+    let contenu = '';
+    if (!r) {
+      // Aucune saisie — 3 boutons modes
+      contenu =
+        '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">' +
+          '<button onclick="setRepasMode(\'' + s.key + '\',\'recette\')" class="repas-mode-btn">🍽️ Recette Flōra</button>' +
+          '<button onclick="setRepasMode(\'' + s.key + '\',\'libre\')" class="repas-mode-btn">✏️ Repas libre</button>' +
+          '<button onclick="setRepasMode(\'' + s.key + '\',\'saute\')" class="repas-mode-btn">⏭️ Sauté</button>' +
+        '</div>';
+    } else if (r.type === 'recette') {
+      const recette = RECETTES.find(rec => rec.id === r.recetteId);
+      const fromAgendaBadge = r.fromAgenda ?
+        '<span style="font-size:0.65rem;background:var(--green-deep);color:#fff;padding:2px 7px;border-radius:99px;margin-left:6px;vertical-align:middle;white-space:nowrap;">📅 prévu</span>' : '';
+      contenu =
+        '<div style="display:flex;align-items:center;gap:10px;margin-top:8px;padding:10px;background:var(--cream);border-radius:10px;">' +
+          '<span style="font-size:1.4rem;">' + (recette ? recette.emoji : '🍽️') + '</span>' +
+          '<div style="flex:1;font-size:0.88rem;color:var(--text);font-weight:500;">' + (recette ? escapeHtml(recette.nom) : 'Recette inconnue') + fromAgendaBadge + '</div>' +
+          '<button onclick="clearRepas(\'' + s.key + '\')" aria-label="Retirer" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1.1rem;padding:4px 8px;">✕</button>' +
+        '</div>';
+    } else if (r.type === 'libre') {
+      const ingsTxt = (r.ingredients && r.ingredients.length) ? r.ingredients.slice(0, 4).join(' · ') + (r.ingredients.length > 4 ? '…' : '') : '';
+      contenu =
+        '<div style="display:flex;align-items:flex-start;gap:10px;margin-top:8px;padding:10px;background:var(--cream);border-radius:10px;">' +
+          '<span style="font-size:1.2rem;">✏️</span>' +
+          '<div style="flex:1;">' +
+            '<div style="font-size:0.88rem;color:var(--text);font-weight:600;">' + escapeHtml(r.titre || 'Repas libre') + '</div>' +
+            (ingsTxt ? '<div style="font-size:0.75rem;color:var(--text-light);margin-top:2px;">' + escapeHtml(ingsTxt) + '</div>' : '') +
+          '</div>' +
+          '<button onclick="openRepasLibreEdit(\'' + s.key + '\')" aria-label="Modifier" style="background:none;border:none;color:var(--green-deep);cursor:pointer;font-size:0.9rem;padding:4px 6px;">✎</button>' +
+          '<button onclick="clearRepas(\'' + s.key + '\')" aria-label="Retirer" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1rem;padding:4px 6px;">✕</button>' +
+        '</div>';
+    } else if (r.type === 'saute') {
+      contenu =
+        '<div style="display:flex;align-items:center;gap:10px;margin-top:8px;padding:10px;background:#f7f3ee;border-radius:10px;opacity:0.7;">' +
+          '<span style="font-size:1.2rem;">⏭️</span>' +
+          '<div style="flex:1;font-size:0.85rem;color:var(--text-light);font-style:italic;">Repas sauté</div>' +
+          '<button onclick="clearRepas(\'' + s.key + '\')" aria-label="Retirer" style="background:none;border:none;color:var(--text-light);cursor:pointer;font-size:1rem;padding:4px 8px;">✕</button>' +
+        '</div>';
+    }
+    return '<div style="padding:10px 0;border-bottom:1px solid #ede8e0;">' +
+      '<div style="display:flex;align-items:center;gap:8px;">' +
+        '<span style="font-size:1.05rem;">' + s.emoji + '</span>' +
+        '<span style="font-weight:600;color:var(--text);font-size:0.92rem;">' + s.label + '</span>' +
+      '</div>' +
+      contenu +
+    '</div>';
+  }).join('');
+
+  return '<div class="journal-block">' +
+    '<div class="jblock-title">🍽️ Repas du jour</div>' +
+    '<div style="font-size:0.78rem;color:var(--text-light);margin-bottom:4px;">Pour aider Flōra à corréler ce que vous mangez avec vos symptômes.</div>' +
+    slotsHTML +
+  '</div>';
+}
+
+function escapeHtml(s) {
+  if (s == null) return '';
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// ============================================================
+// ILLUSTRATIONS SVG POUR LES ÉTATS VIDES
+// ============================================================
+// Toutes les illustrations partagent la palette Flōra (vert profond + crème + doré).
+// Elles sont volontairement minimalistes (un seul trait, lignes douces) pour
+// rester légères et cohérentes avec l'identité botanique de l'app.
+
+function svgEmptyFavoris() {
+  return (
+    '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="empty-illustration" aria-hidden="true">' +
+      // Tige souple
+      '<path d="M60 110 Q58 80 60 50" stroke="#3d6b58" stroke-width="2" fill="none" stroke-linecap="round"/>' +
+      // Feuille gauche
+      '<path d="M60 75 Q40 70 38 58 Q48 60 60 70 Z" fill="#a8cfb1" stroke="#3d6b58" stroke-width="1.5" stroke-linejoin="round"/>' +
+      // Feuille droite
+      '<path d="M60 65 Q80 60 82 48 Q72 50 60 60 Z" fill="#a8cfb1" stroke="#3d6b58" stroke-width="1.5" stroke-linejoin="round"/>' +
+      // Cœur stylisé en haut
+      '<path d="M60 35 C53 28, 42 28, 42 38 C42 48, 60 58, 60 58 C60 58, 78 48, 78 38 C78 28, 67 28, 60 35 Z" ' +
+        'fill="#fde8ec" stroke="#c0614a" stroke-width="1.8" stroke-linejoin="round" opacity="0.85"/>' +
+      // Petite étincelle
+      '<circle cx="35" cy="25" r="1.5" fill="#f0b429"/>' +
+      '<circle cx="88" cy="20" r="1.2" fill="#f0b429"/>' +
+      '<circle cx="92" cy="55" r="1" fill="#f0b429"/>' +
+    '</svg>'
+  );
+}
+
+function svgEmptyMeals() {
+  return (
+    '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="empty-illustration" aria-hidden="true">' +
+      // Assiette (cercle)
+      '<circle cx="60" cy="62" r="38" fill="#f7f3ee" stroke="#3d6b58" stroke-width="2"/>' +
+      // Cercle intérieur
+      '<circle cx="60" cy="62" r="30" fill="none" stroke="#3d6b58" stroke-width="1" opacity="0.5" stroke-dasharray="2 3"/>' +
+      // Couverts croisés
+      // Fourchette gauche
+      '<line x1="38" y1="20" x2="38" y2="48" stroke="#3d6b58" stroke-width="2" stroke-linecap="round"/>' +
+      '<line x1="35" y1="20" x2="35" y2="32" stroke="#3d6b58" stroke-width="1.5" stroke-linecap="round"/>' +
+      '<line x1="41" y1="20" x2="41" y2="32" stroke="#3d6b58" stroke-width="1.5" stroke-linecap="round"/>' +
+      // Cuillère droite
+      '<line x1="82" y1="32" x2="82" y2="48" stroke="#3d6b58" stroke-width="2" stroke-linecap="round"/>' +
+      '<ellipse cx="82" cy="26" rx="6" ry="9" fill="none" stroke="#3d6b58" stroke-width="2"/>' +
+      // Petites étoiles décoratives
+      '<text x="20" y="105" font-size="10" fill="#f0b429">✦</text>' +
+      '<text x="95" y="105" font-size="8" fill="#f0b429">✦</text>' +
+    '</svg>'
+  );
+}
+
+function svgEmptyJournal() {
+  return (
+    '<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" class="empty-illustration" aria-hidden="true">' +
+      // Carnet ouvert
+      '<rect x="20" y="35" width="80" height="55" rx="4" fill="#f7f3ee" stroke="#3d6b58" stroke-width="2"/>' +
+      // Pliure centrale
+      '<line x1="60" y1="35" x2="60" y2="90" stroke="#3d6b58" stroke-width="1.5"/>' +
+      // Lignes texte (page gauche)
+      '<line x1="28" y1="48" x2="54" y2="48" stroke="#a8cfb1" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<line x1="28" y1="58" x2="48" y2="58" stroke="#a8cfb1" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<line x1="28" y1="68" x2="52" y2="68" stroke="#a8cfb1" stroke-width="1.2" stroke-linecap="round"/>' +
+      // Lignes texte (page droite)
+      '<line x1="66" y1="48" x2="92" y2="48" stroke="#a8cfb1" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<line x1="66" y1="58" x2="86" y2="58" stroke="#a8cfb1" stroke-width="1.2" stroke-linecap="round"/>' +
+      '<line x1="66" y1="68" x2="90" y2="68" stroke="#a8cfb1" stroke-width="1.2" stroke-linecap="round"/>' +
+      // Petite plume / brin
+      '<path d="M85 18 Q88 24 88 32 Q92 30 94 22 Q92 16 85 18 Z" fill="#a8cfb1" stroke="#3d6b58" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<line x1="88" y1="30" x2="86" y2="38" stroke="#3d6b58" stroke-width="1.5" stroke-linecap="round"/>' +
+    '</svg>'
+  );
+}
+
+function setRepasMode(slotKey, mode) {
+  if (mode === 'saute') {
+    _journalRepas[slotKey] = { type: 'saute' };
+    saveJournal(); // sauve discrètement
+    renderJournalToday();
+  } else if (mode === 'recette') {
+    openRepasRecetteSelector(slotKey);
+  } else if (mode === 'libre') {
+    openRepasLibreModal(slotKey, null);
+  }
+}
+
+function clearRepas(slotKey) {
+  var current = _journalRepas[slotKey];
+  if (current) {
+    var nom = '';
+    if (current.type === 'recette' && current.recetteId) {
+      var r = RECETTES.find(function(x) { return x.id === current.recetteId; });
+      nom = r ? ' « ' + r.nom + ' »' : '';
+    } else if (current.type === 'libre' && current.titre) {
+      nom = ' « ' + current.titre + '»';
+    }
+    var slotLabels = {
+      'petit-dejeuner': 'petit-déjeuner',
+      'dejeuner': 'déjeuner',
+      'diner': 'dîner',
+      'snack': 'collation'
+    };
+    var slotLabel = slotLabels[slotKey] || slotKey;
+    if (!confirm('Retirer le ' + slotLabel + nom + ' ?')) return;
+  }
+  _journalRepas[slotKey] = null;
+  saveJournal();
+  renderJournalToday();
+}
+
+// === MODALE : sélecteur de recette ===
+function openRepasRecetteSelector(slotKey) {
+  // Filtrer recettes par catégorie correspondant au slot
+  const catMap = {
+    'petit-dejeuner': ['petit-dejeuner', 'brunch'],
+    'dejeuner':       ['dejeuner', 'brunch'],
+    'diner':          ['diner'],
+    'snack':          ['snack']
+  };
+  const cats = catMap[slotKey] || [];
+  const recettesFiltrees = RECETTES.filter(r => cats.includes(r.cat));
+
+  const modal = document.createElement('div');
+  modal.id = 'repas-recette-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:flex-end;justify-content:center;';
+  modal.innerHTML =
+    '<div style="background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:85vh;display:flex;flex-direction:column;">' +
+      '<div style="padding:16px 18px;border-bottom:1px solid #ede8e0;display:flex;align-items:center;justify-content:space-between;">' +
+        '<div style="font-family:Playfair Display,serif;font-size:1.15rem;color:var(--green-deep);">Choisir une recette</div>' +
+        '<button onclick="closeRepasRecetteSelector()" aria-label="Fermer" style="background:none;border:none;font-size:1.4rem;color:var(--text-light);cursor:pointer;">✕</button>' +
+      '</div>' +
+      '<input type="text" id="repas-recette-search" placeholder="Rechercher…" oninput="filterRepasRecettes()" ' +
+        'style="margin:12px 18px 0;padding:10px 14px;border:1.5px solid #ede8e0;border-radius:10px;font-family:var(--font-body);font-size:0.9rem;">' +
+      '<div id="repas-recette-list" style="overflow-y:auto;padding:10px 18px 18px;flex:1;">' +
+        recettesFiltrees.map(r =>
+          '<div data-nom="' + escapeHtml(r.nom.toLowerCase()) + '" onclick="selectRepasRecette(\'' + slotKey + '\',' + r.id + ')" ' +
+            'style="display:flex;align-items:center;gap:12px;padding:12px;border-radius:10px;cursor:pointer;margin-bottom:6px;background:var(--cream);">' +
+            '<span style="font-size:1.5rem;">' + r.emoji + '</span>' +
+            '<div style="flex:1;">' +
+              '<div style="font-weight:500;font-size:0.92rem;">' + escapeHtml(r.nom) + '</div>' +
+              '<div style="font-size:0.72rem;color:var(--text-light);">' + r.temps + ' · ' + r.calories + ' kcal</div>' +
+            '</div>' +
+          '</div>'
+        ).join('') +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+}
+
+function closeRepasRecetteSelector() {
+  const m = document.getElementById('repas-recette-modal');
+  if (m) m.remove();
+  document.body.style.overflow = '';
+}
+
+function filterRepasRecettes() {
+  const q = document.getElementById('repas-recette-search').value.trim().toLowerCase();
+  const items = document.querySelectorAll('#repas-recette-list > div');
+  items.forEach(el => {
+    const nom = el.getAttribute('data-nom') || '';
+    el.style.display = (!q || nom.includes(q)) ? '' : 'none';
+  });
+}
+
+function selectRepasRecette(slotKey, recetteId) {
+  // Choix manuel : pas de flag fromAgenda (c'est le choix actif de l'utilisatrice)
+  _journalRepas[slotKey] = { type: 'recette', recetteId: recetteId };
+  saveJournal();
+  closeRepasRecetteSelector();
+  renderJournalToday();
+}
+
+// === MODALE : saisie repas libre avec autocomplétion placard ===
+let _journalRepasCtx = { slotKey: null, titre: '', ingredients: [] };
+
+function openRepasLibreModal(slotKey, existing) {
+  _journalRepasCtx = {
+    slotKey: slotKey,
+    titre: (existing && existing.titre) || '',
+    ingredients: (existing && existing.ingredients) ? existing.ingredients.slice() : []
+  };
+
+  const modal = document.createElement('div');
+  modal.id = 'repas-libre-modal';
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:flex-end;justify-content:center;';
+  modal.innerHTML =
+    '<div style="background:var(--white);border-radius:20px 20px 0 0;width:100%;max-width:500px;max-height:90vh;display:flex;flex-direction:column;">' +
+      '<div style="padding:16px 18px;border-bottom:1px solid #ede8e0;display:flex;align-items:center;justify-content:space-between;">' +
+        '<div style="font-family:Playfair Display,serif;font-size:1.15rem;color:var(--green-deep);">Repas libre</div>' +
+        '<button onclick="closeRepasLibreModal()" aria-label="Fermer" style="background:none;border:none;font-size:1.4rem;color:var(--text-light);cursor:pointer;">✕</button>' +
+      '</div>' +
+      '<div style="overflow-y:auto;padding:14px 18px;flex:1;">' +
+        '<label style="font-size:0.78rem;color:var(--text-light);display:block;margin-bottom:4px;">Titre du repas</label>' +
+        '<input type="text" id="rl-titre" placeholder="Ex: Salade au resto · Restes · Pizza maison…" value="' + escapeHtml(_journalRepasCtx.titre) + '" ' +
+          'style="width:100%;padding:10px 12px;border:1.5px solid #ede8e0;border-radius:10px;font-family:var(--font-body);font-size:0.92rem;margin-bottom:14px;" ' +
+          'oninput="_journalRepasCtx.titre=this.value">' +
+        '<label style="font-size:0.78rem;color:var(--text-light);display:block;margin-bottom:4px;">Ingrédients (optionnel — aide à la corrélation Insights)</label>' +
+        '<input type="text" id="rl-ing-input" placeholder="Tapez puis ↵ ou choisissez…" oninput="filterIngredientSuggestions(this.value)" onkeydown="if(event.key===\'Enter\'){event.preventDefault();addIngredientLibre(this.value);this.value=\'\';filterIngredientSuggestions(\'\');}" ' +
+          'style="width:100%;padding:10px 12px;border:1.5px solid #ede8e0;border-radius:10px;font-family:var(--font-body);font-size:0.92rem;">' +
+        '<div id="rl-suggestions" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;"></div>' +
+        '<div id="rl-selected-ings" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:14px;min-height:30px;"></div>' +
+      '</div>' +
+      '<div style="padding:14px 18px;border-top:1px solid #ede8e0;display:flex;gap:8px;">' +
+        '<button onclick="closeRepasLibreModal()" style="flex:1;padding:11px;border:1.5px solid #ede8e0;border-radius:10px;background:var(--white);font-family:var(--font-body);cursor:pointer;">Annuler</button>' +
+        '<button onclick="saveRepasLibreFromModal()" style="flex:1;padding:11px;border:none;border-radius:10px;background:var(--green-deep);color:var(--white);font-family:var(--font-body);font-weight:600;cursor:pointer;">Enregistrer</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(modal);
+  document.body.style.overflow = 'hidden';
+  refreshSelectedIngredientsUI();
+  filterIngredientSuggestions('');
+  setTimeout(() => document.getElementById('rl-titre').focus(), 100);
+}
+
+function openRepasLibreEdit(slotKey) {
+  const existing = _journalRepas[slotKey];
+  openRepasLibreModal(slotKey, existing);
+}
+
+function closeRepasLibreModal() {
+  const m = document.getElementById('repas-libre-modal');
+  if (m) m.remove();
+  document.body.style.overflow = '';
+  _journalRepasCtx = { slotKey: null, titre: '', ingredients: [] };
+}
+
+// Source d'ingrédients pour l'autocomplétion : placard (si rempli) + recettes Flōra
+function getAllKnownIngredients() {
+  const set = new Set();
+  // 1. Placard de l'utilisatrice
+  try {
+    Object.keys(placardItems || {}).forEach(k => {
+      if (placardItems[k]) set.add(k);
+    });
+  } catch(e) {}
+  // 2. Ingrédients des recettes Flōra (mots simples extraits)
+  RECETTES.forEach(r => {
+    (r.ingredients || []).forEach(line => {
+      // Garder juste le nom (sans quantité) — heuristique simple
+      const cleaned = line.replace(/^[—\-•]\s*/, '').replace(/^[\d.,/½¼¾]+\s*[a-zA-Z%]*\s+(de\s+|d\')?/i, '').replace(/[,;].*$/, '').trim();
+      if (cleaned && cleaned.length > 1 && cleaned.length < 40 && !cleaned.match(/^[—A-Z]{2,}$/)) {
+        set.add(cleaned.toLowerCase());
+      }
+    });
+  });
+  return Array.from(set).sort();
+}
+
+function filterIngredientSuggestions(q) {
+  const sugBox = document.getElementById('rl-suggestions');
+  if (!sugBox) return;
+  const all = getAllKnownIngredients();
+  const query = (q || '').trim().toLowerCase();
+  let filtered;
+  if (query.length === 0) {
+    // Vue par défaut : 12 suggestions populaires
+    filtered = all.slice(0, 12);
+  } else {
+    filtered = all.filter(ing => ing.includes(query)).slice(0, 15);
+  }
+  // Exclure ceux déjà sélectionnés
+  filtered = filtered.filter(ing => !_journalRepasCtx.ingredients.includes(ing));
+  sugBox.innerHTML = filtered.map(ing =>
+    '<button onclick="addIngredientLibre(\'' + escapeHtml(ing).replace(/'/g, "\\'") + '\')" ' +
+      'style="padding:6px 12px;border:1.5px solid #ede8e0;border-radius:99px;background:var(--white);font-family:var(--font-body);font-size:0.78rem;cursor:pointer;color:var(--text);">+ ' +
+      escapeHtml(ing) + '</button>'
+  ).join('');
+}
+
+function addIngredientLibre(ing) {
+  const trimmed = (ing || '').trim().toLowerCase();
+  if (!trimmed) return;
+  if (_journalRepasCtx.ingredients.includes(trimmed)) return;
+  _journalRepasCtx.ingredients.push(trimmed);
+  refreshSelectedIngredientsUI();
+  // Re-filtrer les suggestions pour exclure ce nouvel ingrédient
+  const inputEl = document.getElementById('rl-ing-input');
+  filterIngredientSuggestions(inputEl ? inputEl.value : '');
+}
+
+function removeIngredientLibre(ing) {
+  _journalRepasCtx.ingredients = _journalRepasCtx.ingredients.filter(x => x !== ing);
+  refreshSelectedIngredientsUI();
+  const inputEl = document.getElementById('rl-ing-input');
+  filterIngredientSuggestions(inputEl ? inputEl.value : '');
+}
+
+function refreshSelectedIngredientsUI() {
+  const box = document.getElementById('rl-selected-ings');
+  if (!box) return;
+  if (_journalRepasCtx.ingredients.length === 0) {
+    box.innerHTML = '<div style="font-size:0.75rem;color:var(--text-light);font-style:italic;">Aucun ingrédient ajouté</div>';
+    return;
+  }
+  box.innerHTML = _journalRepasCtx.ingredients.map(ing =>
+    '<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:var(--green-deep);color:var(--white);border-radius:99px;font-size:0.78rem;">' +
+      escapeHtml(ing) +
+      '<button onclick="removeIngredientLibre(\'' + escapeHtml(ing).replace(/'/g, "\\'") + '\')" aria-label="Retirer" style="background:none;border:none;color:var(--white);cursor:pointer;font-size:0.95rem;padding:0;line-height:1;">×</button>' +
+    '</span>'
+  ).join('');
+}
+
+function saveRepasLibreFromModal() {
+  const titre = (_journalRepasCtx.titre || '').trim();
+  if (!titre && _journalRepasCtx.ingredients.length === 0) {
+    // Rien saisi : annuler purement
+    closeRepasLibreModal();
+    return;
+  }
+  _journalRepas[_repasLibreCtx.slotKey] = {
+    type: 'libre',
+    titre: titre || 'Repas libre',
+    ingredients: _repasLibreCtx.ingredients.slice()
+  };
+  saveJournal();
+  closeRepasLibreModal();
+  renderJournalToday();
+}
+
 // === Détermine si on doit afficher le bloc cycle menstruel ===
 function shouldShowCycle() {
-  // 1. Vérifier dans le profil si l'utilisatrice a explicitement activé le suivi
-  try {
-    const profil = JSON.parse(localStorage.getItem('flora_profil') || '{}');
-    if (profil.cycleEnabled === true) return true;
-    if (profil.cycleEnabled === false) return false;
-  } catch(e) {}
-  
-  // 2. Par défaut : afficher (sera ajouté un toggle dans le profil)
+  // Lecture directe depuis l'objet profile (clé localStorage 'flora_profile')
+  if (profile.cycleEnabled === true) return true;
+  if (profile.cycleEnabled === false) return false;
+  // Par défaut : afficher
   return true;
 }
 
@@ -8269,11 +6666,13 @@ function renderInsights() {
   const container = document.getElementById('insights-container');
   if (!container) return;
   
-  // Récolter les entrées sur la période
-  const periodMs = _insightsPeriod * 24 * 60 * 60 * 1000;
-  const cutoff = Date.now() - periodMs;
+  // Récolter les entrées sur la période — comparaison de strings YYYY-MM-DD (évite les bugs timezone)
+  const cutoffDate = new Date();
+  cutoffDate.setHours(0, 0, 0, 0);
+  cutoffDate.setDate(cutoffDate.getDate() - _insightsPeriod);
+  const cutoffKey = dateKey(cutoffDate);
   const entries = Object.entries(journal)
-    .filter(([dk, e]) => e && new Date(dk).getTime() >= cutoff)
+    .filter(([dk, e]) => e && dk >= cutoffKey)
     .sort((a, b) => a[0].localeCompare(b[0]));
   
   // Sélecteur de période
@@ -8554,60 +6953,99 @@ function computeInsights(entries) {
   }
   
   // ====== ALIMENTATION (corrélation agenda ↔ symptômes/SJSR) ======
-  // Pour chaque recette consommée, on regarde le SJSR/symptômes du jour suivant
+  // Sources : (1) recettes de l'agenda, (2) repas libres de l'agenda, (3) repas saisis dans le journal du jour
   const foodCorrelations = {};
   
+  // Helper : tagger un texte d'ingrédients selon nutriments
+  function tagFromIngredients(ingredientsText) {
+    const tags = [];
+    const lower = ingredientsText.toLowerCase();
+    if (/(épinard|lentille|pois chiche|haricot|abats|foie|boudin|sardine|persil|spiruline|graines? de courge|sésame|tofu|cacao|chocolat noir)/i.test(lower)) tags.push('fer');
+    if (/(saumon|sardine|maquereau|hareng|graines? de lin|graines? de chia|noix\b|huile de colza|huile de lin)/i.test(lower)) tags.push('omega3');
+    if (/(amande|cacao|chocolat|graines? de courge|épinard|sarrasin|banane|avocat)/i.test(lower)) tags.push('magnesium');
+    return tags;
+  }
+  
   entries.forEach(([dk, e]) => {
-    const dayAgenda = agenda[dk];
-    if (!dayAgenda) return;
-    
     const sjsrScore = e.sjsr || 0;
     
-    Object.values(dayAgenda).forEach(recId => {
-      if (!recId) return;
-      
-      // Cas 1 : recette de la bibliothèque
-      if (typeof recId === 'number' || (typeof recId === 'string' && !recId.startsWith('custom_'))) {
-        const recette = RECETTES.find(r => r.id === recId || r.id === parseInt(recId));
-        if (!recette) return;
+    // Source 1 & 2 : Agenda
+    const dayAgenda = agenda[dk];
+    if (dayAgenda) {
+      Object.values(dayAgenda).forEach(recId => {
+        if (!recId) return;
         
-        const tags = [];
-        if (recette.nutri && recette.nutri.fer) tags.push('fer');
-        if (recette.nutri && recette.nutri.omega3) tags.push('omega3');
-        if (recette.nutri && recette.nutri.magnesium) tags.push('magnesium');
+        // Recette bibliothèque
+        if (typeof recId === 'number' || (typeof recId === 'string' && !recId.startsWith('custom_'))) {
+          const recette = RECETTES.find(r => r.id === recId || r.id === parseInt(recId));
+          if (!recette) return;
+          
+          const tags = [];
+          if (recette.nutri && recette.nutri.fer) tags.push('fer');
+          if (recette.nutri && recette.nutri.omega3) tags.push('omega3');
+          if (recette.nutri && recette.nutri.magnesium) tags.push('magnesium');
+          // Fallback : analyser les ingrédients de la recette si pas de nutri
+          if (tags.length === 0 && recette.ingredients) {
+            tagFromIngredients(recette.ingredients.join(' ')).forEach(t => tags.push(t));
+          }
+          
+          tags.forEach(tag => {
+            if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+            foodCorrelations[tag].sjsrSum += sjsrScore;
+            foodCorrelations[tag].count += 1;
+          });
+        }
         
-        tags.forEach(tag => {
-          if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
-          foodCorrelations[tag].sjsrSum += sjsrScore;
-          foodCorrelations[tag].count += 1;
-        });
-      }
-      
-      // Cas 2 : repas libre
-      if (typeof recId === 'string' && recId.startsWith('custom_')) {
-        const customMeal = getCustomMeal(recId);
-        if (!customMeal || !customMeal.ingredients) return;
+        // Repas libre de l'agenda
+        if (typeof recId === 'string' && recId.startsWith('custom_')) {
+          const customMeal = getCustomMeal(recId);
+          if (!customMeal || !customMeal.ingredients) return;
+          tagFromIngredients(customMeal.ingredients.join(' ')).forEach(tag => {
+            if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+            foodCorrelations[tag].sjsrSum += sjsrScore;
+            foodCorrelations[tag].count += 1;
+          });
+        }
+      });
+    }
+    
+    // Source 3 : Repas saisis directement dans le journal du jour
+    if (e.repas && typeof e.repas === 'object') {
+      Object.values(e.repas).forEach(repas => {
+        if (!repas || repas.type === 'saute') return;
         
-        // Détection automatique des nutriments selon ingrédients
-        const lower = customMeal.ingredients.join(' ').toLowerCase();
-        const tags = [];
-        if (/(épinard|lentille|pois chiche|haricot|abats|foie|boudin|sardine)/i.test(lower)) tags.push('fer');
-        if (/(saumon|sardine|maquereau|hareng|graines? de lin|graines? de chia|noix)/i.test(lower)) tags.push('omega3');
-        if (/(amande|cacao|chocolat|graines? de courge|épinard|sarrasin|banane)/i.test(lower)) tags.push('magnesium');
+        if (repas.type === 'recette' && repas.recetteId) {
+          const recette = RECETTES.find(r => r.id === repas.recetteId);
+          if (!recette) return;
+          const tags = [];
+          if (recette.nutri && recette.nutri.fer) tags.push('fer');
+          if (recette.nutri && recette.nutri.omega3) tags.push('omega3');
+          if (recette.nutri && recette.nutri.magnesium) tags.push('magnesium');
+          if (tags.length === 0 && recette.ingredients) {
+            tagFromIngredients(recette.ingredients.join(' ')).forEach(t => tags.push(t));
+          }
+          tags.forEach(tag => {
+            if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+            foodCorrelations[tag].sjsrSum += sjsrScore;
+            foodCorrelations[tag].count += 1;
+          });
+        }
         
-        tags.forEach(tag => {
-          if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
-          foodCorrelations[tag].sjsrSum += sjsrScore;
-          foodCorrelations[tag].count += 1;
-        });
-      }
-    });
+        if (repas.type === 'libre' && repas.ingredients && repas.ingredients.length) {
+          tagFromIngredients(repas.ingredients.join(' ')).forEach(tag => {
+            if (!foodCorrelations[tag]) foodCorrelations[tag] = { sjsrSum: 0, count: 0 };
+            foodCorrelations[tag].sjsrSum += sjsrScore;
+            foodCorrelations[tag].count += 1;
+          });
+        }
+      });
+    }
   });
   
   const tagLabels = {
-    'fer': '🩸 Recettes riches en fer',
-    'omega3': '🐟 Recettes riches en oméga-3',
-    'magnesium': '⚡ Recettes riches en magnésium'
+    'fer': '🩸 Repas riches en fer',
+    'omega3': '🐟 Repas riches en oméga-3',
+    'magnesium': '⚡ Repas riches en magnésium'
   };
   
   Object.entries(foodCorrelations).forEach(([tag, data]) => {
@@ -8786,11 +7224,10 @@ const FLORA_DATA_KEYS = [
   'flora_agenda',
   'flora_placard',
   'flora_profile',
-  'flora_profil',
   'flora_premium',
   'flora_user_email',
   'flora_user_name',
-  'flora-medications',
+  'flora_medications',
   'flora_custom_meals',
   'flora_theme'
 ];

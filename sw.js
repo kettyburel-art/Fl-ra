@@ -1,11 +1,13 @@
 // ===========================================
-// FLŌRA — Service Worker v2.1
+// FLŌRA — Service Worker v2.2
 // Stratégie : Network First pour les fichiers critiques (HTML/JS/CSS)
 //             + Cache First pour les fonts et icônes
 // ===========================================
 
-// IMPORTANT : utilise Date.now() pour invalider le cache à chaque déploiement
-const CACHE_NAME = 'flora-cache-v' + Date.now();
+// Version statique du cache. À INCRÉMENTER à chaque déploiement de fichiers
+// dans CORE_ASSETS pour forcer la mise à jour côté utilisateur.
+const CACHE_VERSION = '2.4.0';
+const CACHE_NAME = 'flora-cache-v' + CACHE_VERSION;
 
 // Fichiers critiques à mettre en cache
 const CORE_ASSETS = [
@@ -14,6 +16,8 @@ const CORE_ASSETS = [
   './style.css',
   './flora_modals.css',
   './app.js',
+  './flora_recettes.js',
+  './flora_plans.js',
   './flora_complements.js',
   './flora_interactions.js',
   './manifest.json',
