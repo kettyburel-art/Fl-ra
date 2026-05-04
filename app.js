@@ -2932,11 +2932,24 @@ function prefillRepasFromAgenda(dk) {
     if (_journalRepas[journalKey]) return;
     const recId = dayAgenda[slug];
     if (!recId) return;
-    // Validation : la recette existe dans la base
+    // Cas 1 : recette de la bibliothèque (id numérique)
     if (typeof recId === 'number' || (typeof recId === 'string' && !recId.startsWith('custom_'))) {
       const numId = parseInt(recId);
       if (!isNaN(numId) && RECETTES.some(r => r.id === numId)) {
         _journalRepas[journalKey] = { type: 'recette', recetteId: numId, fromAgenda: true };
+      }
+      return;
+    }
+    // Cas 2 : repas libre saisi dans l'agenda (custom_xxx)
+    if (typeof recId === 'string' && recId.startsWith('custom_')) {
+      const customMeal = (typeof getCustomMeal === 'function') ? getCustomMeal(recId) : null;
+      if (customMeal) {
+        _journalRepas[journalKey] = {
+          type: 'libre',
+          titre: customMeal.nom || 'Repas libre',
+          ingredients: (customMeal.ingredients || []).slice(),
+          fromAgenda: true
+        };
       }
     }
   });
@@ -7724,11 +7737,10 @@ function saveRepasLibre() {
     return;
   }
   
-  // === DIAGNOSTIC : afficher le contexte ===
-  const debugInfo = 'dk=' + _repasLibreCtx.dk + ' / slug=' + _repasLibreCtx.slug + ' / ing=' + _repasLibreCtx.ingredients.length;
-  
+  // Vérification de cohérence du contexte (ne devrait pas arriver en usage normal)
   if (!_repasLibreCtx.dk || !_repasLibreCtx.slug) {
-    alert('🐛 BUG : contexte invalide → ' + debugInfo);
+    alert('Une erreur est survenue. Merci de réessayer en sélectionnant à nouveau le jour et le repas.');
+    console.error('[Flōra] Contexte invalide pour saveRepasLibre:', _repasLibreCtx);
     return;
   }
   
@@ -7754,12 +7766,17 @@ function saveRepasLibre() {
   agenda[dk][slug] = id;
   saveState();
   
-  // === DIAGNOSTIC : vérifier la sauvegarde ===
-  const verifAgenda = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
-  const verifMeals = JSON.parse(localStorage.getItem('flora_custom_meals') || '{}');
-  if (!verifAgenda[dk] || verifAgenda[dk][slug] !== id || !verifMeals[id]) {
-    alert('🐛 BUG sauvegarde : agenda[' + dk + '][' + slug + ']=' + (verifAgenda[dk] ? verifAgenda[dk][slug] : 'undefined') + ' / meal=' + (verifMeals[id] ? 'OK' : 'MANQUANT'));
-    return;
+  // Vérification silencieuse de la sauvegarde
+  try {
+    const verifAgenda = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
+    const verifMeals = JSON.parse(localStorage.getItem('flora_custom_meals') || '{}');
+    if (!verifAgenda[dk] || verifAgenda[dk][slug] !== id || !verifMeals[id]) {
+      alert('La sauvegarde n\'a pas pu aboutir. Vérifiez l\'espace disponible et réessayez.');
+      console.error('[Flōra] Échec sauvegarde repas libre:', { dk, slug, id, verifAgenda, verifMeals });
+      return;
+    }
+  } catch(e) {
+    console.error('[Flōra] Erreur vérification sauvegarde:', e);
   }
   
   // 3. Reset le contexte
