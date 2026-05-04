@@ -17,6 +17,28 @@
 <link rel="stylesheet" href="style.css" />
 <link rel="stylesheet" href="flora_modals.css" />
 
+<!-- Adaptation nav du bas pour 7 boutons -->
+<style>
+  #bottom-nav .nav-btn {
+    flex: 1;
+    min-width: 0;
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  #bottom-nav .nav-label {
+    font-size: 0.62rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  @media (max-width: 380px) {
+    #bottom-nav .nav-label {
+      font-size: 0.58rem;
+    }
+  }
+</style>
+
 <!-- Analytics — Plausible (RGPD, sans cookies, sans bandeau) -->
 <script defer data-domain="kettyburel-art.github.io" src="https://plausible.io/js/script.js"></script>
 </head>
@@ -367,8 +389,9 @@
         <!-- TAB RECETTES -->
         <div id="recettes-tab-content">
 
-        <div class="search-bar">
-          <input type="text" id="recette-search" placeholder="🔍 Rechercher une recette…" oninput="filterRecettes()" />
+        <div class="search-bar" style="display:flex;gap:8px;align-items:center;">
+          <input type="text" id="recette-search" placeholder="🔍 Rechercher une recette…" oninput="filterRecettes()" style="flex:1;" />
+          <button onclick="openMyRecipeModal(null)" aria-label="Créer une recette" title="Créer ma recette" style="flex-shrink:0;padding:10px 14px;border:none;border-radius:14px;background:#2d4a3e;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(45,74,62,0.2);">+ Créer</button>
         </div>
 
         <div class="filter-chips" id="cat-filters">
@@ -969,6 +992,10 @@
       <button class="nav-btn" onclick="showPage('recettes')" data-page="recettes">
         <span class="nav-icon">🥗</span>
         <span class="nav-label">Recettes</span>
+      </button>
+      <button class="nav-btn" onclick="showPage('mes-recettes')" data-page="mes-recettes">
+        <span class="nav-icon">📖</span>
+        <span class="nav-label">Mes&nbsp;recettes</span>
       </button>
       <button class="nav-btn" onclick="showPage('placard')" data-page="placard">
         <span class="nav-icon">🗄️</span>
