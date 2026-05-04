@@ -6637,10 +6637,10 @@ function saveRepasLibreFromModal() {
     closeRepasLibreModal();
     return;
   }
-  _journalRepas[_repasLibreCtx.slotKey] = {
+  _journalRepas[_journalRepasCtx.slotKey] = {
     type: 'libre',
     titre: titre || 'Repas libre',
-    ingredients: _repasLibreCtx.ingredients.slice()
+    ingredients: _journalRepasCtx.ingredients.slice()
   };
   saveJournal();
   closeRepasLibreModal();
