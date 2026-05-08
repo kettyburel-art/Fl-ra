@@ -842,13 +842,14 @@
     <!-- ================================================================
          SUIVI DOULEURS (Admin uniquement)
          ================================================================ -->
+    <!-- ============== SUIVI DOULEURS (Admin uniquement) ============== -->
     <section id="page-douleurs" class="page hidden">
       <div class="page-header-inner">
         <button class="back-btn" onclick="showPage('accueil')">←</button>
         <h2>🩺 Suivi douleurs</h2>
       </div>
 
-      <p style="text-align:center;font-size:0.82rem;color:var(--text-mid);margin:-8px 0 16px;font-style:italic;">
+      <p style="text-align:center;font-size:0.82rem;color:var(--text-mid);margin:-8px 0 16px;font-style:italic;padding:0 12px;">
         Module privé · données objectives pour consultation médicale
       </p>
 
@@ -861,15 +862,13 @@
 
       <!-- TAB AJOUT -->
       <div id="dtab-ajout">
-        <div class="settings-group">
-          <div class="settings-title">Date et heure</div>
-          <div class="settings-row">
-            <input type="datetime-local" class="field inline" id="dol-date" />
-          </div>
+        <div class="journal-block">
+          <div class="jblock-title">📅 Date et heure</div>
+          <input type="datetime-local" class="field" id="dol-date" />
         </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Intensité douleur (EVA jambes 0-10)</div>
+        <div class="journal-block">
+          <div class="jblock-title">🦵 Intensité douleur (EVA jambes 0-10)</div>
           <div id="dol-eva-scale" class="dol-eva-scale"></div>
           <div class="dol-eva-labels">
             <span>Aucune</span>
@@ -878,18 +877,18 @@
           </div>
         </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Stress du jour : <span id="dol-stress-val">5</span>/10</div>
+        <div class="journal-block">
+          <div class="jblock-title">⚡ Stress du jour : <span id="dol-stress-val">5</span>/10</div>
           <input type="range" min="1" max="10" value="5" class="dol-stress-slider" id="dol-stress" />
         </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Médicaments pris</div>
-          <input type="text" class="field" id="dol-meds" placeholder="Ex : Paracétamol 1g, Tramadol 50mg" />
+        <div class="journal-block">
+          <div class="jblock-title">💊 Médicaments pris</div>
+          <input type="text" class="field" id="dol-meds" placeholder="Ex : Tramadol LP 150" />
         </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Action médicale</div>
+        <div class="journal-block">
+          <div class="jblock-title">🏥 Action médicale</div>
           <select class="field" id="dol-action">
             <option value="">Aucune</option>
             <option value="generaliste">Généraliste</option>
@@ -900,31 +899,31 @@
           </select>
         </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Arrêt de travail (jours)</div>
+        <div class="journal-block">
+          <div class="jblock-title">📝 Arrêt de travail (jours)</div>
           <input type="number" class="field" id="dol-arret" min="0" max="30" placeholder="0" />
         </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Notes (déclencheurs, contexte)</div>
-          <textarea class="field" id="dol-notes" rows="3" placeholder="Ex : crise survenue après une journée stressante, douleur démarrée vers 22h..."></textarea>
+        <div class="journal-block">
+          <div class="jblock-title">💭 Notes (déclencheurs, contexte)</div>
+          <textarea class="field" id="dol-notes" rows="3" placeholder="Ex : crise survenue après une journée stressante..."></textarea>
         </div>
 
-        <button class="btn-primary full-width" onclick="saveDouleur()" style="margin-top:8px;">
+        <button class="btn-primary full-width" onclick="saveDouleur()" style="margin-top:8px;margin-bottom:120px;">
           💾 Enregistrer
         </button>
       </div>
 
       <!-- TAB HISTORIQUE -->
-      <div id="dtab-historique" class="hidden">
+      <div id="dtab-historique" class="hidden" style="padding-bottom:120px;">
         <div id="dol-entries-list"></div>
       </div>
 
       <!-- TAB STATS -->
-      <div id="dtab-stats" class="hidden">
+      <div id="dtab-stats" class="hidden" style="padding-bottom:120px;">
         <div id="dol-stats-grid" class="dol-stats-grid"></div>
-        <div class="settings-group">
-          <div class="settings-title">Évolution douleur + stress (30 derniers jours)</div>
+        <div class="journal-block">
+          <div class="jblock-title">📊 Évolution douleur + stress (30 derniers jours)</div>
           <svg id="dol-chart" viewBox="0 0 600 200" preserveAspectRatio="none" style="width:100%;height:200px;"></svg>
           <div style="display:flex;gap:16px;justify-content:center;margin-top:8px;font-size:0.78rem;color:var(--text-mid);">
             <span>━ Douleur EVA</span>
