@@ -1353,6 +1353,10 @@ function initLogin() {
   if (typeof applyPlanningMay12_2026Once === 'function') {
     applyPlanningMay12_2026Once();
   }
+  // Injection 14 recettes Ketty v1 (one-shot)
+  if (typeof injectKettyRecettesV1Once === 'function') {
+    injectKettyRecettesV1Once();
+  }
 }
 
 
@@ -10299,4 +10303,425 @@ function applyLaFourcheTicketMay9_2026Once() {
 
 // ============================================================
 // FIN MODULES ADMIN
+// ============================================================
+
+
+// ============================================================
+// 14 RECETTES PERSO — INJECTION ONE-SHOT (admin)
+// ============================================================
+// Recettes basées sur les arrivages La Fourche (9 mai) + Lidl (7 mai).
+// Stockées dans floraMyRecettes (visibles uniquement par Ketty admin).
+// IDs >= MY_RECIPE_ID_BASE (100000) pour ne jamais collisionner.
+
+function injectKettyRecettesV1Once() {
+  if (!isTicketAdmin()) return;
+  var FLAG = 'flora_recettes_ketty_v1_injected';
+  try {
+    if (localStorage.getItem(FLAG) === '1') return;
+  } catch(_) { return; }
+
+  var BASE_ID = 100100; // 100100..100113
+  var now = Date.now();
+
+  var newRecettes = [
+    // ============ DÉJEUNERS EXPRESS (5) ============
+    {
+      id: BASE_ID + 0, cat: 'dejeuner', premium: false, emoji: '🥗',
+      nom: 'Bowl tiède sarrasin & tofu fumé',
+      temps: '15 min', calories: 480, diff: 'facile',
+      tags: ['anti-inflammatoire', 'protéines', 'fer', 'rapide'],
+      benefices: 'Fer + magnésium du sarrasin, protéines complètes du tofu fumé, vitamines des crudités. Idéal post-crise.',
+      ingredients: [
+        '60g sarrasin décortiqué',
+        '80g tofu fumé amandes-sésame',
+        '1/2 concombre', '1 carotte râpée',
+        '1 c.s. mix graines salade',
+        '1 c.s. tahin',
+        '1/2 citron', '1 c.c. tamari',
+        'Persil plat'
+      ],
+      etapes: [
+        'Cuire le sarrasin 15 min dans 2x son volume d eau',
+        'Émietter le tofu fumé à la fourchette',
+        'Râper la carotte, couper le concombre en demi-rondelles',
+        'Mélanger sarrasin + tofu + crudités dans un bol',
+        'Sauce : tahin + citron + tamari + 2 c.s. eau, fouetter',
+        'Verser la sauce, parsemer de graines et persil'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 1, cat: 'dejeuner', premium: false, emoji: '🥙',
+      nom: 'Bowl falafels-houmous express',
+      temps: '10 min', calories: 520, diff: 'facile',
+      tags: ['légumineuses', 'rapide', 'sans cuisson'],
+      benefices: 'Fibres + protéines végétales rassasiantes. Plat de secours quand l énergie est basse.',
+      ingredients: [
+        '4 falafels traditionnels bio',
+        '60g pois chiches en boîte',
+        '1/2 concombre',
+        '1 c.s. tahin',
+        '1/2 citron',
+        '1 c.c. cumin',
+        'Quelques olives noires',
+        'Persil ou coriandre fraîche'
+      ],
+      etapes: [
+        'Réchauffer les falafels 3 min à la poêle ou 2 min micro-ondes',
+        'Houmous express : écraser les pois chiches + tahin + citron + cumin',
+        'Tartiner le houmous au fond du bol',
+        'Disposer falafels + concombre + olives',
+        'Parsemer d herbes fraîches'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 2, cat: 'dejeuner', premium: false, emoji: '🥞',
+      nom: 'Galettes sarrasin aux crevettes',
+      temps: '20 min', calories: 450, diff: 'facile',
+      tags: ['protéines', 'oméga-3', 'sans gluten'],
+      benefices: 'Oméga-3 des crevettes, magnésium du sarrasin. Fait du bien aux articulations.',
+      ingredients: [
+        '50g farine de sarrasin',
+        '1 œuf bio',
+        '100ml boisson millet-amande-noisette',
+        '100g crevettes cuites',
+        '2 c.s. cottage cheese sans lactose',
+        'Ciboulette',
+        'Sel Santé, poivre',
+        'Huile d olive'
+      ],
+      etapes: [
+        'Mélanger farine + œuf + boisson végétale + sel, laisser reposer 5 min',
+        'Cuire 2 galettes fines dans une poêle huilée (1 min par face)',
+        'Garnir : crevettes + cottage cheese + ciboulette',
+        'Plier en 4 ou rouler, servir tiède'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 3, cat: 'dejeuner', premium: false, emoji: '🥄',
+      nom: 'Salade lentilles & maquereaux du placard',
+      temps: '8 min', calories: 480, diff: 'facile',
+      tags: ['oméga-3', 'fer', 'sans cuisson', 'anti-inflammatoire'],
+      benefices: 'Oméga-3 + fer + protéines complètes. Tout du placard, parfait pour les jours fatigue.',
+      ingredients: [
+        '150g lentilles vertes cuites',
+        '1 boîte maquereaux au naturel',
+        '1/2 concombre',
+        '10 olives noires',
+        '30g feta greco AOP',
+        '1 c.s. huile de colza vierge',
+        '1/2 citron',
+        'Persil plat'
+      ],
+      etapes: [
+        'Égoutter lentilles et maquereaux',
+        'Mélanger dans un saladier',
+        'Ajouter concombre en dés, olives et feta émiettée',
+        'Vinaigrette : huile colza + citron + sel + poivre',
+        'Parsemer de persil ciselé'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 4, cat: 'dejeuner', premium: false, emoji: '🍚',
+      nom: 'Risotto de millet aux champignons',
+      temps: '30 min', calories: 510, diff: 'moyen',
+      tags: ['réconfortant', 'magnésium', 'umami'],
+      benefices: 'Magnésium du millet (apaise SJSR), umami des shiitakés, crémeux sans lactose.',
+      ingredients: [
+        '70g millet',
+        '1 brique millet cuisine (20cl)',
+        '200ml bouillon de légumes',
+        '100g champignons shiitaké',
+        '2 c.s. levure nutritionnelle',
+        '1 oignon ou échalote',
+        '1 gousse d ail',
+        'Persil, poivre noir'
+      ],
+      etapes: [
+        'Faire revenir oignon + ail dans huile d olive',
+        'Ajouter millet, nacrer 1 min',
+        'Verser bouillon louche par louche en remuant (15 min)',
+        'En parallèle : poêler les shiitakés tranchés',
+        'Quand millet cuit : ajouter millet cuisine + levure nutritionnelle',
+        'Incorporer champignons, parsemer de persil et poivre'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+
+    // ============ DÎNERS COCOONING (5) ============
+    {
+      id: BASE_ID + 5, cat: 'diner', premium: false, emoji: '🍠',
+      nom: 'Velouté patate douce-curcuma & coco',
+      temps: '25 min', calories: 320, diff: 'facile',
+      tags: ['anti-inflammatoire', 'doux', 'curcuma'],
+      benefices: 'Curcuma + gingembre = combo anti-inflammatoire majeur. Patate douce apaise et nourrit.',
+      ingredients: [
+        '1 patate douce moyenne (300g)',
+        '100ml lait de coco entier',
+        '300ml bouillon de légumes',
+        '1 c.c. curcuma',
+        '1 cm gingembre frais râpé',
+        '1/2 oignon', '1 gousse d ail',
+        'Sel Santé, poivre noir',
+        'Pour servir : 3 falafels poêlés + persil'
+      ],
+      etapes: [
+        'Éplucher patate douce, la couper en cubes',
+        'Faire revenir oignon + ail + gingembre',
+        'Ajouter patate douce, curcuma, bouillon, cuire 20 min',
+        'Mixer avec le lait de coco',
+        'Servir avec falafels poêlés + persil ciselé'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 6, cat: 'diner', premium: false, emoji: '🍜',
+      nom: 'Soupe miso aux nouilles & tofu',
+      temps: '15 min', calories: 380, diff: 'facile',
+      tags: ['umami', 'protéines', 'rapide', 'asiatique'],
+      benefices: 'Miso fermenté pour le microbiote, tofu fumé pour les protéines, algues riches en iode.',
+      ingredients: [
+        '1 c.s. pâte miso sans gluten',
+        '60g nouilles de riz',
+        '80g tofu fumé',
+        '1 c.c. algues wakamé séchées',
+        '50g petits pois surgelés',
+        '1 cm gingembre frais',
+        '1 c.c. tamari',
+        'Ciboulette ou coriandre'
+      ],
+      etapes: [
+        'Faire bouillir 600ml d eau avec gingembre râpé',
+        'Cuire les nouilles selon paquet',
+        'Hors du feu : délayer le miso dans un bol avec un peu de bouillon',
+        'Réincorporer dans la casserole, ajouter wakamé, petits pois, tofu',
+        'Verser sur les nouilles, ajouter tamari et herbes'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 7, cat: 'diner', premium: false, emoji: '🐟',
+      nom: 'Cabillaud vapeur & millet citronné',
+      temps: '25 min', calories: 420, diff: 'facile',
+      tags: ['oméga-3', 'léger', 'digeste'],
+      benefices: 'Oméga-3 du cabillaud, magnésium du millet, citron pour la vitamine C qui aide l absorption du fer.',
+      ingredients: [
+        '1 pavé de cabillaud (130g)',
+        '60g millet',
+        '100g petits pois surgelés',
+        '1 citron', 'Thym frais ou séché',
+        '1 c.s. huile de cameline',
+        'Sel Santé, poivre noir',
+        'Persil plat'
+      ],
+      etapes: [
+        'Cuire le millet 20 min dans 2x son volume d eau salée',
+        'Cuire le cabillaud à la vapeur douce avec thym + 1/2 citron en rondelles (8 min)',
+        'Ajouter petits pois en fin de cuisson millet',
+        'Mélanger millet + zeste de citron + persil',
+        'Servir cabillaud sur lit de millet, filet d huile de cameline'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 8, cat: 'diner', premium: false, emoji: '🍛',
+      nom: 'Curry doux lentilles corail-coco',
+      temps: '25 min', calories: 460, diff: 'facile',
+      tags: ['anti-inflammatoire', 'fer', 'curcuma', 'réconfortant'],
+      benefices: 'Lentilles corail très digestes, lait de coco apaisant, curcuma + cardamome anti-inflammatoires.',
+      ingredients: [
+        '80g lentilles corail',
+        '200ml lait de coco entier',
+        '60g riz basmati',
+        '1 c.c. curcuma',
+        '3 gousses de cardamome',
+        '1 c.c. cumin',
+        '1/2 oignon', '1 gousse d ail',
+        '1 cm gingembre frais',
+        'Coriandre fraîche'
+      ],
+      etapes: [
+        'Faire revenir oignon + ail + gingembre dans huile d olive',
+        'Ajouter épices, torréfier 30 sec',
+        'Ajouter lentilles corail + lait de coco + 200ml eau',
+        'Cuire 15 min à feu doux',
+        'En parallèle : cuire le riz basmati',
+        'Servir lentilles sur le riz, parsemer de coriandre'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 9, cat: 'diner', premium: false, emoji: '🌽',
+      nom: 'Polenta crémeuse & œuf mollet',
+      temps: '20 min', calories: 440, diff: 'facile',
+      tags: ['réconfortant', 'protéines', 'umami'],
+      benefices: 'Comfort food sans gluten, protéines complètes de l œuf, B12 de la levure nutritionnelle.',
+      ingredients: [
+        '50g polenta',
+        '300ml lait d amande ou bouillon',
+        '2 c.s. levure nutritionnelle',
+        '100g champignons',
+        '1 gousse d ail',
+        '1 œuf bio',
+        'Persil, poivre noir',
+        'Filet d huile d olive'
+      ],
+      etapes: [
+        'Porter le lait/bouillon à ébullition, verser polenta en pluie',
+        'Cuire 5 min en remuant, ajouter levure nutritionnelle',
+        'En parallèle : poêler champignons + ail',
+        'Faire l œuf mollet (5 min eau bouillante)',
+        'Dresser : polenta + champignons + œuf coupé en deux + persil + poivre'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+
+    // ============ COLLATIONS / DESSERTS SAINS (4) ============
+    {
+      id: BASE_ID + 10, cat: 'snack', premium: false, emoji: '🍫',
+      nom: 'Mousse choco-avocat express',
+      temps: '5 min', calories: 280, diff: 'facile',
+      tags: ['magnésium', 'bons gras', 'sans cuisson'],
+      benefices: 'Magnésium du cacao, bons gras de l avocat. Plaisir chocolaté sans sucre raffiné.',
+      ingredients: [
+        '1 avocat mûr',
+        '2 c.s. cacao cru en poudre',
+        '2 c.s. sirop d agave',
+        '100ml lait de coco',
+        '1 c.c. extrait de vanille (optionnel)',
+        '1 pincée de cannelle',
+        'Topping : amandes effilées + fruits rouges'
+      ],
+      etapes: [
+        'Mixer tous les ingrédients (sauf topping) jusqu à texture lisse',
+        'Goûter et ajuster sucre/cacao selon préférence',
+        'Verser dans 1 ramequin, mettre 30 min au frais',
+        'Topping : amandes effilées + fruits rouges réchauffés'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 11, cat: 'snack', premium: false, emoji: '🍮',
+      nom: 'Pudding chia-coco aux fruits rouges',
+      temps: '5 min + repos', calories: 240, diff: 'facile',
+      tags: ['oméga-3', 'fibres', 'préparé la veille'],
+      benefices: 'Chia = oméga-3 ALA + fibres. Tient au ventre, prêt le matin pour collation après-midi.',
+      ingredients: [
+        '3 c.s. graines de chia',
+        '200ml lait de coco (boisson)',
+        '1 c.s. sirop d agave',
+        '1 c.c. cacao cru ou cannelle',
+        '50g fruits rouges surgelés',
+        '1 c.s. amandes effilées',
+        'Quelques pistaches concassées'
+      ],
+      etapes: [
+        'Mélanger chia + lait coco + sirop + cacao dans un pot',
+        'Bien remuer, laisser reposer 15 min, remuer encore',
+        'Mettre au frigo minimum 4h (idéalement nuit)',
+        'Au moment de servir : ajouter fruits rouges décongelés',
+        'Topping amandes + pistaches'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 12, cat: 'snack', premium: false, emoji: '🥣',
+      nom: 'Bowl muesli SG & boisson avoine',
+      temps: '3 min', calories: 320, diff: 'facile',
+      tags: ['rapide', 'fibres', 'sans gluten'],
+      benefices: 'Glucides lents pour énergie stable, fibres pour le transit, parfait collation après-midi.',
+      ingredients: [
+        '40g muesli croustillant miel-sarrasin SG',
+        '200ml boisson avoine bio',
+        '2 dattes Medjool dénoyautées',
+        '1 c.c. graines de chia',
+        '1 c.c. graines de lin moulues',
+        '1 c.s. amandes effilées',
+        '50g fruits rouges surgelés (décongelés)'
+      ],
+      etapes: [
+        'Verser muesli dans un bol',
+        'Couper les dattes en petits morceaux, parsemer',
+        'Ajouter chia + lin + amandes',
+        'Verser la boisson avoine',
+        'Décorer avec les fruits rouges'
+      ],
+      isMyRecipe: true, createdAt: now
+    },
+    {
+      id: BASE_ID + 13, cat: 'snack', premium: false, emoji: '🌺',
+      nom: 'Infusion hibiscus-gingembre glacée',
+      temps: '5 min + repos', calories: 35, diff: 'facile',
+      tags: ['hydratant', 'anti-inflammatoire', 'rafraîchissant'],
+      benefices: 'Hibiscus riche en antioxydants, gingembre anti-inflammatoire. Boisson hydratante du quotidien.',
+      ingredients: [
+        '2 c.s. fleurs d hibiscus séchées',
+        '500ml eau bouillante',
+        '1 cm gingembre frais en lamelles',
+        '1 c.s. sirop d agave (ou miel)',
+        '1/2 citron pressé',
+        'Quelques feuilles de menthe fraîche',
+        'Glaçons'
+      ],
+      etapes: [
+        'Verser eau bouillante sur hibiscus + gingembre',
+        'Laisser infuser 10 min, filtrer',
+        'Ajouter sirop d agave et citron, mélanger',
+        'Laisser refroidir, mettre au frigo 30 min',
+        'Servir sur glaçons avec menthe fraîche'
+      ],
+      isMyRecipe: true, createdAt: now
+    }
+  ];
+
+  try {
+    // Charger l existant
+    var existing = JSON.parse(localStorage.getItem('flora_my_recettes') || '[]');
+    if (!Array.isArray(existing)) existing = [];
+
+    // Vérifier qu aucune recette n existe déjà avec ces IDs
+    var existingIds = {};
+    existing.forEach(function(r) { existingIds[r.id] = true; });
+
+    var added = 0;
+    newRecettes.forEach(function(r) {
+      if (!existingIds[r.id]) {
+        existing.push(r);
+        added++;
+      }
+    });
+
+    localStorage.setItem('flora_my_recettes', JSON.stringify(existing));
+
+    // Mettre à jour la variable globale si elle existe
+    if (typeof floraMyRecettes !== 'undefined') {
+      newRecettes.forEach(function(r) {
+        if (!floraMyRecettes.find(function(x) { return x.id === r.id; })) {
+          floraMyRecettes.push(r);
+        }
+      });
+    }
+
+    // Re-merger dans RECETTES global pour qu elles apparaissent partout
+    if (typeof mergeMyRecettesIntoGlobal === 'function') {
+      mergeMyRecettesIntoGlobal();
+    }
+
+    // Rafraîchir les vues si possibles
+    if (typeof renderRecettes === 'function') renderRecettes();
+    if (typeof renderMyRecettes === 'function') renderMyRecettes();
+    if (typeof updateRecipeCounters === 'function') updateRecipeCounters();
+
+    localStorage.setItem(FLAG, '1');
+    console.log('[Flōra] ' + added + ' recettes Ketty v1 injectées (admin)');
+  } catch(e) {
+    console.error('[Flōra] Erreur injection recettes Ketty:', e);
+  }
+}
+
+// ============================================================
+// FIN INJECTION RECETTES
 // ============================================================
