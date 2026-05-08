@@ -1483,6 +1483,23 @@ const PLACARD_CATEGORIES = {
     'Haricots blancs (boîte)','Haricots noirs','Edamames surgelés',
     'Tofu ferme','Tofu fumé','Tofu soyeux','Tempeh'
   ],
+  '🌱 Graines germées maison': [
+    'Mix protéines (pois chiche-lentille-fenugrec)',
+    'Pois chiches germés',
+    'Lentilles vertes germées',
+    'Lentilles corail germées',
+    'Fenugrec germé',
+    'Haricots mungo germés',
+    'Alfalfa (luzerne) germée',
+    'Brocoli germé',
+    'Radis germé',
+    'Quinoa germé',
+    'Tournesol germé',
+    'Sarrasin germé',
+    'Pois (petits pois) germés',
+    'Mix oriental (alfalfa-radis-fenugrec)',
+    'Mix méditerranéen (lentille-pois chiche-haricot mungo)'
+  ],
   '🥦 Légumes frais': [
     'Épinards','Kale','Brocoli','Chou-fleur','Courgette',
     'Aubergine','Poivron rouge','Poivron jaune','Carotte',
@@ -1586,6 +1603,15 @@ const INGREDIENT_PRICES = {
   'Lentilles corail': 2.00, 'Lentilles vertes': 1.80, 'Lentilles beluga': 2.50,
   'Haricots rouges (boîte)': 1.00, 'Haricots blancs (boîte)': 0.95,
   'Tofu ferme': 2.50, 'Tofu fumé': 2.80, 'Tofu soyeux': 2.20, 'Tempeh': 3.50,
+  // Graines germées maison (sachet 150-200 g, fait ~1 semaine de germes)
+  'Mix protéines (pois chiche-lentille-fenugrec)': 3.50,
+  'Pois chiches germés': 2.50, 'Lentilles vertes germées': 2.50,
+  'Lentilles corail germées': 2.50, 'Fenugrec germé': 3.20,
+  'Haricots mungo germés': 2.80, 'Alfalfa (luzerne) germée': 3.50,
+  'Brocoli germé': 4.00, 'Radis germé': 3.80, 'Quinoa germé': 3.20,
+  'Tournesol germé': 3.50, 'Sarrasin germé': 2.80, 'Pois (petits pois) germés': 3.20,
+  'Mix oriental (alfalfa-radis-fenugrec)': 4.50,
+  'Mix méditerranéen (lentille-pois chiche-haricot mungo)': 3.80,
   // Légumes
   'Épinards': 2.20, 'Kale': 2.50, 'Brocoli': 1.80, 'Chou-fleur': 2.00,
   'Courgette': 1.50, 'Aubergine': 1.60, 'Poivron rouge': 1.90,
@@ -5971,6 +5997,150 @@ function switchRecettesTab(tab, btn) {
   }
 }
 
+// ============================================================
+// COMPLÉMENTS ALIMENTAIRES SJSR / TDAH
+// Définition par défaut intégrée — peut être surchargée par flora_complements.js
+// ============================================================
+if (typeof window.COMPLEMENTS_FLORA === 'undefined') {
+  window.COMPLEMENTS_FLORA = [
+    {
+      id: 'fer',
+      emoji: '🩸',
+      nom: 'Fer (bisglycinate)',
+      categorie: 'SJSR — fondamental',
+      categorieCouleur: '#c0614a',
+      pourquoi: 'Carence en fer = cause #1 du SJSR. Une ferritine basse (< 75 ng/mL) aggrave les impatiences nocturnes. Le bisglycinate est mieux absorbé que le sulfate, sans troubles digestifs.',
+      posologie: '14 à 28 mg/jour, à jeun le matin avec un verre de jus d\'orange (vitamine C améliore l\'absorption × 3).',
+      duree: 'Cure de 3 mois minimum, puis bilan ferritine.',
+      precaution: '⚠️ Demandez un dosage de ferritine avant supplémentation. Le fer en excès est toxique. Ne jamais associer avec café, thé ou laitages (chélation).',
+      sources: 'Allen RP et al. — Sleep Medicine Reviews 2018'
+    },
+    {
+      id: 'magnesium',
+      emoji: '💊',
+      nom: 'Magnésium (bisglycinate ou malate)',
+      categorie: 'SJSR — relaxation musculaire',
+      categorieCouleur: '#7a4e8a',
+      pourquoi: 'Le magnésium détend les muscles et calme le système nerveux. Particulièrement utile la nuit pour réduire crampes et impatiences. Le bisglycinate est doux pour l\'estomac.',
+      posologie: '300 à 400 mg/jour, 1h avant le coucher.',
+      duree: 'En continu, sans risque pour la santé.',
+      precaution: 'Préférer bisglycinate ou malate (pas oxyde, mal absorbé). Associé à la vitamine B6 pour potentialiser l\'effet.',
+      sources: 'Hornyak M et al. — Sleep 1998'
+    },
+    {
+      id: 'omega3',
+      emoji: '🐟',
+      nom: 'Oméga-3 (EPA + DHA)',
+      categorie: 'Anti-inflammatoire global',
+      categorieCouleur: '#3a6f8a',
+      pourquoi: 'Réduit l\'inflammation systémique de bas grade liée aux douleurs chroniques. Améliore aussi la fonction cognitive (TDAH) et le sommeil profond.',
+      posologie: '1000 à 2000 mg/jour d\'EPA + DHA combinés. Prendre au cours d\'un repas gras.',
+      duree: 'En continu, effet visible après 6 à 8 semaines.',
+      precaution: 'Choisir une huile filtrée (sans métaux lourds). Préférer marques certifiées IFOS ou Friend of the Sea.',
+      sources: 'Bloch & Qawasmi — JAACAP 2011 (TDAH)'
+    },
+    {
+      id: 'vitd',
+      emoji: '☀️',
+      nom: 'Vitamine D3',
+      categorie: 'Sommeil & immunité',
+      categorieCouleur: '#d4a843',
+      pourquoi: 'Une carence en vitamine D est associée au SJSR plus sévère. Améliore aussi la qualité du sommeil profond et l\'humeur. Quasi-systématique en France l\'hiver.',
+      posologie: '1000 à 2000 UI/jour en hiver (octobre à avril). Avec K2 pour optimiser la fixation osseuse.',
+      duree: 'D\'octobre à avril chaque année. Bilan sanguin recommandé.',
+      precaution: 'À prendre lors d\'un repas gras (vitamine liposoluble). Faire doser le 25-OH-D2 avant pour ajuster.',
+      sources: 'Wali S et al. — Annals of Saudi Medicine 2015'
+    },
+    {
+      id: 'b12folate',
+      emoji: '🌱',
+      nom: 'Vitamines B (B9 + B12)',
+      categorie: 'Énergie & fer',
+      categorieCouleur: '#4a8a5e',
+      pourquoi: 'Cofacteurs essentiels du métabolisme du fer et de la dopamine. Une carence en B12 mime souvent le SJSR. Indispensable chez les végétariens.',
+      posologie: 'B12 méthylcobalamine 1000 µg/jour + B9 (folate) 400 µg/jour.',
+      duree: 'Cure de 2 mois si carence, sinon en entretien.',
+      precaution: 'Forme méthylée mieux assimilée (surtout avec polymorphisme MTHFR fréquent en France).',
+      sources: 'Patrick & Ames — FASEB Journal 2014'
+    },
+    {
+      id: 'l-tyrosine',
+      emoji: '🧠',
+      nom: 'L-Tyrosine',
+      categorie: 'TDAH — précurseur dopamine',
+      categorieCouleur: '#2d4a3e',
+      pourquoi: 'Précurseur direct de la dopamine. Améliore concentration, motivation et fonction exécutive chez les profils TDAH. Utile aussi en cas de fatigue mentale.',
+      posologie: '500 à 1500 mg le matin à jeun, 30 min avant le petit-déj.',
+      duree: 'En cures de 4 à 6 semaines, à alterner.',
+      precaution: '⚠️ Contre-indiqué si traitement inhibiteur de la MAO ou hyperthyroïdie. Demander un avis médical.',
+      sources: 'Hase A et al. — Frontiers in Behavioral Neuroscience 2015'
+    },
+    {
+      id: 'l-theanine',
+      emoji: '🍵',
+      nom: 'L-Théanine',
+      categorie: 'TDAH — calme attentif',
+      categorieCouleur: '#5a8a6e',
+      pourquoi: 'Acide aminé du thé vert qui apaise sans somnolence. Améliore la concentration en réduisant l\'anxiété de fond. Très bien tolérée.',
+      posologie: '100 à 200 mg, 2 à 3 fois par jour selon besoins.',
+      duree: 'En continu sans accoutumance.',
+      precaution: 'Aucune toxicité connue. Compatible avec la caféine pour un effet "focalisé calme".',
+      sources: 'Hidese S et al. — Nutrients 2019'
+    },
+    {
+      id: 'glycine',
+      emoji: '🌙',
+      nom: 'Glycine',
+      categorie: 'Sommeil profond',
+      categorieCouleur: '#6e7aa8',
+      pourquoi: 'Acide aminé qui réduit la température corporelle au coucher (signal de sommeil) et améliore le sommeil paradoxal. Utile contre les réveils nocturnes du SJSR.',
+      posologie: '3 g, 30 min avant coucher (poudre dans un peu d\'eau, goût légèrement sucré).',
+      duree: 'En continu.',
+      precaution: 'Pas d\'effet sédatif, ne provoque pas d\'accoutumance. Effet visible dès la 1re nuit.',
+      sources: 'Kawai N et al. — Neuropsychopharmacology 2015'
+    }
+  ];
+}
+
+// Définit renderComplementsList si non fournie par flora_complements.js
+if (typeof window.renderComplementsList === 'undefined') {
+  window.renderComplementsList = function(targetId) {
+    var container = document.getElementById(targetId);
+    if (!container) return;
+    var list = window.COMPLEMENTS_FLORA || [];
+    if (!list.length) {
+      container.innerHTML = '<p style="text-align:center;color:#8a9e96;padding:24px;font-size:0.85rem;">Aucun complément à afficher.</p>';
+      return;
+    }
+    container.innerHTML = list.map(function(c) {
+      return (
+        '<div style="background:#fff;border-radius:16px;padding:18px 16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(45,74,62,0.06);">' +
+          '<div style="display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;">' +
+            '<div style="font-size:2rem;line-height:1;flex-shrink:0;">' + c.emoji + '</div>' +
+            '<div style="flex:1;">' +
+              '<div style="font-family:Playfair Display,serif;font-size:1.15rem;font-weight:600;color:#2d4a3e;line-height:1.2;margin-bottom:4px;">' + escapeHtml(c.nom) + '</div>' +
+              '<div style="display:inline-block;font-size:0.7rem;color:' + (c.categorieCouleur || '#6c8278') + ';background:' + (c.categorieCouleur || '#6c8278') + '15;padding:3px 10px;border-radius:99px;font-weight:600;letter-spacing:0.02em;">' + escapeHtml(c.categorie) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div style="font-size:0.85rem;color:#4a5e54;line-height:1.6;margin-bottom:10px;">' + escapeHtml(c.pourquoi) + '</div>' +
+          '<div style="background:#f7f3ee;border-radius:10px;padding:10px 12px;font-size:0.82rem;color:#2d4a3e;line-height:1.5;margin-bottom:8px;">' +
+            '<div style="font-weight:600;font-size:0.72rem;color:#6c8278;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">💊 Posologie</div>' +
+            escapeHtml(c.posologie) +
+          '</div>' +
+          '<div style="background:#f7f3ee;border-radius:10px;padding:10px 12px;font-size:0.82rem;color:#2d4a3e;line-height:1.5;margin-bottom:8px;">' +
+            '<div style="font-weight:600;font-size:0.72rem;color:#6c8278;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">⏳ Durée</div>' +
+            escapeHtml(c.duree) +
+          '</div>' +
+          '<div style="background:#fff4d6;border-left:3px solid #d4a843;border-radius:8px;padding:10px 12px;font-size:0.8rem;color:#8a5e1a;line-height:1.5;margin-bottom:8px;">' +
+            escapeHtml(c.precaution) +
+          '</div>' +
+          (c.sources ? '<div style="font-size:0.7rem;color:#8a9e96;font-style:italic;text-align:right;">Source : ' + escapeHtml(c.sources) + '</div>' : '') +
+        '</div>'
+      );
+    }).join('');
+  };
+}
+
 // Plans mensuels → définis dans flora_plans.js, chargé avant app.js dans index.html
 
 
@@ -5997,6 +6167,17 @@ function renderPlanMensuel() {
 function renderPlanMoisSpec(moisIdx) {
   const container = document.getElementById('plan-mensuel-content');
   if (!container) return;
+
+  // Bug fix : protection si flora_plans.js n'est pas chargé
+  if (typeof PLAN_MENSUEL_AVRIL === 'undefined' || typeof PLAN_MENSUEL_MAI === 'undefined') {
+    container.innerHTML =
+      '<div style="text-align:center;padding:32px 20px;background:#fff4d6;border-radius:14px;color:#8a5e1a;">' +
+        '<div style="font-size:2.4rem;margin-bottom:10px;">📆</div>' +
+        '<div style="font-weight:600;margin-bottom:6px;">Plans mensuels en cours de préparation</div>' +
+        '<div style="font-size:0.85rem;line-height:1.5;">Les plans complets d\'avril et mai 2026 seront disponibles dans la prochaine mise à jour. En attendant, utilisez le générateur de menus hebdomadaire.</div>' +
+      '</div>';
+    return;
+  }
 
   const plan    = moisIdx === 3 ? PLAN_MENSUEL_AVRIL : PLAN_MENSUEL_MAI;
   const nomMois = moisIdx === 3 ? 'Avril 2026' : 'Mai 2026';
