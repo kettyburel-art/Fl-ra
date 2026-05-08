@@ -909,18 +909,18 @@
           <textarea class="field" id="dol-notes" rows="3" placeholder="Ex : crise survenue après une journée stressante..."></textarea>
         </div>
 
-        <button class="btn-primary full-width" onclick="saveDouleur()" style="margin-top:8px;margin-bottom:120px;">
+        <button class="btn-primary full-width" onclick="saveDouleur()" style="margin-top:8px;">
           💾 Enregistrer
         </button>
       </div>
 
       <!-- TAB HISTORIQUE -->
-      <div id="dtab-historique" class="hidden" style="padding-bottom:120px;">
+      <div id="dtab-historique" class="hidden">
         <div id="dol-entries-list"></div>
       </div>
 
       <!-- TAB STATS -->
-      <div id="dtab-stats" class="hidden" style="padding-bottom:120px;">
+      <div id="dtab-stats" class="hidden">
         <div id="dol-stats-grid" class="dol-stats-grid"></div>
         <div class="journal-block">
           <div class="jblock-title">📊 Évolution douleur + stress (30 derniers jours)</div>
@@ -1019,19 +1019,9 @@
 <style>
 .admin-only.hidden { display: none !important; }
 
-/* === FALLBACK SCROLL : force la page-douleurs à scroller === */
-#page-douleurs {
-  min-height: auto !important;
-  overflow: visible !important;
-  padding-bottom: 200px !important;
-}
-#page-douleurs.active { display: block !important; }
-#dtab-ajout, #dtab-historique, #dtab-stats {
-  padding-bottom: 200px !important;
-}
-#page-douleurs .btn-primary.full-width {
-  margin-bottom: 200px !important;
-}
+/* Espacement raisonnable pour ne pas être caché derrière la nav */
+#page-douleurs { padding-bottom: 24px; }
+#dtab-ajout, #dtab-historique, #dtab-stats { padding-bottom: 24px; }
 
 .dol-eva-scale {
   display: grid;
