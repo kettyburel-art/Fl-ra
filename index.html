@@ -2,49 +2,23 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#2d4a3e" />
-<meta name="description" content="Flōra — Bien-être anti-inflammatoire, journal et nutrition personnalisés" />
-
+<meta name="description" content="Flōra — Bien-être anti-inflammatoire, journal et nutrition personnalisés pour SJSR et TDAH" />
 <title>Flōra</title>
 <link rel="manifest" href="manifest.json" />
-
 <link rel="apple-touch-icon" href="icon.svg" />
-
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="flora_modals.css" />
-
-<!-- Adaptation nav du bas pour 7 boutons -->
-<style>
-  #bottom-nav .nav-btn {
-    flex: 1;
-    min-width: 0;
-    padding-left: 2px;
-    padding-right: 2px;
-  }
-  #bottom-nav .nav-label {
-    font-size: 0.62rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    max-width: 100%;
-  }
-  @media (max-width: 380px) {
-    #bottom-nav .nav-label {
-      font-size: 0.58rem;
-    }
-  }
-</style>
-
-<!-- Analytics — Plausible (RGPD, sans cookies, sans bandeau) -->
+<!-- Analytics — Plausible (RGPD, sans cookies) -->
 <script defer data-domain="kettyburel-art.github.io" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
 
-<!-- SPLASH -->
+<!-- ================================================================
+     SPLASH
+     ================================================================ -->
 <div id="splash">
   <div class="splash-inner">
     <div class="splash-logo">Flōra</div>
@@ -53,7 +27,9 @@
   </div>
 </div>
 
-<!-- ONBOARDING -->
+<!-- ================================================================
+     ONBOARDING (5 étapes)
+     ================================================================ -->
 <div id="onboarding" class="hidden">
   <div class="onboard-wrap">
     <!-- Étape 1 — Bienvenue -->
@@ -65,7 +41,6 @@
       <p style="font-size:0.82rem;color:var(--text-light);margin-top:8px;">Nous allons personnaliser votre expérience en 4 questions. Moins d'une minute.</p>
       <button class="btn-primary" onclick="nextStep(2)">Commencer →</button>
     </div>
-
     <!-- Étape 2 — Prénom + objectif -->
     <div class="onboard-step" data-step="2">
       <div class="onboard-progress"><div class="onboard-progress-fill" style="width:40%"></div></div>
@@ -82,7 +57,6 @@
       </select>
       <button class="btn-primary" onclick="nextStep(3)">Continuer →</button>
     </div>
-
     <!-- Étape 3 — SJSR spécifique -->
     <div class="onboard-step" data-step="3">
       <div class="onboard-progress"><div class="onboard-progress-fill" style="width:60%"></div></div>
@@ -104,7 +78,6 @@
       <input type="hidden" id="ob-traitement" value="" />
       <button class="btn-primary" style="margin-top:16px;" onclick="nextStep(4)">Continuer →</button>
     </div>
-
     <!-- Étape 4 — Alimentation -->
     <div class="onboard-step" data-step="4">
       <div class="onboard-progress"><div class="onboard-progress-fill" style="width:80%"></div></div>
@@ -140,8 +113,7 @@
       </div>
       <button class="btn-primary" style="margin-top:20px;" onclick="nextStep(5)">Continuer →</button>
     </div>
-
-    <!-- Étape 5 — Récapitulatif personnalisé -->
+    <!-- Étape 5 — Récap -->
     <div class="onboard-step" data-step="5">
       <div class="onboard-progress"><div class="onboard-progress-fill" style="width:100%"></div></div>
       <div class="onboard-art">🎯</div>
@@ -152,16 +124,20 @@
   </div>
 </div>
 
-<!-- APP SHELL -->
+<!-- ================================================================
+     APP SHELL
+     ================================================================ -->
 <div id="app" class="hidden">
+
+  <!-- HEADER -->
   <header id="app-header">
     <div class="header-left">
       <span class="app-logo">Flōra</span>
     </div>
     <div class="header-right">
       <span id="header-greeting"></span>
-      <button class="icon-btn" id="header-login-btn" onclick="showLogin()" title="Se connecter" aria-label="Se connecter">🔑</button>
-      <button class="icon-btn" onclick="showPage('profil')" title="Profil" aria-label="Mon profil">👤</button>
+      <button class="icon-btn" id="header-login-btn" onclick="showLogin()" title="Se connecter">🔑</button>
+      <button class="icon-btn" onclick="showPage('profil')" title="Profil">👤</button>
     </div>
   </header>
 
@@ -174,15 +150,15 @@
         🔑 Connexion
       </div>
       <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:20px;">
-        Abonné·e Premium ou Administratrice ? Connectez-vous ici.
+        Abonné·e Premium ou administratrice ? Connectez-vous ici.
       </p>
       <div class="settings-row" style="flex-direction:column;gap:8px;align-items:stretch;">
-                <input type="email" class="field" id="login-email"
-          placeholder="Votre email" autocomplete="email"
-          onkeydown="tryLoginOnEnter(event)" />
+        <input type="email" class="field" id="login-email"
+               placeholder="Votre email" autocomplete="email"
+               onkeydown="tryLoginOnEnter(event)" />
         <input type="password" class="field" id="login-password"
-          placeholder="Votre mot de passe / code Flōra"
-          onkeydown="tryLoginOnEnter(event)" />
+               placeholder="Votre mot de passe / code Flōra"
+               onkeydown="tryLoginOnEnter(event)" />
       </div>
       <div id="login-error" class="hidden" style="color:var(--red-soft);font-size:0.82rem;margin:8px 0;"></div>
       <button class="btn-primary full-width" style="margin-top:14px;" onclick="doLogin()">
@@ -190,210 +166,167 @@
       </button>
       <p style="font-size:0.75rem;color:var(--text-light);text-align:center;margin-top:14px;">
         Votre code de connexion est celui reçu par email après abonnement Stripe.<br>
-                Pour s'abonner → <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank" rel="noopener noreferrer" style="color:var(--green-mid);">4,99€/mois</a>
+        Pour s'abonner → <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00" target="_blank" style="color:var(--green-mid);">4,99€/mois</a>
       </p>
     </div>
   </div>
 
-    <!-- PAGES -->
-    <main id="main-content">
+  <!-- ================================================================
+       MAIN — toutes les pages
+       ================================================================ -->
+  <main id="main-content">
 
-      <section id="page-accueil" class="page active">
+    <!-- ============== ACCUEIL ============== -->
+    <section id="page-accueil" class="page active">
+      <div class="page-hero">
+        <div class="hero-text">
+          <h1 id="dash-greeting">Bonjour !</h1>
+          <p id="dash-date"></p>
+        </div>
+        <div class="hero-badge" id="streak-badge">🔥 <span id="streak-count">0</span>j</div>
+      </div>
 
-        <!-- Hero -->
-        <div class="page-hero">
-          <div class="hero-text">
-            <h1 id="dash-greeting">Bonjour !</h1>
-            <p id="dash-date"></p>
+      <!-- Streak animé -->
+      <div class="streak-big" id="streak-big">
+        <div class="streak-flame">🔥</div>
+        <div class="streak-info">
+          <div class="streak-count-big">0 <span style="font-size:1rem;opacity:.7">jour</span></div>
+          <div class="streak-label">de suivi consécutif</div>
+          <div class="streak-message">Commencez votre suivi aujourd'hui 🌱</div>
+        </div>
+      </div>
+
+      <!-- Nudge journal -->
+      <div id="journal-nudge" class="journal-nudge"></div>
+
+      <!-- 4 cards principales -->
+      <div class="card-grid">
+        <div class="card card-journal" onclick="showPage('journal')">
+          <div class="card-icon">🌙</div>
+          <div class="card-body">
+            <div class="card-title">Journal du jour</div>
+            <div class="card-sub" id="journal-today-status">Aucune entrée aujourd'hui</div>
           </div>
-          <div class="hero-badge" id="streak-badge">🔥 <span id="streak-count">0</span>j</div>
+          <div class="card-arrow">→</div>
         </div>
-
-        <!-- Streak animé -->
-        <div class="streak-big" id="streak-big">
-          <div class="streak-flame">🔥</div>
-          <div class="streak-info">
-            <div class="streak-count-big">0 <span style="font-size:1rem;opacity:.7">jour</span></div>
-            <div class="streak-label">de suivi consécutif</div>
-            <div class="streak-message">Commencez votre suivi aujourd'hui 🌱</div>
+        <div class="card card-recette" id="card-recette-jour" onclick="openRecetteDuJour()">
+          <div class="card-icon" id="rdj-emoji">🥗</div>
+          <div class="card-body">
+            <div class="card-title">Recette du jour</div>
+            <div class="card-sub" id="recette-du-jour">Chargement…</div>
           </div>
+          <div class="card-arrow">→</div>
         </div>
-
-        <!-- Bandeau d'incitation à saisir le journal (apparaît selon contexte) -->
-        <div id="journal-nudge" class="journal-nudge hidden" onclick="showPage('journal')"></div>
-
-        <!-- 4 cards -->
-        <div class="card-grid">
-          <div class="card card-journal" onclick="showPage('journal')">
-            <div class="card-icon">🌙</div>
-            <div class="card-body">
-              <div class="card-title">Journal du jour</div>
-              <div class="card-sub" id="journal-today-status">Aucune entrée aujourd'hui</div>
-            </div>
-            <div class="card-arrow">→</div>
+        <div class="card card-agenda" onclick="showPage('agenda')">
+          <div class="card-icon">📅</div>
+          <div class="card-body">
+            <div class="card-title">Mon agenda</div>
+            <div class="card-sub" id="agenda-today">Voir le menu du jour</div>
           </div>
-
-          <div class="card card-recette" id="card-recette-jour" onclick="openRecetteDuJour()">
-            <div class="card-icon" id="rdj-emoji">🥗</div>
-            <div class="card-body">
-              <div class="card-title">Recette du jour</div>
-              <div class="card-sub" id="recette-du-jour">Chargement…</div>
-            </div>
-            <div class="card-arrow">→</div>
+          <div class="card-arrow">→</div>
+        </div>
+        <div class="card card-generateur" onclick="showPage('generateur')">
+          <div class="card-icon">✨</div>
+          <div class="card-body">
+            <div class="card-title">Générateur</div>
+            <div class="card-sub">Créer un menu semaine</div>
           </div>
+          <div class="card-arrow">→</div>
+        </div>
+      </div>
 
-          <div class="card card-agenda" onclick="showPage('agenda')">
-            <div class="card-icon">📅</div>
-            <div class="card-body">
-              <div class="card-title">Mon agenda</div>
-              <div class="card-sub" id="agenda-today">Voir le menu du jour</div>
-            </div>
-            <div class="card-arrow">→</div>
+      <!-- Bloc repas du jour (rempli par renderTodayMealsBlock) -->
+      <div id="today-meals-block" class="today-meals-block hidden">
+        <div class="section-title" style="margin-top:0;">🍽️ Aujourd'hui</div>
+        <div id="today-meals-list"></div>
+      </div>
+
+      <!-- Conseil SJSR rotatif -->
+      <div class="conseil-sjsr" id="conseil-sjsr" onclick="nextConseil()">
+        <div class="conseil-icon" id="conseil-icon">🦵</div>
+        <div class="conseil-text" id="conseil-text">Chargement…</div>
+        <div class="conseil-next">Suivant →</div>
+      </div>
+
+      <!-- Synthèse bien-être hebdo -->
+      <div class="section-title">Ma semaine</div>
+      <div class="wellbeing-chart" id="week-chart"></div>
+    </section>
+
+    <!-- ============== JOURNAL ============== -->
+    <section id="page-journal" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Journal</h2>
+      </div>
+
+      <!-- Onglets : Aujourd'hui / Stats / Calendrier / Historique -->
+      <div class="journal-tabs">
+        <button class="jtab active" onclick="switchJTab('today', this)">Aujourd'hui</button>
+        <button class="jtab" onclick="switchJTab('stats', this)">📊 Stats</button>
+        <button class="jtab" onclick="switchJTab('calendrier', this)">📅 Calendrier</button>
+        <button class="jtab" onclick="switchJTab('historique', this)">📜 Historique</button>
+      </div>
+
+      <!-- Onglet Aujourd'hui (rempli par renderJournalToday) -->
+      <div id="jtab-today">
+        <!-- Navigation date -->
+        <div class="journal-date-nav">
+          <button class="date-nav-btn" onclick="changeJournalDay(-1)">←</button>
+          <div class="journal-date" id="journal-entry-date"></div>
+          <button class="date-nav-btn" onclick="changeJournalDay(1)" id="journal-next-btn">→</button>
+        </div>
+        <!-- Container rempli dynamiquement -->
+        <div id="journal-today-container"></div>
+        <!-- Save button + confirm -->
+        <button class="btn-primary full-width" onclick="saveJournal()" style="margin-top:16px;">
+          💾 Enregistrer l'entrée
+        </button>
+        <div class="save-confirm hidden" id="save-confirm">✅ Entrée sauvegardée !</div>
+      </div>
+
+      <!-- Onglet Stats -->
+      <div id="jtab-stats" class="hidden">
+        <div id="stats-journal-container"></div>
+      </div>
+
+      <!-- Onglet Calendrier -->
+      <div id="jtab-calendrier" class="hidden">
+        <div id="calendar-journal-container"></div>
+      </div>
+
+      <!-- Onglet Historique -->
+      <div id="jtab-historique" class="hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div style="font-size:0.8rem;color:var(--text-light);">
+            Votre historique complet
           </div>
-
-          <div class="card card-generateur" onclick="showPage('generateur')">
-            <div class="card-icon">✨</div>
-            <div class="card-body">
-              <div class="card-title">Générateur</div>
-              <div class="card-sub">Créer un menu semaine</div>
-            </div>
-            <div class="card-arrow">→</div>
-          </div>
-
-          <div class="card card-insights" onclick="showPage('insights')">
-            <div class="card-icon">📊</div>
-            <div class="card-body">
-              <div class="card-title">Mes insights</div>
-              <div class="card-sub" id="insights-card-sub">Corrélations & patterns santé</div>
-            </div>
-            <div class="card-arrow">→</div>
-          </div>
-
-          <div class="card card-etirements" onclick="showPage('etirements')">
-            <div class="card-icon">🧘‍♀️</div>
-            <div class="card-body">
-              <div class="card-title">Étirements SJSR</div>
-              <div class="card-sub">6 exercices avec timer</div>
-            </div>
-            <div class="card-arrow">→</div>
-          </div>
+          <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">
+            📄 Exporter PDF
+          </button>
         </div>
+        <div id="historique-list"></div>
+      </div>
+    </section>
 
-        <!-- À manger aujourd'hui (visible seulement si au moins 1 repas planifié) -->
-        <div id="today-meals-block" class="today-meals-block hidden">
-          <div class="today-meals-header">
-            <span class="today-meals-title">🍽️ À manger aujourd'hui</span>
-            <span class="today-meals-link" onclick="showPage('agenda')">Agenda →</span>
-          </div>
-          <div id="today-meals-list" class="today-meals-list"></div>
+    <!-- ============== RECETTES ============== -->
+    <section id="page-recettes" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Recettes & Compléments</h2>
+      </div>
+
+      <!-- Onglets principaux -->
+      <div class="journal-tabs" style="margin-bottom:12px;">
+        <button class="jtab active" onclick="switchRecettesTab('recettes', this)">🥗 Recettes</button>
+        <button class="jtab" onclick="switchRecettesTab('complements', this)">💊 Compléments</button>
+      </div>
+
+      <!-- TAB RECETTES -->
+      <div id="recettes-tab-content">
+        <div class="search-bar">
+          <input type="text" id="recette-search" placeholder="🔍 Rechercher une recette…" oninput="filterRecettes()" />
         </div>
-
-        <!-- Conseil SJSR rotatif -->
-        <div class="conseil-sjsr" id="conseil-sjsr" onclick="nextConseil()">
-          <div class="conseil-icon" id="conseil-icon">🦵</div>
-          <div class="conseil-text" id="conseil-text">Chargement…</div>
-          <div class="conseil-next">Suivant →</div>
-        </div>
-
-        <!-- Synthèse bien-être -->
-        <div class="section-title">Ma semaine</div>
-        <div class="wellbeing-chart" id="week-chart"></div>
-
-      </section>
-
-            <section id="page-journal" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Journal de nuit SJSR</h2>
-        </div>
-
-        <div class="journal-tabs">
-          <button class="jtab active" onclick="switchJTab('today', this)">Aujourd'hui</button>
-          <button class="jtab" onclick="switchJTab('stats', this)">Statistiques</button>
-          <button class="jtab" onclick="switchJTab('calendrier', this)">Calendrier</button>
-          <button class="jtab" onclick="switchJTab('historique', this)">Historique</button>
-        </div>
-
-        <!-- TAB AUJOURD'HUI -->
-        <div id="jtab-today">
-          <div class="journal-date-nav">
-            <button class="date-nav-btn" onclick="changeJournalDay(-1)">‹</button>
-            <div class="journal-date" id="journal-entry-date"></div>
-            <button class="date-nav-btn" onclick="changeJournalDay(1)" id="journal-next-btn">›</button>
-          </div>
-
-          <!-- Le journal est entièrement généré par renderJournalToday() -->
-          <div id="journal-today-container"></div>
-        </div>
-
-        <!-- TAB STATISTIQUES -->
-        <div id="jtab-stats" class="hidden">
-          <div id="stats-journal-container"></div>
-        </div>
-
-        <!-- TAB CALENDRIER -->
-        <div id="jtab-calendrier" class="hidden">
-          <div id="calendar-journal-container"></div>
-        </div>
-
-        <!-- TAB HISTORIQUE -->
-        <div id="jtab-historique" class="hidden">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-            <div style="font-size:0.8rem;color:var(--text-light);">Votre historique complet</div>
-            <button class="btn-primary" style="padding:8px 16px;font-size:0.82rem;" onclick="exportJournalPDF()">📄 Exporter PDF</button>
-          </div>
-          <div id="historique-list"></div>
-        </div>
-      </section>
-
-      <!-- ============================================
-           PAGE INSIGHTS — Corrélations & analyses
-           ============================================ -->
-      <section id="page-insights" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Mes insights</h2>
-        </div>
-        
-        <div id="insights-container">
-          <!-- Rempli dynamiquement par renderInsights() -->
-        </div>
-      </section>
-
-      <!-- ============================================
-           PAGE ÉTIREMENTS SJSR
-           ============================================ -->
-      <section id="page-etirements" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Étirements SJSR</h2>
-        </div>
-        
-        <div id="etirements-container">
-          <!-- Rempli dynamiquement par renderEtirementsPage() -->
-        </div>
-      </section>
-
-      <section id="page-recettes" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Recettes & Compléments</h2>
-        </div>
-
-        <!-- Onglets principaux -->
-        <div class="journal-tabs" style="margin-bottom:12px;">
-          <button class="jtab active" onclick="switchRecettesTab('recettes', this)">🥗 Recettes</button>
-          <button class="jtab" onclick="switchRecettesTab('complements', this)">💊 Compléments</button>
-        </div>
-
-        <!-- TAB RECETTES -->
-        <div id="recettes-tab-content">
-
-        <div class="search-bar" style="display:flex;gap:8px;align-items:center;">
-          <input type="text" id="recette-search" placeholder="🔍 Rechercher une recette…" oninput="filterRecettes()" style="flex:1;" />
-          <button onclick="openMyRecipeModal(null)" aria-label="Créer une recette" title="Créer ma recette" style="flex-shrink:0;padding:10px 14px;border:none;border-radius:14px;background:#2d4a3e;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(45,74,62,0.2);">+ Créer</button>
-        </div>
-
         <div class="filter-chips" id="cat-filters">
           <span class="chip active" onclick="filterCat('', this)">Toutes</span>
           <span class="chip" onclick="filterCat('petit-dejeuner', this)">🌅 Petits-déj</span>
@@ -401,675 +334,580 @@
           <span class="chip" onclick="filterCat('dejeuner', this)">☀️ Déjeuners</span>
           <span class="chip" onclick="filterCat('diner', this)">🌙 Dîners</span>
           <span class="chip" onclick="filterCat('snack', this)">🍎 Snacks</span>
-          <span class="chip chip-favoris" onclick="toggleFavorisFilter(this)" id="chip-favoris">❤️ Favoris</span>
         </div>
-        <!-- Filtres nutritionnels -->
         <div class="filter-chips" id="nutri-filters" style="margin-top:6px;">
           <span class="chip" onclick="filterNutri('fer', this)">🩸 Fer</span>
           <span class="chip" onclick="filterNutri('omega3', this)">🐟 Oméga-3</span>
           <span class="chip" onclick="filterNutri('magnesium', this)">💊 Magnésium</span>
-          <span class="chip" onclick="filterNutri('rapide', this)">⚡ < 20 min</span>
+          <span class="chip" onclick="filterNutri('rapide', this)">⚡ &lt; 20 min</span>
           <span class="chip" onclick="filterNutri('', this)">✕ Aucun</span>
         </div>
 
         <!-- Badge filtre placard actif -->
-        <div id="placard-filter-badge" class="placard-active-badge" style="display:none;" onclick="window._placardFilter=null;renderRecettes();">
-          <span class="placard-badge-icon">🗄️</span>
-          <span class="placard-badge-text">Filtre placard actif</span>
-          <span class="placard-badge-close">✕</span>
+        <div id="placard-filter-badge" style="display:none;background:var(--green-pale);color:var(--green-deep);border-radius:var(--radius-md);padding:8px 14px;font-size:0.8rem;font-weight:600;margin-bottom:12px;cursor:pointer;align-items:center;gap:8px;" onclick="window._placardFilter=null;renderRecettes();">
+          🗄️ <span class="placard-badge-text">Filtre placard actif</span> — Toucher pour effacer
         </div>
 
         <div id="recettes-grid" class="recettes-grid"></div>
+      </div>
 
-        </div><!-- fin recettes-tab-content -->
+      <!-- TAB COMPLÉMENTS -->
+      <div id="complements-tab-content" class="hidden">
+        <div class="journal-block">
+          <div class="jblock-title">💊 Compléments alimentaires SJSR / TDAH</div>
+          <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+            Basé sur les dernières recherches cliniques. Consultez toujours votre médecin avant toute supplémentation.
+          </p>
+        </div>
+        <div id="complements-list"></div>
+      </div>
+    </section>
 
-        <!-- TAB COMPLÉMENTS -->
-        <div id="complements-tab-content" class="hidden">
-          <div class="journal-block">
-            <div class="jblock-title">💊 Compléments alimentaires SJSR/TDAH</div>
-            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
-              Sélection raisonnée pour SJSR, TDAH et inflammation. Consultez toujours votre médecin avant toute supplémentation.
-            </p>
+    <!-- ============== AGENDA ============== -->
+    <section id="page-agenda" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Agenda alimentaire</h2>
+      </div>
+
+      <!-- Toggle vue Mois / Semaine -->
+      <div class="agenda-view-toggle">
+        <button class="agenda-toggle-btn active" onclick="setAgendaView('month', this)">📅 Mois</button>
+        <button class="agenda-toggle-btn" onclick="setAgendaView('week', this)">📆 Semaine</button>
+      </div>
+
+      <!-- Navigation période -->
+      <div class="agenda-month-nav">
+        <button class="agenda-nav-btn" onclick="changeAgendaPeriod(-1)">‹</button>
+        <span id="agenda-period-label" class="agenda-period-label"></span>
+        <button class="agenda-nav-btn" onclick="changeAgendaPeriod(1)">›</button>
+      </div>
+
+      <!-- Container principal (rempli par renderAgendaMonth/Week) -->
+      <div id="agenda-content"></div>
+
+      <!-- Drawer du jour sélectionné -->
+      <div id="agenda-day-drawer" class="hidden"></div>
+    </section>
+
+    <!-- ============== GÉNÉRATEUR ============== -->
+    <section id="page-generateur" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Générateur de menus</h2>
+      </div>
+
+      <div class="journal-tabs" style="margin-bottom:20px;">
+        <button class="jtab active" onclick="switchGenTab('semaine',this)">📅 Semaine</button>
+        <button class="jtab" onclick="switchGenTab('mensuel',this)">📆 Plan mensuel</button>
+        <button class="jtab" onclick="switchGenTab('brunch',this)">🥂 Brunch</button>
+      </div>
+
+      <!-- TAB SEMAINE -->
+      <div id="gen-tab-semaine">
+        <div class="gen-options">
+          <div class="gen-option-row">
+            <label>Durée</label>
+            <select class="field" id="gen-duree">
+              <option value="3">3 jours</option>
+              <option value="7" selected>1 semaine</option>
+              <option value="14">2 semaines</option>
+            </select>
           </div>
-
-          <!-- Bandeau d'info / accès paramétrage médicaments -->
-          <div class="comp-meds-banner" id="comp-meds-banner">
-            <div class="comp-meds-banner-icon">💊</div>
-            <div class="comp-meds-banner-content">
-              <div class="comp-meds-banner-label" id="comp-meds-banner-label">
-                Personnalisez les alertes d'interaction
-              </div>
-              <div class="comp-meds-banner-sub" id="comp-meds-banner-sub">
-                Indiquez vos médicaments pour voir les interactions possibles
-              </div>
-            </div>
-            <button class="comp-meds-banner-btn" onclick="openMedicationsEditFromProfile()">
-              Configurer
-            </button>
-          </div>
-
-          <!-- Légende des niveaux de preuve -->
-          <details class="comp-legend">
-            <summary class="comp-legend-summary">
-              Comprendre les niveaux de preuve
-            </summary>
-            <div class="comp-legend-content">
-              <div class="comp-legend-row">
-                <span class="comp-tier" style="background:rgba(61,107,88,0.15);color:#3d6b58;">A</span>
-                <div><strong>Preuves solides</strong> — méta-analyses, recommandations officielles</div>
-              </div>
-              <div class="comp-legend-row">
-                <span class="comp-tier" style="background:rgba(212,168,67,0.15);color:#b88820;">B</span>
-                <div><strong>Preuves modérées</strong> — essais contrôlés, recommandations conditionnelles</div>
-              </div>
-              <div class="comp-legend-row">
-                <span class="comp-tier" style="background:rgba(160,115,92,0.15);color:#a0735c;">C</span>
-                <div><strong>Preuves préliminaires</strong> — études limitées ou usage traditionnel</div>
-              </div>
-            </div>
-          </details>
-
-          <!-- Liste des compléments (générée dynamiquement) -->
-          <div id="complements-list" class="comp-list-container"></div>
-
-          <!-- Disclaimer pied de page -->
-          <div class="comp-page-disclaimer">
-            <strong>Important.</strong> Cette section fournit des informations générales 
-            à but éducatif. Aucune supplémentation ne doit être démarrée sans avis 
-            de votre médecin ou pharmacien, particulièrement en cas de traitement en cours, 
-            de grossesse, d'allaitement ou de maladie chronique.
-          </div>
-
-        </div><!-- fin complements-tab-content -->
-
-      </section>
-
-      <section id="page-agenda" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Agenda alimentaire</h2>
-        </div>
-
-        <!-- Toggle Mois / Semaine -->
-        <div class="agenda-view-toggle">
-          <button class="agenda-toggle-btn active" onclick="setAgendaView('month', this)">📅 Mois</button>
-          <button class="agenda-toggle-btn" onclick="setAgendaView('week', this)">📋 Semaine</button>
-        </div>
-
-        <!-- Navigation -->
-        <div class="agenda-month-nav">
-          <button class="agenda-nav-btn" onclick="changeAgendaPeriod(-1)">‹</button>
-          <span class="agenda-period-label" id="agenda-period-label"></span>
-          <button class="agenda-nav-btn" onclick="changeAgendaPeriod(1)">›</button>
-        </div>
-
-        <!-- Container -->
-        <div id="agenda-content"></div>
-
-        <!-- Drawer jour sélectionné -->
-        <div id="agenda-day-drawer" class="hidden"></div>
-      </section>
-
-      <section id="page-generateur" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Générateur de menus</h2>
-        </div>
-
-        <!-- Onglets générateur -->
-        <div class="journal-tabs" style="margin-bottom:20px;">
-          <button class="jtab active" onclick="switchGenTab('semaine',this)">📅 Semaine</button>
-          <button class="jtab" onclick="switchGenTab('mensuel',this)">📆 Plan mensuel</button>
-          <button class="jtab" onclick="switchGenTab('brunch',this)">🥂 Brunch</button>
-        </div>
-
-        <!-- TAB SEMAINE -->
-        <div id="gen-tab-semaine">
-          <div class="gen-options">
-            <div class="gen-option-row">
-              <label>Durée</label>
-              <select class="field" id="gen-duree">
-                <option value="3">3 jours</option>
-                <option value="7" selected>1 semaine</option>
-                <option value="14">2 semaines</option>
-              </select>
-            </div>
-            <div class="gen-option-row">
-              <label>Priorité</label>
-              <select class="field" id="gen-priorite">
-                <option value="anti-inflammatoire">Anti-inflammatoire</option>
-                <option value="energie">Boost énergie</option>
-                <option value="sommeil">Favoriser le sommeil</option>
-                <option value="digestion">Digestion douce</option>
-              </select>
-            </div>
-          </div>
-          <button class="btn-primary full-width" onclick="generateMenu()">✨ Générer mon menu</button>
-          <div id="generated-menu" class="generated-menu hidden"></div>
-          <div id="gen-premium-wall" class="premium-wall hidden">
-            <div class="premium-icon">⭐</div>
-            <h3>Fonctionnalité Premium</h3>
-            <p>Générez des menus illimités et accédez à 163 recettes anti-inflammatoires.</p>
-            <button class="btn-premium" onclick="showPremium()">Essayer Premium — 4,99€/mois</button>
-            <button class="btn-link" onclick="unlockDemo()">Débloquer avec un code</button>
-          </div>
-        </div>
-
-        <!-- TAB PLAN MENSUEL -->
-        <div id="gen-tab-mensuel" class="hidden">
-          <div class="journal-block">
-            <div class="jblock-title">📆 Plan mensuel — Avril 2026</div>
-            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
-              30 jours de menus complets anti-inflammatoires SJSR. Cliquez sur une recette pour la voir.
-            </p>
-            <div id="plan-mensuel-content"></div>
-          </div>
-        </div>
-
-        <!-- TAB BRUNCH -->
-        <div id="gen-tab-brunch" class="hidden">
-          <div class="journal-block">
-            <div class="jblock-title">🥂 Idées Brunch du week-end</div>
-            <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
-              Recettes conviviales pour un brunch en famille ou entre amis. Sans gluten, sans lactose.
-            </p>
-            <div id="brunch-content"></div>
-            <button class="btn-primary full-width" style="margin-top:16px;" onclick="generateBrunchMenu()">
-              🎲 Suggérer un brunch aléatoire
-            </button>
-          </div>
-        </div>
-
-      </section>
-
-      <section id="page-profil" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-          <h2>Mon profil</h2>
-        </div>
-
-        <div class="profil-avatar">
-          <div class="avatar-circle" id="avatar-initials"></div>
-          <div class="profil-name" id="profil-display-name"></div>
-          <div class="profil-badge" id="profil-plan-badge">Version gratuite</div>
-        </div>
-
-        <div class="settings-group">
-          <div class="settings-title">Informations</div>
-          <div class="settings-row">
-            <label>Prénom</label>
-            <input class="field inline" type="text" id="p-name" />
-          </div>
-          <div class="settings-row">
-            <label>Objectif</label>
-            <select class="field inline" id="p-goal">
-              <option value="sommeil">Améliorer mon sommeil</option>
-              <option value="douleur">Réduire la douleur</option>
-              <option value="energie">Retrouver de l'énergie</option>
-              <option value="global">Bien-être global</option>
+          <div class="gen-option-row">
+            <label>Priorité</label>
+            <select class="field" id="gen-priorite">
+              <option value="anti-inflammatoire">Anti-inflammatoire</option>
+              <option value="energie">Boost énergie</option>
+              <option value="sommeil">Favoriser le sommeil</option>
+              <option value="digestion">Digestion douce</option>
             </select>
           </div>
         </div>
-
-        <div class="settings-group">
-          <div class="settings-title">Apparence</div>
-          <div class="theme-selector">
-            <button class="theme-option" data-theme-value="light" onclick="setTheme('light')">
-              <span class="theme-option-icon">☀️</span>
-              <span class="theme-option-label">Clair</span>
-            </button>
-            <button class="theme-option" data-theme-value="dark" onclick="setTheme('dark')">
-              <span class="theme-option-icon">🌙</span>
-              <span class="theme-option-label">Sombre</span>
-            </button>
-            <button class="theme-option" data-theme-value="auto" onclick="setTheme('auto')">
-              <span class="theme-option-icon">🔄</span>
-              <span class="theme-option-label">Auto</span>
-            </button>
-          </div>
+        <button class="btn-primary full-width" onclick="generateMenu()">✨ Générer mon menu</button>
+        <div id="generated-menu" class="generated-menu hidden"></div>
+        <div id="gen-premium-wall" class="premium-wall hidden">
+          <div class="premium-icon">⭐</div>
+          <h3>Fonctionnalité Premium</h3>
+          <p>Générez des menus illimités et accédez à toutes les recettes anti-inflammatoires.</p>
+          <button class="btn-premium" onclick="showPremium()">Essayer Premium — 4,99€/mois</button>
+          <button class="btn-link" onclick="unlockDemo()">Débloquer avec un code</button>
         </div>
+      </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Régime alimentaire</div>
-          <label class="toggle-row">
-            <span>Sans gluten</span>
-            <input type="checkbox" id="p-sg" class="toggle-input" />
-            <span class="toggle-slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span>Sans lactose</span>
-            <input type="checkbox" id="p-sl" class="toggle-input" />
-            <span class="toggle-slider"></span>
-          </label>
-          <label class="toggle-row">
-            <span>Végétarien</span>
-            <input type="checkbox" id="p-sv" class="toggle-input" />
-            <span class="toggle-slider"></span>
-          </label>
+      <!-- TAB PLAN MENSUEL -->
+      <div id="gen-tab-mensuel" class="hidden">
+        <div class="journal-block">
+          <div class="jblock-title">📆 Plan mensuel</div>
+          <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+            30 jours de menus complets anti-inflammatoires SJSR. Cliquez sur une recette pour la voir.
+          </p>
+          <div id="plan-mensuel-content"></div>
         </div>
+      </div>
 
-        <div class="settings-group">
-          <div class="settings-title">Suivi santé</div>
-          <label class="toggle-row">
-            <span>Suivre mon cycle menstruel</span>
-            <input type="checkbox" id="p-cycle" class="toggle-input" />
-            <span class="toggle-slider"></span>
-          </label>
-          <button class="profil-action-btn" onclick="openMedicationsEditFromProfile()" style="width:100%;text-align:left;background:#fff;border:none;padding:14px 16px;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;margin-top:8px;box-shadow:0 1px 3px rgba(45,74,62,0.06);font-family:inherit;">
-            <span style="font-size:1.4rem;">💊</span>
-            <span style="flex:1;text-align:left;">
-              <span style="display:block;font-size:0.92rem;font-weight:600;color:#2d4a3e;line-height:1.3;">Mes médicaments</span>
-              <span style="display:block;font-size:0.76rem;color:#6c8278;">Pour les alertes d'interaction avec compléments</span>
-            </span>
-            <span style="font-size:1.2rem;color:#a0735c;">›</span>
+      <!-- TAB BRUNCH -->
+      <div id="gen-tab-brunch" class="hidden">
+        <div class="journal-block">
+          <div class="jblock-title">🥂 Idées Brunch du week-end</div>
+          <p style="font-size:0.82rem;color:var(--text-mid);margin-bottom:16px;">
+            Recettes conviviales pour un brunch en famille ou entre amis. Sans gluten, sans lactose.
+          </p>
+          <div id="brunch-content"></div>
+          <button class="btn-primary full-width" style="margin-top:16px;" onclick="generateBrunchMenu()">
+            🎲 Suggérer un brunch aléatoire
           </button>
         </div>
-
-        <div class="settings-group">
-          <div class="settings-title">Abonnement</div>
-          <div class="plan-card" id="plan-card">
-            <div class="plan-name">Flōra Gratuit</div>
-            <div class="plan-features">
-              <div class="pf">✅ <span data-recipe-count="free">—</span> recettes anti-inflammatoires</div>
-              <div class="pf">✅ Journal illimité</div>
-              <div class="pf">✅ Agenda 1 semaine</div>
-              <div class="pf pf-locked">🔒 Bibliothèque complète (<span data-recipe-count="total">—</span> recettes)</div>
-              <div class="pf pf-locked">🔒 Générateur illimité</div>
-              <div class="pf pf-locked">🔒 Statistiques avancées</div>
-            </div>
-            <button class="btn-premium" onclick="showPremium()">Passer à Premium →</button>
-          </div>
-        </div>
-
-        <button class="btn-primary full-width" onclick="saveProfil(this)">Enregistrer</button>
-        <button class="btn-primary full-width" onclick="enableNotifications()" style="margin-bottom:8px;">
-          🔔 Activer les rappels bien-être
-        </button>
-        
-        <!-- Mes données — Export / Import RGPD -->
-        <div class="data-management-section">
-          <div class="data-management-title">📦 Mes données</div>
-          <div class="data-management-sub">Exportez ou importez l'ensemble de vos données pour les sauvegarder ou les transférer.</div>
-          
-          <button class="data-action-btn" onclick="exportFloraData()">
-            <span class="data-action-icon">📤</span>
-            <span class="data-action-content">
-              <span class="data-action-label">Exporter mes données</span>
-              <span class="data-action-sub">Fichier JSON téléchargeable</span>
-            </span>
-            <span class="data-action-arrow">›</span>
-          </button>
-          
-          <label class="data-action-btn" style="cursor:pointer;">
-            <span class="data-action-icon">📥</span>
-            <span class="data-action-content">
-              <span class="data-action-label">Importer mes données</span>
-              <span class="data-action-sub">Restaurer depuis un fichier JSON</span>
-            </span>
-            <span class="data-action-arrow">›</span>
-            <input type="file" accept=".json,application/json" style="display:none;" onchange="importFloraData(this)" />
-          </label>
-        </div>
-        
-        <button class="btn-link full-width" style="text-align:center;padding:10px;" onclick="showPage('apropos')">
-          ℹ️ À propos · CGU · Mentions légales
-        </button>
-        <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
-
-        <!-- Lien vers les stats du journal -->
-        <div style="margin-top:20px;padding:14px 16px;background:#f7f3ee;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showPage('journal');setTimeout(function(){var b=document.querySelector('#page-journal .jtab:nth-child(2)');if(b)b.click();},100)">
-          <span style="font-size:1.4rem;">📊</span>
-          <div style="flex:1;">
-            <div style="font-weight:600;color:#2d4a3e;font-size:0.95rem;">Mes statistiques</div>
-            <div style="font-size:0.78rem;color:#8a9e96;">Sommeil, douleurs, bien-être →</div>
-          </div>
-          <span style="color:#8a9e96;">›</span>
-        </div>
-
-        <!-- Lien vers les badges -->
-        <div style="margin-top:10px;padding:14px 16px;background:#f7f3ee;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showPage('badges')">
-          <span style="font-size:1.4rem;">🏅</span>
-          <div style="flex:1;">
-            <div style="font-weight:600;color:#2d4a3e;font-size:0.95rem;">Mes badges</div>
-            <div style="font-size:0.78rem;color:#8a9e96;" id="badges-summary-line">Vos petites victoires →</div>
-          </div>
-          <span style="color:#8a9e96;">›</span>
-        </div>
-
-        <!-- Lien vers Mes recettes -->
-        <div style="margin-top:10px;padding:14px 16px;background:#f7f3ee;border-radius:14px;display:flex;align-items:center;gap:12px;cursor:pointer;" onclick="showPage('mes-recettes')">
-          <span style="font-size:1.4rem;">📖</span>
-          <div style="flex:1;">
-            <div style="font-weight:600;color:#2d4a3e;font-size:0.95rem;">Mes recettes</div>
-            <div style="font-size:0.78rem;color:#8a9e96;" id="my-recipes-summary-line">Tes créations personnelles →</div>
-          </div>
-          <span style="color:#8a9e96;">›</span>
-        </div>
-      </section>
-
-      <!-- ============================================
-           PAGE BADGES — Suivi des accomplissements
-           ============================================ -->
-      <section id="page-badges" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('profil')" aria-label="Retour au profil">←</button>
-          <h2>Mes badges</h2>
-        </div>
-        <div id="badges-container"></div>
-      </section>
-
-      <!-- ============================================
-           PAGE MES RECETTES — recettes personnelles
-           ============================================ -->
-      <section id="page-mes-recettes" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('profil')" aria-label="Retour au profil">←</button>
-          <h2>Mes recettes</h2>
-        </div>
-        <p style="font-size:0.82rem;color:var(--text-light);margin-bottom:14px;line-height:1.4;">
-          Crée tes propres recettes. Elles apparaîtront automatiquement dans la recherche, le générateur de menu et tu peux les marquer en favoris.
-        </p>
-        <div id="my-recettes-container"></div>
-      </section>
-
-      <section id="page-apropos" class="page hidden">
-        <div class="page-header-inner">
-          <button class="back-btn" onclick="showPage('profil')">←</button>
-          <h2>À propos</h2>
-        </div>
-
-        <div class="journal-block">
-          <div class="jblock-title">🌿 Flōra</div>
-          <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:12px;">
-            Flōra est une application de bien-être nutritionnel conçue pour les personnes vivant avec le <strong>Syndrome des Jambes Sans Repos (SJSR)</strong>, la douleur chronique, les inflammations et les profils neuroatypiques (TDAH).
-          </p>
-          <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">
-            Toutes les recettes sont <strong>sans gluten · sans lactose · anti-inflammatoires</strong>, basées sur les dernières recherches en nutrition thérapeutique.
-          </p>
-        </div>
-
-        <div class="journal-block">
-          <div class="jblock-title">👩‍💻 Créatrice</div>
-          <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">
-            Flōra a été créée par <strong>Ketty Burel</strong>, développeuse web autodidacte et elle-même concernée par le SJSR. Conçue avec ❤️ pour la communauté SJSR/TDAH francophone.
-          </p>
-        </div>
-
-        <div class="journal-block">
-          <div class="jblock-title">📋 Conditions d'utilisation</div>
-          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
-            <strong>1. Objet</strong><br>
-            Flōra est une application de bien-être et d'information nutritionnelle. Elle ne constitue pas un avis médical et ne remplace pas une consultation médicale.
-          </p>
-          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
-            <strong>2. Données personnelles</strong><br>
-            Toutes vos données (journal, profil, agenda) sont stockées <strong>uniquement sur votre appareil</strong>. Aucune donnée n'est transmise à des serveurs tiers. Flōra respecte votre vie privée.
-          </p>
-          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
-            <strong>3. Abonnement Premium</strong><br>
-            L'abonnement Premium à 4,99€/mois est sans engagement. Résiliation possible à tout moment depuis votre espace Stripe. Paiement sécurisé par Stripe.
-          </p>
-          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
-            <strong>4. Responsabilité</strong><br>
-            Les informations nutritionnelles fournies sont à titre indicatif. En cas de pathologie, consultez toujours un professionnel de santé avant de modifier votre alimentation.
-          </p>
-          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
-            <strong>5. Contact</strong><br>
-            Pour toute question : kettyburel@gmail.com
-          </p>
-        </div>
-
-        <div class="journal-block">
-          <div class="jblock-title">🔒 Mentions légales & RGPD</div>
-          <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
-            <strong>Éditrice :</strong> Ketty Burel · Maisons-Alfort (94700), France<br>
-            <strong>Hébergement :</strong> GitHub Pages (GitHub Inc., San Francisco, CA)<br>
-            <strong>Paiements :</strong> Stripe Inc. (les données de paiement sont gérées directement par Stripe, voir <a href="https://stripe.com/fr/privacy" target="_blank" rel="noopener" style="color:var(--green-deep);">leur politique</a>)<br>
-            <strong>Mesure d'audience :</strong> Plausible Analytics (anonyme, sans cookies, conforme RGPD, voir <a href="https://plausible.io/data-policy" target="_blank" rel="noopener" style="color:var(--green-deep);">leur politique</a>)
-          </p>
-          
-          <div style="margin-top:14px;padding:12px 14px;background:rgba(61,107,88,0.06);border-radius:10px;border-left:3px solid var(--green-deep);">
-            <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.65;margin:0;">
-              <strong>🔐 Protection de vos données</strong><br><br>
-              Vos données de bien-être (journal, profil, agenda, médicaments) sont stockées 
-              <strong>uniquement sur votre appareil</strong> (localStorage du navigateur). 
-              Aucune donnée de santé ne transite ni n'est conservée sur nos serveurs.<br><br>
-              <strong>Vos droits RGPD :</strong> accès, rectification, effacement, portabilité — 
-              vous pouvez à tout moment exporter ou supprimer vos données depuis votre profil. 
-              Pour toute demande : kettyburel@gmail.com
-            </p>
-          </div>
-        </div>
-
-        <div style="text-align:center;padding:16px 0;color:var(--text-light);font-size:0.78rem;">
-          Flōra v1.2 · Conçu avec ❤️ pour la communauté SJSR/TDAH
-        </div>
-      </section>
-
-      <section id="page-placard" class="page hidden">
-    <div class="page-header-inner">
-      <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-      <h2>Mon Placard 🗄️</h2>
-    </div>
-
-    <div class="journal-block">
-      <div class="jblock-title">💰 Budget hebdomadaire</div>
-      <div class="budget-presets">
-        <button class="budget-chip" onclick="setBudget(30)">30€</button>
-        <button class="budget-chip" onclick="setBudget(50)">50€</button>
-        <button class="budget-chip active" onclick="setBudget(80)">80€</button>
-        <button class="budget-chip" onclick="setBudget(100)">100€</button>
       </div>
-      <div class="budget-custom-row" style="margin-top:10px;">
-        <input type="number" class="field inline" id="budget-input" value="80" min="10" max="300" placeholder="€" />
-        <span class="budget-euro">€ / semaine</span>
-      </div>
-      <button class="btn-primary full-width" style="margin-top:12px" onclick="generateShoppingList()">
-        🛒 Générer ma liste de courses
-      </button>
-    </div>
+    </section>
 
-    <div class="journal-block">
-      <div class="jblock-title">📦 Ce que j'ai déjà</div>
-      <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
-        Cochez les ingrédients déjà dans votre cuisine.
-      </p>
-
-      <!-- Barre de recherche -->
-      <div class="placard-search-row">
-        <input type="text" id="placard-search" class="placard-search-input"
-               placeholder="🔍 Rechercher un ingrédient…"
-               oninput="filterPlacardItems(this.value)" />
-        <button class="placard-clear-btn hidden" id="placard-clear-btn"
-                onclick="clearPlacardSearch()" aria-label="Effacer la recherche">✕</button>
+    <!-- ============== PROFIL ============== -->
+    <section id="page-profil" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Mon profil</h2>
       </div>
 
-      <!-- Bouton ajout d'un ingrédient personnalisé -->
-      <button class="placard-add-btn" onclick="openPlacardAddModal()">
-        <span class="placard-add-icon">+</span>
-        <span>Ajouter un ingrédient personnalisé</span>
-      </button>
+      <div class="profil-avatar">
+        <div class="avatar-circle" id="avatar-initials"></div>
+        <div class="profil-name" id="profil-display-name"></div>
+        <div class="profil-badge" id="profil-plan-badge">Version gratuite</div>
+      </div>
 
-      <div id="placard-categories"></div>
-      <button class="btn-primary full-width" style="margin-top:16px" onclick="filterRecettesByPlacard()">
-        🌿 Voir les recettes avec mon placard
-      </button>
-      <button class="btn-primary full-width" style="margin-top:8px;background:linear-gradient(135deg,#d4a843,#b88820);" onclick="openRepasLibreFromPlacard()">
-        ✨ Composer un repas libre
-      </button>
-    </div>
+      <!-- Résumé "Mes recettes" -->
+      <div id="my-recipes-summary-line" style="text-align:center;font-size:0.85rem;color:var(--text-mid);margin:8px 0 16px;cursor:pointer;" onclick="showPage('mes-recettes')"></div>
 
-    <div id="shopping-result" class="hidden">
+      <!-- Résumé badges -->
+      <div id="badges-summary-line" style="text-align:center;font-size:0.85rem;color:var(--text-mid);margin:8px 0 16px;cursor:pointer;" onclick="showPage('badges')"></div>
+
+      <div class="settings-group">
+        <div class="settings-title">Informations</div>
+        <div class="settings-row">
+          <label>Prénom</label>
+          <input class="field inline" type="text" id="p-name" />
+        </div>
+        <div class="settings-row">
+          <label>Objectif</label>
+          <select class="field inline" id="p-goal">
+            <option value="sommeil">Améliorer mon sommeil</option>
+            <option value="douleur">Réduire la douleur</option>
+            <option value="energie">Retrouver de l'énergie</option>
+            <option value="global">Bien-être global</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-title">Régime alimentaire</div>
+        <label class="toggle-row">
+          <span>Sans gluten</span>
+          <input type="checkbox" id="p-sg" class="toggle-input" />
+          <span class="toggle-slider"></span>
+        </label>
+        <label class="toggle-row">
+          <span>Sans lactose</span>
+          <input type="checkbox" id="p-sl" class="toggle-input" />
+          <span class="toggle-slider"></span>
+        </label>
+        <label class="toggle-row">
+          <span>Végétarien·ne</span>
+          <input type="checkbox" id="p-sv" class="toggle-input" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-title">Suivi</div>
+        <label class="toggle-row">
+          <span>Suivi du cycle menstruel</span>
+          <input type="checkbox" id="p-cycle" class="toggle-input" />
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-title">Abonnement</div>
+        <div class="plan-card" id="plan-card">
+          <div class="plan-name">Flōra Gratuit</div>
+          <div class="plan-features">
+            <div class="pf">✅ 20 recettes anti-inflammatoires</div>
+            <div class="pf">✅ Journal illimité</div>
+            <div class="pf">✅ Agenda 1 semaine</div>
+            <div class="pf pf-locked">🔒 Bibliothèque complète (160+ recettes)</div>
+            <div class="pf pf-locked">🔒 Générateur illimité</div>
+            <div class="pf pf-locked">🔒 Statistiques avancées</div>
+          </div>
+          <button class="btn-premium" onclick="showPremium()">Passer à Premium →</button>
+        </div>
+      </div>
+
+      <button class="btn-primary full-width" onclick="saveProfil(this)">Enregistrer</button>
+      <button class="btn-primary full-width" onclick="enableNotifications()" style="margin-bottom:8px;">
+        🔔 Activer les rappels bien-être
+      </button>
+      <button class="btn-link full-width" style="text-align:center;padding:10px;" onclick="showPage('apropos')">
+        ℹ️ À propos · CGU · Mentions légales
+      </button>
+      <button class="btn-danger" onclick="resetApp()">Réinitialiser l'application</button>
+
+      <!-- Statistiques bien-être -->
+      <div class="section-title" style="margin-top:24px;">📊 Mes statistiques</div>
+      <div id="stats-container"></div>
+    </section>
+
+    <!-- ============== À PROPOS ============== -->
+    <section id="page-apropos" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('profil')">←</button>
+        <h2>À propos</h2>
+      </div>
       <div class="journal-block">
-        <div class="jblock-title" style="display:flex;justify-content:space-between;align-items:center;">
-          <span>🛒 Liste de courses</span>
-          <span class="budget-badge" id="budget-total-badge">0€</span>
+        <div class="jblock-title">🌿 Flōra</div>
+        <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;margin-bottom:12px;">
+          Flōra est une application de bien-être nutritionnel conçue pour les personnes vivant avec le <strong>Syndrome des Jambes Sans Repos (SJSR)</strong>, la douleur chronique, les inflammations et les profils neuroatypiques (TDAH).
+        </p>
+        <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">
+          Toutes les recettes sont <strong>sans gluten · sans lactose · anti-inflammatoires</strong>, basées sur les dernières recherches en nutrition thérapeutique.
+        </p>
+      </div>
+      <div class="journal-block">
+        <div class="jblock-title">👩‍💻 Créatrice</div>
+        <p style="font-size:0.88rem;color:var(--text-mid);line-height:1.7;">
+          Flōra a été créée par <strong>Ketty Burel</strong>, développeuse web autodidacte et elle-même concernée par le SJSR. Conçue avec ❤️ pour la communauté SJSR / TDAH francophone.
+        </p>
+      </div>
+      <div class="journal-block">
+        <div class="jblock-title">📋 Conditions d'utilisation</div>
+        <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+          <strong>1. Objet</strong><br>
+          Flōra est une application de bien-être et d'information nutritionnelle. Elle ne constitue pas un avis médical et ne remplace pas une consultation.
+        </p>
+        <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+          <strong>2. Données personnelles</strong><br>
+          Toutes vos données (journal, profil, agenda) sont stockées <strong>uniquement sur votre appareil</strong>. Aucune donnée n'est transmise à des serveurs tiers.
+        </p>
+        <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+          <strong>3. Abonnement Premium</strong><br>
+          L'abonnement Premium à 4,99€/mois est sans engagement. Résiliation possible à tout moment depuis Stripe.
+        </p>
+        <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;margin-bottom:10px;">
+          <strong>4. Responsabilité</strong><br>
+          Les informations nutritionnelles fournies sont à titre indicatif. En cas de pathologie, consultez toujours un professionnel de santé avant de modifier votre alimentation.
+        </p>
+        <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
+          <strong>5. Contact</strong><br>
+          kettyburel@gmail.com
+        </p>
+      </div>
+      <div class="journal-block">
+        <div class="jblock-title">🔒 Mentions légales</div>
+        <p style="font-size:0.82rem;color:var(--text-mid);line-height:1.7;">
+          Éditrice : Ketty Burel · Maisons-Alfort (94700), France<br>
+          Hébergement : GitHub Pages (GitHub Inc., San Francisco, CA)<br>
+          Paiements : Stripe Inc.
+        </p>
+      </div>
+      <div style="text-align:center;padding:16px 0;color:var(--text-light);font-size:0.78rem;">
+        Flōra v1.2 · Conçu avec ❤️ pour la communauté SJSR / TDAH
+      </div>
+    </section>
+
+    <!-- ============== PLACARD ============== -->
+    <section id="page-placard" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Mon Placard 🗄️</h2>
+      </div>
+
+      <!-- Recherche placard -->
+      <div class="search-bar" style="position:relative;">
+        <input type="text" id="placard-search" placeholder="🔍 Rechercher un ingrédient…" oninput="filterPlacardItems(this.value)" />
+        <button id="placard-clear-btn" onclick="clearPlacardSearch()" style="display:none;position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:1.1rem;color:var(--text-light);cursor:pointer;">✕</button>
+      </div>
+
+      <!-- Bouton ajouter -->
+      <button class="btn-primary full-width" style="margin-bottom:16px;" onclick="openPlacardAddModal()">
+        + Ajouter un ingrédient personnalisé
+      </button>
+
+      <!-- Budget hebdo -->
+      <div class="journal-block">
+        <div class="jblock-title">💰 Budget hebdomadaire</div>
+        <div class="budget-presets">
+          <button class="budget-chip" onclick="setBudget(30)">30€</button>
+          <button class="budget-chip" onclick="setBudget(50)">50€</button>
+          <button class="budget-chip active" onclick="setBudget(80)">80€</button>
+          <button class="budget-chip" onclick="setBudget(100)">100€</button>
         </div>
-        <div id="shopping-list-content"></div>
-      </div>
-      <div id="shopping-menus" class="journal-block hidden">
-        <div class="jblock-title">🍽️ Menus avec ce panier</div>
-        <div id="shopping-menus-content"></div>
-      </div>
-    </div>
-  </section>
-
-      <section id="page-batch" class="page hidden">
-    <div class="page-header-inner">
-      <button class="back-btn" onclick="showPage('accueil')" aria-label="Retour à l'accueil">←</button>
-      <h2>Batch Cooking 🍳</h2>
-    </div>
-
-    <div class="batch-intro">
-      <div class="batch-intro-icon">🧠</div>
-      <div class="batch-intro-text">
-        <strong>Mode TDAH</strong><br>
-        Une session de cuisine = toute la semaine préparée.
-      </div>
-    </div>
-
-    <div class="journal-block">
-      <div class="jblock-title">📅 Jour de batch</div>
-      <div class="sleep-chips-row">
-        <span class="sleep-chip" onclick="selectSleepChip(this,'batch-day','samedi')">Samedi</span>
-        <span class="sleep-chip active" onclick="selectSleepChip(this,'batch-day','dimanche')">Dimanche</span>
-      </div>
-    </div>
-
-    <div class="journal-block">
-      <div class="jblock-title">⏱ Temps disponible</div>
-      <div class="sleep-chips-row">
-        <span class="sleep-chip" onclick="selectSleepChip(this,'batch-time','1h')">1h</span>
-        <span class="sleep-chip active" onclick="selectSleepChip(this,'batch-time','2h')">2h</span>
-        <span class="sleep-chip" onclick="selectSleepChip(this,'batch-time','3h')">3h</span>
-      </div>
-    </div>
-
-    <button class="btn-primary full-width" onclick="generateBatch()">
-      ✨ Générer mon plan batch
-    </button>
-
-    <div id="batch-plan" class="hidden" style="margin-top:20px;">
-      <div class="batch-progress-wrap">
-        <div class="batch-progress-bar">
-          <div class="batch-progress-fill" id="batch-progress-fill" style="width:0%"></div>
+        <div class="budget-custom-row" style="margin-top:10px;">
+          <input type="number" class="field inline" id="budget-input" value="80" min="10" max="300" placeholder="€" />
+          <span class="budget-euro">€ / semaine</span>
         </div>
-        <div class="batch-progress-label" id="batch-progress-label">Étape 0 / 0</div>
+        <button class="btn-primary full-width" style="margin-top:12px" onclick="generateShoppingList()">
+          🛒 Générer ma liste de courses
+        </button>
       </div>
-      <div id="batch-steps-container"></div>
-      <div id="batch-weekly-summary" class="hidden">
-        <div class="journal-block" style="background:var(--green-deep);color:var(--white);text-align:center;">
-          <div style="font-size:2rem;">🎉</div>
-          <div style="font-family:var(--font-display);font-size:1.1rem;margin:8px 0;">Batch terminé !</div>
-          <button class="btn-primary" style="background:var(--white);color:var(--green-deep);margin-top:8px;" onclick="importBatchToAgenda()">
-            📅 Importer dans l'agenda
-          </button>
+
+      <!-- Catégories d'ingrédients -->
+      <div class="journal-block">
+        <div class="jblock-title">📦 Ce que j'ai déjà</div>
+        <p style="font-size:0.8rem;color:var(--text-light);margin-bottom:12px;">
+          Cochez les ingrédients déjà dans votre cuisine.
+        </p>
+        <div id="placard-categories"></div>
+        <button class="btn-primary full-width" style="margin-top:16px" onclick="filterRecettesByPlacard()">
+          🌿 Voir les recettes avec mon placard
+        </button>
+      </div>
+
+      <!-- Résultat liste de courses -->
+      <div id="shopping-result" class="hidden">
+        <div class="journal-block">
+          <div class="jblock-title" style="display:flex;justify-content:space-between;align-items:center;">
+            <span>🛒 Liste de courses</span>
+            <span class="budget-badge" id="budget-total-badge">0€</span>
+          </div>
+          <div id="shopping-list-content"></div>
+        </div>
+        <div id="shopping-menus" class="journal-block hidden">
+          <div class="jblock-title">🍽️ Menus avec ce panier</div>
+          <div id="shopping-menus-content"></div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-      <!-- Modal recette -->
-      <div id="recette-modal" class="modal hidden">
-          <div class="modal-overlay" onclick="closeModal()"></div>
-          <div class="modal-card">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div id="modal-content"></div>
+    <!-- ============== BATCH ============== -->
+    <section id="page-batch" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Batch Cooking 🍳</h2>
+      </div>
+
+      <div class="batch-intro">
+        <div class="batch-intro-icon">🧠</div>
+        <div class="batch-intro-text">
+          <strong>Mode TDAH</strong><br>
+          Une session de cuisine = toute la semaine préparée.
+        </div>
+      </div>
+
+      <div class="journal-block">
+        <div class="jblock-title">📅 Jour de batch</div>
+        <div class="sleep-chips-row">
+          <span class="sleep-chip" onclick="selectSleepChip(this,'batch-day','samedi')">Samedi</span>
+          <span class="sleep-chip active" onclick="selectSleepChip(this,'batch-day','dimanche')">Dimanche</span>
+        </div>
+      </div>
+
+      <div class="journal-block">
+        <div class="jblock-title">⏱ Temps disponible</div>
+        <div class="sleep-chips-row">
+          <span class="sleep-chip" onclick="selectSleepChip(this,'batch-time','1h')">1h</span>
+          <span class="sleep-chip active" onclick="selectSleepChip(this,'batch-time','2h')">2h</span>
+          <span class="sleep-chip" onclick="selectSleepChip(this,'batch-time','3h')">3h</span>
+        </div>
+      </div>
+
+      <button class="btn-primary full-width" onclick="generateBatch()">
+        ✨ Générer mon plan batch
+      </button>
+
+      <div id="batch-plan" class="hidden" style="margin-top:20px;">
+        <div class="batch-progress-wrap">
+          <div class="batch-progress-bar">
+            <div class="batch-progress-fill" id="batch-progress-fill" style="width:0%"></div>
+          </div>
+          <div class="batch-progress-label" id="batch-progress-label">Étape 0 / 0</div>
+        </div>
+        <div id="batch-steps-container"></div>
+        <div id="batch-weekly-summary" class="hidden">
+          <div class="journal-block" style="background:var(--green-deep);color:var(--white);text-align:center;">
+            <div style="font-size:2rem;">🎉</div>
+            <div style="font-family:var(--font-display);font-size:1.1rem;margin:8px 0;">Batch terminé !</div>
+            <button class="btn-primary" style="background:var(--white);color:var(--green-deep);margin-top:8px;" onclick="importBatchToAgenda()">
+              📅 Importer dans l'agenda
+            </button>
           </div>
         </div>
-
-    </main>
-
-    <nav id="bottom-nav">
-      <button class="nav-btn active" onclick="showPage('accueil')" data-page="accueil">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-label">Accueil</span>
-      </button>
-      <button class="nav-btn" onclick="showPage('journal')" data-page="journal">
-        <span class="nav-icon">🌙</span>
-        <span class="nav-label">Journal</span>
-      </button>
-      <button class="nav-btn" onclick="showPage('recettes')" data-page="recettes">
-        <span class="nav-icon">🥗</span>
-        <span class="nav-label">Recettes</span>
-      </button>
-      <button class="nav-btn" onclick="showPage('mes-recettes')" data-page="mes-recettes">
-        <span class="nav-icon">📖</span>
-        <span class="nav-label">Mes&nbsp;recettes</span>
-      </button>
-      <button class="nav-btn" onclick="showPage('placard')" data-page="placard">
-        <span class="nav-icon">🗄️</span>
-        <span class="nav-label">Placard</span>
-      </button>
-      <button class="nav-btn" onclick="showPage('batch')" data-page="batch">
-        <span class="nav-icon">🍳</span>
-        <span class="nav-label">Batch</span>
-      </button>
-      <button class="nav-btn" onclick="showPage('profil')" data-page="profil">
-        <span class="nav-icon">👤</span>
-        <span class="nav-label">Profil</span>
-      </button>
-    </nav>
-
-  </div>
-
-  <!-- PREMIUM MODAL -->
-  <div id="premium-modal" class="modal hidden">
-    <div class="modal-overlay" onclick="closePremium()"></div>
-    <div class="modal-card premium-modal-card">
-      <button class="modal-close" onclick="closePremium()">✕</button>
-      <div class="premium-header">
-        <div class="premium-logo">Flōra ⭐</div>
-        <h2>Passez à Premium</h2>
-        <p>Tout ce dont vous avez besoin pour votre bien-être</p>
       </div>
-      <div class="premium-features">
-        <div class="pf-item">✅ <span data-recipe-count="total">—</span> recettes anti-inflammatoires (dont <span data-recipe-count="premium">—</span> exclusives Premium)</div>
-        <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
-        <div class="pf-item">✅ Générateur de menus illimité</div>
-        <div class="pf-item">✅ Statistiques & tendances avancées</div>
-        <div class="pf-item">✅ Export journal PDF</div>
-        <div class="pf-item">✅ Rappels personnalisés</div>
-      </div>
-      <div class="premium-price">4,99€ <span>/mois</span></div>
+    </section>
 
-      <!-- Bouton Stripe — paiement réel -->
-      <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00"
-         target="_blank"
-         class="btn-premium large"
-         style="display:block;text-align:center;text-decoration:none;margin-top:12px;"
-         onclick="closePremium()">
-        💳 S'abonner — 4,99€/mois
-      </a>
-
-      <div class="stripe-badge">
-        🔒 Paiement sécurisé par <strong>Stripe</strong> · Résiliation à tout moment
+    <!-- ============== INSIGHTS (optionnel — page utilisée par renderInsights si la fonction existe) ============== -->
+    <section id="page-insights" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Insights — Corrélations</h2>
       </div>
+      <div id="insights-container"></div>
+    </section>
 
-      <!-- Séparateur -->
-      <div class="code-separator">
-        <span>— ou —</span>
+    <!-- ============== ÉTIREMENTS SJSR ============== -->
+    <section id="page-etirements" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('accueil')">←</button>
+        <h2>Étirements SJSR</h2>
       </div>
+      <div id="etirements-container"></div>
+    </section>
 
-      <!-- Zone code d'activation (reçu par email après paiement) -->
-      <p style="font-size:0.8rem;color:var(--text-mid);text-align:center;margin-bottom:8px;">
-        Déjà abonné·e ? Entrez votre code reçu par email :
-      </p>
-      <div class="code-unlock">
-        <input type="text" class="field" id="promo-code"
-               placeholder="FLORA-XXXXXXXX"
-               oninput="this.value = this.value.toUpperCase()" />
-        <button class="btn-link" onclick="checkCode()">Activer</button>
+    <!-- ============== BADGES ============== -->
+    <section id="page-badges" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('profil')">←</button>
+        <h2>Mes badges</h2>
       </div>
-      <div id="code-error" class="code-error hidden">❌ Code invalide. Vérifiez votre email.</div>
-      <div id="code-success" class="code-success hidden">✅ Premium activé ! Bienvenue 🌿</div>
+      <div id="badges-container"></div>
+    </section>
+
+    <!-- ============== MES RECETTES ============== -->
+    <section id="page-mes-recettes" class="page hidden">
+      <div class="page-header-inner">
+        <button class="back-btn" onclick="showPage('profil')">←</button>
+        <h2>Mes recettes</h2>
+      </div>
+      <div id="my-recettes-container"></div>
+    </section>
+
+    <!-- ============== MODAL RECETTE ============== -->
+    <div id="recette-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="closeModal()"></div>
+      <div class="modal-card">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div id="modal-content"></div>
+      </div>
     </div>
-  </div>
 
-  <script src="flora_recettes.js"></script>
-  <script src="flora_plans.js"></script>
-  <script src="flora_complements.js"></script>
-  <script src="flora_interactions.js"></script>
-  <script src="app.js"></script>
+    <!-- ============== MODAL "MA RECETTE" (édition) ============== -->
+    <div id="my-recipe-modal" class="modal hidden">
+      <div class="modal-overlay" onclick="if(typeof closeMyRecipeModal==='function')closeMyRecipeModal()"></div>
+      <div class="modal-card">
+        <button class="modal-close" onclick="if(typeof closeMyRecipeModal==='function')closeMyRecipeModal()">✕</button>
+        <div id="myr-emoji-current" style="text-align:center;font-size:2.5rem;margin-bottom:8px;">🥗</div>
+        <input type="text" class="field" id="myr-nom" placeholder="Nom de la recette" />
+        <select class="field" id="myr-cat">
+          <option value="petit-dejeuner">Petit-déjeuner</option>
+          <option value="brunch">Brunch</option>
+          <option value="dejeuner" selected>Déjeuner</option>
+          <option value="diner">Dîner</option>
+          <option value="snack">Snack</option>
+        </select>
+        <div class="settings-row" style="gap:8px;">
+          <input type="number" class="field inline" id="myr-temps" placeholder="Temps (min)" />
+          <input type="number" class="field inline" id="myr-calories" placeholder="Calories" />
+          <select class="field inline" id="myr-diff">
+            <option value="facile">Facile</option>
+            <option value="moyen">Moyen</option>
+            <option value="difficile">Difficile</option>
+          </select>
+        </div>
+        <textarea class="field" id="myr-ingredients" placeholder="Un ingrédient par ligne" rows="6"></textarea>
+        <textarea class="field" id="myr-etapes" placeholder="Une étape par ligne" rows="6"></textarea>
+        <textarea class="field" id="myr-benefices" placeholder="Bénéfices (optionnel)" rows="2"></textarea>
+        <div class="settings-row" style="gap:14px;">
+          <label class="toggle-row" style="flex:1;">
+            <span>SG</span>
+            <input type="checkbox" id="myr-tag-sg" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+          <label class="toggle-row" style="flex:1;">
+            <span>SL</span>
+            <input type="checkbox" id="myr-tag-sl" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+          <label class="toggle-row" style="flex:1;">
+            <span>VG</span>
+            <input type="checkbox" id="myr-tag-vg" class="toggle-input" />
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div id="myr-error" class="hidden" style="color:var(--red-soft);font-size:0.82rem;margin:8px 0;"></div>
+        <button class="btn-primary full-width" onclick="if(typeof saveMyRecipe==='function')saveMyRecipe()">💾 Enregistrer</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ================================================================
+       NAV BOTTOM
+       ================================================================ -->
+  <nav id="bottom-nav">
+    <button class="nav-btn active" onclick="showPage('accueil')" data-page="accueil">
+      <span class="nav-icon">🏠</span>
+      <span class="nav-label">Accueil</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('journal')" data-page="journal">
+      <span class="nav-icon">🌙</span>
+      <span class="nav-label">Journal</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('agenda')" data-page="agenda">
+      <span class="nav-icon">📅</span>
+      <span class="nav-label">Agenda</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('placard')" data-page="placard">
+      <span class="nav-icon">🗄️</span>
+      <span class="nav-label">Placard</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('recettes')" data-page="recettes">
+      <span class="nav-icon">🥗</span>
+      <span class="nav-label">Recettes</span>
+    </button>
+    <button class="nav-btn" onclick="showPage('profil')" data-page="profil">
+      <span class="nav-icon">👤</span>
+      <span class="nav-label">Profil</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ================================================================
+     PREMIUM MODAL (hors #app pour rester accessible)
+     ================================================================ -->
+<div id="premium-modal" class="modal hidden">
+  <div class="modal-overlay" onclick="closePremium()"></div>
+  <div class="modal-card premium-modal-card">
+    <button class="modal-close" onclick="closePremium()">✕</button>
+    <div class="premium-header">
+      <div class="premium-logo">Flōra ⭐</div>
+      <h2>Passez à Premium</h2>
+      <p>Tout ce dont vous avez besoin pour votre bien-être</p>
+    </div>
+    <div class="premium-features">
+      <div class="pf-item">✅ Bibliothèque complète (160+ recettes)</div>
+      <div class="pf-item">✅ Nouvelles recettes chaque mois</div>
+      <div class="pf-item">✅ Générateur de menus illimité</div>
+      <div class="pf-item">✅ Plan mensuel détaillé</div>
+      <div class="pf-item">✅ Statistiques & tendances avancées</div>
+      <div class="pf-item">✅ Export journal PDF</div>
+      <div class="pf-item">✅ Rappels personnalisés</div>
+    </div>
+    <div class="premium-price">4,99€ <span>/mois</span></div>
+    <a href="https://buy.stripe.com/eVqeVcbsX136eDj0rR9EI00"
+       target="_blank"
+       class="btn-premium large"
+       style="display:block;text-align:center;text-decoration:none;margin-top:12px;"
+       onclick="closePremium()">
+      💳 S'abonner — 4,99€/mois
+    </a>
+    <div class="stripe-badge">
+      🔒 Paiement sécurisé par <strong>Stripe</strong> · Résiliation à tout moment
+    </div>
+    <div class="code-separator">
+      <span>— ou —</span>
+    </div>
+    <p style="font-size:0.8rem;color:var(--text-mid);text-align:center;margin-bottom:8px;">
+      Déjà abonné·e ? Entrez votre code reçu par email :
+    </p>
+    <div class="code-unlock">
+      <input type="text" class="field" id="promo-code"
+             placeholder="FLORA-XXXXXXXX"
+             oninput="this.value = this.value.toUpperCase()" />
+      <button class="btn-link" onclick="checkCode()">Activer</button>
+    </div>
+    <div id="code-error" class="code-error hidden">❌ Code invalide. Vérifiez votre email.</div>
+    <div id="code-success" class="code-success hidden">✅ Premium activé ! Bienvenue 🌿</div>
+  </div>
+</div>
+
+<script src="flora_recettes.js"></script>
+<script src="app.js"></script>
 </body>
 </html>

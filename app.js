@@ -6,6 +6,23 @@
 'use strict';
 
 // ============================
+// SAFETY NET : RECETTES doit exister avant tout
+// Le tableau RECETTES est défini dans flora_recettes.js qui doit être chargé AVANT app.js.
+// Si le fichier manque (oubli de chargement, 404…), on évite que l'app plante en créant
+// un tableau vide global. L'utilisatrice verra une bibliothèque vide mais le reste de
+// l'app (journal, agenda, placard, profil) restera fonctionnel.
+// ============================
+// Test prudent : `const RECETTES = [...]` dans flora_recettes.js crée une liaison globale
+// accessible depuis app.js, mais qui n'est PAS exposée comme window.RECETTES.
+// On utilise `typeof` qui ne lève pas d'erreur même si la variable n'existe pas.
+if (typeof RECETTES === 'undefined') {
+  // Définit RECETTES comme une variable globale via window (l'objet global du navigateur)
+  // pour que le reste du code y ait accès.
+  window.RECETTES = [];
+  console.warn('[Flōra] ⚠️ RECETTES non défini — flora_recettes.js manquant ou non chargé.');
+}
+
+// ============================
 // INJECT FLŌRA STYLES (Journal + Agenda + Fix overflow)
 // ============================
 (function injectFloraStyles() {
@@ -252,15 +269,18 @@ const NUTRI_MAP = {
 };
 
 // Enrichir chaque recette avec ses données nutritionnelles
-RECETTES.forEach(r => {
-  const n = NUTRI_MAP[r.id];
-  if (n) {
-    r.nutri      = { fer: n.fer, omega3: n.omega3, magnesium: n.magnesium, vitC: n.vitC, proteines: n.proteines, antioxydants: n.antioxydants };
-    r.conseil    = n.conseil;
-    r.portion    = n.portion;
-    r.temps_actif = n.temps_actif;
-  }
-});
+// Bug fix : protection si RECETTES n'est pas défini (flora_recettes.js manquant)
+if (typeof RECETTES !== 'undefined' && Array.isArray(RECETTES)) {
+  RECETTES.forEach(r => {
+    const n = NUTRI_MAP[r.id];
+    if (n) {
+      r.nutri      = { fer: n.fer, omega3: n.omega3, magnesium: n.magnesium, vitC: n.vitC, proteines: n.proteines, antioxydants: n.antioxydants };
+      r.conseil    = n.conseil;
+      r.portion    = n.portion;
+      r.temps_actif = n.temps_actif;
+    }
+  });
+}
 
 // ============================
 // STATE
@@ -671,15 +691,23 @@ const ACCOUNTS = {
 let currentUser = null;
 
 function showLogin() {
-  document.getElementById('login-modal').classList.remove('hidden');
-  setTimeout(() => document.getElementById('login-email').focus(), 100);
+  const modal = document.getElementById('login-modal');
+  if (modal) modal.classList.remove('hidden');
+  setTimeout(() => {
+    const emailEl = document.getElementById('login-email');
+    if (emailEl) emailEl.focus();
+  }, 100);
 }
 
 function closeLogin() {
-  document.getElementById('login-modal').classList.add('hidden');
-  document.getElementById('login-error').classList.add('hidden');
-  document.getElementById('login-email').value = '';
-  document.getElementById('login-password').value = '';
+  const modal = document.getElementById('login-modal');
+  if (modal) modal.classList.add('hidden');
+  const errEl = document.getElementById('login-error');
+  if (errEl) errEl.classList.add('hidden');
+  const emailEl = document.getElementById('login-email');
+  if (emailEl) emailEl.value = '';
+  const pwEl = document.getElementById('login-password');
+  if (pwEl) pwEl.value = '';
 }
 
 function doLogin() {
@@ -1238,12 +1266,26 @@ function renderPlacard() {
 function togglePlacardItem(item, el) {
   placardItems[item] = !placardItems[item];
   el.classList.toggle('checked', placardItems[item]);
-  // Reconstruire le contenu : ✓ + nom + (bouton × si custom)
+  // Reconstruire le contenu de manière SÛRE : node texte + (bouton × si custom)
+  // Bug fix : escAttr() était utilisé comme contenu textuel et corrompait les apostrophes/accents
   var isCustom = el.classList.contains('placard-item-custom');
   var prefix = placardItems[item] ? '✓ ' : '';
-  el.innerHTML = prefix + escAttr(item) +
-    (isCustom ? '<button class="placard-item-del" onclick="removeCustomPlacardItem(event, this.parentElement)" aria-label="Supprimer">×</button>' : '');
-  localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+  // Vider et reconstruire avec textNode (pas innerHTML) pour préserver caractères spéciaux
+  while (el.firstChild) el.removeChild(el.firstChild);
+  el.appendChild(document.createTextNode(prefix + item));
+  if (isCustom) {
+    var delBtn = document.createElement('button');
+    delBtn.className = 'placard-item-del';
+    delBtn.setAttribute('aria-label', 'Supprimer');
+    delBtn.textContent = '×';
+    delBtn.onclick = function(e) { removeCustomPlacardItem(e, el); };
+    el.appendChild(delBtn);
+  }
+  try {
+    localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+  } catch(e) {
+    console.error('[Flōra] Erreur sauvegarde placard:', e);
+  }
 }
 
 // Filtre temps réel sur la recherche
@@ -2278,46 +2320,59 @@ function initPlacard() {
 }
 
 function initApp() {
-  document.getElementById('app').classList.remove('hidden');
+  const appEl = document.getElementById('app');
+  if (appEl) appEl.classList.remove('hidden');
   loadState();
-  initLogin();
-  initPlacard();
-  loadBadges();
-  loadFavoris();
-  loadMyRecettes();
-  mergeMyRecettesIntoGlobal();
-  updateDashboard();
-  renderRecettes();
-  renderAgenda();
-  loadProfil();
-  setJournalDate();
-  updateRecipeCounters();
-  checkBadges(true); // vérification silencieuse au démarrage
+  
+  // Bug fix : envelopper chaque initialisation pour qu'une erreur sur une partie
+  // ne plante pas le reste de l'app
+  const safeRun = function(name, fn) {
+    try { if (typeof fn === 'function') fn(); }
+    catch(e) { console.error('[Flōra] Erreur dans ' + name + ':', e); }
+  };
+  
+  safeRun('initLogin', initLogin);
+  safeRun('initPlacard', initPlacard);
+  safeRun('loadBadges', typeof loadBadges === 'function' ? loadBadges : null);
+  safeRun('loadFavoris', typeof loadFavoris === 'function' ? loadFavoris : null);
+  safeRun('loadMyRecettes', typeof loadMyRecettes === 'function' ? loadMyRecettes : null);
+  safeRun('mergeMyRecettesIntoGlobal', typeof mergeMyRecettesIntoGlobal === 'function' ? mergeMyRecettesIntoGlobal : null);
+  safeRun('updateDashboard', updateDashboard);
+  safeRun('renderRecettes', renderRecettes);
+  safeRun('renderAgenda', renderAgenda);
+  safeRun('loadProfil', loadProfil);
+  safeRun('setJournalDate', setJournalDate);
+  safeRun('updateRecipeCounters', typeof updateRecipeCounters === 'function' ? updateRecipeCounters : null);
+  safeRun('checkBadges', function() { if (typeof checkBadges === 'function') checkBadges(true); });
 
   // Recette du jour — change chaque jour, cliquable directement
   // Personnalisée selon le profil : carence en fer ou TDAH → priorité fer/dopamine
-  let rdjPool = RECETTES.filter(r => !r.premium);
-  if (profile.carenceFer || profile.tdah) {
-    const motsFer = ['lentille', 'pois chiche', 'haricot', 'épinard', 'persil',
-                     'tofu', 'sardine', 'thon', 'maquereau', 'graine de courge',
-                     'sésame', 'amande', 'noix', 'cacao', 'spiruline'];
-    const ferRich = rdjPool.filter(r =>
-      r.ingredients && r.ingredients.some(ing =>
-        motsFer.some(mot => ing.toLowerCase().includes(mot))
-      )
-    );
-    if (ferRich.length > 0) rdjPool = ferRich;
-  }
-  const rdj  = rdjPool[new Date().getDate() % rdjPool.length];
-  const rdjEl = document.getElementById('recette-du-jour');
-  const rdjEmoji = document.getElementById('rdj-emoji');
-  if (rdjEl)    rdjEl.textContent = rdj.nom;
-  if (rdjEmoji) rdjEmoji.textContent = rdj.emoji;
-  // Stocker l'ID pour openRecetteDuJour
-  window._rdjId = rdj.id;
+  try {
+    let rdjPool = RECETTES.filter(r => !r.premium);
+    if (profile.carenceFer || profile.tdah) {
+      const motsFer = ['lentille', 'pois chiche', 'haricot', 'épinard', 'persil',
+                       'tofu', 'sardine', 'thon', 'maquereau', 'graine de courge',
+                       'sésame', 'amande', 'noix', 'cacao', 'spiruline'];
+      const ferRich = rdjPool.filter(r =>
+        r.ingredients && r.ingredients.some(ing =>
+          motsFer.some(mot => ing.toLowerCase().includes(mot))
+        )
+      );
+      if (ferRich.length > 0) rdjPool = ferRich;
+    }
+    if (rdjPool.length > 0) {
+      const rdj  = rdjPool[new Date().getDate() % rdjPool.length];
+      const rdjEl = document.getElementById('recette-du-jour');
+      const rdjEmoji = document.getElementById('rdj-emoji');
+      if (rdjEl)    rdjEl.textContent = rdj.nom;
+      if (rdjEmoji) rdjEmoji.textContent = rdj.emoji;
+      // Stocker l'ID pour openRecetteDuJour
+      window._rdjId = rdj.id;
+    }
+  } catch(e) { console.error('[Flōra] Erreur recette du jour:', e); }
 
-  renderStreakOnDashboard();
-  renderConseil();
+  safeRun('renderStreakOnDashboard', renderStreakOnDashboard);
+  safeRun('renderConseil', renderConseil);
 }
 
 // ============================
@@ -2335,6 +2390,15 @@ function showPage(page) {
   if (target) {
     target.classList.remove('hidden');
     target.classList.add('active');
+  } else {
+    // Bug fix : si la page n'existe pas dans le HTML, retomber sur l'accueil
+    console.warn('[Flōra] Page introuvable: page-' + page + ' — retour à l\'accueil');
+    const accueil = document.getElementById('page-accueil');
+    if (accueil) {
+      accueil.classList.remove('hidden');
+      accueil.classList.add('active');
+    }
+    return;
   }
 
   // Activer le bouton nav correspondant — sans template literal
@@ -2342,23 +2406,29 @@ function showPage(page) {
     if (btn.getAttribute('data-page') === page) btn.classList.add('active');
   });
 
-  if (page === 'accueil')    { updateDashboard(); }
-  if (page === 'journal')    { setJournalDate(); loadJournalEntry(); renderJournalToday(); }
-  if (page === 'recettes')   renderRecettes();
-  if (page === 'agenda')     renderAgenda();
-  if (page === 'profil')     { loadProfil(); checkBadges(true); updateMyRecipesSummary(); }
-  if (page === 'badges')     renderBadges();
-  if (page === 'mes-recettes') renderMyRecettes();
-  if (page === 'apropos')    { /* static */ }
-  if (page === 'batch')      { /* batch s'initialise via generateBatch() */ }
-  if (page === 'generateur') {
-    checkGenAccess();
-    // Réinitialiser sur l'onglet semaine à chaque ouverture
-    switchGenTab('semaine', document.querySelector('#page-generateur .jtab'));
+  // Wrapper try/catch pour éviter qu'une erreur d'init plante toute la nav
+  try {
+    if (page === 'accueil')    { updateDashboard(); }
+    if (page === 'journal')    { setJournalDate(); loadJournalEntry(); renderJournalToday(); }
+    if (page === 'recettes')   renderRecettes();
+    if (page === 'agenda')     renderAgenda();
+    if (page === 'profil')     { loadProfil(); if (typeof checkBadges === 'function') checkBadges(true); if (typeof updateMyRecipesSummary === 'function') updateMyRecipesSummary(); }
+    if (page === 'badges' && typeof renderBadges === 'function')           renderBadges();
+    if (page === 'mes-recettes' && typeof renderMyRecettes === 'function') renderMyRecettes();
+    if (page === 'apropos')    { /* static */ }
+    if (page === 'batch')      { /* batch s'initialise via generateBatch() */ }
+    if (page === 'generateur') {
+      if (typeof checkGenAccess === 'function') checkGenAccess();
+      // Réinitialiser sur l'onglet semaine à chaque ouverture
+      const firstTab = document.querySelector('#page-generateur .jtab');
+      if (firstTab) switchGenTab('semaine', firstTab);
+    }
+    if (page === 'placard')    initPlacard();
+    if (page === 'insights' && typeof renderInsights === 'function')       renderInsights();
+    if (page === 'etirements' && typeof renderEtirementsPage === 'function') renderEtirementsPage();
+  } catch(e) {
+    console.error('[Flōra] Erreur init page ' + page + ':', e);
   }
-  if (page === 'placard')    initPlacard();
-  if (page === 'insights')   renderInsights();
-  if (page === 'etirements') renderEtirementsPage();
 }
 
 // ============================
@@ -5101,7 +5171,12 @@ function renderAgendaMonth() {
 
   cellsHTML += '</div>';
 
-  document.getElementById('agenda-content').innerHTML = cellsHTML;
+  const contentEl = document.getElementById('agenda-content');
+  if (!contentEl) {
+    console.warn('[Flōra] #agenda-content introuvable — page Agenda incomplète dans le HTML');
+    return;
+  }
+  contentEl.innerHTML = cellsHTML;
 
   // Si un jour est sélectionné, afficher le drawer
   if (_agendaSelectedDay) {
@@ -5338,7 +5413,12 @@ function renderAgendaWeek() {
     '</div>';
   }).join('');
 
-  document.getElementById('agenda-content').innerHTML = html;
+  const contentElW = document.getElementById('agenda-content');
+  if (!contentElW) {
+    console.warn('[Flōra] #agenda-content introuvable — page Agenda incomplète dans le HTML');
+    return;
+  }
+  contentElW.innerHTML = html;
 }
 
 function changeWeek(dir) {
@@ -5388,14 +5468,27 @@ function setAgendaMeal(dk, repas, recId) {
   agenda[dk][repas] = recId;
   saveState();
   closeModal();
+  // Bug fix : forcer le re-render du drawer si le jour est sélectionné
+  _agendaSelectedDay = dk;
   renderAgenda();
+  if (typeof renderAgendaDayDrawer === 'function') {
+    setTimeout(function() { renderAgendaDayDrawer(dk); }, 50);
+  }
 }
 
 function clearAgendaMeal(dk, repas) {
   if (agenda[dk]) {
     delete agenda[dk][repas];
+    // Si plus aucun repas pour ce jour, supprimer la clé
+    if (!Object.keys(agenda[dk]).length) {
+      delete agenda[dk];
+    }
     saveState();
     renderAgenda();
+    // Bug fix : re-render le drawer si encore sélectionné
+    if (_agendaSelectedDay === dk && typeof renderAgendaDayDrawer === 'function') {
+      setTimeout(function() { renderAgendaDayDrawer(dk); }, 50);
+    }
   }
 }
 
@@ -5910,11 +6003,25 @@ function applyMenuToAgenda() {
 // PROFIL
 // ============================
 function loadProfil() {
-  document.getElementById('p-name').value    = profile.name    || '';
-  document.getElementById('p-goal').value    = profile.goal    || 'global';
-  document.getElementById('p-sg').checked    = !!profile.sansGluten;
-  document.getElementById('p-sl').checked    = !!profile.sansLactose;
-  document.getElementById('p-sv').checked    = !!profile.vegetarien;
+  // Bug fix : ajouter des protections null sur tous les getElementById
+  const setVal = function(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.value = val;
+  };
+  const setChecked = function(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.checked = val;
+  };
+  const setText = function(id, val) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  };
+  
+  setVal('p-name', profile.name || '');
+  setVal('p-goal', profile.goal || 'global');
+  setChecked('p-sg', !!profile.sansGluten);
+  setChecked('p-sl', !!profile.sansLactose);
+  setChecked('p-sv', !!profile.vegetarien);
   
   // Toggle cycle menstruel (par défaut activé)
   const cycleEl = document.getElementById('p-cycle');
@@ -5923,25 +6030,37 @@ function loadProfil() {
   }
 
   const initials = (profile.name || '?').charAt(0).toUpperCase();
-  document.getElementById('avatar-initials').textContent   = initials;
-  document.getElementById('profil-display-name').textContent = profile.name || 'Mon profil';
+  setText('avatar-initials', initials);
+  setText('profil-display-name', profile.name || 'Mon profil');
 
   const badge = document.getElementById('profil-plan-badge');
-  if (isPremium) {
-    badge.textContent = '⭐ Abonné·e Premium';
-    badge.className = 'profil-badge premium';
-  } else {
-    badge.textContent = 'Version gratuite';
-    badge.className = 'profil-badge';
+  if (badge) {
+    if (isPremium) {
+      badge.textContent = '⭐ Abonné·e Premium';
+      badge.className = 'profil-badge premium';
+    } else {
+      badge.textContent = 'Version gratuite';
+      badge.className = 'profil-badge';
+    }
   }
 }
 
 function saveProfil(btn) {
-  profile.name        = document.getElementById('p-name').value.trim();
-  profile.goal        = document.getElementById('p-goal').value;
-  profile.sansGluten  = document.getElementById('p-sg').checked;
-  profile.sansLactose = document.getElementById('p-sl').checked;
-  profile.vegetarien  = document.getElementById('p-sv').checked;
+  // Bug fix : ajouter des protections null
+  const getVal = function(id) {
+    const el = document.getElementById(id);
+    return el ? el.value : '';
+  };
+  const getChecked = function(id) {
+    const el = document.getElementById(id);
+    return el ? el.checked : false;
+  };
+  
+  profile.name        = (getVal('p-name') || '').trim();
+  profile.goal        = getVal('p-goal') || 'global';
+  profile.sansGluten  = getChecked('p-sg');
+  profile.sansLactose = getChecked('p-sl');
+  profile.vegetarien  = getChecked('p-sv');
   
   // Sauvegarder le toggle cycle
   const cycleEl = document.getElementById('p-cycle');
@@ -6635,12 +6754,24 @@ function refreshSelectedIngredientsUI() {
     box.innerHTML = '<div style="font-size:0.75rem;color:var(--text-light);font-style:italic;">Aucun ingrédient ajouté</div>';
     return;
   }
-  box.innerHTML = _journalRepasCtx.ingredients.map(ing =>
+  // Bug fix : on utilise data-idx (index dans le tableau) au lieu de l'ingrédient lui-même
+  // pour éviter les problèmes d'échappement avec apostrophes/accents.
+  box.innerHTML = _journalRepasCtx.ingredients.map((ing, idx) =>
     '<span style="display:inline-flex;align-items:center;gap:6px;padding:6px 10px;background:var(--green-deep);color:var(--white);border-radius:99px;font-size:0.78rem;">' +
       escapeHtml(ing) +
-      '<button onclick="removeIngredientLibre(\'' + escapeHtml(ing).replace(/'/g, "\\'") + '\')" aria-label="Retirer" style="background:none;border:none;color:var(--white);cursor:pointer;font-size:0.95rem;padding:0;line-height:1;">×</button>' +
+      '<button data-idx="' + idx + '" data-action="rl-remove" aria-label="Retirer" style="background:none;border:none;color:var(--white);cursor:pointer;font-size:0.95rem;padding:0;line-height:1;">×</button>' +
     '</span>'
   ).join('');
+  // Délégation : un seul gestionnaire pour tous les boutons ×
+  box.querySelectorAll('button[data-action="rl-remove"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const idx = parseInt(btn.dataset.idx, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < _journalRepasCtx.ingredients.length) {
+        const ing = _journalRepasCtx.ingredients[idx];
+        removeIngredientLibre(ing);
+      }
+    });
+  });
 }
 
 function saveRepasLibreFromModal() {
@@ -7585,7 +7716,8 @@ function openRepasLibre(dk, slug) {
 
 function renderRepasLibreModal(placardChecked) {
   // Retirer modal existant
-  document.getElementById('flora-repas-libre-modal')?.remove();
+  const existingModal = document.getElementById('flora-repas-libre-modal');
+  if (existingModal) existingModal.remove();
   
   const slugLabels = {
     petitdej: '☀️ Petit-déjeuner',
@@ -7596,7 +7728,10 @@ function renderRepasLibreModal(placardChecked) {
   
   // Construire la liste d'ingrédients par catégorie depuis le placard
   // On ne montre QUE les ingrédients cochés dans le placard + bouton ajout libre
+  // Bug fix : on stocke les ingrédients dans un tableau et on référence par index pour
+  // éviter tout problème d'échappement (apostrophes, guillemets, accents).
   let categoriesHTML = '';
+  const allAvailableIngredients = []; // pour mapping par index
   
   if (typeof PLACARD_CATEGORIES !== 'undefined') {
     const cats = Object.entries(PLACARD_CATEGORIES);
@@ -7605,15 +7740,17 @@ function renderRepasLibreModal(placardChecked) {
       if (itemsAvailable.length === 0) return;
       
       const itemsHTML = itemsAvailable.map(item => {
+        const idx = allAvailableIngredients.length;
+        allAvailableIngredients.push(item);
         const isSelected = _repasLibreCtx.ingredients.includes(item);
         return '<button class="repas-libre-ing-chip ' + (isSelected ? 'selected' : '') + '" ' +
-               'onclick="toggleRepasLibreIngredient(\'' + item.replace(/'/g, "\\'") + '\')">' + 
-               item + '</button>';
+               'data-action="rl-toggle" data-idx="' + idx + '">' + 
+               escapeHtml(item) + '</button>';
       }).join('');
       
       categoriesHTML += 
         '<div class="repas-libre-cat">' +
-          '<div class="repas-libre-cat-title">' + catName + '</div>' +
+          '<div class="repas-libre-cat-title">' + escapeHtml(catName) + '</div>' +
           '<div class="repas-libre-cat-items">' + itemsHTML + '</div>' +
         '</div>';
     });
@@ -7628,11 +7765,12 @@ function renderRepasLibreModal(placardChecked) {
   }
   
   // Liste des ingrédients sélectionnés
+  // Bug fix : on utilise data-idx référençant _repasLibreCtx.ingredients pour le bouton ✕
   const selectedHTML = _repasLibreCtx.ingredients.length === 0
     ? '<div style="font-size:0.85rem;color:#8a9e96;font-style:italic;text-align:center;padding:12px 0;">Aucun ingrédient sélectionné</div>'
-    : _repasLibreCtx.ingredients.map(ing => 
-        '<span class="repas-libre-selected-chip">' + ing + 
-        ' <button onclick="toggleRepasLibreIngredient(\'' + ing.replace(/'/g, "\\'") + '\')" aria-label="Retirer">✕</button></span>'
+    : _repasLibreCtx.ingredients.map((ing, idx) => 
+        '<span class="repas-libre-selected-chip">' + escapeHtml(ing) + 
+        ' <button data-action="rl-remove-selected" data-idx="' + idx + '" aria-label="Retirer">✕</button></span>'
       ).join('');
   
   // Bénéfices auto-calculés
@@ -7657,7 +7795,7 @@ function renderRepasLibreModal(placardChecked) {
           '<label class="repas-libre-label">Nom du repas</label>' +
           '<input type="text" id="repas-libre-nom" class="field" ' +
             'placeholder="Ex : Pavé cabillaud aux épinards" ' +
-            'value="' + (_repasLibreCtx.nom || '') + '" ' +
+            'value="' + escapeHtml(_repasLibreCtx.nom || '') + '" ' +
             'oninput="_repasLibreCtx.nom=this.value" />' +
         '</div>' +
         
@@ -7667,7 +7805,7 @@ function renderRepasLibreModal(placardChecked) {
             (_repasLibreCtx.ingredients.length > 0 ? ' (' + _repasLibreCtx.ingredients.length + ')' : '') +
           '</label>' +
           '<div class="repas-libre-selected">' + selectedHTML + '</div>' +
-          (beneficesAuto ? '<div class="repas-libre-benefices">🌿 ' + beneficesAuto + '</div>' : '') +
+          (beneficesAuto ? '<div class="repas-libre-benefices">🌿 ' + escapeHtml(beneficesAuto) + '</div>' : '') +
         '</div>' +
         
         // Catégories du placard
@@ -7698,6 +7836,24 @@ function renderRepasLibreModal(placardChecked) {
   
   document.body.appendChild(modal);
   document.body.style.overflow = 'hidden';
+  
+  // Bug fix : ajouter les event listeners délégués pour les chips et boutons ✕
+  modal.querySelectorAll('button[data-action="rl-toggle"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const idx = parseInt(btn.dataset.idx, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < allAvailableIngredients.length) {
+        toggleRepasLibreIngredient(allAvailableIngredients[idx]);
+      }
+    });
+  });
+  modal.querySelectorAll('button[data-action="rl-remove-selected"]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const idx = parseInt(btn.dataset.idx, 10);
+      if (!isNaN(idx) && idx >= 0 && idx < _repasLibreCtx.ingredients.length) {
+        toggleRepasLibreIngredient(_repasLibreCtx.ingredients[idx]);
+      }
+    });
+  });
 }
 
 function toggleRepasLibreIngredient(ing) {
