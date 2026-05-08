@@ -1018,6 +1018,18 @@
 <!-- Styles spécifiques au module Suivi douleurs -->
 <style>
 .admin-only.hidden { display: none !important; }
+
+/* === FALLBACK SCROLL : force la page-douleurs à scroller === */
+#page-douleurs {
+  min-height: auto !important;
+  overflow: visible !important;
+  padding-bottom: 100px;
+}
+#page-douleurs.active { display: block !important; }
+#dtab-ajout, #dtab-historique, #dtab-stats {
+  padding-bottom: 80px;
+}
+
 .dol-eva-scale {
   display: grid;
   grid-template-columns: repeat(11, 1fr);
