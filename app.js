@@ -1269,6 +1269,8 @@ function doLogin() {
   if (typeof loadProfil === 'function') loadProfil();
   if (typeof renderRecettes === 'function') renderRecettes();
   if (typeof updateLoginButton === 'function') updateLoginButton();
+  if (typeof updateDouleursAdminVisibility === 'function') updateDouleursAdminVisibility();
+  if (typeof updateTicketBtnVisibility === 'function') updateTicketBtnVisibility();
 
   // Toast de bienvenue
   const msg = document.createElement('div');
@@ -1289,6 +1291,8 @@ function doLogout() {
   if (typeof renderRecettes === 'function') renderRecettes();
   if (typeof loadProfil === 'function') loadProfil();
   if (typeof updateLoginButton === 'function') updateLoginButton();
+  if (typeof updateDouleursAdminVisibility === 'function') updateDouleursAdminVisibility();
+  if (typeof updateTicketBtnVisibility === 'function') updateTicketBtnVisibility();
 
   const msg = document.createElement('div');
   msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--text-mid);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;';
@@ -1325,6 +1329,18 @@ function initLogin() {
     isPremium = true;
   }
   updateLoginButton();
+  // Module douleurs : afficher la carte d'accueil si admin
+  if (typeof updateDouleursAdminVisibility === 'function') {
+    updateDouleursAdminVisibility();
+  }
+  // Module ticket : afficher le bouton si admin
+  if (typeof updateTicketBtnVisibility === 'function') {
+    updateTicketBtnVisibility();
+  }
+  // Application unique du ticket Lidl du 7 mai 2026
+  if (typeof maybeApplyLidlTicket === 'function') {
+    maybeApplyLidlTicket();
+  }
 }
 
 
@@ -2888,6 +2904,9 @@ function importBatchToAgenda() {
 }
 
 function initPlacard() {
+  // Affichage du bouton Importer ticket selon rôle admin
+  if (typeof updateTicketBtnVisibility === 'function') updateTicketBtnVisibility();
+
   try {
     const raw = localStorage.getItem('flora_placard');
     placardItems = raw ? JSON.parse(raw) : {};
@@ -3008,6 +3027,7 @@ function showPage(page) {
       if (firstTab) switchGenTab('semaine', firstTab);
     }
     if (page === 'placard')    initPlacard();
+    if (page === 'douleurs')   initDouleursPage();
     if (page === 'insights' && typeof renderInsights === 'function')       renderInsights();
     if (page === 'etirements' && typeof renderEtirementsPage === 'function') renderEtirementsPage();
   } catch(e) {
@@ -9178,4 +9198,798 @@ function closeRoutine() {
   if (modal) modal.remove();
   document.body.style.overflow = '';
   _routineState = { index: 0, timer: null, sec: 0, isPaused: false };
+}
+
+
+// ============================================================
+// SUIVI DOULEURS — Module privé admin
+// ============================================================
+// Stockage : localStorage 'flora_douleurs_admin' (séparé du reste)
+// Visible uniquement si currentUser.role === 'admin'
+
+var DOL_STORAGE_KEY = 'flora_douleurs_admin';
+var dolSelectedEva = null;
+
+function isDouleursAdmin() {
+  return currentUser && currentUser.role === 'admin';
+}
+
+function loadDouleurs() {
+  try {
+    var raw = localStorage.getItem(DOL_STORAGE_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.warn('[Douleurs] loadDouleurs error:', e);
+    return [];
+  }
+}
+
+function saveDouleursList(entries) {
+  try {
+    localStorage.setItem(DOL_STORAGE_KEY, JSON.stringify(entries));
+    return true;
+  } catch (e) {
+    console.warn('[Douleurs] saveDouleursList error:', e);
+    return false;
+  }
+}
+
+function updateDouleursAdminVisibility() {
+  var card = document.getElementById('card-douleurs');
+  if (!card) return;
+  if (isDouleursAdmin()) {
+    card.classList.remove('hidden');
+    updateDouleursTodayStatus();
+  } else {
+    card.classList.add('hidden');
+  }
+}
+
+function updateDouleursTodayStatus() {
+  var status = document.getElementById('douleurs-today-status');
+  if (!status) return;
+  var entries = loadDouleurs();
+  if (entries.length === 0) {
+    status.textContent = 'Module privé · admin';
+    return;
+  }
+  var now = Date.now();
+  var last30 = entries.filter(function(e) {
+    return (now - new Date(e.date).getTime()) < 30 * 86400000;
+  });
+  var crises = last30.filter(function(e) { return e.eva >= 7; }).length;
+  if (crises > 0) {
+    status.textContent = crises + ' crise' + (crises > 1 ? 's' : '') + ' (30j)';
+  } else {
+    status.textContent = entries.length + ' entrée' + (entries.length > 1 ? 's' : '');
+  }
+}
+
+function initDouleursPage() {
+  // Sécurité : si non-admin tombe sur la page, retour accueil
+  if (!isDouleursAdmin()) {
+    showPage('accueil');
+    return;
+  }
+
+  // Date par défaut = maintenant
+  var dateInput = document.getElementById('dol-date');
+  if (dateInput && !dateInput.value) {
+    var now = new Date();
+    var tz = now.getTimezoneOffset() * 60000;
+    dateInput.value = new Date(now - tz).toISOString().slice(0, 16);
+  }
+
+  // Construire l'échelle EVA (une seule fois)
+  var scale = document.getElementById('dol-eva-scale');
+  if (scale && scale.children.length === 0) {
+    for (var i = 0; i <= 10; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'dol-eva-btn';
+      btn.textContent = i;
+      btn.setAttribute('data-val', i);
+      btn.type = 'button';
+      btn.addEventListener('click', dolHandleEvaClick);
+      scale.appendChild(btn);
+    }
+  }
+
+  // Stress slider listener
+  var stressInput = document.getElementById('dol-stress');
+  if (stressInput && !stressInput.dataset.bound) {
+    stressInput.addEventListener('input', function(e) {
+      var val = document.getElementById('dol-stress-val');
+      if (val) val.textContent = e.target.value;
+    });
+    stressInput.dataset.bound = '1';
+  }
+
+  // Démarrer sur l'onglet Ajout
+  var firstTab = document.querySelector('#page-douleurs .jtab');
+  if (firstTab) switchDouleursTab('ajout', firstTab);
+}
+
+function dolHandleEvaClick(e) {
+  var btn = e.currentTarget;
+  document.querySelectorAll('.dol-eva-btn').forEach(function(b) {
+    b.classList.remove('selected');
+  });
+  btn.classList.add('selected');
+  dolSelectedEva = parseInt(btn.getAttribute('data-val'));
+}
+
+function switchDouleursTab(tab, btnEl) {
+  // Désactiver tous les boutons d'onglet
+  document.querySelectorAll('#page-douleurs .jtab').forEach(function(b) {
+    b.classList.remove('active');
+  });
+  if (btnEl) btnEl.classList.add('active');
+
+  // Cacher tous les panneaux
+  ['ajout', 'historique', 'stats'].forEach(function(t) {
+    var panel = document.getElementById('dtab-' + t);
+    if (panel) panel.classList.add('hidden');
+  });
+
+  // Afficher le panneau ciblé
+  var target = document.getElementById('dtab-' + tab);
+  if (target) target.classList.remove('hidden');
+
+  if (tab === 'historique') renderDouleurEntries();
+  if (tab === 'stats') renderDouleurStats();
+}
+
+function saveDouleur() {
+  if (dolSelectedEva === null) {
+    dolToast('Sélectionne une intensité EVA', true);
+    return;
+  }
+  var dateEl = document.getElementById('dol-date');
+  if (!dateEl || !dateEl.value) {
+    dolToast('Date requise', true);
+    return;
+  }
+
+  var entry = {
+    id: Date.now(),
+    date: dateEl.value,
+    eva: dolSelectedEva,
+    stress: parseInt(document.getElementById('dol-stress').value) || 5,
+    meds: (document.getElementById('dol-meds').value || '').trim(),
+    action: document.getElementById('dol-action').value || '',
+    arret: parseInt(document.getElementById('dol-arret').value) || 0,
+    notes: (document.getElementById('dol-notes').value || '').trim()
+  };
+
+  var entries = loadDouleurs();
+  entries.push(entry);
+  if (saveDouleursList(entries)) {
+    dolToast('💾 Entrée enregistrée');
+    resetDouleurForm();
+    updateDouleursTodayStatus();
+  } else {
+    dolToast('Erreur de sauvegarde', true);
+  }
+}
+
+function resetDouleurForm() {
+  var dateInput = document.getElementById('dol-date');
+  if (dateInput) {
+    var now = new Date();
+    var tz = now.getTimezoneOffset() * 60000;
+    dateInput.value = new Date(now - tz).toISOString().slice(0, 16);
+  }
+  dolSelectedEva = null;
+  document.querySelectorAll('.dol-eva-btn').forEach(function(b) {
+    b.classList.remove('selected');
+  });
+  var stressInput = document.getElementById('dol-stress');
+  if (stressInput) stressInput.value = 5;
+  var stressVal = document.getElementById('dol-stress-val');
+  if (stressVal) stressVal.textContent = '5';
+  ['dol-meds', 'dol-action', 'dol-arret', 'dol-notes'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+}
+
+function dolToast(msg, isError) {
+  var t = document.createElement('div');
+  var bg = isError ? '#b85450' : '#7a9070';
+  t.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:' + bg + ';color:#fff;padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,0.2);';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(function() { t.remove(); }, 2400);
+}
+
+function dolEscape(s) {
+  var div = document.createElement('div');
+  div.textContent = s || '';
+  return div.innerHTML;
+}
+
+function renderDouleurEntries() {
+  var list = document.getElementById('dol-entries-list');
+  if (!list) return;
+
+  var entries = loadDouleurs().sort(function(a, b) {
+    return new Date(b.date) - new Date(a.date);
+  });
+
+  if (entries.length === 0) {
+    list.innerHTML = '<div class="dol-empty">Aucune entrée pour le moment.<br>Enregistre ta première crise pour commencer le suivi.</div>';
+    return;
+  }
+
+  var actionLabels = {
+    generaliste: 'Généraliste',
+    urgences: 'Urgences',
+    specialiste: 'Spécialiste',
+    pharmacie: 'Pharmacie',
+    autre: 'Autre'
+  };
+
+  var html = '';
+  entries.forEach(function(e) {
+    var d = new Date(e.date);
+    var dStr = d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) +
+               ' · ' + d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+
+    var intensityClass = '';
+    if (e.eva >= 7) intensityClass = 'intensity-high';
+    else if (e.eva >= 4) intensityClass = 'intensity-mid';
+
+    var tags = [];
+    if (e.action) tags.push('<span class="dol-tag dol-tag-action">' + actionLabels[e.action] + '</span>');
+    if (e.arret > 0) tags.push('<span class="dol-tag dol-tag-action">Arrêt ' + e.arret + 'j</span>');
+    if (e.stress >= 7) tags.push('<span class="dol-tag dol-tag-stress">Stress ' + e.stress + '/10</span>');
+    if (e.meds) tags.push('<span class="dol-tag dol-tag-med">' + dolEscape(e.meds) + '</span>');
+
+    html += '<div class="dol-entry ' + intensityClass + '">' +
+      '<div class="dol-entry-header">' +
+        '<span class="dol-entry-date">' + dStr + '</span>' +
+        '<span class="dol-entry-eva">' + e.eva + '<span class="max">/10</span></span>' +
+      '</div>' +
+      (tags.length ? '<div class="dol-entry-meta">' + tags.join('') + '</div>' : '') +
+      (e.notes ? '<div class="dol-entry-notes">' + dolEscape(e.notes) + '</div>' : '') +
+      '<div class="dol-entry-actions">' +
+        '<button class="dol-btn-small dol-btn-danger" data-del="' + e.id + '">Supprimer</button>' +
+      '</div>' +
+    '</div>';
+  });
+
+  list.innerHTML = html;
+
+  // Attach delete handlers via addEventListener (compatibilité WebView)
+  list.querySelectorAll('button[data-del]').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var id = parseInt(btn.getAttribute('data-del'));
+      deleteDouleurEntry(id);
+    });
+  });
+}
+
+function deleteDouleurEntry(id) {
+  if (!confirm('Supprimer cette entrée ?')) return;
+  var entries = loadDouleurs().filter(function(e) { return e.id !== id; });
+  saveDouleursList(entries);
+  renderDouleurEntries();
+  updateDouleursTodayStatus();
+  dolToast('Entrée supprimée');
+}
+
+function renderDouleurStats() {
+  var grid = document.getElementById('dol-stats-grid');
+  if (!grid) return;
+
+  var entries = loadDouleurs();
+  var now = Date.now();
+  var last30 = entries.filter(function(e) {
+    return (now - new Date(e.date).getTime()) < 30 * 86400000;
+  });
+
+  var crises = last30.filter(function(e) { return e.eva >= 7; }).length;
+  var arretTotal = last30.reduce(function(s, e) { return s + (e.arret || 0); }, 0);
+  var avgEva = last30.length ? (last30.reduce(function(s, e) { return s + e.eva; }, 0) / last30.length).toFixed(1) : '–';
+  var urgencesTotal = entries.filter(function(e) { return e.action === 'urgences'; }).length;
+
+  grid.innerHTML =
+    '<div class="dol-stat-box"><div class="dol-stat-num">' + crises + '</div><div class="dol-stat-label">Crises ≥7/10 (30j)</div></div>' +
+    '<div class="dol-stat-box"><div class="dol-stat-num">' + arretTotal + '</div><div class="dol-stat-label">Jours d\'arrêt (30j)</div></div>' +
+    '<div class="dol-stat-box"><div class="dol-stat-num">' + avgEva + '</div><div class="dol-stat-label">EVA moyenne (30j)</div></div>' +
+    '<div class="dol-stat-box"><div class="dol-stat-num">' + urgencesTotal + '</div><div class="dol-stat-label">Urgences (total)</div></div>';
+
+  drawDouleurChart(last30);
+}
+
+function drawDouleurChart(entries) {
+  var svg = document.getElementById('dol-chart');
+  if (!svg) return;
+  svg.innerHTML = '';
+
+  if (entries.length === 0) {
+    svg.innerHTML = '<text x="300" y="100" text-anchor="middle" fill="#6b6357" font-size="13" font-style="italic">Pas encore de données sur 30 jours</text>';
+    return;
+  }
+
+  var sorted = entries.slice().sort(function(a, b) {
+    return new Date(a.date) - new Date(b.date);
+  });
+
+  var w = 600, h = 200, pad = 24;
+  var xMin = new Date(sorted[0].date).getTime();
+  var xMax = new Date(sorted[sorted.length - 1].date).getTime();
+  var xRange = xMax - xMin || 1;
+
+  function xPos(d) {
+    return pad + ((new Date(d.date).getTime() - xMin) / xRange) * (w - 2 * pad);
+  }
+  function yEva(v) {
+    return h - pad - (v / 10) * (h - 2 * pad);
+  }
+
+  var html = '';
+
+  // Grille horizontale
+  for (var i = 0; i <= 10; i += 2) {
+    var y = yEva(i);
+    html += '<line x1="' + pad + '" y1="' + y + '" x2="' + (w - pad) + '" y2="' + y + '" stroke="#e8e0d3" stroke-width="0.5"/>';
+    html += '<text x="' + (pad - 4) + '" y="' + (y + 3) + '" text-anchor="end" fill="#6b6357" font-size="9">' + i + '</text>';
+  }
+
+  // Courbe Stress (pointillée)
+  var stressPath = sorted.map(function(e, i) {
+    return (i ? 'L' : 'M') + xPos(e) + ',' + yEva(e.stress);
+  }).join(' ');
+  html += '<path d="' + stressPath + '" fill="none" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="3,3"/>';
+
+  // Courbe Douleur EVA
+  var evaPath = sorted.map(function(e, i) {
+    return (i ? 'L' : 'M') + xPos(e) + ',' + yEva(e.eva);
+  }).join(' ');
+  html += '<path d="' + evaPath + '" fill="none" stroke="#2d4a3e" stroke-width="2"/>';
+
+  // Points
+  sorted.forEach(function(e) {
+    var color = e.eva >= 7 ? '#b85450' : e.eva >= 4 ? '#d4a574' : '#7a9070';
+    html += '<circle cx="' + xPos(e) + '" cy="' + yEva(e.eva) + '" r="3.5" fill="' + color + '"/>';
+  });
+
+  svg.innerHTML = html;
+}
+
+// ============================================================
+// FIN MODULE SUIVI DOULEURS
+// ============================================================
+
+
+// ============================================================
+// IMPORT TICKET DE CAISSE — Module privé admin
+// ============================================================
+// Ouvre une modale (admin only) qui permet de coller un texte
+// de ticket et de cocher / ajouter automatiquement les produits.
+
+function isTicketAdmin() {
+  return currentUser && currentUser.role === 'admin';
+}
+
+function updateTicketBtnVisibility() {
+  var btn = document.getElementById('btn-ticket-import');
+  if (!btn) return;
+  if (isTicketAdmin()) {
+    btn.classList.remove('hidden');
+  } else {
+    btn.classList.add('hidden');
+  }
+}
+
+// Dictionnaire de mapping mots-clés → item placard officiel
+// Le matching se fait par substring casse-insensible sur le libellé du ticket
+var TICKET_KEYWORDS = {
+  // Fruits frais & surgelés
+  'fruits rouges': { item: 'Fruits rouges surgelés', cat: '🫐 Fruits surgelés' },
+  'fraises': { item: 'Fraises', cat: '🍋 Fruits frais' },
+  'framboises': { item: 'Framboises', cat: '🍋 Fruits frais' },
+  'myrtilles': { item: 'Myrtilles', cat: '🍋 Fruits frais' },
+  'banane': { item: 'Banane', cat: '🍋 Fruits frais' },
+  'pomme': { item: 'Pomme', cat: '🍋 Fruits frais' },
+  'citron': { item: 'Citron', cat: '🍋 Fruits frais' },
+  'mangue': { item: 'Mangue', cat: '🍋 Fruits frais' },
+  // Légumes
+  'carotte': { item: 'Carotte', cat: '🥦 Légumes frais' },
+  'courgette': { item: 'Courgette', cat: '🥦 Légumes frais' },
+  'aubergine': { item: 'Aubergine', cat: '🥦 Légumes frais' },
+  'poivron': { item: 'Poivron rouge', cat: '🥦 Légumes frais' },
+  'epinard': { item: 'Épinards', cat: '🥦 Légumes frais' },
+  'épinard': { item: 'Épinards', cat: '🥦 Légumes frais' },
+  'brocoli': { item: 'Brocoli', cat: '🥦 Légumes frais' },
+  'patate douce': { item: 'Patate douce', cat: '🥦 Légumes frais' },
+  'oignon': { item: 'Oignon', cat: '🥦 Légumes frais' },
+  'ail': { item: 'Ail', cat: '🥦 Légumes frais' },
+  'gingembre frais': { item: 'Gingembre frais', cat: '🥦 Légumes frais' },
+  'avocat': { item: 'Avocat', cat: '🥑 Bons gras & noix' },
+  // Protéines
+  'thon blanc': { item: 'Thon à l\'huile d\'olive', cat: '🥚 Protéines animales' },
+  'thon huile': { item: 'Thon à l\'huile d\'olive', cat: '🥚 Protéines animales' },
+  'thon naturel': { item: 'Thon au naturel', cat: '🥚 Protéines animales' },
+  'crevettes': { item: 'Crevettes', cat: '🥚 Protéines animales' },
+  'saumon fume': { item: 'Saumon fumé', cat: '🥚 Protéines animales' },
+  'saumon fumé': { item: 'Saumon fumé', cat: '🥚 Protéines animales' },
+  'saumon frais': { item: 'Saumon frais', cat: '🥚 Protéines animales' },
+  'sardines': { item: 'Sardines en boîte', cat: '🥚 Protéines animales' },
+  'maquereaux': { item: 'Maquereaux en boîte', cat: '🥚 Protéines animales' },
+  'cabillaud': { item: 'Cabillaud', cat: '🥚 Protéines animales' },
+  'oeufs': { item: 'Œufs bio', cat: '🥚 Protéines animales' },
+  'œufs': { item: 'Œufs bio', cat: '🥚 Protéines animales' },
+  'tofu': { item: 'Tofu ferme', cat: '🫘 Protéines végétales' },
+  'pois chiches': { item: 'Pois chiches (boîte)', cat: '🫘 Protéines végétales' },
+  'lentilles corail': { item: 'Lentilles corail', cat: '🫘 Protéines végétales' },
+  'lentilles vertes': { item: 'Lentilles vertes', cat: '🫘 Protéines végétales' },
+  // Noix & graines
+  'amandes': { item: 'Amandes', cat: '🥑 Bons gras & noix' },
+  'noix de cajou': { item: 'Noix de cajou', cat: '🥑 Bons gras & noix' },
+  'cerneaux de noix': { item: 'Noix', cat: '🥑 Bons gras & noix' },
+  'noix du brésil': { item: 'Noix du Brésil', cat: '🥑 Bons gras & noix' },
+  'pistaches': { item: 'Pistaches', cat: '🥑 Bons gras & noix' },
+  'noisettes': { item: 'Noisettes', cat: '🥑 Bons gras & noix' },
+  'graines de courge': { item: 'Graines de courge', cat: '🥑 Bons gras & noix' },
+  'graines de chia': { item: 'Graines de chia', cat: '🥑 Bons gras & noix' },
+  'graines de lin': { item: 'Graines de lin', cat: '🥑 Bons gras & noix' },
+  'graines de tournesol': { item: 'Graines de tournesol', cat: '🥑 Bons gras & noix' },
+  'tahini': { item: 'Tahini', cat: '🥑 Bons gras & noix' },
+  'purée d\'amande': { item: 'Purée d\'amande', cat: '🥑 Bons gras & noix' },
+  'puree d\'amande': { item: 'Purée d\'amande', cat: '🥑 Bons gras & noix' },
+  'puree amande': { item: 'Purée d\'amande', cat: '🥑 Bons gras & noix' },
+  'beurre de cajou': { item: 'Beurre de cajou', cat: '🥑 Bons gras & noix' },
+  // Féculents SG
+  'quinoa': { item: 'Quinoa', cat: '🌾 Féculents sans gluten' },
+  'riz complet': { item: 'Riz complet', cat: '🌾 Féculents sans gluten' },
+  'riz basmati': { item: 'Riz basmati', cat: '🌾 Féculents sans gluten' },
+  'sarrasin': { item: 'Sarrasin (kasha)', cat: '🌾 Féculents sans gluten' },
+  'galettes de riz': { item: 'Galettes de riz', cat: '🌾 Féculents sans gluten' },
+  'pâtes de riz': { item: 'Pâtes de riz', cat: '🌾 Féculents sans gluten' },
+  'pates de riz': { item: 'Pâtes de riz', cat: '🌾 Féculents sans gluten' },
+  // Conserves
+  'tomates concassées': { item: 'Tomates concassées', cat: '🫙 Conserves & bocaux' },
+  'tomates concassees': { item: 'Tomates concassées', cat: '🫙 Conserves & bocaux' },
+  'lait de coco': { item: 'Lait de coco entier', cat: '🫙 Conserves & bocaux' },
+  'olives noires': { item: 'Olives noires', cat: '🫙 Conserves & bocaux' },
+  'olives vertes': { item: 'Olives vertes', cat: '🫙 Conserves & bocaux' },
+  'olives': { item: 'Olives noires', cat: '🫙 Conserves & bocaux' },
+  // Huiles
+  'huile d\'olive': { item: 'Huile d\'olive vierge extra', cat: '🛢 Huiles & vinaigres' },
+  'huile olive': { item: 'Huile d\'olive vierge extra', cat: '🛢 Huiles & vinaigres' },
+  'huile de coco': { item: 'Huile de coco', cat: '🛢 Huiles & vinaigres' },
+  'huile de sésame': { item: 'Huile de sésame', cat: '🛢 Huiles & vinaigres' },
+  'tamari': { item: 'Tamari sans gluten', cat: '🛢 Huiles & vinaigres' },
+  'vinaigre cidre': { item: 'Vinaigre de cidre', cat: '🛢 Huiles & vinaigres' },
+  // Laits végétaux
+  'lait d\'amande': { item: 'Lait d\'amande', cat: '🥛 Laits & yaourts végétaux' },
+  'lait amande': { item: 'Lait d\'amande', cat: '🥛 Laits & yaourts végétaux' },
+  'lait de riz': { item: 'Lait de riz', cat: '🥛 Laits & yaourts végétaux' },
+  'lait avoine': { item: 'Lait d\'avoine (sg)', cat: '🥛 Laits & yaourts végétaux' },
+  'yaourt soja': { item: 'Yaourt de soja', cat: '🥛 Laits & yaourts végétaux' },
+  'yaourt coco': { item: 'Yaourt de coco', cat: '🥛 Laits & yaourts végétaux' },
+  // Épices
+  'curcuma': { item: 'Curcuma', cat: '🌿 Épices & herbes' },
+  'cumin': { item: 'Cumin', cat: '🌿 Épices & herbes' },
+  'cannelle': { item: 'Cannelle', cat: '🌿 Épices & herbes' },
+  'paprika fumé': { item: 'Paprika fumé', cat: '🌿 Épices & herbes' },
+  'paprika fume': { item: 'Paprika fumé', cat: '🌿 Épices & herbes' },
+  'paprika doux': { item: 'Paprika doux', cat: '🌿 Épices & herbes' },
+  'gingembre poudre': { item: 'Gingembre en poudre', cat: '🌿 Épices & herbes' },
+  // Sucrants
+  'chocolat noir': { item: 'Chocolat noir 70%', cat: '🍫 Sucrants & chocolat' },
+  'cacao': { item: 'Cacao cru en poudre', cat: '🍫 Sucrants & chocolat' },
+  'dattes': { item: 'Dattes Medjool', cat: '🍫 Sucrants & chocolat' },
+  'sirop d\'agave': { item: 'Sirop d\'agave', cat: '🍫 Sucrants & chocolat' },
+  'sirop agave': { item: 'Sirop d\'agave', cat: '🍫 Sucrants & chocolat' },
+  'sirop d\'érable': { item: 'Sirop d\'érable', cat: '🍫 Sucrants & chocolat' },
+  'sirop erable': { item: 'Sirop d\'érable', cat: '🍫 Sucrants & chocolat' },
+  'miel': { item: 'Miel', cat: '🍫 Sucrants & chocolat' },
+  // Herbes
+  'persil': { item: 'Persil plat', cat: '🌿 Herbes fraîches' },
+  'basilic': { item: 'Basilic frais', cat: '🌿 Herbes fraîches' },
+  'coriandre': { item: 'Coriandre fraîche', cat: '🌿 Herbes fraîches' },
+  'menthe': { item: 'Menthe fraîche', cat: '🌿 Herbes fraîches' }
+};
+
+// Catégorie spéciale pour produits hors-protocole (cocher mais en sachant)
+var TICKET_OFF_PROTOCOL_CAT = '🛒 Autres achats';
+
+function openTicketImportModal() {
+  if (!isTicketAdmin()) return;
+
+  // Supprimer une éventuelle modale précédente
+  var existing = document.getElementById('ticket-import-modal');
+  if (existing) existing.remove();
+
+  var modal = document.createElement('div');
+  modal.id = 'ticket-import-modal';
+  modal.className = 'modal';
+  modal.innerHTML =
+    '<div class="modal-overlay" onclick="closeTicketImportModal()"></div>' +
+    '<div class="modal-card" style="max-width:560px;max-height:90vh;overflow-y:auto;">' +
+      '<button class="modal-close" onclick="closeTicketImportModal()">✕</button>' +
+      '<h3 style="margin-top:0;">📃 Importer un ticket</h3>' +
+      '<p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:14px;">' +
+        'Colle le texte de ton ticket de caisse ci-dessous (un produit par ligne).' +
+      '</p>' +
+      '<textarea id="ticket-text" class="field" rows="8" placeholder="Ex :\nFraises 3,98\nLait amande Bio 1,41\nThon blanc 4,99\n..." style="font-family:monospace;font-size:0.82rem;width:100%;margin-bottom:12px;"></textarea>' +
+      '<div style="display:flex;gap:8px;margin-bottom:12px;">' +
+        '<button class="btn-primary" style="flex:1;" onclick="analyzeTicket()">🔍 Analyser</button>' +
+        '<button class="btn-link" onclick="closeTicketImportModal()">Annuler</button>' +
+      '</div>' +
+      '<div id="ticket-preview" style="display:none;border-top:1px solid var(--green-pale);padding-top:14px;">' +
+        '<div id="ticket-preview-content"></div>' +
+        '<button class="btn-primary full-width" style="margin-top:14px;" onclick="confirmTicketImport()">' +
+          '✓ Tout cocher dans mon placard' +
+        '</button>' +
+      '</div>';
+
+  document.body.appendChild(modal);
+  modal.classList.remove('hidden');
+
+  setTimeout(function() {
+    var ta = document.getElementById('ticket-text');
+    if (ta) ta.focus();
+  }, 100);
+}
+
+function closeTicketImportModal() {
+  var m = document.getElementById('ticket-import-modal');
+  if (m) m.remove();
+  window._ticketParsed = null;
+}
+
+function analyzeTicket() {
+  var ta = document.getElementById('ticket-text');
+  if (!ta || !ta.value.trim()) return;
+
+  var lines = ta.value.split('\n')
+    .map(function(l) { return l.trim(); })
+    .filter(function(l) { return l && l.length > 2; });
+
+  var matched = [];     // produits reconnus dans le placard
+  var unmatched = [];   // produits inconnus → custom
+
+  lines.forEach(function(line) {
+    var cleaned = line.toLowerCase()
+      // Retirer les chiffres, prix, codes (ex : "Fraises 3,98 1 7,96 A T" → "fraises")
+      .replace(/[0-9]+[.,][0-9]+/g, '')
+      .replace(/\b[0-9]+\b/g, '')
+      .replace(/[a-z]\s*$/i, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    if (!cleaned) return;
+
+    // Chercher correspondance
+    var found = null;
+    for (var keyword in TICKET_KEYWORDS) {
+      if (cleaned.indexOf(keyword) !== -1) {
+        found = TICKET_KEYWORDS[keyword];
+        break;
+      }
+    }
+
+    if (found) {
+      matched.push({ line: line, item: found.item, cat: found.cat });
+    } else {
+      // Garder le libellé original nettoyé pour l'ajout custom
+      var label = line
+        .replace(/[0-9]+[.,][0-9]+/g, '')
+        .replace(/\b[0-9]+\b/g, '')
+        .replace(/\s+[A-Z]\s+[A-Z]\s*$/, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (label.length > 1) {
+        unmatched.push({ line: line, label: label });
+      }
+    }
+  });
+
+  window._ticketParsed = { matched: matched, unmatched: unmatched };
+
+  // Afficher la prévisualisation
+  var preview = document.getElementById('ticket-preview');
+  var content = document.getElementById('ticket-preview-content');
+  if (!preview || !content) return;
+
+  var html = '';
+
+  if (matched.length > 0) {
+    html += '<div style="margin-bottom:12px;">' +
+      '<strong style="color:var(--green-deep);">✓ ' + matched.length + ' produit(s) reconnu(s)</strong>' +
+      '<div style="font-size:0.82rem;margin-top:6px;max-height:160px;overflow-y:auto;">';
+    matched.forEach(function(m) {
+      html += '<div style="padding:4px 0;">→ ' + dolEscape(m.item) +
+              ' <span style="color:var(--text-mid);font-size:0.75rem;">(' + dolEscape(m.cat) + ')</span></div>';
+    });
+    html += '</div></div>';
+  }
+
+  if (unmatched.length > 0) {
+    html += '<div style="margin-bottom:8px;">' +
+      '<strong style="color:#c0614a;">+ ' + unmatched.length + ' produit(s) à ajouter en perso</strong>' +
+      '<p style="font-size:0.78rem;color:var(--text-mid);margin:4px 0 6px;">' +
+        'Catégorie : <strong>' + TICKET_OFF_PROTOCOL_CAT + '</strong>' +
+      '</p>' +
+      '<div style="font-size:0.82rem;max-height:140px;overflow-y:auto;">';
+    unmatched.forEach(function(u) {
+      html += '<div style="padding:4px 0;">+ ' + dolEscape(u.label) + '</div>';
+    });
+    html += '</div></div>';
+  }
+
+  if (matched.length === 0 && unmatched.length === 0) {
+    html = '<p style="color:var(--text-mid);font-style:italic;">Aucun produit détecté.</p>';
+  }
+
+  content.innerHTML = html;
+  preview.style.display = 'block';
+}
+
+function confirmTicketImport() {
+  if (!window._ticketParsed) return;
+  var data = window._ticketParsed;
+  var checkedCount = 0;
+  var addedCount = 0;
+
+  // 1. Cocher les produits reconnus
+  data.matched.forEach(function(m) {
+    if (!placardItems[m.item]) {
+      placardItems[m.item] = true;
+      checkedCount++;
+    }
+  });
+
+  // 2. Ajouter les inconnus en custom dans la catégorie "Autres achats"
+  if (data.unmatched.length > 0) {
+    if (!floraPlacardCustom[TICKET_OFF_PROTOCOL_CAT]) {
+      floraPlacardCustom[TICKET_OFF_PROTOCOL_CAT] = [];
+    }
+    data.unmatched.forEach(function(u) {
+      // Éviter les doublons (case-insensitive)
+      var exists = floraPlacardCustom[TICKET_OFF_PROTOCOL_CAT].some(function(x) {
+        return x.toLowerCase() === u.label.toLowerCase();
+      });
+      if (!exists) {
+        floraPlacardCustom[TICKET_OFF_PROTOCOL_CAT].push(u.label);
+        // Cocher aussi
+        placardItems[u.label] = true;
+        addedCount++;
+      }
+    });
+    // Injecter cette catégorie dans PLACARD_CATEGORIES si elle n'y est pas
+    if (!PLACARD_CATEGORIES[TICKET_OFF_PROTOCOL_CAT]) {
+      PLACARD_CATEGORIES[TICKET_OFF_PROTOCOL_CAT] = [];
+    }
+    floraPlacardCustom[TICKET_OFF_PROTOCOL_CAT].forEach(function(item) {
+      if (PLACARD_CATEGORIES[TICKET_OFF_PROTOCOL_CAT].indexOf(item) === -1) {
+        PLACARD_CATEGORIES[TICKET_OFF_PROTOCOL_CAT].push(item);
+      }
+    });
+  }
+
+  // 3. Sauvegarder
+  try {
+    localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+    localStorage.setItem('flora_placard_custom', JSON.stringify(floraPlacardCustom));
+  } catch (e) {
+    console.error('[Ticket] save error:', e);
+  }
+
+  // 4. Re-render
+  if (typeof initPlacard === 'function') initPlacard();
+
+  closeTicketImportModal();
+
+  // Toast
+  var msg = checkedCount + ' coché(s)' + (addedCount > 0 ? ' · ' + addedCount + ' ajouté(s)' : '');
+  if (typeof dolToast === 'function') {
+    dolToast('🛒 ' + msg);
+  } else {
+    alert('Ticket importé : ' + msg);
+  }
+}
+
+// ============================================================
+// FIN MODULE TICKET IMPORT
+// ============================================================
+
+
+// ============================================================
+// AUTO-APPLICATION DU TICKET LIDL DU 7 MAI 2026 (one-shot)
+// ============================================================
+// S'exécute une seule fois après login admin si le flag n'est pas posé.
+// Permet à Ketty de retrouver tous ses achats déjà cochés au prochain
+// chargement, sans qu'elle ait à coller le ticket elle-même.
+
+function applyLidlTicketMay7Once() {
+  if (!isTicketAdmin()) return;
+  var FLAG = 'flora_ticket_lidl_2026_05_07_applied';
+  try {
+    if (localStorage.getItem(FLAG) === '1') return;
+  } catch(_) { return; }
+
+  // Produits reconnus du ticket → cocher
+  var matchedItems = [
+    'Fraises',
+    'Fruits rouges surgelés',
+    'Paprika fumé',
+    'Thon à l\'huile d\'olive',
+    'Crevettes',
+    'Lait d\'amande',
+    'Noix de cajou',
+    'Noix',
+    'Amandes',
+    'Carotte',
+    'Sirop d\'agave',
+    'Olives noires',
+    'Purée d\'amande'
+  ];
+
+  // Produits hors-protocole / inconnus → ajouter en custom + cocher
+  var customItems = [
+    'Feta AOP Bio',
+    'Crème de pistache',
+    'Chocolat noir amande',
+    'Chocolat noir Cra',
+    'Chocolat sans DCP nature',
+    'Chocolat Fleur sel',
+    'Chocolat noir Bio',
+    'Pépites de chocolat',
+    'Mélange espagnol Ducros',
+    'Spécialités lait Lat',
+    'Spécialités lait Kir',
+    'Pichets Mesu',
+    'Fromage frais',
+    'Crottins de chèvre',
+    'Gnocchi',
+    'Shot de gingembre Bio',
+    'Fromage frais fouetté',
+    'Flocons d\'avoine'
+  ];
+
+  var customCat = '🛒 Autres achats';
+
+  // 1. Cocher les produits standards
+  matchedItems.forEach(function(it) {
+    placardItems[it] = true;
+  });
+
+  // 2. Ajouter les customs
+  if (!floraPlacardCustom[customCat]) floraPlacardCustom[customCat] = [];
+  if (!PLACARD_CATEGORIES[customCat]) PLACARD_CATEGORIES[customCat] = [];
+
+  customItems.forEach(function(it) {
+    var existsCustom = floraPlacardCustom[customCat].some(function(x) {
+      return x.toLowerCase() === it.toLowerCase();
+    });
+    if (!existsCustom) floraPlacardCustom[customCat].push(it);
+    if (PLACARD_CATEGORIES[customCat].indexOf(it) === -1) {
+      PLACARD_CATEGORIES[customCat].push(it);
+    }
+    placardItems[it] = true;
+  });
+
+  // 3. Sauvegarder
+  try {
+    localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+    localStorage.setItem('flora_placard_custom', JSON.stringify(floraPlacardCustom));
+    localStorage.setItem(FLAG, '1');
+    console.log('[Flōra] Ticket Lidl 7 mai 2026 appliqué :',
+                matchedItems.length, 'cochés +',
+                customItems.length, 'customs ajoutés');
+  } catch(e) {
+    console.error('[Flōra] Erreur application ticket Lidl:', e);
+  }
+}
+
+// S'exécute après initLogin si admin
+function maybeApplyLidlTicket() {
+  if (isTicketAdmin()) {
+    applyLidlTicketMay7Once();
+  }
 }

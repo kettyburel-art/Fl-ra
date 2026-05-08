@@ -233,6 +233,15 @@
           </div>
           <div class="card-arrow">→</div>
         </div>
+        <!-- Carte Suivi Douleurs (admin uniquement) -->
+        <div class="card card-douleurs admin-only hidden" id="card-douleurs" onclick="showPage('douleurs')" style="background:linear-gradient(135deg, #fff1ec 0%, #ffe4d6 100%);">
+          <div class="card-icon">🩺</div>
+          <div class="card-body">
+            <div class="card-title">Suivi douleurs</div>
+            <div class="card-sub" id="douleurs-today-status">Module privé · admin</div>
+          </div>
+          <div class="card-arrow">→</div>
+        </div>
       </div>
 
       <!-- Bloc repas du jour (rempli par renderTodayMealsBlock) -->
@@ -630,6 +639,11 @@
         + Ajouter un ingrédient personnalisé
       </button>
 
+      <!-- Bouton importer un ticket (admin uniquement) -->
+      <button id="btn-ticket-import" class="btn-primary full-width admin-only hidden" style="margin-bottom:16px;background:linear-gradient(135deg, #c0a878 0%, #8a6f5a 100%);" onclick="openTicketImportModal()">
+        📃 Importer un ticket de caisse
+      </button>
+
       <!-- Budget hebdo -->
       <div class="journal-block">
         <div class="jblock-title">💰 Budget hebdomadaire</div>
@@ -906,6 +920,237 @@
     <div id="code-success" class="code-success hidden">✅ Premium activé ! Bienvenue 🌿</div>
   </div>
 </div>
+
+<!-- ================================================================
+     SUIVI DOULEURS (Admin uniquement)
+     ================================================================ -->
+<section id="page-douleurs" class="page hidden">
+  <div class="page-header-inner">
+    <button class="back-btn" onclick="showPage('accueil')">←</button>
+    <h2>🩺 Suivi douleurs</h2>
+  </div>
+
+  <p style="text-align:center;font-size:0.82rem;color:var(--text-mid);margin:-8px 0 16px;font-style:italic;">
+    Module privé · données objectives pour consultation médicale
+  </p>
+
+  <!-- Onglets -->
+  <div class="journal-tabs">
+    <button class="jtab active" onclick="switchDouleursTab('ajout', this)">➕ Nouvelle</button>
+    <button class="jtab" onclick="switchDouleursTab('historique', this)">📜 Historique</button>
+    <button class="jtab" onclick="switchDouleursTab('stats', this)">📊 Stats</button>
+  </div>
+
+  <!-- TAB AJOUT -->
+  <div id="dtab-ajout">
+    <div class="settings-group">
+      <div class="settings-title">Date et heure</div>
+      <div class="settings-row">
+        <input type="datetime-local" class="field inline" id="dol-date" />
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Intensité douleur (EVA jambes 0-10)</div>
+      <div id="dol-eva-scale" class="dol-eva-scale"></div>
+      <div class="dol-eva-labels">
+        <span>Aucune</span>
+        <span>Modérée</span>
+        <span>Insupportable</span>
+      </div>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Stress du jour : <span id="dol-stress-val">5</span>/10</div>
+      <input type="range" min="1" max="10" value="5" class="dol-stress-slider" id="dol-stress" />
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Médicaments pris</div>
+      <input type="text" class="field" id="dol-meds" placeholder="Ex : Paracétamol 1g, Tramadol 50mg" />
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Action médicale</div>
+      <select class="field" id="dol-action">
+        <option value="">Aucune</option>
+        <option value="generaliste">Généraliste</option>
+        <option value="urgences">Urgences</option>
+        <option value="specialiste">Spécialiste</option>
+        <option value="pharmacie">Pharmacie</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Arrêt de travail (jours)</div>
+      <input type="number" class="field" id="dol-arret" min="0" max="30" placeholder="0" />
+    </div>
+
+    <div class="settings-group">
+      <div class="settings-title">Notes (déclencheurs, contexte)</div>
+      <textarea class="field" id="dol-notes" rows="3" placeholder="Ex : crise survenue après une journée stressante, douleur démarrée vers 22h..."></textarea>
+    </div>
+
+    <button class="btn-primary full-width" onclick="saveDouleur()" style="margin-top:8px;">
+      💾 Enregistrer
+    </button>
+  </div>
+
+  <!-- TAB HISTORIQUE -->
+  <div id="dtab-historique" class="hidden">
+    <div id="dol-entries-list"></div>
+  </div>
+
+  <!-- TAB STATS -->
+  <div id="dtab-stats" class="hidden">
+    <div id="dol-stats-grid" class="dol-stats-grid"></div>
+    <div class="settings-group">
+      <div class="settings-title">Évolution douleur + stress (30 derniers jours)</div>
+      <svg id="dol-chart" viewBox="0 0 600 200" preserveAspectRatio="none" style="width:100%;height:200px;"></svg>
+      <div style="display:flex;gap:16px;justify-content:center;margin-top:8px;font-size:0.78rem;color:var(--text-mid);">
+        <span>━ Douleur EVA</span>
+        <span style="color:#d4a574;">┄ Stress</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Styles spécifiques au module Suivi douleurs -->
+<style>
+.admin-only.hidden { display: none !important; }
+.dol-eva-scale {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  gap: 4px;
+  margin-top: 4px;
+}
+.dol-eva-btn {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  font-size: 0.85rem;
+  color: #2d2820;
+  padding: 0;
+}
+.dol-eva-btn[data-val="0"], .dol-eva-btn[data-val="1"], .dol-eva-btn[data-val="2"] { background: #d4e4cf; }
+.dol-eva-btn[data-val="3"], .dol-eva-btn[data-val="4"] { background: #e8d9b8; }
+.dol-eva-btn[data-val="5"], .dol-eva-btn[data-val="6"] { background: #ecc89a; }
+.dol-eva-btn[data-val="7"], .dol-eva-btn[data-val="8"] { background: #d99b7a; color: #fff; }
+.dol-eva-btn[data-val="9"], .dol-eva-btn[data-val="10"] { background: #b85450; color: #fff; }
+.dol-eva-btn.selected { transform: scale(1.15); box-shadow: 0 0 0 2px var(--green-deep, #2d4a3e); }
+.dol-eva-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  color: var(--text-mid);
+  margin-top: 6px;
+}
+.dol-stress-slider {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 8px;
+  background: linear-gradient(to right, #d4e4cf, #ecc89a, #b85450);
+  border-radius: 4px;
+  outline: none;
+}
+.dol-stress-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border: 2px solid var(--green-deep, #2d4a3e);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dol-stress-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border: 2px solid var(--green-deep, #2d4a3e);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dol-entry {
+  background: var(--white, #fff);
+  border-left: 4px solid #7a9070;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.dol-entry.intensity-mid { border-left-color: #d4a574; }
+.dol-entry.intensity-high { border-left-color: #b85450; }
+.dol-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.dol-entry-date { font-size: 0.85rem; color: var(--text-mid); }
+.dol-entry-eva { font-size: 1.4rem; font-weight: 600; color: var(--green-deep, #2d4a3e); }
+.dol-entry-eva .max { font-size: 0.85rem; color: var(--text-mid); font-weight: 400; }
+.dol-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+  font-size: 0.78rem;
+}
+.dol-tag { padding: 3px 9px; border-radius: 12px; background: #f5f1ea; color: var(--text-mid); }
+.dol-tag-action { background: rgba(184, 84, 80, 0.12); color: #b85450; }
+.dol-tag-stress { background: rgba(212, 165, 116, 0.18); color: #8a6f3a; }
+.dol-tag-med { background: rgba(122, 144, 112, 0.15); color: #5a7050; }
+.dol-entry-notes {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  font-style: italic;
+  margin-top: 6px;
+}
+.dol-entry-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.dol-btn-small {
+  padding: 6px 10px;
+  font-size: 0.78rem;
+  background: transparent;
+  color: var(--text-mid);
+  border: 1px solid #e8e0d3;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.dol-btn-small:hover { background: #f5f1ea; }
+.dol-btn-danger { color: #b85450; border-color: rgba(184, 84, 80, 0.3); }
+.dol-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.dol-stat-box {
+  background: var(--white, #fff);
+  padding: 14px;
+  border-radius: 10px;
+  text-align: center;
+  border: 1px solid #e8e0d3;
+}
+.dol-stat-num { font-size: 1.8rem; font-weight: 600; color: var(--green-deep, #2d4a3e); }
+.dol-stat-label { font-size: 0.72rem; color: var(--text-mid); margin-top: 4px; }
+.dol-empty {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-mid);
+  font-style: italic;
+}
+</style>
 
 <script src="flora_recettes.js"></script>
 <script src="app.js"></script>
