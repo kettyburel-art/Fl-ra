@@ -23,6 +23,53 @@ if (typeof RECETTES === 'undefined') {
 }
 
 // ============================
+// SAFE LOCALSTORAGE — wrapper qui ne plante jamais
+// Protège contre : quota dépassé (QuotaExceededError), mode privé Safari (qui jette
+// SecurityError), localStorage désactivé, JSON corrompu, etc.
+// On NE remplace PAS la méthode native (le code existant continue d'utiliser localStorage
+// directement) mais on expose des helpers `floraSafeGet/Set/Remove` que les nouvelles
+// fonctions critiques peuvent utiliser. Pour le code existant qui utilise localStorage
+// directement, on s'appuie sur les try/catch déjà en place.
+// ============================
+window.floraSafeSet = function(key, value) {
+  try {
+    const v = (typeof value === 'string') ? value : JSON.stringify(value);
+    localStorage.setItem(key, v);
+    return true;
+  } catch(e) {
+    console.warn('[Flōra] localStorage.setItem(' + key + ') échoue:', e.name);
+    // Si quota dépassé, tenter de purger les vieilles entrées ai-history
+    if (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+      try {
+        // Purger l'historique IA s'il existe (souvent volumineux)
+        localStorage.removeItem('flora_ai_history');
+        // Réessayer
+        const v = (typeof value === 'string') ? value : JSON.stringify(value);
+        localStorage.setItem(key, v);
+        return true;
+      } catch(_) {}
+    }
+    return false;
+  }
+};
+window.floraSafeGet = function(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw === null || raw === undefined) return fallback;
+    if (typeof fallback === 'object') {
+      try { return JSON.parse(raw); } catch(_) { return fallback; }
+    }
+    return raw;
+  } catch(e) {
+    return fallback;
+  }
+};
+window.floraSafeRemove = function(key) {
+  try { localStorage.removeItem(key); return true; }
+  catch(e) { return false; }
+};
+
+// ============================
 // INJECT FLŌRA STYLES (Journal + Agenda + Fix overflow)
 // ============================
 (function injectFloraStyles() {
@@ -790,15 +837,28 @@ let currentWeekOffset = 0;
 // ============================
 // INIT
 // ============================
-window.addEventListener('load', () => {
-  loadState();
+window.addEventListener('load', function() {
+  try {
+    loadState();
+  } catch(e) {
+    console.error('[Flōra] loadState failed:', e);
+  }
   // Hide splash after animation
-  setTimeout(() => {
-    document.getElementById('splash').classList.add('hidden');
-    if (!profile.name) {
-      document.getElementById('onboarding').classList.remove('hidden');
-    } else {
-      initApp();
+  setTimeout(function() {
+    try {
+      const splash = document.getElementById('splash');
+      if (splash) splash.classList.add('hidden');
+      if (!profile.name) {
+        const onb = document.getElementById('onboarding');
+        if (onb) onb.classList.remove('hidden');
+      } else {
+        initApp();
+      }
+    } catch(e) {
+      console.error('[Flōra] init splash sequence failed:', e);
+      // En dernier recours, montrer #app pour que l'utilisateur voie quelque chose
+      const appEl = document.getElementById('app');
+      if (appEl) appEl.classList.remove('hidden');
     }
   }, 2100);
 });
@@ -889,13 +949,15 @@ function unlockDemo() {
 function nextStep(step) {
   // Validation étape 2 — prénom obligatoire
   if (step === 3) {
-    const name = document.getElementById('ob-name').value.trim();
+    const nameEl = document.getElementById('ob-name');
+    if (!nameEl) return;
+    const name = (nameEl.value || '').trim();
     if (!name) {
-      document.getElementById('ob-name').focus();
-      document.getElementById('ob-name').style.borderColor = 'var(--red-soft)';
+      nameEl.focus();
+      nameEl.style.borderColor = 'var(--red-soft)';
       return;
     }
-    document.getElementById('ob-name').style.borderColor = '';
+    nameEl.style.borderColor = '';
   }
 
   // Générer le récap à l'étape 5
@@ -924,19 +986,34 @@ function nextStep(step) {
 }
 
 function selectChoice(el, hiddenId, value) {
-  // Radio-style dans les onboard-choices du même groupe
-  el.closest('.onboard-choices').querySelectorAll('.onboard-choice').forEach(b => b.classList.remove('active'));
+  if (!el) return;
+  // Désactiver les autres choix dans le même groupe
+  const parent = el.parentElement;
+  if (parent) {
+    parent.querySelectorAll('.onboard-choice').forEach(b => b.classList.remove('active'));
+  }
   el.classList.add('active');
-  document.getElementById(hiddenId).value = value;
+  const hidden = document.getElementById(hiddenId);
+  if (hidden) hidden.value = value;
 }
 
 function buildOnboardRecap() {
-  const name     = document.getElementById('ob-name').value.trim();
-  const sjsrFreq = document.getElementById('ob-sjsr-freq').value;
-  const fer      = document.getElementById('ob-fer').checked;
-  const tdah     = document.getElementById('ob-tdah').checked;
-  const sg       = document.getElementById('ob-sg').checked;
-  const sl       = document.getElementById('ob-sl').checked;
+  // Bug fix : helpers null-safe
+  const getVal = function(id) {
+    const e = document.getElementById(id);
+    return e ? (e.value || '') : '';
+  };
+  const getChecked = function(id) {
+    const e = document.getElementById(id);
+    return e ? !!e.checked : false;
+  };
+  
+  const name     = getVal('ob-name').trim();
+  const sjsrFreq = getVal('ob-sjsr-freq');
+  const fer      = getChecked('ob-fer');
+  const tdah     = getChecked('ob-tdah');
+  const sg       = getChecked('ob-sg');
+  const sl       = getChecked('ob-sl');
 
   // Construire les recommandations personnalisées
   const recs = [];
@@ -965,40 +1042,53 @@ function buildOnboardRecap() {
   recs.push({ icon: '📊', text: 'Suivi bien-être quotidien avec graphiques d\'évolution' });
 
   const recap = document.getElementById('onboard-recap');
-  recap.innerHTML = `
-    <div class="onboard-greeting">Bonjour ${name} 👋</div>
-    <div class="onboard-recs">
-      ${recs.map(r => `
-        <div class="onboard-rec-item">
-          <span class="onboard-rec-icon">${r.icon}</span>
-          <span class="onboard-rec-text">${r.text}</span>
-        </div>
-      `).join('')}
-    </div>
-  `;
+  if (!recap) return;
+  recap.innerHTML =
+    '<div class="onboard-greeting">Bonjour ' + escapeHtml(name) + ' 👋</div>' +
+    '<div class="onboard-recs">' +
+      recs.map(function(r) {
+        return '<div class="onboard-rec-item">' +
+                 '<span class="onboard-rec-icon">' + r.icon + '</span>' +
+                 '<span class="onboard-rec-text">' + escapeHtml(r.text) + '</span>' +
+               '</div>';
+      }).join('') +
+    '</div>';
 }
 
 function saveOnboarding() {
-  const name = document.getElementById('ob-name').value.trim();
+  // Bug fix : helper sécurisé pour ne pas planter si un élément manque
+  const getVal = function(id) {
+    const el = document.getElementById(id);
+    return el ? (el.value || '') : '';
+  };
+  const getChecked = function(id) {
+    const el = document.getElementById(id);
+    return el ? !!el.checked : false;
+  };
+  
+  const name = getVal('ob-name').trim();
   if (!name) { nextStep(2); return; }
 
   profile = {
     name,
-    goal:        document.getElementById('ob-goal').value,
-    sansGluten:  document.getElementById('ob-sg').checked,
-    sansLactose: document.getElementById('ob-sl').checked,
-    vegetarien:  document.getElementById('ob-sv').checked,
-    carenceFer:   document.getElementById('ob-fer').checked,
-    tdah:         document.getElementById('ob-tdah').checked,
-    sjsrFreq:     document.getElementById('ob-sjsr-freq').value,
-    traitement:   document.getElementById('ob-traitement').value,
+    goal:         getVal('ob-goal'),
+    sansGluten:   getChecked('ob-sg'),
+    sansLactose:  getChecked('ob-sl'),
+    vegetarien:   getChecked('ob-sv'),
+    carenceFer:   getChecked('ob-fer'),
+    tdah:         getChecked('ob-tdah'),
+    sjsrFreq:     getVal('ob-sjsr-freq'),
+    traitement:   getVal('ob-traitement'),
   };
 
   saveState();
-  document.getElementById('onboarding').classList.add('hidden');
+  const onboardEl = document.getElementById('onboarding');
+  if (onboardEl) onboardEl.classList.add('hidden');
 
-  // Demander la permission de notifications
-  setTimeout(() => askNotificationPermission(), 1500);
+  // Demander la permission de notifications (asynchrone)
+  setTimeout(function() {
+    try { askNotificationPermission(); } catch(e) { console.warn('[Flōra] notif permission:', e); }
+  }, 1500);
 
   initApp();
 }
@@ -1144,24 +1234,30 @@ function closeLogin() {
 }
 
 function doLogin() {
-  const email    = document.getElementById('login-email').value.trim().toLowerCase();
-  const password = document.getElementById('login-password').value;
-  const errorEl  = document.getElementById('login-error');
+  const emailEl = document.getElementById('login-email');
+  const pwEl    = document.getElementById('login-password');
+  const errorEl = document.getElementById('login-error');
+  if (!emailEl || !pwEl) return;
+  
+  const email    = (emailEl.value || '').trim().toLowerCase();
+  const password = pwEl.value || '';
 
   const account = ACCOUNTS[email];
 
   if (!account || account.password !== password) {
-    errorEl.textContent = '❌ Email ou mot de passe incorrect.';
-    errorEl.classList.remove('hidden');
+    if (errorEl) {
+      errorEl.textContent = '❌ Email ou mot de passe incorrect.';
+      errorEl.classList.remove('hidden');
+    }
     return;
   }
 
   // Connexion réussie
-  currentUser = { email, ...account };
-  isPremium = account.premium;
-  localStorage.setItem('flora_premium', 'true');
-  localStorage.setItem('flora_user_email', email);
-  localStorage.setItem('flora_user_name', account.name);
+  currentUser = Object.assign({ email: email }, account);
+  isPremium = !!account.premium;
+  try { localStorage.setItem('flora_premium', 'true'); } catch(_) {}
+  try { localStorage.setItem('flora_user_email', email); } catch(_) {}
+  try { localStorage.setItem('flora_user_name', account.name); } catch(_) {}
 
   // Mettre à jour le profil
   if (account.name) {
@@ -1170,35 +1266,35 @@ function doLogin() {
   }
 
   closeLogin();
-  loadProfil();
-  renderRecettes();
-  updateLoginButton();
+  if (typeof loadProfil === 'function') loadProfil();
+  if (typeof renderRecettes === 'function') renderRecettes();
+  if (typeof updateLoginButton === 'function') updateLoginButton();
 
   // Toast de bienvenue
   const msg = document.createElement('div');
   const icon = account.role === 'admin' ? '👑' : account.role === 'beta' ? '🌿' : '✨';
   const roleLabel = account.role === 'admin' ? ' (Admin)' : account.role === 'beta' ? ' (Bêta testeur·se)' : ' Premium';
   msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--green-deep);color:var(--white);padding:12px 24px;border-radius:99px;font-size:0.88rem;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);white-space:nowrap;';
-  msg.textContent = `${icon} Bienvenue ${account.name} !${roleLabel}`;
+  msg.textContent = icon + ' Bienvenue ' + account.name + ' !' + roleLabel;
   document.body.appendChild(msg);
-  setTimeout(() => msg.remove(), 3000);
+  setTimeout(function() { msg.remove(); }, 3000);
 }
 
 function doLogout() {
   currentUser = null;
   isPremium = false;
-  localStorage.removeItem('flora_premium');
-  localStorage.removeItem('flora_user_email');
-  localStorage.removeItem('flora_user_name');
-  renderRecettes();
-  loadProfil();
-  updateLoginButton();
+  try { localStorage.removeItem('flora_premium'); } catch(_) {}
+  try { localStorage.removeItem('flora_user_email'); } catch(_) {}
+  try { localStorage.removeItem('flora_user_name'); } catch(_) {}
+  if (typeof renderRecettes === 'function') renderRecettes();
+  if (typeof loadProfil === 'function') loadProfil();
+  if (typeof updateLoginButton === 'function') updateLoginButton();
 
   const msg = document.createElement('div');
   msg.style.cssText = 'position:fixed;top:70px;left:50%;transform:translateX(-50%);background:var(--text-mid);color:var(--white);padding:10px 20px;border-radius:99px;font-size:0.85rem;z-index:9999;';
   msg.textContent = '👋 Déconnecté·e';
   document.body.appendChild(msg);
-  setTimeout(() => msg.remove(), 2000);
+  setTimeout(function() { msg.remove(); }, 2000);
 }
 
 function updateLoginButton() {
@@ -2181,38 +2277,50 @@ function saveMyRecipe(idOrNull) {
   }
   if (errEl) errEl.style.display = 'none';
 
-  var nom = (document.getElementById('myr-nom').value || '').trim();
+  // Helpers null-safe
+  function getVal(id) {
+    var e = document.getElementById(id);
+    return e ? (e.value || '') : '';
+  }
+  function getChecked(id) {
+    var e = document.getElementById(id);
+    return e ? !!e.checked : false;
+  }
+
+  var nom = getVal('myr-nom').trim();
   if (!nom)             { showErr('Donne un nom à ta recette.'); return; }
   if (nom.length > 80)  { showErr('Nom trop long (80 caractères max).'); return; }
 
-  var cat = document.getElementById('myr-cat').value;
-  var temps = (document.getElementById('myr-temps').value || '').trim();
-  var calories = parseInt(document.getElementById('myr-calories').value, 10) || 0;
-  var diff = document.getElementById('myr-diff').value;
-  var benefices = (document.getElementById('myr-benefices').value || '').trim();
+  var cat = getVal('myr-cat') || 'dejeuner';
+  var temps = getVal('myr-temps').trim();
+  var calories = parseInt(getVal('myr-calories'), 10) || 0;
+  var diff = getVal('myr-diff') || 'facile';
+  var benefices = getVal('myr-benefices').trim();
   var emoji = (modal && modal.dataset.selectedEmoji) || '🥗';
 
-  var ingredientsRaw = (document.getElementById('myr-ingredients').value || '').trim();
+  var ingredientsRaw = getVal('myr-ingredients').trim();
   var ingredients = ingredientsRaw.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
   if (!ingredients.length) { showErr('Ajoute au moins un ingrédient.'); return; }
 
-  var etapesRaw = (document.getElementById('myr-etapes').value || '').trim();
+  var etapesRaw = getVal('myr-etapes').trim();
   var etapes = etapesRaw.split('\n').map(function(l) { return l.trim(); }).filter(function(l) { return l.length > 0; });
   if (!etapes.length) { showErr('Ajoute au moins une étape.'); return; }
 
   var tags = [];
-  if (document.getElementById('myr-tag-sg').checked) tags.push('sg');
-  if (document.getElementById('myr-tag-sl').checked) tags.push('sl');
-  if (document.getElementById('myr-tag-vg').checked) tags.push('vg');
+  if (getChecked('myr-tag-sg')) tags.push('sg');
+  if (getChecked('myr-tag-sl')) tags.push('sl');
+  if (getChecked('myr-tag-vg')) tags.push('vg');
 
   // Vérification de cohérence Flōra : nom + chaque ingrédient
   var alertes = [];
-  var nomAlerte = checkFloraCompat(nom);
-  if (nomAlerte) alertes.push({ where: 'le nom de la recette', text: nom, info: nomAlerte });
-  ingredients.forEach(function(ing) {
-    var a = checkFloraCompat(ing);
-    if (a) alertes.push({ where: 'l\'ingrédient « ' + ing + ' »', text: ing, info: a });
-  });
+  if (typeof checkFloraCompat === 'function') {
+    var nomAlerte = checkFloraCompat(nom);
+    if (nomAlerte) alertes.push({ where: 'le nom de la recette', text: nom, info: nomAlerte });
+    ingredients.forEach(function(ing) {
+      var a = checkFloraCompat(ing);
+      if (a) alertes.push({ where: 'l\'ingrédient « ' + ing + ' »', text: ing, info: a });
+    });
+  }
 
   if (alertes.length) {
     // Ne montrer que la première alerte la plus sévère, mais lister les mots-clés
@@ -2342,7 +2450,8 @@ function setBudget(amount) {
 }
 
 function generateShoppingList() {
-  const budget = parseInt(document.getElementById('budget-input').value) || 80;
+  const budgetInput = document.getElementById('budget-input');
+  const budget = budgetInput ? (parseInt(budgetInput.value) || 80) : 80;
   currentBudget = budget;
 
   // Helper : vérifier si un essentiel est déjà dans le placard
@@ -2678,10 +2787,16 @@ function generateBatch() {
 
   document.getElementById('batch-weekly-summary').classList.add('hidden');
   renderBatchPlan();
-  document.getElementById('batch-plan').classList.remove('hidden');
-  setTimeout(() => {
-    document.getElementById('batch-plan').scrollIntoView({ behavior: 'smooth' });
-  }, 100);
+  const batchEl = document.getElementById('batch-plan');
+  if (batchEl) {
+    batchEl.classList.remove('hidden');
+    setTimeout(() => {
+      const el = document.getElementById('batch-plan');
+      if (el && typeof el.scrollIntoView === 'function') {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  }
 }
 
 function renderBatchPlan() {
@@ -2773,9 +2888,19 @@ function importBatchToAgenda() {
 }
 
 function initPlacard() {
-  placardItems = JSON.parse(localStorage.getItem('flora_placard') || '{}');
-  loadPlacardCustom();
-  renderPlacard();
+  try {
+    const raw = localStorage.getItem('flora_placard');
+    placardItems = raw ? JSON.parse(raw) : {};
+    if (!placardItems || typeof placardItems !== 'object' || Array.isArray(placardItems)) {
+      placardItems = {};
+    }
+  } catch(e) {
+    console.warn('[Flōra] flora_placard corrompu, réinitialisation:', e);
+    placardItems = {};
+    try { localStorage.removeItem('flora_placard'); } catch(_) {}
+  }
+  if (typeof loadPlacardCustom === 'function') loadPlacardCustom();
+  if (typeof renderPlacard === 'function') renderPlacard();
 }
 
 function initApp() {
@@ -2894,18 +3019,21 @@ function showPage(page) {
 // DASHBOARD
 // ============================
 function updateDashboard() {
-  const name = profile.name || 'vous';
+  const name = (profile && profile.name) || 'vous';
   const hour = new Date().getHours();
   let greeting = 'Bonsoir';
   if (hour < 12) greeting = 'Bonjour';
   else if (hour < 18) greeting = 'Bonne après-midi';
 
-  document.getElementById('dash-greeting').textContent = `${greeting}, ${name} 🌿`;
-  document.getElementById('header-greeting').textContent = name;
+  const dgEl = document.getElementById('dash-greeting');
+  if (dgEl) dgEl.textContent = greeting + ', ' + name + ' 🌿';
+  const hgEl = document.getElementById('header-greeting');
+  if (hgEl) hgEl.textContent = name;
 
   const now = new Date();
   const opts = { weekday: 'long', day: 'numeric', month: 'long' };
-  document.getElementById('dash-date').textContent = now.toLocaleDateString('fr-FR', opts);
+  const ddEl = document.getElementById('dash-date');
+  if (ddEl) ddEl.textContent = now.toLocaleDateString('fr-FR', opts);
 
   // Streak (via getStreak si disponible)
   const streak = typeof getStreak === 'function' ? getStreak() : 0;
@@ -2916,37 +3044,44 @@ function updateDashboard() {
   const today = dateKey(new Date());
   const journalStatus = document.getElementById('journal-today-status');
   if (journalStatus) {
-    journalStatus.textContent = journal[today]
-      ? `✅ Entrée du jour enregistrée`
+    journalStatus.textContent = (journal && journal[today])
+      ? '✅ Entrée du jour enregistrée'
       : 'Aucune entrée aujourd\'hui';
   }
 
   // Statut agenda aujourd'hui
   const agendaStatus = document.getElementById('agenda-today');
-  if (agendaStatus && agenda[today]) {
+  if (agendaStatus && agenda && agenda[today]) {
     const repas = [];
-    const repasMap = { petitdej:'Petit-déj', dejeuner:'Déjeuner', diner:'Dîner' };
-    Object.entries(agenda[today]).forEach(([slug, recId]) => {
-      const rec = RECETTES.find(r => r.id === recId);
-      if (rec) repas.push(rec.emoji + ' ' + rec.nom.split('-')[0].trim());
+    Object.entries(agenda[today]).forEach(function(entry) {
+      const recId = entry[1];
+      const rec = RECETTES.find(function(r) { return r.id === recId; });
+      if (rec) repas.push(rec.emoji + ' ' + (rec.nom || '').split('-')[0].trim());
     });
     if (repas.length) {
-      agendaStatus.textContent = repas[0] + (repas.length > 1 ? ` +${repas.length-1}` : '');
+      agendaStatus.textContent = repas[0] + (repas.length > 1 ? ' +' + (repas.length-1) : '');
     }
   }
 
   // Bloc "À manger aujourd'hui"
-  renderTodayMeals();
+  if (typeof renderTodayMeals === 'function') {
+    try { renderTodayMeals(); } catch(e) { console.warn('[Flōra] renderTodayMeals:', e); }
+  }
 
   // Bandeau d'incitation à saisir le journal (si pertinent)
-  renderJournalNudge();
+  if (typeof renderJournalNudge === 'function') {
+    try { renderJournalNudge(); } catch(e) { console.warn('[Flōra] renderJournalNudge:', e); }
+  }
 
   // Week chart
-  renderWeekChart();
+  if (typeof renderWeekChart === 'function') {
+    try { renderWeekChart(); } catch(e) { console.warn('[Flōra] renderWeekChart:', e); }
+  }
 }
 
 function renderWeekChart() {
   const container = document.getElementById('week-chart');
+  if (!container) return;
   container.innerHTML = '';
   const maxH = 56; // hauteur max en px (conteneur 96px - padding - label)
 
@@ -3292,7 +3427,9 @@ function saveQuickJournal() {
 // JOURNAL
 // ============================
 function dateKey(d) {
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  // Bug fix : si d est null/undefined, utiliser aujourd'hui
+  if (!d || typeof d.getFullYear !== 'function') d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
 }
 
 // Date courante du journal — modifiable via ← →
@@ -3386,6 +3523,9 @@ function setJournalDate() {
 }
 
 function changeJournalDay(delta) {
+  if (!currentJournalDate || typeof currentJournalDate.getDate !== 'function') {
+    currentJournalDate = new Date();
+  }
   const newDate = new Date(currentJournalDate);
   newDate.setDate(newDate.getDate() + delta);
   const today = new Date();
@@ -3395,31 +3535,35 @@ function changeJournalDay(delta) {
   limit.setDate(limit.getDate() - 90);
   if (newDate < limit) return;
   currentJournalDate = newDate;
-  setJournalDate();
-  loadJournalEntry();
-  renderJournalToday();
+  if (typeof setJournalDate === 'function') setJournalDate();
+  if (typeof loadJournalEntry === 'function') loadJournalEntry();
+  if (typeof renderJournalToday === 'function') renderJournalToday();
 }
 
 // Charger une entrée existante
 function loadJournalEntry() {
   const dk = dateKey(currentJournalDate);
-  const entry = journal[dk];
+  const entry = journal && journal[dk];
 
   if (entry && entry.cycles2) {
-    _journalCycles = JSON.parse(JSON.stringify(entry.cycles2));
+    try {
+      _journalCycles = JSON.parse(JSON.stringify(entry.cycles2));
+    } catch(e) {
+      _journalCycles = [{ couche: '23:00', leve: '07:00' }];
+    }
     _journalLevers = entry.levers2 || 0;
     _journalQualite = entry.qualite2 || 0;
     _journalMood = entry.mood || null;
     _journalSieste = entry.sieste || 0;
     _journalDouleurs = entry.douleurs || { reveil: 0, jour: 0, nuit: 0 };
-    _journalMeds = entry.meds2 || [];
-    _journalRituels = entry.rituels2 || [];
+    _journalMeds = Array.isArray(entry.meds2) ? entry.meds2 : [];
+    _journalRituels = Array.isArray(entry.rituels2) ? entry.rituels2 : [];
     _journalNotes = entry.notes2 || '';
     // Nouveaux champs : habitudes du jour
     _journalEau = entry.eau || 0;
     _journalCafeine = entry.cafeine || { tasses: 0, heureDerniere: '' };
     _journalAlcool = entry.alcool || 0;
-    _journalSymptomes = entry.symptomes || [];
+    _journalSymptomes = Array.isArray(entry.symptomes) ? entry.symptomes : [];
     _journalCycle = entry.cycleMenstruel || { phase: '', flux: '' };
     _journalRepas = entry.repas || { 'petit-dejeuner': null, 'dejeuner': null, 'diner': null, 'snack': null };
   } else {
@@ -4890,8 +5034,10 @@ function renderHistorique() {
 // RECETTES
 // ============================
 function renderRecettes() {
-  const search = (document.getElementById('recette-search')?.value || '').toLowerCase();
+  const searchEl = document.getElementById('recette-search');
+  const search = (searchEl ? searchEl.value : '').toLowerCase();
   const grid   = document.getElementById('recettes-grid');
+  if (!grid) return; // page Recettes pas encore montée — bug fix
 
   let recettes = RECETTES.filter(r => {
     if (currentCatFilter && r.cat !== currentCatFilter) return false;
@@ -5325,8 +5471,8 @@ function filterCat(cat, el) {
   currentCatFilter = cat;
   // Cliquer sur une catégorie désactive le filtre favoris (modes exclusifs)
   currentFavorisFilter = false;
-  document.querySelectorAll('#cat-filters .chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll('#cat-filters .chip').forEach(function(c) { c.classList.remove('active'); });
+  if (el) el.classList.add('active');
   renderRecettes();
 }
 
@@ -6390,15 +6536,20 @@ function pickWeighted(pool, priorite, used, prevType) {
 }
 
 function generateMenu() {
-  var duree    = parseInt(document.getElementById('gen-duree').value, 10);
-  var priorite = document.getElementById('gen-priorite').value;
+  const dureeEl = document.getElementById('gen-duree');
+  const priorEl = document.getElementById('gen-priorite');
+  var duree    = dureeEl ? (parseInt(dureeEl.value, 10) || 7) : 7;
+  var priorite = priorEl ? priorEl.value : 'anti-inflammatoire';
 
   if (!isPremium && duree > 3) {
-    document.getElementById('generated-menu').classList.add('hidden');
-    document.getElementById('gen-premium-wall').classList.remove('hidden');
+    const genMenu = document.getElementById('generated-menu');
+    if (genMenu) genMenu.classList.add('hidden');
+    const wall = document.getElementById('gen-premium-wall');
+    if (wall) wall.classList.remove('hidden');
     return;
   }
-  document.getElementById('gen-premium-wall').classList.add('hidden');
+  const wall = document.getElementById('gen-premium-wall');
+  if (wall) wall.classList.add('hidden');
 
   // 1. Pools filtrés par accès et profil
   function pool(cat) {
@@ -6695,8 +6846,8 @@ function saveProfil(btn) {
 
 function resetApp() {
   if (confirm('Réinitialiser toutes les données ? Cette action est irréversible.')) {
-    localStorage.clear();
-    window.location.reload();
+    try { localStorage.clear(); } catch(e) { console.warn('localStorage.clear failed:', e); }
+    try { window.location.reload(); } catch(_) {}
   }
 }
 
@@ -6704,11 +6855,13 @@ function resetApp() {
 // PREMIUM
 // ============================
 function showPremium() {
-  document.getElementById('premium-modal').classList.remove('hidden');
+  const m = document.getElementById('premium-modal');
+  if (m) m.classList.remove('hidden');
 }
 
 function closePremium() {
-  document.getElementById('premium-modal').classList.add('hidden');
+  const m = document.getElementById('premium-modal');
+  if (m) m.classList.add('hidden');
 }
 
 function activatePremiumDemo() {
@@ -6717,13 +6870,15 @@ function activatePremiumDemo() {
 }
 
 function checkCode() {
-  const code = document.getElementById('promo-code').value.trim().toUpperCase();
+  const codeEl = document.getElementById('promo-code');
+  if (!codeEl) return;
+  const code = (codeEl.value || '').trim().toUpperCase();
   const errorEl   = document.getElementById('code-error');
   const successEl = document.getElementById('code-success');
 
   // Réinitialiser les messages
-  errorEl?.classList.add('hidden');
-  successEl?.classList.add('hidden');
+  if (errorEl) errorEl.classList.add('hidden');
+  if (successEl) successEl.classList.add('hidden');
 
   // Codes fixes de démo/test
   const FIXED_CODES = ['FLORA2025', 'SJSR2025', 'BIENETRE'];
@@ -6733,23 +6888,25 @@ function checkCode() {
 
   if (FIXED_CODES.includes(code) || isDynamicCode) {
     activatePremium();
-    successEl?.classList.remove('hidden');
-    setTimeout(() => closePremium(), 1800);
+    if (successEl) successEl.classList.remove('hidden');
+    setTimeout(function() { closePremium(); }, 1800);
   } else {
-    document.getElementById('promo-code').style.borderColor = 'var(--red-soft)';
-    errorEl?.classList.remove('hidden');
-    setTimeout(() => {
-      document.getElementById('promo-code').style.borderColor = '';
-      errorEl?.classList.add('hidden');
+    codeEl.style.borderColor = 'var(--red-soft)';
+    if (errorEl) errorEl.classList.remove('hidden');
+    setTimeout(function() {
+      const c = document.getElementById('promo-code');
+      if (c) c.style.borderColor = '';
+      const e = document.getElementById('code-error');
+      if (e) e.classList.add('hidden');
     }, 3000);
   }
 }
 
 function activatePremium() {
   isPremium = true;
-  localStorage.setItem('flora_premium', 'true');
-  loadProfil();
-  renderRecettes();
+  try { localStorage.setItem('flora_premium', 'true'); } catch(_) {}
+  if (typeof loadProfil === 'function') loadProfil();
+  if (typeof renderRecettes === 'function') renderRecettes();
 }
 
 // ============================
@@ -7230,9 +7387,11 @@ function closeRepasRecetteSelector() {
 }
 
 function filterRepasRecettes() {
-  const q = document.getElementById('repas-recette-search').value.trim().toLowerCase();
+  const searchEl = document.getElementById('repas-recette-search');
+  if (!searchEl) return;
+  const q = (searchEl.value || '').trim().toLowerCase();
   const items = document.querySelectorAll('#repas-recette-list > div');
-  items.forEach(el => {
+  items.forEach(function(el) {
     const nom = el.getAttribute('data-nom') || '';
     el.style.display = (!q || nom.includes(q)) ? '' : 'none';
   });
@@ -7285,7 +7444,10 @@ function openRepasLibreModal(slotKey, existing) {
   document.body.style.overflow = 'hidden';
   refreshSelectedIngredientsUI();
   filterIngredientSuggestions('');
-  setTimeout(() => document.getElementById('rl-titre').focus(), 100);
+  setTimeout(function() {
+    const t = document.getElementById('rl-titre');
+    if (t && typeof t.focus === 'function') t.focus();
+  }, 100);
 }
 
 function openRepasLibreEdit(slotKey) {
