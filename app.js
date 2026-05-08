@@ -1341,6 +1341,18 @@ function initLogin() {
   if (typeof maybeApplyLidlTicket === 'function') {
     maybeApplyLidlTicket();
   }
+  // Nettoyage doublons Autres achats (one-shot)
+  if (typeof cleanAutresAchatsDuplicatesOnce === 'function') {
+    cleanAutresAchatsDuplicatesOnce();
+  }
+  // Application ticket La Fourche du 9 mai 2026 (one-shot)
+  if (typeof applyLaFourcheTicketMay9_2026Once === 'function') {
+    applyLaFourcheTicketMay9_2026Once();
+  }
+  // Injection planning 12-18 mai 2026 (one-shot)
+  if (typeof applyPlanningMay12_2026Once === 'function') {
+    applyPlanningMay12_2026Once();
+  }
 }
 
 
@@ -9993,3 +10005,298 @@ function maybeApplyLidlTicket() {
     applyLidlTicketMay7Once();
   }
 }
+
+
+// ============================================================
+// PLANNING SEMAINE 12-18 MAI 2026 — Injection one-shot (admin)
+// ============================================================
+// S'exécute UNE seule fois pour Ketty (admin), via flag localStorage.
+// Crée 15 repas custom et les place dans l'agenda à la bonne date.
+
+function applyPlanningMay12_2026Once() {
+  if (!isTicketAdmin()) return;
+  var FLAG = 'flora_planning_may12_2026_applied';
+  try {
+    if (localStorage.getItem(FLAG) === '1') return;
+  } catch(_) { return; }
+
+  var planning = [
+    // Lundi 12 mai
+    { dk: '2026-05-12', slug: 'dejeuner',
+      nom: 'Bowl tiède sarrasin & tofu fumé',
+      ingr: ['Sarrasin (kasha) cuit (60g cru)', 'Tofu fumé amandes-sésame (80g)',
+             'Concombre (1/2)', 'Carotte râpée (1)', 'Mix graines salade (1 c.s.)',
+             'Tahin (1 c.s.)', 'Citron (1/2)', 'Tamari (1 c.c.)'] },
+    { dk: '2026-05-12', slug: 'diner',
+      nom: 'Velouté patate douce-curcuma & falafels',
+      ingr: ['Patate douce (1 moyenne)', 'Lait de coco entier (100ml)',
+             'Curcuma (1 c.c.)', 'Gingembre frais (1 cm)', 'Bouillon légumes (300ml)',
+             'Falafels (3)', 'Persil plat (qq brins)'] },
+
+    // Mardi 13 mai
+    { dk: '2026-05-13', slug: 'dejeuner',
+      nom: 'Salade lentilles & maquereaux',
+      ingr: ['Lentilles vertes cuites (150g)', 'Maquereaux au naturel (1 boîte)',
+             'Concombre (1/2)', 'Olives noires (10)', 'Feta greco AOP (30g)',
+             'Huile de colza (1 c.s.)', 'Citron (1/2)', 'Persil'] },
+    { dk: '2026-05-13', slug: 'diner',
+      nom: 'Cabillaud vapeur thym, millet citronné',
+      ingr: ['Cabillaud (1 pavé 130g)', 'Thym (1 branche)', 'Millet (60g cru)',
+             'Citron (1/2)', 'Petits pois surgelés (100g)',
+             'Huile de cameline (1 c.s.)', 'Sel Santé'] },
+
+    // Mercredi 14 mai 🌱
+    { dk: '2026-05-14', slug: 'dejeuner',
+      nom: 'Buddha bowl aux graines germées',
+      ingr: ['Mix protéines germé (50g)', 'Steak de bœuf émincé (100g)',
+             'Carotte râpée (1)', 'Avocat (1/2)', 'Riz complet (50g cru)',
+             'Miso (1 c.c.)', 'Tamari (1 c.c.)', 'Gingembre frais'] },
+    { dk: '2026-05-14', slug: 'diner',
+      nom: 'Curry doux lentilles corail-coco',
+      ingr: ['Lentilles corail (80g cru)', 'Lait de coco entier (200ml)',
+             'Curcuma (1 c.c.)', 'Cardamome (3 gousses)', 'Cumin',
+             'Riz basmati (60g cru)', 'Coriandre fraîche'] },
+
+    // Jeudi 15 mai
+    { dk: '2026-05-15', slug: 'dejeuner',
+      nom: 'Galettes sarrasin aux crevettes',
+      ingr: ['Farine de sarrasin (50g)', 'Œuf bio (1)',
+             'Boisson millet-amande-noisette (100ml)', 'Crevettes cuites (100g)',
+             'Cottage cheese sans lactose (2 c.s.)', 'Ciboulette'] },
+    { dk: '2026-05-15', slug: 'diner',
+      nom: 'Polenta crémeuse & œuf mollet',
+      ingr: ['Polenta (50g cru)', 'Levure nutritionnelle (2 c.s.)',
+             'Champignons shiitaké (100g)', 'Ail (1 gousse)', 'Persil',
+             'Œuf bio mollet (1)', 'Huile d olive'] },
+
+    // Vendredi 16 mai
+    { dk: '2026-05-16', slug: 'dejeuner',
+      nom: 'Salade tiède pdt & saumon fumé',
+      ingr: ['Pommes de terre (200g cuites)', 'Saumon fumé (80g)',
+             'Câpres (1 c.c.)', 'Olives noires (10)', 'Concombre (1/2)',
+             'Yaourt soja (3 c.s.)', 'Citron', 'Aneth ou ciboulette'] },
+    { dk: '2026-05-16', slug: 'diner',
+      nom: 'Soupe miso aux nouilles & tofu',
+      ingr: ['Pâte miso (1 c.s.)', 'Nouilles de riz (60g)',
+             'Tofu fumé (80g)', 'Algues wakamé séchées (1 c.c.)',
+             'Petits pois (50g)', 'Gingembre frais', 'Tamari'] },
+
+    // Samedi 17 mai
+    { dk: '2026-05-17', slug: 'dejeuner',
+      nom: 'Risotto de millet aux crevettes',
+      ingr: ['Millet (70g cru)', 'Millet cuisine (1 brique 20cl)',
+             'Bouillon légumes (200ml)', 'Levure nutritionnelle (2 c.s.)',
+             'Champignons (100g)', 'Crevettes (100g)', 'Persil'] },
+    { dk: '2026-05-17', slug: 'diner',
+      nom: 'Steak grillé & lentilles vertes mijotées',
+      ingr: ['Steak de bœuf (130g)', 'Lentilles vertes cuites (150g)',
+             'Tomates concassées (100g)', 'Cumin (1 c.c.)',
+             'Paprika fumé (1 c.c.)', 'Coriandre fraîche', 'Huile d olive'] },
+
+    // Dimanche 18 mai — BRUNCH solo
+    { dk: '2026-05-18', slug: 'petitdej',
+      nom: 'Brunch cocooning solo 🥂',
+      ingr: ['Pancakes sarrasin-banane : farine sarrasin 40g + œuf + boisson millet-amande 80ml + 1/2 banane + cannelle',
+             'Topping : sirop d agave + fruits rouges surgelés réchauffés + amandes effilées',
+             'Œufs brouillés (2) + saumon fumé (50g) + ciboulette',
+             'Galette de riz + cottage cheese sans lactose',
+             'Bowl muesli miel-sarrasin SG + boisson avoine + dattes + chia',
+             'Smoothie : mangue surgelée + lait coco + cacao cru + chia',
+             'Café décaféiné Mexique + 1 carré chocolat noir 92%',
+             'Infusion hibiscus glacée'] },
+    { dk: '2026-05-18', slug: 'dejeuner',
+      nom: 'Repos digestif (brunch tardif)',
+      ingr: ['Pas de déjeuner formel — brunch jusqu en début d après-midi',
+             'Si faim vers 16h : tisane hibiscus + 2-3 dattes + amandes'] },
+    { dk: '2026-05-18', slug: 'diner',
+      nom: 'Dîner léger : velouté & tartine',
+      ingr: ['Velouté du panier La Fourche (légumes du jour)',
+             'Tartine galette de riz + purée d amande + miel',
+             'Yaourt soja + graines de chia + fruits rouges',
+             'Infusion mélisse-tilleul'] }
+  ];
+
+  try {
+    var customMeals = JSON.parse(localStorage.getItem('flora_custom_meals') || '{}');
+    var agendaData = JSON.parse(localStorage.getItem('flora_agenda') || '{}');
+
+    var counter = 0;
+    planning.forEach(function(p) {
+      var id = 'custom_planning_may12_' + (++counter);
+      customMeals[id] = {
+        id: id,
+        nom: p.nom,
+        ingredients: p.ingr,
+        slug: p.slug,
+        dk: p.dk,
+        createdAt: Date.now(),
+        isLibrary: false
+      };
+      if (!agendaData[p.dk]) agendaData[p.dk] = {};
+      agendaData[p.dk][p.slug] = id;
+    });
+
+    localStorage.setItem('flora_custom_meals', JSON.stringify(customMeals));
+    localStorage.setItem('flora_agenda', JSON.stringify(agendaData));
+
+    // Mise à jour des variables globales en mémoire si présentes
+    if (typeof agenda !== 'undefined') {
+      Object.keys(agendaData).forEach(function(k) { agenda[k] = agendaData[k]; });
+    }
+
+    localStorage.setItem(FLAG, '1');
+    console.log('[Flōra] Planning 12-18 mai 2026 injecté :', counter, 'repas');
+  } catch(e) {
+    console.error('[Flōra] Erreur injection planning:', e);
+  }
+}
+
+// ============================================================
+// NETTOYAGE DOUBLONS '🛒 Autres achats' — one-shot admin
+// ============================================================
+function cleanAutresAchatsDuplicatesOnce() {
+  if (!isTicketAdmin()) return;
+  var FLAG = 'flora_autres_achats_dedup_v1';
+  try {
+    if (localStorage.getItem(FLAG) === '1') return;
+  } catch(_) { return; }
+
+  var cat = '🛒 Autres achats';
+  var changed = false;
+
+  // 1. Dédupliquer floraPlacardCustom[cat]
+  if (floraPlacardCustom && floraPlacardCustom[cat] && Array.isArray(floraPlacardCustom[cat])) {
+    var seen = {};
+    var clean = [];
+    floraPlacardCustom[cat].forEach(function(item) {
+      var key = item.toLowerCase().trim();
+      if (!seen[key]) {
+        seen[key] = true;
+        clean.push(item);
+      }
+    });
+    if (clean.length !== floraPlacardCustom[cat].length) {
+      floraPlacardCustom[cat] = clean;
+      changed = true;
+    }
+  }
+
+  // 2. Dédupliquer PLACARD_CATEGORIES[cat]
+  if (PLACARD_CATEGORIES && PLACARD_CATEGORIES[cat] && Array.isArray(PLACARD_CATEGORIES[cat])) {
+    var seen2 = {};
+    var clean2 = [];
+    PLACARD_CATEGORIES[cat].forEach(function(item) {
+      var key = item.toLowerCase().trim();
+      if (!seen2[key]) {
+        seen2[key] = true;
+        clean2.push(item);
+      }
+    });
+    if (clean2.length !== PLACARD_CATEGORIES[cat].length) {
+      PLACARD_CATEGORIES[cat] = clean2;
+      changed = true;
+    }
+  }
+
+  if (changed) {
+    try {
+      localStorage.setItem('flora_placard_custom', JSON.stringify(floraPlacardCustom));
+      localStorage.setItem(FLAG, '1');
+      console.log('[Flōra] Doublons Autres achats nettoyés');
+      // Re-render placard si visible
+      if (typeof initPlacard === 'function' && document.getElementById('page-placard') &&
+          !document.getElementById('page-placard').classList.contains('hidden')) {
+        initPlacard();
+      }
+    } catch(e) {
+      console.error('[Flōra] Erreur nettoyage doublons:', e);
+    }
+  } else {
+    try { localStorage.setItem(FLAG, '1'); } catch(_) {}
+  }
+}
+
+// ============================================================
+// AJOUT D ITEMS LA FOURCHE AU PLACARD — one-shot admin
+// ============================================================
+// Facture du 5 mai 2026 — livraison samedi 9 mai
+function applyLaFourcheTicketMay9_2026Once() {
+  if (!isTicketAdmin()) return;
+  var FLAG = 'flora_ticket_la_fourche_2026_05_09_applied';
+  try {
+    if (localStorage.getItem(FLAG) === '1') return;
+  } catch(_) { return; }
+
+  // Produits La Fourche → mappage
+  // Standards (cocher dans placard officiel)
+  var matched = [
+    'Flocons de millet',     // déjà coché normalement
+    'Sarrasin (kasha)',      // sarrasin décortiqué
+    'Tahini',                // Tahin sésame
+    'Patate douce',          // patates douces bio
+    'Tofu fumé'              // tofu fumé amandes-sésame
+  ];
+
+  // Produits non standards → custom catégorie 🛒 Autres achats
+  var customs = [
+    'Muesli croustillant nature SG',
+    'Muesli croustillant miel-sarrasin SG',
+    'Huile de colza vierge bio 1L',
+    'Baume soin des pieds',
+    'Falafels traditionnels bio',
+    'Huile de coco vierge bio',
+    'Boisson millet-amande-noisette',
+    'Feta greco AOP bio',
+    'Chocolat noir fleur de sel 80%',
+    'Fleurs d hibiscus séchées',
+    'Panier de légumes bio La Fourche',
+    'Cottage cheese sans lactose',
+    'Petits flocons d avoine bio',
+    'Graines de millet bio',
+    'Café décaféiné Mexique',
+    'Mini palets chocolat noir-cacahuète',
+    'Boisson avoine bio',
+    'Concombres bio (lot de 2)',
+    'Mix graines pour salade',
+    'Millet cuisine (brique)',
+    'Panier de fruits bio La Fourche',
+    'Chocolat noir 92%'
+  ];
+
+  var customCat = '🛒 Autres achats';
+
+  // 1. Cocher standards
+  matched.forEach(function(it) {
+    placardItems[it] = true;
+  });
+
+  // 2. Ajouter customs
+  if (!floraPlacardCustom[customCat]) floraPlacardCustom[customCat] = [];
+  if (!PLACARD_CATEGORIES[customCat]) PLACARD_CATEGORIES[customCat] = [];
+
+  customs.forEach(function(it) {
+    var existsCustom = floraPlacardCustom[customCat].some(function(x) {
+      return x.toLowerCase() === it.toLowerCase();
+    });
+    if (!existsCustom) floraPlacardCustom[customCat].push(it);
+    if (PLACARD_CATEGORIES[customCat].indexOf(it) === -1) {
+      PLACARD_CATEGORIES[customCat].push(it);
+    }
+    placardItems[it] = true;
+  });
+
+  // 3. Sauvegarder
+  try {
+    localStorage.setItem('flora_placard', JSON.stringify(placardItems));
+    localStorage.setItem('flora_placard_custom', JSON.stringify(floraPlacardCustom));
+    localStorage.setItem(FLAG, '1');
+    console.log('[Flōra] Ticket La Fourche 9 mai appliqué :',
+                matched.length, 'cochés +', customs.length, 'customs ajoutés');
+  } catch(e) {
+    console.error('[Flōra] Erreur application La Fourche:', e);
+  }
+}
+
+// ============================================================
+// FIN MODULES ADMIN
+// ============================================================
