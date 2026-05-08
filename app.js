@@ -186,6 +186,439 @@ if (typeof RECETTES === 'undefined') {
 })();
 
 // ============================
+// INJECT FLŌRA STYLES — Composants modernes (Journal v2 + Repas + Quick journal)
+// Ces styles complètent style.css pour les composants générés dynamiquement.
+// ============================
+(function injectFloraStylesV2() {
+  if (document.getElementById('flora-injected-styles-v2')) return;
+  const style = document.createElement('style');
+  style.id = 'flora-injected-styles-v2';
+  style.textContent = `
+    /* === SYMPTÔMES — grille propre === */
+    .symptomes-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .symptome-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 12px;
+      background: #fff;
+      border: 1.5px solid #ede8e0;
+      border-radius: 99px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #4a5e54;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      line-height: 1.2;
+      flex: 0 0 auto;
+    }
+    .symptome-chip:active {
+      transform: scale(0.96);
+    }
+    .symptome-chip.active {
+      background: #2d4a3e22;
+      border-color: #2d4a3e;
+      color: #2d4a3e;
+      font-weight: 600;
+    }
+    [data-theme="dark"] .symptome-chip {
+      background: #1a201d;
+      border-color: rgba(255,255,255,0.1);
+      color: #d4ccc0;
+    }
+    [data-theme="dark"] .symptome-chip.active {
+      background: rgba(255,255,255,0.08);
+      color: #f5efe8;
+    }
+
+    /* === REPAS MODE BTN (Recette / Libre / Sauté) === */
+    .repas-mode-btn {
+      flex: 0 1 auto;
+      padding: 8px 14px;
+      background: #f7f3ee;
+      border: 1.5px solid #ede8e0;
+      border-radius: 99px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: #2d4a3e;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .repas-mode-btn:hover { background: #ede8e0; }
+    .repas-mode-btn:active { transform: scale(0.96); }
+    [data-theme="dark"] .repas-mode-btn {
+      background: #1a201d;
+      border-color: rgba(255,255,255,0.1);
+      color: #d4ccc0;
+    }
+
+    /* === REPAS LIBRE — modale composer un repas === */
+    .repas-libre-section { margin-bottom: 18px; }
+    .repas-libre-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #2d4a3e;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .repas-libre-categories { display: flex; flex-direction: column; gap: 14px; }
+    .repas-libre-cat-title {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #6c8278;
+      margin-bottom: 6px;
+    }
+    .repas-libre-cat-items { display: flex; flex-wrap: wrap; gap: 6px; }
+    .repas-libre-ing-chip {
+      padding: 7px 11px;
+      background: #fff;
+      border: 1.5px solid #ede8e0;
+      border-radius: 99px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      color: #4a5e54;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .repas-libre-ing-chip:active { transform: scale(0.96); }
+    .repas-libre-ing-chip.selected {
+      background: #2d4a3e;
+      border-color: #2d4a3e;
+      color: #fff;
+      font-weight: 600;
+    }
+    .repas-libre-selected {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 10px;
+      background: #f7f3ee;
+      border-radius: 12px;
+      min-height: 40px;
+    }
+    .repas-libre-selected-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      background: #2d4a3e;
+      color: #fff;
+      border-radius: 99px;
+      font-size: 0.76rem;
+      font-weight: 500;
+    }
+    .repas-libre-selected-chip button {
+      background: none; border: none; color: #fff;
+      cursor: pointer; padding: 0; font-size: 0.85rem; line-height: 1;
+    }
+    .repas-libre-benefices {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: #e8f0ec;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      color: #2d4a3e;
+      line-height: 1.4;
+    }
+    .repas-libre-empty {
+      text-align: center;
+      padding: 26px 16px;
+      background: #f7f3ee;
+      border-radius: 12px;
+    }
+    .repas-libre-save-toggle {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      background: #f7f3ee;
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .repas-libre-save-label { display: flex; flex-direction: column; gap: 2px; }
+    .repas-libre-save-sub { font-size: 0.72rem; color: #8a9e96; }
+
+    /* === FLORA MODAL OVERLAY (modales custom comme repas libre) === */
+    .flora-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 10000;
+      display: flex; align-items: flex-end;
+      animation: floraModalFadeIn 0.2s ease;
+    }
+    @keyframes floraModalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .flora-modal-content {
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      max-height: 90vh;
+      display: flex; flex-direction: column;
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.15);
+    }
+    .flora-modal-header {
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid #ede8e0;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px;
+    }
+    .flora-modal-overline {
+      font-size: 0.72rem;
+      color: #6c8278;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .flora-modal-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.2rem;
+      color: #2d4a3e;
+      margin: 0;
+      font-weight: 600;
+    }
+    .flora-modal-close {
+      background: #f7f3ee; border: none;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      font-size: 1rem; color: #4a5e54;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .flora-modal-body {
+      padding: 18px 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .flora-modal-footer {
+      padding: 12px 20px;
+      border-top: 1px solid #ede8e0;
+      display: flex; gap: 10px;
+    }
+    .flora-btn-primary, .flora-btn-secondary {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 99px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s ease;
+    }
+    .flora-btn-primary {
+      background: #2d4a3e;
+      color: #fff;
+    }
+    .flora-btn-primary:disabled { background: #c4ccc8; cursor: not-allowed; }
+    .flora-btn-secondary {
+      background: #f7f3ee;
+      color: #4a5e54;
+      border: 1.5px solid #ede8e0;
+    }
+
+    /* === QUICK JOURNAL — moods & étoiles === */
+    .quick-moods { display: flex; gap: 6px; justify-content: space-between; flex-wrap: wrap; }
+    .quick-mood-emoji {
+      font-size: 1.7rem;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 12px;
+      transition: all 0.15s ease;
+      flex: 1 1 0;
+      text-align: center;
+      min-width: 50px;
+    }
+    .quick-mood-emoji:active { transform: scale(0.92); }
+    .quick-mood-emoji.selected {
+      background: #2d4a3e22;
+    }
+    .quick-mood-label {
+      font-size: 0.7rem; color: #6c8278;
+      text-align: center; margin-top: 2px;
+    }
+
+    /* === Repas libre nudge / save confirm === */
+    .save-confirm {
+      text-align: center;
+      padding: 10px;
+      margin-top: 10px;
+      background: #d4f5dd;
+      color: #1a5c2e;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      animation: floraFadeOut 2.5s ease forwards;
+    }
+    @keyframes floraFadeOut {
+      0%, 70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* === Journal nudge === */
+    .journal-nudge {
+      padding: 12px 16px;
+      border-radius: 14px;
+      margin: 12px 0;
+      font-size: 0.85rem;
+      display: none;
+    }
+    .journal-nudge:not(:empty) { display: block; }
+    .journal-nudge-soft {
+      background: #f7f3ee;
+      color: #4a5e54;
+    }
+    .journal-nudge-urgent {
+      background: #fff4d6;
+      color: #8a5e1a;
+      border-left: 3px solid #d4a843;
+    }
+    .journal-nudge-done {
+      background: #d4f5dd;
+      color: #1a5c2e;
+    }
+
+    /* === Today meals block (accueil) === */
+    .today-meals-block {
+      background: #fff;
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      box-shadow: 0 2px 8px rgba(45,74,62,0.06);
+    }
+
+    /* === Profil avatar === */
+    .profil-avatar {
+      text-align: center;
+      padding: 20px 0 12px;
+    }
+    .avatar-circle {
+      width: 78px;
+      height: 78px;
+      margin: 0 auto 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2d4a3e, #4a6e5e);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(45,74,62,0.2);
+    }
+    .profil-name {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      color: #2d4a3e;
+      margin-bottom: 4px;
+    }
+    .profil-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      background: #f7f3ee;
+      border-radius: 99px;
+      font-size: 0.75rem;
+      color: #6c8278;
+      font-weight: 500;
+    }
+    .profil-badge.premium {
+      background: linear-gradient(135deg, #d4a843, #f5cb5c);
+      color: #fff;
+    }
+
+    /* === Settings === */
+    .settings-group {
+      background: #fff;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+    .settings-title {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #2d4a3e;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      gap: 12px;
+    }
+    .settings-row label {
+      font-size: 0.88rem;
+      color: #4a5e54;
+    }
+    .field.inline {
+      flex: 1; max-width: 60%;
+    }
+
+    /* === Toggle switch === */
+    .toggle-row {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      cursor: pointer;
+    }
+    .toggle-row span:first-child {
+      font-size: 0.88rem; color: #4a5e54;
+    }
+    .toggle-input { display: none; }
+    .toggle-slider {
+      position: relative;
+      width: 44px; height: 24px;
+      background: #c4ccc8;
+      border-radius: 99px;
+      transition: background 0.2s ease;
+      flex-shrink: 0;
+    }
+    .toggle-slider::after {
+      content: '';
+      position: absolute;
+      top: 2px; left: 2px;
+      width: 20px; height: 20px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-input:checked + .toggle-slider {
+      background: #2d4a3e;
+    }
+    .toggle-input:checked + .toggle-slider::after {
+      transform: translateX(20px);
+    }
+
+    /* === DARK theme adaptations === */
+    [data-theme="dark"] .repas-libre-ing-chip { background: #1a201d; border-color: rgba(255,255,255,0.1); color: #d4ccc0; }
+    [data-theme="dark"] .repas-libre-selected,
+    [data-theme="dark"] .repas-libre-empty,
+    [data-theme="dark"] .repas-libre-save-toggle { background: #1a201d; }
+    [data-theme="dark"] .flora-modal-content { background: #232a26; }
+    [data-theme="dark"] .flora-btn-secondary { background: #1a201d; color: #d4ccc0; border-color: rgba(255,255,255,0.1); }
+    [data-theme="dark"] .settings-group { background: #232a26; }
+    [data-theme="dark"] .today-meals-block { background: #232a26; }
+  `;
+  document.head.appendChild(style);
+})();
+
+// ============================
 // (anciens styles)
 // ============================
 
