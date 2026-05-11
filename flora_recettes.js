@@ -3551,37 +3551,33 @@ const RECETTES = [
       'Sauce tahini : mélangez tahini + jus de citron + eau + ail. Servez avec les falafels.'
     ]
   },
-{
-  id: 'bowl-thai-crevettes-cru',
-  cat: 'dejeuner',
-  emoji: '🍤',
-  nom: 'Bowl thaï crevettes & crudités croquantes',
-  temps: '10 min',
-  calories: 320,
-  diff: 'Très facile',
-  tags: ['sg', 'sl', 'express', 'cru'],
-  benefices: 'Riche en protéines maigres et oméga-3 (crevettes), bêta-carotène anti-inflammatoire (carotte), vitamine C boostant l\'absorption du fer (radis, citron, germes). Hydratant et digeste, parfait pour un premier repas après jeûne nocturne ou en cas de poussée SJSR.',
-  ingredients: [
-    '200 g de crevettes cuites décortiquées',
-    '1/2 concombre',
-    '1 petite courgette crue',
-    '4-5 radis roses',
-    '1 carotte',
-    '1 poignée de germes de soja',
-    '1 c. à s. de persil ou coriandre frais ciselé',
-    '1 c. à s. d\'huile d\'olive',
-    'Jus d\'1/2 citron',
-    '1 pincée de Sel Santé (sel + curcuma + poivre + herbes)'
-  ],
-  etapes: [
-    'Émincer le concombre et la courgette en fines rondelles à l\'économe ou à la mandoline.',
-    'Trancher les radis finement et râper la carotte.',
-    'Mélanger tous les légumes dans un grand bol avec les germes de soja.',
-    'Ajouter les crevettes décortiquées par-dessus.',
-    'Préparer la vinaigrette : huile d\'olive, jus de citron, Sel Santé, herbes ciselées.',
-    'Verser sur le bowl, mélanger délicatement et déguster aussitôt pour garder le croquant.'
-  ]
-},
+  {
+    id: 176, cat: 'dejeuner', premium: false,
+    emoji: '🍤', nom: 'Bowl thaï crevettes & crudités croquantes',
+    temps: '10 min', calories: 320, diff: 'Facile',
+    tags: ['sg', 'sl', 'express'],
+    benefices: 'Riche en protéines maigres et oméga-3 (crevettes), bêta-carotène anti-inflammatoire (carotte), vitamine C boostant l\'absorption du fer (radis, citron, germes). Hydratant et digeste, parfait pour un premier repas après jeûne nocturne ou en cas de poussée SJSR.',
+    ingredients: [
+      '200 g de crevettes cuites décortiquées',
+      '1/2 concombre',
+      '1 petite courgette crue',
+      '4-5 radis roses',
+      '1 carotte',
+      '1 poignée de germes de soja',
+      '1 c.à.s persil ou coriandre frais ciselé',
+      '1 c.à.s huile d\'olive',
+      'Jus d\'1/2 citron',
+      '1 pincée de Sel Santé'
+    ],
+    etapes: [
+      'Émincer le concombre et la courgette en fines rondelles à l\'économe.',
+      'Trancher les radis finement et râper la carotte.',
+      'Mélanger tous les légumes dans un grand bol avec les germes de soja.',
+      'Ajouter les crevettes décortiquées par-dessus.',
+      'Préparer la vinaigrette : huile d\'olive, jus de citron, Sel Santé, herbes ciselées.',
+      'Verser sur le bowl, mélanger délicatement et déguster aussitôt pour garder le croquant.'
+    ]
+  },
   
   // =============================================
   // PREMIUM "HORS DU COMMUN"
