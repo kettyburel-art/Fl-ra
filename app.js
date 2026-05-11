@@ -5138,8 +5138,11 @@ function renderRecettes() {
     }
 
     // Carte normale déverrouillée
+    // Badge "Échantillon" affiché aux non-premium sur les recettes gratuites
+    const showSample = !isPremium && !r.premium;
     return `
       <div class="recette-card" onclick="openRecette(${r.id})">
+        ${showSample ? '<div class="recette-sample-badge">🌿 Échantillon</div>' : ''}
         <div class="recette-emoji cat-${r.cat}">${r.emoji}</div>
         <button class="recette-fav-btn ${isFavori(r.id) ? 'fav-active' : ''}"
                 data-fav-id="${r.id}"

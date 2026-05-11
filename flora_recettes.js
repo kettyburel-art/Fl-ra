@@ -345,7 +345,7 @@ const RECETTES = [
   // SNACKS FASTOCHES — gratuits (découverte)
   // =============================================
   {
-    id: 15, cat: 'snack', premium: false,
+    id: 15, cat: 'snack', premium: true,
     emoji: '🍫', nom: 'Barres dattes-noisettes-chocolat',
     temps: '15 min + 12h frigo', calories: 200, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -388,7 +388,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 17, cat: 'snack', premium: false,
+    id: 17, cat: 'snack', premium: true,
     emoji: '🌾', nom: 'Barres d\'énergie flocons-compote',
     temps: '30 min', calories: 190, diff: 'Facile',
     tags: ['sl', 'vg'],
@@ -410,7 +410,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 18, cat: 'snack', premium: false,
+    id: 18, cat: 'snack', premium: true,
     emoji: '🥥', nom: 'Roses des sables aux amandes',
     temps: '10 min + 1h frigo', calories: 145, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -578,7 +578,7 @@ const RECETTES = [
   // PETITS-DÉJEUNERS supplémentaires
   // =============================================
   {
-    id: 25, cat: 'petit-dejeuner', premium: false,
+    id: 25, cat: 'petit-dejeuner', premium: true,
     emoji: '🥞', nom: 'Porridge compote de pomme-sarrasin',
     temps: '30 min', calories: 310, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -605,7 +605,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 26, cat: 'petit-dejeuner', premium: false,
+    id: 26, cat: 'petit-dejeuner', premium: true,
     emoji: '🫚', nom: 'Pains d\'épices sans gluten au miel',
     temps: '30 min', calories: 280, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -684,7 +684,7 @@ const RECETTES = [
   // DÉJEUNERS supplémentaires
   // =============================================
   {
-    id: 29, cat: 'dejeuner', premium: false,
+    id: 29, cat: 'dejeuner', premium: true,
     emoji: '🥕', nom: 'Biscuits SG salés carotte-roquette-pois chiche',
     temps: '45 min', calories: 290, diff: 'Moyen',
     tags: ['sg', 'sl', 'vg'],
@@ -709,7 +709,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 30, cat: 'dejeuner', premium: false,
+    id: 30, cat: 'dejeuner', premium: true,
     emoji: '🫘', nom: 'Mini muffins polenta-pois chiches',
     temps: '30 min', calories: 310, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -793,7 +793,7 @@ const RECETTES = [
   // DÎNERS supplémentaires
   // =============================================
   {
-    id: 33, cat: 'snack', premium: false,
+    id: 33, cat: 'snack', premium: true,
     emoji: '🧁', nom: 'Muffins potimarron-chocolat-cannelle',
     temps: '35 min', calories: 290, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -820,7 +820,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 34, cat: 'diner', premium: false,
+    id: 34, cat: 'diner', premium: true,
     emoji: '🥗', nom: 'Muffins provençaux olives-romarin',
     temps: '35 min', calories: 260, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -950,7 +950,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 39, cat: 'dejeuner', premium: false,
+    id: 39, cat: 'dejeuner', premium: true,
     emoji: '🥕', nom: 'Verrines de carottes au cumin',
     temps: '35 min', calories: 160, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -973,7 +973,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 40, cat: 'dejeuner', premium: false,
+    id: 40, cat: 'dejeuner', premium: true,
     emoji: '🥗', nom: 'Tartare de betteraves-graines de tournesol',
     temps: '15 min', calories: 175, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1062,7 +1062,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 44, cat: 'dejeuner', premium: false,
+    id: 44, cat: 'dejeuner', premium: true,
     emoji: '🐟', nom: 'Saumon mi-cuit gingembre-lin',
     temps: '20 min', calories: 380, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -1290,7 +1290,7 @@ const RECETTES = [
 
   // --- DESSERTS SJSR ---
   {
-    id: 54, cat: 'snack', premium: false,
+    id: 54, cat: 'snack', premium: true,
     emoji: '🍫', nom: 'Mousse chocolat noir-cerises au piment',
     temps: '15 min + 2h frigo', calories: 230, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -1311,7 +1311,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 55, cat: 'snack', premium: false,
+    id: 55, cat: 'snack', premium: true,
     emoji: '🍑', nom: 'Moelleux pêches-noisettes farine de riz',
     temps: '40 min', calories: 280, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1400,7 +1400,7 @@ const RECETTES = [
 
   // --- SAUCES & CONDIMENTS ---
   {
-    id: 59, cat: 'dejeuner', premium: false,
+    id: 59, cat: 'dejeuner', premium: true,
     emoji: '🫒', nom: 'Sauce vierge tomates-basilic-olive',
     temps: '10 min', calories: 110, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1487,7 +1487,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 63, cat: 'petit-dejeuner', premium: false,
+    id: 63, cat: 'petit-dejeuner', premium: true,
     emoji: '🌰', nom: 'Bouillie de châtaigne-millet-noisettes',
     temps: '15 min', calories: 330, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1561,7 +1561,7 @@ const RECETTES = [
 
   // --- PETITS-DÉJEUNERS ---
   {
-    id: 66, cat: 'petit-dejeuner', premium: false,
+    id: 66, cat: 'petit-dejeuner', premium: true,
     emoji: '🥭', nom: 'Bol açaí mangue-coco',
     temps: '10 min', calories: 340, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1583,7 +1583,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 67, cat: 'petit-dejeuner', premium: false,
+    id: 67, cat: 'petit-dejeuner', premium: true,
     emoji: '🍓', nom: 'Pancakes sarrasin-fraises sans œuf',
     temps: '20 min', calories: 380, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1652,7 +1652,7 @@ const RECETTES = [
 
   // --- DÉJEUNERS ---
   {
-    id: 70, cat: 'dejeuner', premium: false,
+    id: 70, cat: 'dejeuner', premium: true,
     emoji: '🥙', nom: 'Bowl quinoa-pois chiches-légumes rôtis',
     temps: '35 min', calories: 450, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -1926,7 +1926,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 82, cat: 'snack', premium: false,
+    id: 82, cat: 'snack', premium: true,
     emoji: '🌰', nom: 'Beurre de noisettes maison',
     temps: '15 min', calories: 190, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2062,7 +2062,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 88, cat: 'diner', premium: false,
+    id: 88, cat: 'diner', premium: true,
     emoji: '🍆', nom: 'Gratin d\'aubergines-tomates-herbes',
     temps: '50 min', calories: 290, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2085,7 +2085,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 89, cat: 'petit-dejeuner', premium: false,
+    id: 89, cat: 'petit-dejeuner', premium: true,
     emoji: '🫐', nom: 'Muffins myrtilles-farine d\'avoine sg',
     temps: '30 min', calories: 290, diff: 'Facile',
     tags: ['sl', 'vg'],
@@ -2108,7 +2108,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 90, cat: 'snack', premium: false,
+    id: 90, cat: 'snack', premium: true,
     emoji: '🌿', nom: 'Infusion nuit profonde valériane-passiflore',
     temps: '5 min', calories: 5, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2218,7 +2218,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 95, cat: 'snack', premium: false,
+    id: 95, cat: 'snack', premium: true,
     emoji: '🥕', nom: 'Houmous de betterave-carotte express',
     temps: '10 min', calories: 140, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2310,7 +2310,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 99, cat: 'petit-dejeuner', premium: false,
+    id: 99, cat: 'petit-dejeuner', premium: true,
     emoji: '🥜', nom: 'Tartines de sarrasin purée d\'amande-banane',
     temps: '5 min', calories: 310, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2462,7 +2462,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 106, cat: 'dejeuner', premium: false,
+    id: 106, cat: 'dejeuner', premium: true,
     emoji: '🥗', nom: 'Salade kale massé pomme-noix',
     temps: '15 min', calories: 310, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2647,7 +2647,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 114, cat: 'diner', premium: false,
+    id: 114, cat: 'diner', premium: true,
     emoji: '🐟', nom: 'Daurade au four fenouil-orange',
     temps: '35 min', calories: 350, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -2669,7 +2669,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 115, cat: 'diner', premium: false,
+    id: 115, cat: 'diner', premium: true,
     emoji: '🍅', nom: 'Shakshuka œufs-poivrons-tomates épicée',
     temps: '25 min', calories: 310, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2784,7 +2784,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 120, cat: 'diner', premium: false,
+    id: 120, cat: 'diner', premium: true,
     emoji: '🎃', nom: 'Potimarron rôti au thym-huile d\'olive',
     temps: '35 min', calories: 230, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2896,7 +2896,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 125, cat: 'snack', premium: false,
+    id: 125, cat: 'snack', premium: true,
     emoji: '🍫', nom: 'Mousse chocolat à l\'aquafaba',
     temps: '15 min + 1h frigo', calories: 195, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2916,7 +2916,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 126, cat: 'snack', premium: false,
+    id: 126, cat: 'snack', premium: true,
     emoji: '🍎', nom: 'Pommes au four cannelle-noix',
     temps: '5 min + 25min four', calories: 160, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -2937,7 +2937,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 127, cat: 'snack', premium: false,
+    id: 127, cat: 'snack', premium: true,
     emoji: '🍓', nom: 'Sorbet minute framboise-lait de coco',
     temps: '3 min', calories: 120, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3130,7 +3130,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 136, cat: 'dejeuner', premium: false,
+    id: 136, cat: 'dejeuner', premium: true,
     emoji: '🥗', nom: 'Salade patate douce froide-roquette-pignons',
     temps: '30 min', calories: 360, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3202,7 +3202,7 @@ const RECETTES = [
   // Spéciales week-end, conviviales, généreuses
   // =============================================
   {
-    id: 139, cat: 'brunch', premium: false,
+    id: 139, cat: 'brunch', premium: true,
     emoji: '🥞', nom: 'Pancakes sarrasin-myrtilles sauce érable',
     temps: '25 min', calories: 420, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3342,7 +3342,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 145, cat: 'brunch', premium: false,
+    id: 145, cat: 'brunch', premium: true,
     emoji: '🍌', nom: 'Banana bread sans gluten chocolat-noix',
     temps: '15 min + 50min four', calories: 360, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3412,7 +3412,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 148, cat: 'brunch', premium: false,
+    id: 148, cat: 'brunch', premium: true,
     emoji: '🥐', nom: 'Muffins salés courgette-feta végane',
     temps: '35 min', calories: 290, diff: 'Facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3459,7 +3459,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 150, cat: 'brunch', premium: false,
+    id: 150, cat: 'brunch', premium: true,
     emoji: '🥚', nom: 'Frittata aux légumes de saison',
     temps: '25 min', calories: 360, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -3505,7 +3505,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 152, cat: 'brunch', premium: false,
+    id: 152, cat: 'brunch', premium: true,
     emoji: '🫙', nom: 'Overnight oats mangue-passion-chia',
     temps: '5 min + 8h repos', calories: 340, diff: 'Très facile',
     tags: ['sg', 'sl', 'vg'],
@@ -3813,7 +3813,7 @@ const RECETTES = [
     ]
   }
   ,{
-    id: 164, cat: 'petit-dejeuner', premium: false,
+    id: 164, cat: 'petit-dejeuner', premium: true,
     emoji: '🥞', nom: 'Crêpes à la farine de riz',
     temps: '40 min', calories: 220, diff: 'Facile',
     tags: ['sg', 'vg'],
@@ -3833,7 +3833,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 165, cat: 'petit-dejeuner', premium: false,
+    id: 165, cat: 'petit-dejeuner', premium: true,
     emoji: '🍌', nom: 'Crêpes banane & flocons d\'avoine SG',
     temps: '15 min', calories: 240, diff: 'Très facile',
     tags: ['sg', 'sl'],
@@ -3850,7 +3850,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 166, cat: 'petit-dejeuner', premium: false,
+    id: 166, cat: 'petit-dejeuner', premium: true,
     emoji: '🥥', nom: 'Crêpes coco ultra gourmandes',
     temps: '20 min', calories: 280, diff: 'Facile',
     tags: ['sg', 'sl'],
@@ -3869,7 +3869,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 167, cat: 'petit-dejeuner', premium: false,
+    id: 167, cat: 'petit-dejeuner', premium: true,
     emoji: '🥞', nom: 'Pancakes farine de riz & amande',
     temps: '25 min', calories: 320, diff: 'Facile',
     tags: ['sg'],
@@ -3922,7 +3922,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 169, cat: 'dejeuner', premium: false,
+    id: 169, cat: 'dejeuner', premium: true,
     emoji: '🍣', nom: 'Bowl saumon teriyaki, riz, avocat & edamame',
     temps: '20 min', calories: 360, diff: 'Facile',
     tags: ['sl'],
@@ -3945,7 +3945,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 170, cat: 'dejeuner', premium: false,
+    id: 170, cat: 'dejeuner', premium: true,
     emoji: '🥬', nom: 'Chou-fleur à la sicilienne',
     temps: '1h', calories: 270, diff: 'Intermédiaire',
     tags: ['sg'],
@@ -3969,7 +3969,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 171, cat: 'dejeuner', premium: false,
+    id: 171, cat: 'dejeuner', premium: true,
     emoji: '🌶️', nom: 'Chouchouka de Blida',
     temps: '2h15 + repos 6h', calories: 165, diff: 'Patience',
     tags: ['sg', 'sl', 'vg'],
@@ -4100,7 +4100,7 @@ const RECETTES = [
     ]
   },
   {
-    id: 175, cat: 'snack', premium: false,
+    id: 175, cat: 'snack', premium: true,
     emoji: '🍫', nom: 'Brownie tiramisu chocolat noir',
     temps: '22 min', calories: 340, diff: 'Très facile',
     tags: ['sg'],

@@ -1,0 +1,27 @@
+/* ========================================================== */
+/* BADGE ÉCHANTILLON — À AJOUTER À LA FIN DE style.css        */
+/* ========================================================== */
+/* Affiché en haut à gauche des recettes gratuites pour       */
+/* les utilisateurs non-premium, pour bien faire comprendre    */
+/* que ces 40 recettes sont un aperçu de l'offre complète.    */
+
+.recette-sample-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 2;
+  background: linear-gradient(135deg, #6b9d6b, #4a7a4a);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 10px;
+  letter-spacing: 0.02em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+  pointer-events: none;
+}
+
+/* S'assurer que la carte est en position relative pour accueillir le badge */
+.recette-card {
+  position: relative;
+}
