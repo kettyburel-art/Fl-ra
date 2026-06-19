@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Flōra — Luma</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@300;400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Inter',sans-serif;background:#0d0820;min-height:100vh;overflow:hidden;color:#f0e8d8;}
+
+.scene{position:fixed;inset:0;background:linear-gradient(180deg,#080518 0%,#120830 18%,#1e1050 32%,#3d1f6e 48%,#7a3a9a 60%,#c0607a 70%,#e8986a 78%,#f0c878 83%,#4a7020 90%,#2a4a10 100%);}
+#etoiles{position:absolute;inset:0;pointer-events:none;}
+.etoile{position:absolute;border-radius:50%;background:#fff;animation:scintille ease-in-out infinite;}
+@keyframes scintille{0%,100%{opacity:.15;transform:scale(.7);}50%{opacity:1;transform:scale(1.4);}}
+.lune{position:absolute;top:5%;right:10%;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#fff8e0,#f5e090 40%,#e0c060);box-shadow:0 0 25px 12px rgba(245,224,120,.2),0 0 60px 30px rgba(245,200,80,.1),inset -10px -4px 0 rgba(180,150,60,.3);animation:luneFlotte 7s ease-in-out infinite;}
+@keyframes luneFlotte{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.sol{position:absolute;bottom:0;left:0;right:0;height:22%;background:linear-gradient(180deg,#3a6018,#2a4a10 50%,#1a3008);border-radius:60% 60% 0 0/15% 15% 0 0;}
+.sol-lueur{position:absolute;bottom:21%;left:5%;right:5%;height:3px;background:linear-gradient(90deg,transparent,rgba(180,240,120,.25),rgba(240,200,80,.35),rgba(180,240,120,.25),transparent);filter:blur(3px);animation:lueurSol 4s ease-in-out infinite;}
+@keyframes lueurSol{0%,100%{opacity:.4;}50%{opacity:1;}}
+#fondFleurs{position:absolute;bottom:0;left:0;width:100%;height:35%;pointer-events:none;}
+.luciole-bg{position:absolute;font-size:.65rem;pointer-events:none;animation:lucioleB ease-in-out infinite;}
+@keyframes lucioleB{0%,100%{transform:translate(0,0) scale(1);opacity:.5;}50%{transform:translate(var(--lx),var(--ly)) scale(1.6);opacity:1;}}
+.petale-bg{position:absolute;font-size:.75rem;pointer-events:none;animation:petaleB linear infinite;opacity:.5;}
+@keyframes petaleB{0%{transform:translateY(-30px) translateX(0) rotate(0deg);opacity:0;}10%{opacity:.6;}90%{opacity:.3;}100%{transform:translateY(100vh) translateX(var(--d)) rotate(540deg);opacity:0;}}
+
+/* ══ ZONE LUMA — centrée dans l'espace disponible au-dessus du panneau ══ */
+.luma-zone{
+  position:fixed;
+  /* Du haut de l'entête (70px) jusqu'au panneau (~320px depuis le bas) */
+  top:70px;
+  bottom:320px;
+  left:0; right:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  z-index:10;
+  pointer-events:none;
+}
+.luma-zone > * { pointer-events:all; }
+
+.luma-container{position:relative;width:150px;height:188px;cursor:pointer;filter:drop-shadow(0 0 20px rgba(200,160,255,.4));transition:filter .5s;}
+.luma-container:hover{filter:drop-shadow(0 0 35px rgba(220,180,255,.7));}
+#lumaSVG{width:100%;height:100%;animation:lumaFlotte 3s ease-in-out infinite;}
+@keyframes lumaFlotte{0%,100%{transform:translateY(0) rotate(-1deg);}50%{transform:translateY(-12px) rotate(1deg);}}
+.aile-g,.aile-d{transform-origin:50% 60%;animation:batAile 2.5s ease-in-out infinite;}
+.aile-d{animation-delay:.3s;}
+@keyframes batAile{0%,100%{transform:scaleX(1);}50%{transform:scaleX(.35);}}
+.etat-rayonnante #lumaSVG{animation:lumaFlotte 2s ease-in-out infinite;}
+.etat-rayonnante .luma-container{filter:drop-shadow(0 0 30px rgba(255,220,100,.7));}
+.etat-triste #lumaSVG{animation:lumaFlotte 5s ease-in-out infinite;opacity:.8;}
+.etat-triste .luma-container{filter:drop-shadow(0 0 15px rgba(100,100,200,.4));}
+.etat-malade .luma-container{filter:drop-shadow(0 0 12px rgba(80,180,80,.3));}
+.etat-endormie #lumaSVG{animation:lumaEndormie 6s ease-in-out infinite;opacity:.7;}
+.etat-endormie .aile-g,.etat-endormie .aile-d{animation:none;transform:scaleY(.3);}
+@keyframes lumaEndormie{0%,100%{transform:translateY(0) rotate(-2deg);}50%{transform:translateY(-5px) rotate(1deg);}}
+.etat-heureuse #lumaSVG{animation:lumaHeureuse 1.5s ease-in-out infinite;}
+.etat-heureuse .luma-container{filter:drop-shadow(0 0 40px rgba(255,200,80,.9));}
+@keyframes lumaHeureuse{0%,100%{transform:translateY(0) rotate(-2deg) scale(1);}25%{transform:translateY(-18px) rotate(3deg) scale(1.05);}50%{transform:translateY(-8px) rotate(-2deg) scale(.98);}75%{transform:translateY(-16px) rotate(2deg) scale(1.04);}}
+
+/* ZZZ uniquement si endormie */
+.zzz{position:absolute;font-family:'Cormorant Garamond',serif;font-style:italic;color:rgba(180,160,220,.7);font-size:.9rem;pointer-events:none;animation:zzzFlotte 3s ease-in-out infinite;opacity:0;transition:opacity .5s;}
+.etat-endormie .zzz{opacity:1;}
+@keyframes zzzFlotte{0%{transform:translate(0,0) scale(.8);opacity:0;}20%{opacity:.8;}80%{opacity:.6;}100%{transform:translate(20px,-50px) scale(1.2);opacity:0;}}
+
+/* BULLE — au-dessus de Luma */
+.bulle{position:relative;background:rgba(15,8,35,.88);backdrop-filter:blur(16px);border:1px solid rgba(200,160,255,.2);border-radius:20px;padding:12px 16px;max-width:260px;text-align:center;box-shadow:0 0 30px rgba(160,100,255,.1);}
+.bulle::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:8px solid transparent;border-top-color:rgba(200,160,255,.2);}
+.bulle-texte{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.95rem;color:rgba(240,228,210,.92);line-height:1.45;transition:opacity .3s;}
+.bulle-nom{font-size:.58rem;letter-spacing:.12em;color:rgba(180,130,255,.7);text-transform:uppercase;margin-bottom:4px;}
+.synchro-badge{font-size:.58rem;padding:2px 8px;border-radius:20px;margin-top:4px;display:inline-block;}
+.synchro-ok{background:rgba(60,180,80,.15);color:rgba(120,220,120,.8);}
+.synchro-vide{background:rgba(180,140,80,.1);color:rgba(200,180,120,.5);}
+
+/* BADGE ÉTAT */
+.luma-etat-badge{display:flex;align-items:center;gap:6px;background:rgba(15,8,35,.7);border:1px solid rgba(200,160,255,.15);border-radius:20px;padding:4px 12px;font-size:.6rem;color:rgba(200,180,240,.7);letter-spacing:.06em;}
+.badge-dot{width:7px;height:7px;border-radius:50%;}
+
+/* JAUGES — compactes */
+.jauges{display:flex;flex-direction:column;gap:5px;background:rgba(15,8,35,.7);backdrop-filter:blur(12px);border:1px solid rgba(200,160,255,.1);border-radius:14px;padding:10px 14px;min-width:180px;}
+.jauge-ligne{display:flex;align-items:center;gap:7px;}
+.jauge-icone{font-size:.85rem;width:16px;text-align:center;}
+.jauge-barre-wrap{flex:1;height:4px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;}
+.jauge-barre{height:100%;border-radius:4px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+.jauge-val{font-size:.58rem;color:rgba(220,200,255,.55);width:20px;text-align:right;}
+
+/* PANNEAU BAS — hauteur fixe */
+.panneau{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:rgba(8,5,20,.93);
+  backdrop-filter:blur(20px);
+  border-top:1px solid rgba(200,160,255,.12);
+  border-radius:26px 26px 0 0;
+  padding:14px 16px 28px;
+}
+.panneau-titre{font-family:'Cormorant Garamond',serif;font-size:.92rem;font-weight:300;font-style:italic;color:rgba(200,180,240,.6);text-align:center;margin-bottom:10px;letter-spacing:.04em;}
+.choix-wrap{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+.choix-btn{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:11px 14px;cursor:pointer;transition:all .2s ease;display:flex;align-items:center;gap:10px;font-family:'Cormorant Garamond',serif;font-size:.92rem;color:rgba(235,220,210,.85);text-align:left;}
+.choix-btn:hover{border-color:rgba(200,160,255,.3);transform:translateX(3px);}
+.choix-btn.selectionne{border-color:rgba(200,160,255,.5);background:rgba(160,100,255,.12);}
+.choix-emoji{font-size:1.1rem;min-width:22px;}
+.btn-confirmer{width:100%;padding:13px;background:linear-gradient(135deg,rgba(155,80,200,.6),rgba(200,80,120,.4));border:1px solid rgba(200,160,255,.25);border-radius:14px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;color:rgba(240,228,210,.95);cursor:pointer;transition:all .25s ease;letter-spacing:.04em;margin-bottom:10px;opacity:0;pointer-events:none;}
+.btn-confirmer.visible{opacity:1;pointer-events:all;}
+.btn-confirmer:hover{transform:translateY(-2px);box-shadow:0 4px 25px rgba(155,80,200,.4);}
+.nav-barre{display:flex;justify-content:space-around;padding-top:6px;border-top:1px solid rgba(255,255,255,.05);}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:4px 10px;border-radius:12px;transition:background .2s;font-family:inherit;}
+.nav-item:hover{background:rgba(255,255,255,.05);}
+.nav-icon{font-size:1.1rem;}
+.nav-label{font-size:.56rem;color:rgba(200,185,220,.45);letter-spacing:.06em;}
+.nav-item.actif .nav-label{color:rgba(200,160,255,.85);}
+
+/* ENTÊTE */
+.entete{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 18px 10px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(8,5,20,.8),transparent);}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:rgba(245,224,200,.95);letter-spacing:.06em;text-shadow:0 0 20px rgba(200,160,255,.4);}
+.logo span{font-style:italic;color:#c8a0ff;}
+.niveau-pill{background:rgba(255,255,255,.07);backdrop-filter:blur(10px);border:1px solid rgba(200,160,255,.18);border-radius:20px;padding:4px 11px;font-size:.6rem;color:rgba(210,185,255,.8);letter-spacing:.08em;}
+
+/* TOAST */
+.toast{position:fixed;top:72px;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(12,6,28,.9);border:1px solid rgba(200,160,255,.2);color:rgba(240,228,210,.95);padding:8px 16px;border-radius:16px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.82rem;opacity:0;transition:all .4s ease;z-index:200;white-space:nowrap;pointer-events:none;}
+.toast.visible{opacity:1;transform:translateX(-50%) translateY(0);}
+.part{position:fixed;pointer-events:none;z-index:150;animation:partVol 2s ease-out forwards;}
+@keyframes partVol{0%{opacity:1;transform:translateY(0) scale(1) rotate(0deg);}100%{opacity:0;transform:translateY(-100px) scale(.2) rotate(360deg);}}
+
+/* BOUTON JARDIN */
+.jardin-btn{background:rgba(255,255,255,.07);backdrop-filter:blur(10px);border:1px solid rgba(200,160,255,.18);border-radius:50%;width:34px;height:34px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;padding:0;}
+.jardin-btn:hover{transform:scale(1.12) rotate(-8deg);border-color:rgba(255,140,170,.5);box-shadow:0 0 18px rgba(230,80,120,.3);}
+
+/* OVERLAY JARDIN */
+.jardin-overlay{position:fixed;inset:0;z-index:250;background:linear-gradient(180deg,#0a0620 0%,#1a0e3a 22%,#2e1860 40%,#5a2d80 56%,#9a4a80 68%,#d4806a 78%,#5a8025 90%,#2a4a10 100%);opacity:0;pointer-events:none;transition:opacity .5s ease;overflow:hidden;}
+.jardin-overlay.ouvert{opacity:1;pointer-events:all;}
+.jardin-entete{position:absolute;top:0;left:0;right:0;z-index:10;padding:18px 18px 12px;display:flex;justify-content:space-between;align-items:flex-start;background:linear-gradient(180deg,rgba(10,6,32,.85),transparent);}
+.jardin-titre-bloc{flex:1;}
+.jardin-titre{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:300;font-style:italic;color:rgba(245,224,200,.95);letter-spacing:.04em;text-shadow:0 0 20px rgba(255,140,170,.4);}
+.jardin-compte{font-size:.68rem;color:rgba(220,190,255,.65);letter-spacing:.06em;margin-top:3px;}
+.jardin-fermer{background:rgba(255,255,255,.08);border:1px solid rgba(200,160,255,.2);border-radius:50%;width:34px;height:34px;color:rgba(240,228,210,.9);font-size:1.1rem;cursor:pointer;flex-shrink:0;transition:all .2s;}
+.jardin-fermer:hover{transform:scale(1.1);background:rgba(255,255,255,.14);}
+.jardin-lune{position:absolute;top:8%;left:12%;width:54px;height:54px;border-radius:50%;background:radial-gradient(circle at 38% 38%,#fff8e0,#f5e090 40%,#e0c060);box-shadow:0 0 22px 10px rgba(245,224,120,.18);animation:luneFlotte 8s ease-in-out infinite;pointer-events:none;}
+.jardin-champ{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;}
+.champ-inner{position:relative;min-height:100%;width:100%;padding-top:90px;padding-bottom:40px;}
+.jardin-fleur{position:absolute;cursor:pointer;transition:transform .3s ease;transform-origin:bottom center;animation:fleurPousse .9s cubic-bezier(.34,1.4,.5,1) backwards;}
+.jardin-fleur:hover{transform:scale(1.18) translateY(-4px);z-index:5;}
+.jardin-fleur:hover .poppy-svg{filter:drop-shadow(0 0 12px rgba(255,200,120,.6));}
+@keyframes fleurPousse{0%{transform:translateY(20px) scale(0);opacity:0;}100%{transform:translateY(0) scale(1);opacity:1;}}
+@keyframes fleurOndule{0%,100%{transform:rotate(-2deg);}50%{transform:rotate(2deg);}}
+.poppy-svg{width:100%;height:100%;transition:filter .3s;animation:fleurOndule 4s ease-in-out infinite;}
+.fleur-bud .poppy-svg{animation:budPulse 2.5s ease-in-out infinite;}
+@keyframes budPulse{0%,100%{filter:drop-shadow(0 0 4px rgba(255,200,120,.3));}50%{filter:drop-shadow(0 0 14px rgba(255,220,140,.7));}}
+
+/* CARTE SOUVENIR */
+.souvenir-carte{position:fixed;bottom:0;left:0;right:0;z-index:260;background:rgba(10,6,28,.96);backdrop-filter:blur(20px);border-top:1px solid rgba(255,160,180,.2);border-radius:24px 24px 0 0;padding:20px 22px 30px;transform:translateY(100%);transition:transform .4s cubic-bezier(.34,1.2,.5,1);}
+.souvenir-carte.visible{transform:translateY(0);}
+.souvenir-date{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;color:rgba(245,224,200,.95);text-align:center;margin-bottom:4px;text-transform:capitalize;}
+.souvenir-etat{text-align:center;font-size:.78rem;color:rgba(220,190,255,.7);margin-bottom:16px;letter-spacing:.04em;}
+.souvenir-jauges{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.sj-ligne{display:flex;align-items:center;gap:9px;}
+.sj-label{font-size:.7rem;color:rgba(220,200,255,.6);width:64px;}
+.sj-wrap{flex:1;height:5px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden;}
+.sj-barre{height:100%;border-radius:5px;}
+.sj-val{font-size:.62rem;color:rgba(220,200,255,.5);width:24px;text-align:right;}
+.souvenir-fermer{width:100%;padding:11px;background:rgba(255,255,255,.05);border:1px solid rgba(200,160,255,.18);border-radius:13px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.92rem;color:rgba(235,220,210,.8);cursor:pointer;}
+.jardin-vide{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(220,200,255,.6);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;line-height:1.7;padding:0 30px;}
+
+/* INTRO */
+.ecran-intro{position:fixed;inset:0;z-index:300;background:#080518;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;transition:opacity .8s ease;}
+.ecran-intro.cache{opacity:0;pointer-events:none;}
+.intro-logo{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:300;color:rgba(245,224,200,.95);letter-spacing:.1em;text-shadow:0 0 40px rgba(200,160,255,.5);}
+.intro-logo span{font-style:italic;color:#c8a0ff;}
+.intro-sous{font-size:.68rem;color:rgba(200,180,240,.5);letter-spacing:.14em;text-transform:uppercase;animation:pulse 2s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:.4;}50%{opacity:1;}}
+</style>
+</head>
+<body>
+
+<div class="ecran-intro" id="intro">
+  <div class="intro-logo">Fl<span>ō</span>ra</div>
+  <div class="intro-sous" id="introSous">Luma t'attend…</div>
+</div>
+
+<div class="scene">
+  <div id="etoiles"></div>
+  <div class="lune"></div>
+  <canvas id="fondFleurs" style="position:absolute;bottom:0;left:0;width:100%;height:35%;pointer-events:none;"></canvas>
+  <div class="sol-lueur"></div>
+  <div class="sol"></div>
+  <div id="luciolesBg"></div>
+  <div id="petalesBg"></div>
+</div>
+
+<div class="entete">
+  <div class="logo">Fl<span>ō</span>ra</div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="jardin-btn" id="jardinBtn" onclick="ouvrirJardin()" title="Mon jardin">🌺</button>
+    <div class="niveau-pill" id="niveauPill">Luma · Niv. 1</div>
+  </div>
+</div>
+
+<!-- ZONE LUMA : centrée dans l'espace libre -->
+<div class="luma-zone" id="lumaZone">
+
+  <!-- BULLE au-dessus -->
+  <div class="bulle" id="bulle">
+    <div class="bulle-nom">✦ luma</div>
+    <div class="bulle-texte" id="bulleTexte">…</div>
+    <div class="synchro-badge" id="syncroBadge"></div>
+  </div>
+
+  <!-- LUMA -->
+  <div class="luma-container" id="lumaContainer" onclick="tapeLuma()">
+    <svg id="lumaSVG" viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="80" cy="130" rx="35" ry="42" fill="url(#lueurCorps)" opacity=".6"/>
+      <ellipse class="aile-g" cx="38" cy="110" rx="38" ry="22" fill="url(#aileGrad)" opacity=".75" transform="rotate(-25 38 110)"/>
+      <ellipse class="aile-d" cx="122" cy="110" rx="38" ry="22" fill="url(#aileDGrad)" opacity=".75" transform="rotate(25 122 110)"/>
+      <ellipse class="aile-g" cx="48" cy="138" rx="26" ry="14" fill="url(#aileGrad)" opacity=".55" transform="rotate(-35 48 138)"/>
+      <ellipse class="aile-d" cx="112" cy="138" rx="26" ry="14" fill="url(#aileDGrad)" opacity=".55" transform="rotate(35 112 138)"/>
+      <ellipse cx="80" cy="128" rx="18" ry="28" fill="url(#corpsGrad)"/>
+      <ellipse cx="80" cy="152" rx="22" ry="12" fill="url(#robeGrad)" opacity=".9"/>
+      <circle cx="80" cy="88" r="22" fill="url(#teteGrad)"/>
+      <ellipse id="oeilG" cx="71" cy="86" rx="4.5" ry="5" fill="#1a0a30"/>
+      <ellipse id="oeilD" cx="89" cy="86" rx="4.5" ry="5" fill="#1a0a30"/>
+      <circle cx="72.5" cy="84.5" r="1.5" fill="rgba(255,255,255,.7)"/>
+      <circle cx="90.5" cy="84.5" r="1.5" fill="rgba(255,255,255,.7)"/>
+      <circle cx="71" cy="86" r="2" fill="#9b5fd0" opacity=".6"/>
+      <circle cx="89" cy="86" r="2" fill="#9b5fd0" opacity=".6"/>
+      <path id="bouche" d="M74,95 Q80,100 86,95" stroke="#c06080" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+      <ellipse cx="65" cy="93" rx="6" ry="4" fill="rgba(220,100,130,.2)"/>
+      <ellipse cx="95" cy="93" rx="6" ry="4" fill="rgba(220,100,130,.2)"/>
+      <ellipse cx="80" cy="68" rx="22" ry="14" fill="url(#chevGrad)"/>
+      <ellipse cx="60" cy="75" rx="10" ry="16" fill="url(#chevGrad)" transform="rotate(-15 60 75)"/>
+      <ellipse cx="100" cy="75" rx="10" ry="16" fill="url(#chevGrad)" transform="rotate(15 100 75)"/>
+      <path d="M62,68 L66,58 L72,66 L80,54 L88,66 L94,58 L98,68" stroke="#d4a030" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <circle cx="80" cy="54" r="3.5" fill="#f0c040"/>
+      <circle cx="66" cy="58" r="2.5" fill="#d4a843"/>
+      <circle cx="94" cy="58" r="2.5" fill="#d4a843"/>
+      <path d="M62,115 Q48,108 42,120" stroke="url(#peauGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <path d="M98,115 Q112,108 118,120" stroke="url(#peauGrad)" stroke-width="6" fill="none" stroke-linecap="round"/>
+      <text x="35" y="126" font-size="12" text-anchor="middle" id="mainG">✦</text>
+      <text x="122" y="126" font-size="12" text-anchor="middle" id="mainD">✦</text>
+      <circle id="p1" cx="55" cy="75" r="3" fill="#f0c040" opacity=".7"><animateTransform attributeName="transform" type="rotate" from="0 80 110" to="360 80 110" dur="4s" repeatCount="indefinite"/></circle>
+      <circle id="p2" cx="105" cy="145" r="2" fill="#c8a0ff" opacity=".8"><animateTransform attributeName="transform" type="rotate" from="360 80 110" to="0 80 110" dur="5s" repeatCount="indefinite"/></circle>
+      <circle id="p3" cx="80" cy="65" r="2.5" fill="#ff90a0" opacity=".6"><animateTransform attributeName="transform" type="rotate" from="0 80 120" to="360 80 120" dur="6s" repeatCount="indefinite"/></circle>
+      <defs>
+        <radialGradient id="lueurCorps" cx="50%" cy="50%"><stop offset="0%" stop-color="#c8a0ff" stop-opacity=".5"/><stop offset="100%" stop-color="#c8a0ff" stop-opacity="0"/></radialGradient>
+        <linearGradient id="aileGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#e0c8ff" stop-opacity=".9"/><stop offset="50%" stop-color="#b090e8" stop-opacity=".6"/><stop offset="100%" stop-color="#8060c0" stop-opacity=".3"/></linearGradient>
+        <linearGradient id="aileDGrad" x1="100%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffe0f0" stop-opacity=".9"/><stop offset="50%" stop-color="#e090c0" stop-opacity=".6"/><stop offset="100%" stop-color="#c060a0" stop-opacity=".3"/></linearGradient>
+        <linearGradient id="corpsGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d4b0ff"/><stop offset="100%" stop-color="#9060d0"/></linearGradient>
+        <linearGradient id="robeGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#b080e8"/><stop offset="100%" stop-color="#7040b0"/></linearGradient>
+        <radialGradient id="teteGrad" cx="45%" cy="40%"><stop offset="0%" stop-color="#ffe8d8"/><stop offset="100%" stop-color="#e8c8b0"/></radialGradient>
+        <radialGradient id="chevGrad" cx="50%" cy="40%"><stop offset="0%" stop-color="#c8a0ff"/><stop offset="100%" stop-color="#7040b0"/></radialGradient>
+        <linearGradient id="peauGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#ffe8d8"/><stop offset="100%" stop-color="#e8c8a8"/></linearGradient>
+      </defs>
+    </svg>
+    <!-- ZZZ masqués par défaut, visibles seulement si etat-endormie -->
+    <div class="zzz" id="zzz1" style="top:20%;left:65%;animation-delay:0s;">z</div>
+    <div class="zzz" id="zzz2" style="top:10%;left:70%;animation-delay:1s;font-size:1.1rem;">z</div>
+    <div class="zzz" id="zzz3" style="top:2%;left:72%;animation-delay:2s;font-size:1.3rem;">Z</div>
+  </div>
+
+  <!-- BADGE ÉTAT -->
+  <div class="luma-etat-badge" id="etatBadge">
+    <div class="badge-dot" id="etatDot" style="background:#c8a0ff;"></div>
+    <span id="etatTexte">Luma t'attend…</span>
+  </div>
+
+  <!-- JAUGES -->
+  <div class="jauges">
+    <div class="jauge-ligne"><span class="jauge-icone">🌙</span><div class="jauge-barre-wrap"><div class="jauge-barre" id="jaugeSommeil" style="width:60%;background:linear-gradient(90deg,#6040c0,#c8a0ff);"></div></div><span class="jauge-val" id="valSommeil">60</span></div>
+    <div class="jauge-ligne"><span class="jauge-icone">💜</span><div class="jauge-barre-wrap"><div class="jauge-barre" id="jaugeDouleur" style="width:45%;background:linear-gradient(90deg,#2040a0,#80a0ff);"></div></div><span class="jauge-val" id="valDouleur">45</span></div>
+    <div class="jauge-ligne"><span class="jauge-icone">🌿</span><div class="jauge-barre-wrap"><div class="jauge-barre" id="jaugeVitalite" style="width:55%;background:linear-gradient(90deg,#206030,#80d060);"></div></div><span class="jauge-val" id="valVitalite">55</span></div>
+  </div>
+
+</div>
+
+<!-- OVERLAY JARDIN FÉERIQUE -->
+<div class="jardin-overlay" id="jardinOverlay">
+  <div class="jardin-lune"></div>
+  <div class="jardin-entete">
+    <div class="jardin-titre-bloc">
+      <div class="jardin-titre">Le jardin de Luma</div>
+      <div class="jardin-compte" id="jardinCompte">…</div>
+    </div>
+    <button class="jardin-fermer" onclick="fermerJardin()">✕</button>
+  </div>
+  <div class="jardin-champ" id="jardinChamp">
+    <div class="champ-inner" id="champInner"></div>
+  </div>
+</div>
+
+<div class="souvenir-carte" id="souvenirCarte">
+  <div class="souvenir-date" id="souvDate">…</div>
+  <div class="souvenir-etat" id="souvEtat">…</div>
+  <div class="souvenir-jauges">
+    <div class="sj-ligne"><span class="sj-label">🌙 Sommeil</span><div class="sj-wrap"><div class="sj-barre" id="sjSommeil" style="background:linear-gradient(90deg,#6040c0,#c8a0ff);"></div></div><span class="sj-val" id="sjvSommeil">0</span></div>
+    <div class="sj-ligne"><span class="sj-label">💜 Confort</span><div class="sj-wrap"><div class="sj-barre" id="sjDouleur" style="background:linear-gradient(90deg,#2040a0,#80a0ff);"></div></div><span class="sj-val" id="sjvDouleur">0</span></div>
+    <div class="sj-ligne"><span class="sj-label">🌿 Vitalité</span><div class="sj-wrap"><div class="sj-barre" id="sjVitalite" style="background:linear-gradient(90deg,#206030,#80d060);"></div></div><span class="sj-val" id="sjvVitalite">0</span></div>
+  </div>
+  <button class="souvenir-fermer" onclick="fermerSouvenir()">Refermer ce souvenir 🌸</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="panneau" id="panneau">
+  <p class="panneau-titre" id="panneauTitre">Comment tu as dormi cette nuit ?</p>
+  <div class="choix-wrap" id="choixWrap"></div>
+  <button class="btn-confirmer" id="btnConfirmer" onclick="confirmer()">Offrir ce moment à Luma ✦</button>
+  <div class="nav-barre">
+    <button class="nav-item actif" onclick="window.location.href='https://kettyburel-art.github.io/Fl-ra/'"><span class="nav-icon">🌸</span><span class="nav-label">Jardin</span></button>
+    <button class="nav-item" onclick="window.location.href='https://kettyburel-art.github.io/Fl-ra/'"><span class="nav-icon">🍃</span><span class="nav-label">Recettes</span></button>
+    <button class="nav-item" onclick="window.location.href='https://kettyburel-art.github.io/Fl-ra/'"><span class="nav-icon">📖</span><span class="nav-label">Journal</span></button>
+    <button class="nav-item actif"><span class="nav-icon">🧚</span><span class="nav-label">Luma</span></button>
+  </div>
+</div>
+
+<script>
+// ══ LECTURE DONNÉES FLORA ══
+function lireFloraJournal(){try{return JSON.parse(localStorage.getItem('flora_journal')||'{}');}catch(e){return{};}}
+function lireFloraProfile(){try{return JSON.parse(localStorage.getItem('flora_profile')||'{}');}catch(e){return{};}}
+function dateKey(d){d=d||new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function lireEntreeAujourdhui(){var j=lireFloraJournal();return j[dateKey()]||null;}
+
+// ══ DONNÉES LUMA ══
+function lireLuma(){try{return JSON.parse(localStorage.getItem('flora_luma')||'{}');}catch(e){return{};}}
+function sauverLuma(data){try{localStorage.setItem('flora_luma',JSON.stringify(data));}catch(e){}}
+
+// ══ ÉTAT GLOBAL ══
+var etat={
+  sommeil:60,douleur:45,vitalite:55,
+  niveau:1,xp:0,serie:0,
+  lumaEtat:'attente',
+  etapeActuelle:0,
+  aReponduAujourdhui:false,
+  synchroFlora:false,
+  donneesFlora:null
+};
+var choixActuel=null;
+var etapesActives=[];
+
+// ══ ÉTOILES ══
+var etoilesEl=document.getElementById('etoiles');
+for(var i=0;i<90;i++){
+  var e=document.createElement('div');e.className='etoile';
+  var s=.8+Math.random()*2.5;
+  e.style.cssText='width:'+s+'px;height:'+s+'px;top:'+Math.random()*70+'%;left:'+Math.random()*100+'%;animation-duration:'+(1.5+Math.random()*4)+'s;animation-delay:'+(-Math.random()*4)+'s;';
+  etoilesEl.appendChild(e);
+}
+
+// ══ LUCIOLES ══
+var lucBg=document.getElementById('luciolesBg');
+for(var i=0;i<12;i++){
+  var l=document.createElement('div');l.className='luciole-bg';
+  l.style.cssText='left:'+Math.random()*95+'%;top:'+(40+Math.random()*45)+'%;--lx:'+((Math.random()-.5)*50)+'px;--ly:'+(-20-Math.random()*35)+'px;animation-duration:'+(3+Math.random()*5)+'s;animation-delay:'+(-Math.random()*6)+'s;';
+  l.textContent='✨';lucBg.appendChild(l);
+}
+
+// ══ PÉTALES ══
+var petBg=document.getElementById('petalesBg');
+var petTypes=['🌸','🌺','❀','✿'];
+function lancerPetale(){
+  var p=document.createElement('div');p.className='petale-bg';
+  p.style.cssText='left:'+Math.random()*100+'%;top:-20px;--d:'+((Math.random()-.5)*150)+'px;animation-duration:'+(8+Math.random()*10)+'s;';
+  p.textContent=petTypes[Math.floor(Math.random()*petTypes.length)];
+  petBg.appendChild(p);setTimeout(function(){p.remove();},20000);
+}
+lancerPetale();lancerPetale();
+setInterval(lancerPetale,6000);
+
+// ══ CANVAS ══
+var cv=document.getElementById('fondFleurs');
+var cx2=cv.getContext('2d');
+function dessinerFond(){
+  cv.width=window.innerWidth;cv.height=window.innerHeight*.35;
+  var h=cv.height;
+  for(var i=0;i<120;i++){
+    var x=Math.random()*cv.width;var th=10+Math.random()*35;
+    cx2.save();cx2.translate(x,h);
+    cx2.beginPath();cx2.moveTo(0,0);cx2.bezierCurveTo(5,-th*.3,-5,-th*.7,0,-th);
+    cx2.strokeStyle='rgba('+(50+Math.random()*40)+','+(90+Math.random()*40)+','+(15+Math.random()*20)+',.5)';
+    cx2.lineWidth=1.5;cx2.stroke();cx2.restore();
+  }
+  [.1,.2,.3,.45,.6,.72,.85,.93].forEach(function(pct){
+    var x=cv.width*pct+(Math.random()-.5)*25;var t=15+Math.random()*16;
+    cx2.save();cx2.translate(x,h);
+    cx2.beginPath();cx2.moveTo(0,0);cx2.bezierCurveTo(4,-t*.3,5,-t*.6,0,-t);
+    cx2.strokeStyle='#3a7018';cx2.lineWidth=1.6;cx2.stroke();
+    cx2.translate(0,-t);
+    ['#e8312a','#cc2018','#d42820','#f04030'].forEach(function(c,i){
+      cx2.save();cx2.rotate((i/4)*Math.PI*2);
+      cx2.beginPath();cx2.ellipse(0,-t*.32,t*.22,t*.42,0,0,Math.PI*2);
+      cx2.fillStyle=c;cx2.fill();cx2.restore();
+    });
+    cx2.beginPath();cx2.arc(0,0,t*.14,0,Math.PI*2);cx2.fillStyle='#0a0800';cx2.fill();
+    cx2.restore();
+  });
+}
+dessinerFond();
+window.addEventListener('resize',function(){dessinerFond();ajusterHauteurPanneau();});
+
+// ══ AJUSTEMENT DYNAMIQUE ══
+// La luma-zone s'adapte à la hauteur réelle du panneau
+function ajusterHauteurPanneau(){
+  var panneau=document.getElementById('panneau');
+  var hPanneau=panneau.offsetHeight;
+  var lumaZone=document.getElementById('lumaZone');
+  lumaZone.style.bottom=(hPanneau+8)+'px';
+}
+
+// ══ TOAST ══
+function affToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('visible');
+  setTimeout(function(){t.classList.remove('visible');},3500);
+}
+
+// ══ PARTICULES ══
+function lancerParticules(emojis,x,y,n){
+  n=n||8;
+  for(var i=0;i<n;i++){
+    var p=document.createElement('div');p.className='part';
+    p.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    p.style.cssText='left:'+(x+(Math.random()-.5)*90)+'px;top:'+(y+(Math.random()-.5)*50)+'px;font-size:'+(0.7+Math.random()*.8)+'rem;animation-delay:'+(Math.random()*.4)+'s;';
+    document.body.appendChild(p);setTimeout(function(){p.remove();},2500);
+  }
+}
+
+// ══ MISE À JOUR LUMA ══
+function majLuma(){
+  var c=document.getElementById('lumaContainer');
+  c.className='luma-container';
+  // retirer tous les états
+  ['etat-rayonnante','etat-heureuse','etat-triste','etat-malade','etat-endormie'].forEach(function(cls){
+    c.classList.remove(cls);
+  });
+
+  var oG=document.getElementById('oeilG');
+  var oD=document.getElementById('oeilD');
+  var bouche=document.getElementById('bouche');
+
+  if(etat.lumaEtat==='heureuse'||etat.lumaEtat==='rayonnante'){
+    c.classList.add(etat.lumaEtat==='rayonnante'?'etat-rayonnante':'etat-heureuse');
+    bouche.setAttribute('d','M72,94 Q80,102 88,94');
+    oG.setAttribute('ry','4');oD.setAttribute('ry','4');
+    document.getElementById('mainG').textContent='✨';
+    document.getElementById('mainD').textContent='✨';
+  } else if(etat.lumaEtat==='triste'){
+    c.classList.add('etat-triste');
+    bouche.setAttribute('d','M74,98 Q80,93 86,98');
+    oG.setAttribute('ry','5');oD.setAttribute('ry','5');
+    document.getElementById('mainG').textContent='💧';
+    document.getElementById('mainD').textContent='';
+  } else if(etat.lumaEtat==='malade'){
+    c.classList.add('etat-malade');
+    bouche.setAttribute('d','M74,96 Q80,94 86,96');
+    document.getElementById('mainG').textContent='😔';
+    document.getElementById('mainD').textContent='';
+  } else if(etat.lumaEtat==='endormie'){
+    c.classList.add('etat-endormie');
+    oG.setAttribute('ry','1.5');oD.setAttribute('ry','1.5');
+    bouche.setAttribute('d','M76,95 Q80,97 84,95');
+    document.getElementById('mainG').textContent='';
+    document.getElementById('mainD').textContent='';
+  } else {
+    // attente
+    bouche.setAttribute('d','M74,95 Q80,100 86,95');
+    oG.setAttribute('ry','5');oD.setAttribute('ry','5');
+    document.getElementById('mainG').textContent='✦';
+    document.getElementById('mainD').textContent='✦';
+  }
+
+  var configs={
+    attente:{c:'#c8a0ff',t:'Luma t\'attend…'},
+    heureuse:{c:'#f0c040',t:'Luma rayonne de joie ✨'},
+    rayonnante:{c:'#f0e060',t:'Luma est resplendissante !'},
+    triste:{c:'#6080c0',t:'Luma a besoin de toi…'},
+    malade:{c:'#60a060',t:'Luma souffre avec toi'},
+    endormie:{c:'#8060a0',t:'Luma somnole — réveille-la !'},
+  };
+  var cfg=configs[etat.lumaEtat]||configs.attente;
+  document.getElementById('etatDot').style.background=cfg.c;
+  document.getElementById('etatTexte').textContent=cfg.t;
+}
+
+// ══ JAUGES ══
+function majJauges(anime){
+  function cl(v){return Math.max(0,Math.min(100,Math.round(v)));}
+  var s=cl(etat.sommeil),d=cl(etat.douleur),v=cl(etat.vitalite);
+  if(!anime){
+    ['jaugeSommeil','jaugeDouleur','jaugeVitalite'].forEach(function(id){
+      document.getElementById(id).style.transition='none';
+    });
+  }
+  document.getElementById('jaugeSommeil').style.width=s+'%';
+  document.getElementById('jaugeDouleur').style.width=d+'%';
+  document.getElementById('jaugeVitalite').style.width=v+'%';
+  document.getElementById('valSommeil').textContent=s;
+  document.getElementById('valDouleur').textContent=d;
+  document.getElementById('valVitalite').textContent=v;
+}
+
+// ══ SYNCHRO FLORA ══
+function synchroAvecFlora(){
+  var entree=lireEntreeAujourdhui();
+  var badge=document.getElementById('syncroBadge');
+
+  if(!entree){
+    // Vérifier si le journal existe mais sans entrée du jour
+    var journal=lireFloraJournal();
+    var nbEntrees=Object.keys(journal).length;
+    if(nbEntrees>0){
+      badge.className='synchro-badge synchro-vide';
+      badge.textContent='journal du jour non rempli';
+    } else {
+      badge.className='synchro-badge synchro-vide';
+      badge.textContent='';
+    }
+    etat.synchroFlora=false;
+    return null;
+  }
+
+  // Lire douleur
+  var douleurMax=0;
+  if(entree.douleurs){
+    douleurMax=Math.max(entree.douleurs.reveil||0,entree.douleurs.jour||0,entree.douleurs.nuit||0);
+  } else if(entree.douleur){
+    douleurMax=entree.douleur;
+  }
+
+  // Lire sommeil
+  var sommeilH=0;
+  if(entree.totalSleep) sommeilH=entree.totalSleep/60;
+  else if(entree.duree) sommeilH=entree.duree;
+  var sommeilScore=Math.min(100,Math.round((sommeilH/9)*100));
+  if(sommeilH===0) sommeilScore=50; // pas de donnée → neutre
+
+  // Qualité
+  var qualite=entree.qualite2||entree.qualite||0;
+
+  // Humeur
+  var humeur=entree.mood||'';
+
+  // Calcul vitalité
+  var douleurScore=Math.max(0,100-(douleurMax*10));
+  var qualiteScore=qualite?Math.round((qualite/5)*100):50;
+  var vitalite=Math.round(douleurScore*0.5+qualiteScore*0.3+sommeilScore*0.2);
+
+  etat.sommeil=sommeilScore;
+  etat.douleur=douleurScore;
+  etat.vitalite=Math.max(10,vitalite);
+  etat.synchroFlora=true;
+  etat.donneesFlora={douleurMax:douleurMax,sommeilH:sommeilH,qualite:qualite,humeur:humeur};
+
+  badge.className='synchro-badge synchro-ok';
+  badge.textContent='✓ synchronisée avec Flora';
+
+  return etat.donneesFlora;
+}
+
+// ══ ÉTAT LUMA SELON DONNÉES ══
+function calculerEtatLuma(donnees){
+  if(!donnees) return 'attente';
+  var moy=(etat.sommeil+etat.douleur+etat.vitalite)/3;
+  if(moy>=78) return 'rayonnante';
+  if(moy>=58) return 'heureuse';
+  if(donnees.douleurMax>=7) return 'malade';
+  if(moy>=38) return 'attente';
+  return 'triste';
+}
+
+// ══ BULLE CONTEXTUELLE ══
+function bulleContextuelle(){
+  var d=etat.donneesFlora;
+  if(!d){
+    var g=['Je t\'attendais… tu es là 🌙','Dis-moi comment tu vas ce soir.','Chaque soir tu reviens. Merci.'];
+    return g[Math.floor(Math.random()*g.length)];
+  }
+  if(d.douleurMax>=8) return 'Tes douleurs sont encore là ce soir. Je suis là avec toi.';
+  if(d.douleurMax>=6) return 'Journée avec douleurs… tu tiens bon. Je le vois.';
+  if(d.douleurMax<=2&&d.sommeilH>=7) return 'Belle nuit et peu de douleurs — Luma danse pour toi ✨';
+  if(d.sommeilH>0&&d.sommeilH<5) return 'Nuit très courte… prends soin de toi ce soir.';
+  if(d.sommeilH>=7) return 'Tu as bien dormi cette nuit. Je l\'ai senti 🌙';
+  if(d.humeur==='reposee'||d.humeur==='excellente') return 'Tu t\'es sentie reposée ce matin. J\'adore ça.';
+  if(d.humeur==='epuisee'||d.humeur==='fatiguee') return 'Journée difficile… viens me parler.';
+  return 'Je lis ton journal. Je te comprends mieux chaque soir.';
+}
+
+function affBulle(texte){
+  var el=document.getElementById('bulleTexte');
+  el.style.opacity='0';
+  setTimeout(function(){el.textContent=texte;el.style.opacity='1';},300);
+}
+
+// ══ ÉTAPES ══
+var etapesStandard=[
+  {id:'sommeil',question:'Comment tu as dormi cette nuit ?',choix:[
+    {emoji:'🌙',texte:'Nuit douce, je me suis reposée',val:85,delta:{sommeil:+20,douleur:+10,vitalite:+15}},
+    {emoji:'😶',texte:'Nuit moyenne, quelques réveils',val:50,delta:{sommeil:+5,douleur:0,vitalite:+5}},
+    {emoji:'⚡',texte:'Nuit difficile, jambes agitées',val:20,delta:{sommeil:-15,douleur:-20,vitalite:-10}},
+    {emoji:'🌑',texte:'Presque pas dormi',val:5,delta:{sommeil:-25,douleur:-30,vitalite:-20}},
+  ]},
+  {id:'douleur',question:'Tes jambes en ce moment ?',choix:[
+    {emoji:'✨',texte:'Calmes, presque pas de sensation',val:90,delta:{douleur:+25,vitalite:+10}},
+    {emoji:'🌊',texte:'Léger fourmillement, gérable',val:60,delta:{douleur:+10,vitalite:+5}},
+    {emoji:'🔥',texte:'Inconfort présent, c\'est difficile',val:30,delta:{douleur:-10,vitalite:-5}},
+    {emoji:'💜',texte:'Douleur forte, j\'ai du mal',val:10,delta:{douleur:-20,vitalite:-15}},
+  ]},
+  {id:'repas',question:'Tu as pris soin de toi aujourd\'hui ?',choix:[
+    {emoji:'🌿',texte:'Oui, repas soigné anti-inflammatoire',val:90,delta:{vitalite:+20,douleur:+10}},
+    {emoji:'🍋',texte:'Plutôt bien, quelques bons choix',val:65,delta:{vitalite:+10,douleur:+5}},
+    {emoji:'🍞',texte:'Pas terrible, repas rapide',val:35,delta:{vitalite:-5}},
+    {emoji:'😔',texte:'J\'ai oublié de manger correctement',val:10,delta:{vitalite:-15,douleur:-5}},
+  ]}
+];
+
+function construireEtapes(donnees){
+  if(!donnees) return etapesStandard;
+  var etapes=[];
+  etapes.push({id:'ressenti_soir',question:'Ce soir, comment tu te sens vraiment ?',choix:[
+    {emoji:'💫',texte:'Mieux qu\'attendu finalement',val:80,delta:{vitalite:+15,douleur:+10}},
+    {emoji:'😐',texte:'Dans la moyenne, ça va',val:55,delta:{vitalite:+5}},
+    {emoji:'💜',texte:'Fatiguée, les jambes parlent',val:30,delta:{douleur:-10,vitalite:-5}},
+    {emoji:'🌑',texte:'C\'est une mauvaise soirée',val:10,delta:{douleur:-15,vitalite:-15}},
+  ]});
+  if(donnees.douleurMax>=5){
+    etapes.push({id:'evolution',question:'Tes douleurs ont évolué depuis ce matin ?',choix:[
+      {emoji:'📈',texte:'Elles ont empiré ce soir',val:15,delta:{douleur:-15}},
+      {emoji:'➡️',texte:'Stable, pareil qu\'aujourd\'hui',val:50,delta:{}},
+      {emoji:'📉',texte:'Un peu mieux ce soir',val:75,delta:{douleur:+10,vitalite:+5}},
+      {emoji:'✨',texte:'Beaucoup mieux, surprise !',val:90,delta:{douleur:+20,vitalite:+10}},
+    ]});
+  }
+  etapes.push(etapesStandard[2]);
+  return etapes;
+}
+
+function afficherEtape(idx){
+  if(idx>=etapesActives.length){finSession();return;}
+  var etape=etapesActives[idx];
+  document.getElementById('panneauTitre').textContent=etape.question;
+  var wrap=document.getElementById('choixWrap');
+  wrap.innerHTML='';
+  choixActuel=null;
+  document.getElementById('btnConfirmer').classList.remove('visible');
+  etape.choix.forEach(function(c){
+    var btn=document.createElement('button');
+    btn.className='choix-btn';
+    btn.innerHTML='<span class="choix-emoji">'+c.emoji+'</span><span>'+c.texte+'</span>';
+    btn.onclick=function(){selectionnerChoix(btn,c);};
+    wrap.appendChild(btn);
+  });
+  // Ajuster après rendu
+  setTimeout(ajusterHauteurPanneau,50);
+}
+
+function selectionnerChoix(btn,choix){
+  document.querySelectorAll('.choix-btn').forEach(function(b){b.classList.remove('selectionne');});
+  btn.classList.add('selectionne');
+  choixActuel=choix;
+  document.getElementById('btnConfirmer').classList.add('visible');
+  if(choix.val>=70) affBulle('Oh… ça me réchauffe le cœur 💛');
+  else if(choix.val>=40) affBulle('Je vois… merci de me le confier.');
+  else affBulle('Je sens que c\'est lourd. Je suis là.');
+}
+
+function confirmer(){
+  if(!choixActuel) return;
+  var c=choixActuel;
+  Object.entries(c.delta||{}).forEach(function(kv){
+    var k=kv[0],v=kv[1];
+    etat[k]=Math.max(0,Math.min(100,etat[k]+v));
+  });
+  etat.xp+=c.val>60?15:c.val>35?8:4;
+  if(etat.xp>=100){etat.xp-=100;etat.niveau++;affToast('✨ Luma grandit ! Niveau '+etat.niveau);}
+  document.getElementById('niveauPill').textContent='Luma · Niv. '+etat.niveau;
+  majJauges(true);
+  var r=document.getElementById('btnConfirmer').getBoundingClientRect();
+  if(c.val>=70) lancerParticules(['✨','💛','🌟','💜'],r.left+r.width/2,r.top,12);
+  else if(c.val>=40) lancerParticules(['🌙','💜','✦'],r.left+r.width/2,r.top,6);
+  else lancerParticules(['💧','🌧️','💜'],r.left+r.width/2,r.top,5);
+  etat.etapeActuelle++;
+  setTimeout(function(){afficherEtape(etat.etapeActuelle);},600);
+}
+
+function finSession(){
+  etat.aReponduAujourdhui=true;
+  var moy=(etat.sommeil+etat.douleur+etat.vitalite)/3;
+  if(moy>=75) etat.lumaEtat='rayonnante';
+  else if(moy>=55) etat.lumaEtat='heureuse';
+  else if(moy>=38) etat.lumaEtat='attente';
+  else if(moy>=22) etat.lumaEtat='malade';
+  else etat.lumaEtat='triste';
+  majLuma();
+
+  var lumaData=lireLuma();
+  lumaData[dateKey()]={sommeil:etat.sommeil,douleur:etat.douleur,vitalite:etat.vitalite,lumaEtat:etat.lumaEtat,ts:Date.now()};
+  lumaData.niveau=etat.niveau;lumaData.xp=etat.xp;lumaData.serie=(lumaData.serie||0)+1;
+  sauverLuma(lumaData);
+  etat.serie=lumaData.serie;
+
+  affBulle(bulleContextuelle());
+  document.getElementById('choixWrap').innerHTML='';
+  document.getElementById('btnConfirmer').classList.remove('visible');
+  document.getElementById('panneauTitre').textContent=
+    moy>=70?'Merci. Luma et toi, ce soir, vous brillez ✨':
+    moy>=45?'Merci de t\'être confiée à Luma 🌙':
+             'Luma veille sur toi cette nuit 💜';
+  if(moy>=70){
+    setTimeout(function(){lancerParticules(['✨','🌟','💛','🌸','💜','🦋'],window.innerWidth/2,window.innerHeight*0.4,18);},400);
+  }
+  affToast('Série : '+(etat.serie)+' soirs d\'affilée 🌙');
+  setTimeout(ajusterHauteurPanneau,50);
+}
+
+function tapeLuma(){
+  var cx=window.innerWidth/2,cy=window.innerHeight*0.35;
+  if(etat.aReponduAujourdhui){
+    lancerParticules(['✨','💜','💛'],cx,cy,6);
+    affBulle(bulleContextuelle());return;
+  }
+  if(etat.lumaEtat==='endormie'){
+    etat.lumaEtat='attente';majLuma();
+    affBulle('Mmh… je me réveille ! Tu es là… 🌙');
+    lancerParticules(['✨','⭐','💜'],cx,cy,8);return;
+  }
+  lancerParticules(['✦','✨'],cx,cy,5);
+  affBulle(bulleContextuelle());
+}
+
+// ══ INIT ══
+function init(){
+  var lumaData=lireLuma();
+  if(lumaData.niveau) etat.niveau=lumaData.niveau;
+  if(lumaData.xp) etat.xp=lumaData.xp;
+  if(lumaData.serie) etat.serie=lumaData.serie;
+  document.getElementById('niveauPill').textContent='Luma · Niv. '+etat.niveau;
+
+  // Déjà répondu aujourd'hui ?
+  var entreeAujourdhui=lumaData[dateKey()];
+  if(entreeAujourdhui){
+    etat.aReponduAujourdhui=true;
+    etat.sommeil=entreeAujourdhui.sommeil||60;
+    etat.douleur=entreeAujourdhui.douleur||45;
+    etat.vitalite=entreeAujourdhui.vitalite||55;
+    etat.lumaEtat=entreeAujourdhui.lumaEtat||'attente';
+  }
+
+  // Synchro Flora
+  var donnees=synchroAvecFlora();
+
+  // Calculer état
+  if(!etat.aReponduAujourdhui){
+    if(donnees){
+      etat.lumaEtat=calculerEtatLuma(donnees);
+      etapesActives=construireEtapes(donnees);
+    } else {
+      etapesActives=etapesStandard;
+      var h=new Date().getHours();
+      if(h<6) etat.lumaEtat='endormie';
+      else etat.lumaEtat='attente';
+    }
+  } else if(donnees){
+    etat.lumaEtat=calculerEtatLuma(donnees);
+  }
+
+  majLuma();
+  majJauges(false);
+  affBulle(bulleContextuelle());
+
+  // Afficher questions ou état final
+  if(etat.aReponduAujourdhui){
+    document.getElementById('choixWrap').innerHTML='';
+    document.getElementById('btnConfirmer').classList.remove('visible');
+    document.getElementById('panneauTitre').textContent='Tu as déjà parlé à Luma ce soir 🌙';
+  } else {
+    afficherEtape(0);
+  }
+
+  // Ajuster layout
+  setTimeout(ajusterHauteurPanneau,100);
+
+  // Cacher intro
+  var introSous=document.getElementById('introSous');
+  introSous.textContent=donnees?'Luma a lu ton journal…':'Luma t\'attend…';
+  setTimeout(function(){
+    document.getElementById('intro').classList.add('cache');
+    setTimeout(function(){var i=document.getElementById('intro');if(i)i.remove();},900);
+  },donnees?1600:2000);
+}
+
+// ══════════ JARDIN QUI SE SOUVIENT ══════════
+// Chaque soir enregistré = un coquelicot, coloré selon l'état de Luma ce jour-là.
+
+var ETAT_COULEURS={
+  rayonnante:{petale:'#f5c542',centre:'#7a5410',label:'rayonnante ✨',emoji:'🌟'},
+  heureuse:{petale:'#e63329',centre:'#5a0e08',label:'heureuse 💛',emoji:'🌺'},
+  attente:{petale:'#ef8fb0',centre:'#7a2a44',label:'paisible 🌙',emoji:'🌸'},
+  malade:{petale:'#9bb38a',centre:'#3a4a2a',label:'douloureuse 💜',emoji:'🍃'},
+  triste:{petale:'#8a6fc8',centre:'#2e2050',label:'difficile 🌑',emoji:'🪻'}
+};
+
+function hashCode(str){var h=0;for(var i=0;i<str.length;i++){h=((h<<5)-h)+str.charCodeAt(i);h=h&h;}return Math.abs(h);}
+
+function svgCoquelicot(coul){
+  return '<svg viewBox="0 0 44 60" class="poppy-svg">'+
+    '<path d="M22 58 C22 46 21 40 22 32" stroke="#3a7018" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+    '<ellipse cx="15" cy="44" rx="5" ry="2.6" fill="#3a7018" transform="rotate(-25 15 44)" opacity="0.85"/>'+
+    '<ellipse cx="22" cy="19" rx="11" ry="14" fill="'+coul.petale+'" opacity="0.92"/>'+
+    '<ellipse cx="12" cy="25" rx="9.5" ry="12" transform="rotate(-32 12 25)" fill="'+coul.petale+'" opacity="0.92"/>'+
+    '<ellipse cx="32" cy="25" rx="9.5" ry="12" transform="rotate(32 32 25)" fill="'+coul.petale+'" opacity="0.92"/>'+
+    '<ellipse cx="22" cy="28" rx="12" ry="9.5" fill="'+coul.petale+'"/>'+
+    '<circle cx="22" cy="23" r="4.6" fill="'+coul.centre+'"/>'+
+    '<circle cx="19" cy="21" r="1" fill="#1a0a08" opacity="0.7"/>'+
+    '<circle cx="25" cy="21" r="1" fill="#1a0a08" opacity="0.7"/>'+
+    '<circle cx="22" cy="26" r="1" fill="#1a0a08" opacity="0.7"/>'+
+    '</svg>';
+}
+
+function svgBouton(){
+  return '<svg viewBox="0 0 44 60" class="poppy-svg">'+
+    '<path d="M22 58 C22 46 21 42 22 34" stroke="#3a7018" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+    '<ellipse cx="22" cy="26" rx="8" ry="11" fill="#5a8a32"/>'+
+    '<ellipse cx="19" cy="24" rx="3" ry="7" fill="#6fa040" opacity="0.7"/>'+
+    '<path d="M22 16 Q24 20 22 24 Q20 20 22 16" fill="#e8986a" opacity="0.8"/>'+
+    '<ellipse cx="22" cy="34" rx="6" ry="3" fill="#3a7018"/>'+
+    '</svg>';
+}
+
+function formaterDateFr(dateStr){
+  try{
+    var parts=dateStr.split('-');
+    var d=new Date(parseInt(parts[0]),parseInt(parts[1])-1,parseInt(parts[2]));
+    var fmt=new Intl.DateTimeFormat('fr-FR',{weekday:'long',day:'numeric',month:'long'});
+    return fmt.format(d);
+  }catch(e){return dateStr;}
+}
+
+function ouvrirJardin(){
+  var lumaData=lireLuma();
+  var champ=document.getElementById('champInner');
+  champ.innerHTML='';
+
+  // Collecter les jours enregistrés (clés = dates YYYY-MM-DD)
+  var jours=[];
+  Object.keys(lumaData).forEach(function(k){
+    if(/^\d{4}-\d{2}-\d{2}$/.test(k)){jours.push(k);}
+  });
+  jours.sort();
+
+  var champH=Math.max(window.innerHeight-40,jours.length*48+260);
+  champ.style.height=champH+'px';
+
+  var compte=document.getElementById('jardinCompte');
+
+  // Message de compte
+  if(jours.length===0){
+    compte.textContent='Ton jardin attend sa première fleur 🌱';
+    var vide=document.createElement('div');
+    vide.className='jardin-vide';
+    vide.innerHTML='Ce soir, parle à Luma…<br>et ton premier coquelicot éclora ici 🌺';
+    champ.appendChild(vide);
+  } else {
+    compte.textContent=jours.length+(jours.length>1?' coquelicots ont éclos 🌺':' coquelicot a éclos 🌺');
+  }
+
+  // Disposer les coquelicots (positions stables par date)
+  var zoneH=champH-300;
+  jours.forEach(function(jour,idx){
+    var entree=lumaData[jour];
+    var coul=ETAT_COULEURS[entree.lumaEtat]||ETAT_COULEURS.heureuse;
+    var h=hashCode(jour);
+    var xPct=4+(h%88);
+    var yBase=160+((h>>4)%Math.max(1,zoneH));
+    // profondeur : plus bas = plus grand
+    var prof=(h>>7)%3;
+    var taille=prof===0?52:prof===1?44:36;
+    var opac=prof===0?1:prof===1?.92:.82;
+
+    var f=document.createElement('div');
+    f.className='jardin-fleur';
+    f.style.left=xPct+'%';
+    f.style.top=yBase+'px';
+    f.style.width=taille+'px';
+    f.style.height=(taille*1.36)+'px';
+    f.style.opacity=opac;
+    f.style.zIndex=prof===0?3:prof===1?2:1;
+    f.style.animationDelay=(Math.min(idx,20)*0.04)+'s';
+    f.innerHTML=svgCoquelicot(coul);
+    f.setAttribute('data-jour',jour);
+    f.onclick=function(){ouvrirSouvenir(jour);};
+    champ.appendChild(f);
+  });
+
+  // Coquelicot du jour : bouton si pas encore parlé à Luma
+  if(!etat.aReponduAujourdhui){
+    var bud=document.createElement('div');
+    bud.className='jardin-fleur fleur-bud';
+    bud.style.left='46%';
+    bud.style.top=(champH-220)+'px';
+    bud.style.width='50px';
+    bud.style.height='68px';
+    bud.style.zIndex='4';
+    bud.innerHTML=svgBouton();
+    bud.onclick=function(){
+      fermerJardin();
+      affBulle('Mon coquelicot du jour t\'attend… 🌱');
+    };
+    champ.appendChild(bud);
+
+    var note=document.createElement('div');
+    note.style.cssText='position:absolute;left:50%;transform:translateX(-50%);text-align:center;font-family:Cormorant Garamond,serif;font-style:italic;font-size:.82rem;color:rgba(255,220,180,.75);width:200px;';
+    note.style.top=(champH-150)+'px';
+    note.textContent='Ce bouton éclora quand tu parleras à Luma ce soir';
+    champ.appendChild(note);
+  }
+
+  document.getElementById('jardinOverlay').classList.add('ouvert');
+  document.getElementById('jardinChamp').scrollTop=champH;
+}
+
+function fermerJardin(){
+  document.getElementById('jardinOverlay').classList.remove('ouvert');
+  fermerSouvenir();
+}
+
+function ouvrirSouvenir(jour){
+  var lumaData=lireLuma();
+  var e=lumaData[jour];
+  if(!e) return;
+  var coul=ETAT_COULEURS[e.lumaEtat]||ETAT_COULEURS.heureuse;
+  document.getElementById('souvDate').textContent=formaterDateFr(jour);
+  document.getElementById('souvEtat').textContent='Ce soir-là, Luma était '+coul.label;
+  function setB(id,idv,val){
+    var v=Math.max(0,Math.min(100,Math.round(val||0)));
+    document.getElementById(id).style.width=v+'%';
+    document.getElementById(idv).textContent=v;
+  }
+  setB('sjSommeil','sjvSommeil',e.sommeil);
+  setB('sjDouleur','sjvDouleur',e.douleur);
+  setB('sjVitalite','sjvVitalite',e.vitalite);
+  document.getElementById('souvenirCarte').classList.add('visible');
+}
+
+function fermerSouvenir(){
+  document.getElementById('souvenirCarte').classList.remove('visible');
+}
+
+// ══════════ FIN JARDIN ══════════
+
+init();
+</script>
+</body>
+</html>
